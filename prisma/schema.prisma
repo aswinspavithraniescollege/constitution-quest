@@ -1,0 +1,179 @@
+// Prisma schema for Constitution Quest - Gamified NPTEL Learning Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model College {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  code        String       @unique
+  location    String?
+  createdAt   DateTime     @default(now())
+  departments Department[]
+  users       User[]
+}
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String
+  code      String
+  collegeId String
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  users     User[]
+  createdAt DateTime @default(now())
+
+  @@unique([code, collegeId])
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  password     String
+  name         String
+  role         String   // ADMIN | MENTOR | STUDENT
+  collegeId    String?
+  college      College? @relation(fields: [collegeId], references: [id])
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  mentorId     String?
+  email        String?
+  phone        String?
+  rollNumber   String?
+  active       Boolean  @default(true)
+
+  // Gamification
+  xp           Int      @default(0)
+  level        Int      @default(1)
+  streak       Int      @default(0)
+  longestStreak Int     @default(0)
+  lastActiveDate String?  // YYYY-MM-DD for streak tracking
+  lastLoginAt  DateTime?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  mentor       User?    @relation("MentorStudent", fields: [mentorId], references: [id])
+  students     User[]   @relation("MentorStudent")
+
+  practiceAttempts PracticeAttempt[]
+  mockAttempts     MockTestAttempt[]
+  activityLogs     ActivityLog[]
+  studentBadges    StudentBadge[]
+}
+
+model Week {
+  id          String   @id @default(cuid())
+  number      Int      @unique
+  title       String
+  description String
+  topics      Topic[]
+  questions   Question[]
+  mockTests   MockTest[]
+}
+
+model Topic {
+  id        String    @id @default(cuid())
+  weekId    String
+  week      Week      @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  name      String
+  part      Int
+  questions Question[]
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  weekId        String
+  week          Week     @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  topicId       String?
+  topic         Topic?   @relation(fields: [topicId], references: [id])
+  questionText  String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctOption String
+  explanation   String
+  whyWrongA     String?
+  whyWrongB     String?
+  whyWrongC     String?
+  whyWrongD     String?
+  difficulty    String   @default("medium")
+  part          Int      @default(1)
+  createdAt     DateTime @default(now())
+
+  practiceAttempts PracticeAttempt[]
+}
+
+model MockTest {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  weekId      String?
+  week        Week?    @relation(fields: [weekId], references: [id])
+  durationMin Int      @default(30)
+  questionIds String   // JSON array
+  createdAt   DateTime @default(now())
+  attempts    MockTestAttempt[]
+}
+
+model MockTestAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockTestId     String
+  mockTest       MockTest @relation(fields: [mockTestId], references: [id])
+  answers        String   // JSON {questionId: option}
+  score          Int
+  totalQuestions Int
+  timeTakenSec   Int
+  startedAt      DateTime @default(now())
+  completedAt    DateTime?
+}
+
+model PracticeAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId     String
+  question       Question @relation(fields: [questionId], references: [id])
+  selectedOption String
+  isCorrect      Boolean
+  timeTakenSec   Int?
+  createdAt      DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action      String
+  details     String?
+  durationSec Int?
+  createdAt   DateTime @default(now())
+}
+
+model Badge {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  description   String
+  icon          String
+  criteria      String
+  studentBadges StudentBadge[]
+}
+
+model StudentBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  earnedAt  DateTime @default(now())
+
+  @@unique([userId, badgeId])
+}

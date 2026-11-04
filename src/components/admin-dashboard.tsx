@@ -1,0 +1,799 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
+import {
+  Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
+  TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
+  Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound
+} from "lucide-react";
+
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "exports";
+
+export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
+  const [tab, setTab] = useState<Tab>("overview");
+  const [colleges, setColleges] = useState<any[]>([]);
+  const [selectedCollegeId, setSelectedCollegeId] = useState<string>("");
+
+  const loadColleges = useCallback(async () => {
+    const res = await fetch("/api/admin/colleges");
+    const data = await res.json();
+    setColleges(data.colleges || []);
+  }, []);
+
+  useEffect(() => { loadColleges(); }, [loadColleges]);
+
+  async function handleLogout() {
+    await fetch("/api/auth", { method: "DELETE" });
+    onLogout();
+  }
+
+  const tabs: { key: Tab; label: string; icon: any }[] = [
+    { key: "overview", label: "Overview", icon: BarChart3 },
+    { key: "colleges", label: "Colleges", icon: Building2 },
+    { key: "departments", label: "Departments", icon: Layers },
+    { key: "mentors", label: "Mentors", icon: GraduationCap },
+    { key: "students", label: "Students", icon: Users },
+    { key: "exports", label: "Export Data", icon: Download },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      {/* Top bar */}
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center text-xl shadow-lg shrink-0">⚖️</div>
+            <div className="min-w-0">
+              <div className="font-black text-lg leading-tight bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Constitution Quest</div>
+              <div className="text-xs text-slate-500 leading-tight">Admin Control Panel</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
+              <Shield className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-bold text-purple-700">{user.name}</span>
+            </div>
+            <button onClick={handleLogout} className="p-2 rounded-lg bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 hover:text-red-600 transition" title="Logout">
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Tabs */}
+      <div className="border-b bg-white sticky top-[57px] z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <nav className="flex gap-1 overflow-x-auto">
+            {tabs.map(t => {
+              const Icon = t.icon;
+              const active = tab === t.key;
+              return (
+                <button
+                  key={t.key}
+                  onClick={() => setTab(t.key)}
+                  className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition ${
+                    active ? "border-purple-600 text-purple-700" : "border-transparent text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" /> {t.label}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-20">
+        {/* College filter for relevant tabs */}
+        {(tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && (
+          <div className="mb-5 flex items-center gap-3 flex-wrap">
+            <Filter className="w-4 h-4 text-slate-400" />
+            <span className="text-sm text-slate-500">Filter by college:</span>
+            <select
+              value={selectedCollegeId}
+              onChange={(e) => setSelectedCollegeId(e.target.value)}
+              className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-300"
+            >
+              <option value="">All Colleges</option>
+              {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+          </div>
+        )}
+
+        {tab === "overview" && <OverviewTab />}
+        {tab === "colleges" && <CollegesTab colleges={colleges} onRefresh={loadColleges} />}
+        {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} />}
+        {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} />}
+        {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} />}
+        {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
+      </main>
+    </div>
+  );
+}
+
+// ============== OVERVIEW ==============
+function OverviewTab() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [collegeFilter, setCollegeFilter] = useState("");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = collegeFilter ? `/api/admin/stats?collegeId=${collegeFilter}` : "/api/admin/stats";
+      const res = await fetch(url);
+      const data = await res.json();
+      setStats(data);
+    } finally { setLoading(false); }
+  }, [collegeFilter]);
+
+  useEffect(() => { load(); }, [load]);
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-purple-500" /></div>;
+
+  const c = stats.counts;
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h2 className="text-2xl font-black">Platform Overview</h2>
+        <div className="flex items-center gap-2">
+          <select value={collegeFilter} onChange={e => setCollegeFilter(e.target.value)} className="px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            <option value="">All Colleges</option>
+            {stats.collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
+          </select>
+          <button onClick={load} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50"><RefreshCw className="w-4 h-4" /></button>
+        </div>
+      </div>
+
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <StatBox icon={Building2} label="Colleges" value={c.colleges} color="bg-purple-50 text-purple-600 border-purple-200" />
+        <StatBox icon={Layers} label="Departments" value={c.departments} color="bg-blue-50 text-blue-600 border-blue-200" />
+        <StatBox icon={GraduationCap} label="Mentors" value={c.mentors} color="bg-emerald-50 text-emerald-600 border-emerald-200" />
+        <StatBox icon={Users} label="Students" value={c.students} color="bg-amber-50 text-amber-600 border-amber-200" />
+        <StatBox icon={Brain} label="Questions" value={c.questions} color="bg-pink-50 text-pink-600 border-pink-200" />
+      </div>
+
+      {/* Activity stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <StatBox icon={Activity} label="Total Logins" value={c.totalLogins} color="bg-violet-50 text-violet-600 border-violet-200" />
+        <StatBox icon={Target} label="Practice Attempts" value={c.totalPractice} color="bg-cyan-50 text-cyan-600 border-cyan-200" />
+        <StatBox icon={Award} label="Mock Tests Taken" value={c.totalMock} color="bg-orange-50 text-orange-600 border-orange-200" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top students */}
+        <div className="rounded-2xl bg-white border border-slate-200 p-5">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Crown className="w-4 h-4 text-amber-500" /> Top 10 Students (by XP)</h3>
+          <div className="space-y-2">
+            {stats.topStudents.length === 0 ? <div className="text-sm text-slate-400 py-6 text-center">No students yet</div> :
+              stats.topStudents.map((s: any, i: number) => (
+                <div key={s.id} className="flex items-center gap-3 py-2 border-b border-slate-100 last:border-0">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs ${i === 0 ? "bg-amber-400 text-white" : i === 1 ? "bg-slate-300" : i === 2 ? "bg-orange-300" : "bg-slate-100"}`}>{i + 1}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm truncate">{s.name}</div>
+                    <div className="text-xs text-slate-500">{s.college?.code} • {s.department?.code}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-amber-600 flex items-center gap-1 text-sm justify-end"><Zap className="w-3 h-3" />{s.xp}</div>
+                    <div className="text-xs text-slate-400">Lvl {s.level} • 🔥{s.streak}</div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* College breakdown */}
+        <div className="rounded-2xl bg-white border border-slate-200 p-5">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> College Breakdown</h3>
+          <div className="space-y-2">
+            {stats.collegeStats.map((cs: any) => (
+              <div key={cs.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <div className="font-bold text-sm">{cs.name}</div>
+                    <div className="text-xs text-slate-500">{cs.location}</div>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{cs.code}</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  <div><div className="text-base font-black text-purple-600">{cs.students}</div><div className="text-[10px] text-slate-500 uppercase">Students</div></div>
+                  <div><div className="text-base font-black text-emerald-600">{cs.mentors}</div><div className="text-[10px] text-slate-500 uppercase">Mentors</div></div>
+                  <div><div className="text-base font-black text-cyan-600">{cs.practiceAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Practice</div></div>
+                  <div><div className="text-base font-black text-amber-600">{cs.mockAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Mocks</div></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Recent activity */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><Activity className="w-4 h-4 text-cyan-500" /> Recent Activity (Last 50)</h3>
+        <div className="max-h-80 overflow-y-auto cq-scroll">
+          <table className="w-full text-xs">
+            <thead className="sticky top-0 bg-white">
+              <tr className="text-left text-slate-500 border-b border-slate-200">
+                <th className="py-2 pr-2">Time</th>
+                <th className="py-2 pr-2">User</th>
+                <th className="py-2 pr-2">Role</th>
+                <th className="py-2 pr-2">College</th>
+                <th className="py-2 pr-2">Action</th>
+                <th className="py-2">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.recentActivity.map((a: any, i: number) => (
+                <tr key={i} className="border-b border-slate-50">
+                  <td className="py-2 pr-2 whitespace-nowrap text-slate-400">{new Date(a.createdAt).toLocaleString()}</td>
+                  <td className="py-2 pr-2 font-medium">{a.user?.name || "—"}</td>
+                  <td className="py-2 pr-2"><span className="px-1.5 py-0.5 rounded bg-slate-100 text-[10px] font-bold uppercase">{a.user?.role || "—"}</span></td>
+                  <td className="py-2 pr-2 text-slate-500">{a.user?.college?.code || "—"}</td>
+                  <td className="py-2 pr-2"><code className="text-purple-600">{a.action}</code></td>
+                  <td className="py-2 text-slate-500 truncate max-w-xs">{a.details || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatBox({ icon: Icon, label, value, color }: any) {
+  return (
+    <div className={`rounded-2xl border p-4 ${color}`}>
+      <Icon className="w-5 h-5 mb-2" />
+      <div className="text-2xl font-black">{value}</div>
+      <div className="text-xs opacity-75">{label}</div>
+    </div>
+  );
+}
+
+// ============== COLLEGES ==============
+function CollegesTab({ colleges, onRefresh }: any) {
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name || !code) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/colleges", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, code, location }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("College added!");
+      setName(""); setCode(""); setLocation("");
+      onRefresh();
+    } finally { setLoading(false); }
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-1">
+        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-purple-500" /> Add New College</h3>
+          <form onSubmit={add} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-slate-600">College Name</label>
+              <input value={name} onChange={e => setName(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES College of Engineering" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Code (unique)</label>
+              <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Location (optional)</label>
+              <input value={location} onChange={e => setLocation(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="City, State" />
+            </div>
+            <button type="submit" disabled={loading} className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Add College</>}
+            </button>
+          </form>
+          <p className="text-xs text-slate-400 mt-3">Each college has its own departments, mentors and students. Only you (admin) manage all colleges.</p>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2 space-y-3">
+        <h3 className="font-bold">Colleges ({colleges.length})</h3>
+        {colleges.length === 0 ? <div className="text-center py-12 text-slate-400">No colleges yet</div> :
+          colleges.map(c => (
+            <div key={c.id} className="rounded-2xl bg-white border border-slate-200 p-4 flex items-center justify-between">
+              <div>
+                <div className="font-bold flex items-center gap-2">
+                  {c.name}
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
+                </div>
+                <div className="text-xs text-slate-500 mt-0.5">{c.location || "No location"}</div>
+              </div>
+              <div className="flex gap-4 text-center">
+                <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
+                <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  );
+}
+
+// ============== DEPARTMENTS ==============
+function DepartmentsTab({ collegeId, colleges }: any) {
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [selectedCollege, setSelectedCollege] = useState(collegeId || colleges[0]?.id || "");
+  const [submitting, setSubmitting] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = collegeId ? `/api/admin/departments?collegeId=${collegeId}` : "/api/admin/departments";
+      const res = await fetch(url);
+      const data = await res.json();
+      setDepartments(data.departments || []);
+    } finally { setLoading(false); }
+  }, [collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (colleges.length > 0 && !selectedCollege) setSelectedCollege(colleges[0].id); }, [colleges, selectedCollege]);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name || !code || !selectedCollege) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/departments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, code, collegeId: selectedCollege }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Department added!");
+      setName(""); setCode("");
+      load();
+    } finally { setSubmitting(false); }
+  }
+
+  async function del(id: string) {
+    if (!confirm("Delete this department?")) return;
+    const res = await fetch(`/api/admin/departments?id=${id}`, { method: "DELETE" });
+    if (res.ok) { toast.success("Deleted"); load(); }
+    else { const d = await res.json(); toast.error(d.error); }
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-blue-500" /> Add Department</h3>
+          <form onSubmit={add} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-slate-600">College</label>
+              <select value={selectedCollege} onChange={e => setSelectedCollege(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+                {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Department Name</label>
+              <input value={name} onChange={e => setName(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., Computer Science & Engineering" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Code</label>
+              <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., CSE" required />
+            </div>
+            <div className="text-xs text-slate-400">Pre-seeded for IES: EEE, ME, R&AI, CE, DS, CSE, ECE</div>
+            <button type="submit" disabled={submitting} className="w-full py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Add Department</>}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2">
+        <h3 className="font-bold mb-3">Departments {collegeId ? "(filtered)" : "(all)"}</h3>
+        {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
+          <div className="space-y-2">
+            {departments.length === 0 ? <div className="text-center py-12 text-slate-400">No departments</div> :
+              departments.map(d => (
+                <div key={d.id} className="rounded-xl bg-white border border-slate-200 p-3 flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold flex items-center gap-2">
+                      {d.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">{d.code}</span>
+                    </div>
+                    <div className="text-xs text-slate-500">{d.college?.name}</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-slate-500">{d._count.users} users</span>
+                    <button onClick={() => del(d.id)} className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        }
+      </div>
+    </div>
+  );
+}
+
+// ============== MENTORS ==============
+function MentorsTab({ collegeId, colleges }: any) {
+  const [mentors, setMentors] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: collegeId || colleges[0]?.id || "", departmentId: "", email: "", phone: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = collegeId ? `/api/admin/mentors?collegeId=${collegeId}` : "/api/admin/mentors";
+      const res = await fetch(url);
+      const data = await res.json();
+      setMentors(data.mentors || []);
+    } finally { setLoading(false); }
+  }, [collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (colleges.length > 0 && !form.collegeId) setForm(f => ({ ...f, collegeId: colleges[0].id })); }, [colleges, form.collegeId]);
+
+  // Load departments when college changes
+  useEffect(() => {
+    if (!form.collegeId) return;
+    (async () => {
+      const res = await fetch(`/api/admin/departments?collegeId=${form.collegeId}`);
+      const data = await res.json();
+      setDepartments(data.departments || []);
+      setForm(f => ({ ...f, departmentId: "" }));
+    })();
+  }, [form.collegeId]);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.username || !form.password || !form.name || !form.collegeId) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/mentors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Mentor created!");
+      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, departmentId: "", email: "", phone: "" });
+      load();
+    } finally { setSubmitting(false); }
+  }
+
+  async function del(id: string) {
+    if (!confirm("Delete this mentor?")) return;
+    const res = await fetch(`/api/admin/mentors?id=${id}`, { method: "DELETE" });
+    if (res.ok) { toast.success("Deleted"); load(); }
+    else { const d = await res.json(); toast.error(d.error); }
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32 max-h-[calc(100vh-160px)] overflow-y-auto cq-scroll">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-emerald-500" /> Add Mentor</h3>
+          <form onSubmit={add} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-slate-600">College</label>
+              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+                {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Full Name</label>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Username</label>
+              <input value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Password</label>
+              <input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Department (optional)</label>
+              <select value={form.departmentId} onChange={e => setForm(f => ({ ...f, departmentId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+                <option value="">— None —</option>
+                {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Email (optional)</label>
+              <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+            </div>
+            <button type="submit" disabled={submitting} className="w-full py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Mentor</>}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2">
+        <h3 className="font-bold mb-3">Mentors</h3>
+        {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
+          <div className="space-y-2">
+            {mentors.length === 0 ? <div className="text-center py-12 text-slate-400">No mentors yet</div> :
+              mentors.map(m => (
+                <div key={m.id} className="rounded-xl bg-white border border-slate-200 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-bold flex items-center gap-2">
+                        {m.name}
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">{m.username}</span>
+                      </div>
+                      <div className="text-xs text-slate-500 mt-0.5">
+                        {m.college?.name} • {m.department?.code || "No dept"}
+                        {m.email && ` • ${m.email}`}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-center">
+                        <div className="font-black text-amber-600">{m._count.students}</div>
+                        <div className="text-[10px] text-slate-500 uppercase">Students</div>
+                      </div>
+                      <button onClick={() => del(m.id)} className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        }
+      </div>
+    </div>
+  );
+}
+
+// ============== STUDENTS ==============
+function StudentsTab({ collegeId, colleges }: any) {
+  const [students, setStudents] = useState<any[]>([]);
+  const [mentors, setMentors] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: collegeId || colleges[0]?.id || "", departmentId: "", mentorId: "", email: "", phone: "", rollNumber: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (collegeId) params.set("collegeId", collegeId);
+      const res = await fetch(`/api/admin/students?${params}`);
+      const data = await res.json();
+      setStudents(data.students || []);
+    } finally { setLoading(false); }
+  }, [collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (colleges.length > 0 && !form.collegeId) setForm(f => ({ ...f, collegeId: colleges[0].id })); }, [colleges, form.collegeId]);
+
+  useEffect(() => {
+    if (!form.collegeId) return;
+    (async () => {
+      const [dr, mr] = await Promise.all([
+        fetch(`/api/admin/departments?collegeId=${form.collegeId}`),
+        fetch(`/api/admin/mentors?collegeId=${form.collegeId}`),
+      ]);
+      const dd = await dr.json();
+      const md = await mr.json();
+      setDepartments(dd.departments || []);
+      setMentors(md.mentors || []);
+      setForm(f => ({ ...f, departmentId: "", mentorId: "" }));
+    })();
+  }, [form.collegeId]);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.username || !form.password || !form.name || !form.collegeId || !form.departmentId) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Student created!");
+      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, departmentId: "", mentorId: "", email: "", phone: "", rollNumber: "" });
+      load();
+    } finally { setSubmitting(false); }
+  }
+
+  async function toggleActive(s: any) {
+    const res = await fetch("/api/admin/students", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: s.id, active: !s.active }),
+    });
+    if (res.ok) { toast.success(s.active ? "Deactivated" : "Activated"); load(); }
+  }
+
+  async function resetPassword(s: any) {
+    const pw = prompt(`Enter new password for ${s.name}:`);
+    if (!pw) return;
+    const res = await fetch("/api/admin/students", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: s.id, password: pw }),
+    });
+    if (res.ok) toast.success("Password updated");
+  }
+
+  async function del(id: string) {
+    if (!confirm("Delete this student and all their data?")) return;
+    const res = await fetch(`/api/admin/students?id=${id}`, { method: "DELETE" });
+    if (res.ok) { toast.success("Deleted"); load(); }
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32 max-h-[calc(100vh-160px)] overflow-y-auto cq-scroll">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-amber-500" /> Add Student</h3>
+          <form onSubmit={add} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-slate-600">College</label>
+              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+                {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Full Name</label>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Roll Number</label>
+              <input value={form.rollNumber} onChange={e => setForm(f => ({ ...f, rollNumber: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES21CSE001" />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Username</label>
+              <input value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Password</label>
+              <input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Department</label>
+              <select value={form.departmentId} onChange={e => setForm(f => ({ ...f, departmentId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required>
+                <option value="">— Select —</option>
+                {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Mentor (optional)</label>
+              <select value={form.mentorId} onChange={e => setForm(f => ({ ...f, mentorId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+                <option value="">— None —</option>
+                {mentors.map(m => <option key={m.id} value={m.id}>{m.name} ({m.username})</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Email (optional)</label>
+              <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+            </div>
+            <button type="submit" disabled={submitting} className="w-full py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Student</>}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2">
+        <h3 className="font-bold mb-3">Students ({students.length})</h3>
+        {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
+          <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto cq-scroll pr-1">
+            {students.length === 0 ? <div className="text-center py-12 text-slate-400">No students yet</div> :
+              students.map(s => (
+                <div key={s.id} className={`rounded-xl bg-white border p-3 ${s.active ? "border-slate-200" : "border-red-200 bg-red-50"}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold flex items-center gap-2 flex-wrap">
+                        {s.name}
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username}</span>
+                        {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-0.5">
+                        {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
+                        {s.mentor && ` • Mentor: ${s.mentor.name}`}
+                      </div>
+                      <div className="flex gap-3 mt-2 text-xs">
+                        <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
+                        <span className="text-purple-600 font-bold">Lvl {s.level}</span>
+                        <span className="text-orange-600 font-bold">🔥{s.streak}</span>
+                        <span className="text-cyan-600 font-bold">📝{s._count.practiceAttempts}</span>
+                        <span className="text-emerald-600 font-bold">🎯{s._count.mockAttempts}</span>
+                        <span className="text-pink-600 font-bold">🏅{s._count.studentBadges}</span>
+                        <span className="text-slate-500 font-bold">🔑{s._count.activityLogs} logs</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-1 shrink-0">
+                      <button onClick={() => resetPassword(s)} title="Reset password" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><KeyRound className="w-4 h-4" /></button>
+                      <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
+                      <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        }
+      </div>
+    </div>
+  );
+}
+
+// ============== EXPORTS ==============
+function ExportsTab({ collegeId }: any) {
+  const urls = [
+    { type: "students", label: "All Students (full stats)", icon: Users, color: "from-amber-500 to-orange-500", desc: "Username, name, college, dept, mentor, XP, level, streak, practice/mock counts, login count, etc." },
+    { type: "mentors", label: "All Mentors", icon: GraduationCap, color: "from-emerald-500 to-green-500", desc: "Username, name, college, dept, students count, contact info." },
+    { type: "activity", label: "Activity Log (last 5000)", icon: Activity, color: "from-cyan-500 to-blue-500", desc: "Every action by every user — logins, page views, practice answers, mock completions." },
+    { type: "mock", label: "Mock Test Attempts", icon: Target, color: "from-purple-500 to-pink-500", desc: "All mock test attempts with scores, percentages, and time taken." },
+  ];
+
+  function download(type: string) {
+    const url = collegeId ? `/api/admin/export?type=${type}&collegeId=${collegeId}` : `/api/admin/export?type=${type}`;
+    window.open(url, "_blank");
+  }
+
+  return (
+    <div>
+      <h2 className="text-2xl font-black mb-1">Export Data (CSV)</h2>
+      <p className="text-slate-500 text-sm mb-6">Download complete data for offline analysis, reports, or sharing. {collegeId ? "Filtered by selected college." : "Showing all colleges."}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {urls.map(u => {
+          const Icon = u.icon;
+          return (
+            <button
+              key={u.type}
+              onClick={() => download(u.type)}
+              className="text-left rounded-2xl bg-white border border-slate-200 p-5 hover:border-purple-300 hover:shadow-md transition cq-card-hover"
+            >
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${u.color} flex items-center justify-center mb-3`}>
+                <Icon className="w-6 h-6 text-white" />
+              </div>
+              <div className="font-bold mb-1 flex items-center gap-2">
+                {u.label} <Download className="w-4 h-4 text-slate-400" />
+              </div>
+              <p className="text-xs text-slate-500">{u.desc}</p>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
