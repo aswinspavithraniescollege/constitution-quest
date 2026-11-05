@@ -9,6 +9,8 @@ import {
   Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound,
   UserCheck, AlertCircle, Pencil, X
 } from "lucide-react";
+import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
+import { AnnouncementsManager } from "@/components/realtime/announcements";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports";
 
@@ -123,7 +125,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
           </div>
         )}
 
-        {tab === "overview" && <OverviewTab isMainAdmin={isMainAdmin} />}
+        {tab === "overview" && <OverviewTab isMainAdmin={isMainAdmin} user={user} />}
         {tab === "colleges" && isMainAdmin && <CollegesTab colleges={colleges} onRefresh={loadColleges} />}
         {tab === "sub-admins" && isMainAdmin && <SubAdminsTab />}
         {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
@@ -136,7 +138,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
 }
 
 // ============== OVERVIEW ==============
-function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
+function OverviewTab({ isMainAdmin, user }: { isMainAdmin: boolean; user: any }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [collegeFilter, setCollegeFilter] = useState("");
@@ -282,6 +284,12 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Real-time Activity Feed + Announcements (Firestore) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RealtimeActivityFeed scope={isMainAdmin ? "global" : "college"} collegeCode={isMainAdmin ? null : (user?.college?.code || null)} />
+        <AnnouncementsManager user={user} collegeId={user?.collegeId || null} />
       </div>
     </div>
   );

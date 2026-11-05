@@ -1,0 +1,81 @@
+// Firestore Security Rules for Constitution Quest
+// Deploy these in Firebase Console → Firestore Database → Rules tab
+//
+// Copy and paste the rules below, then click "Publish"
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ====== 1. LEADERBOARD ======
+    // Anyone can read; writes are allowed from the app (clients update their own XP)
+    match /leaderboard/{userId} {
+      allow read: if true;
+      allow write: if true; // In production, restrict to the user themselves or server
+    }
+
+    // ====== 2. ACTIVITY FEED ======
+    // Admins and mentors can read all; students can read their college's
+    match /activityFeed/{activityId} {
+      allow read: if true;
+      allow write: if true; // Allow app to write activity logs
+    }
+
+    // ====== 3. DISCUSSION FORUM ======
+    // Anyone authenticated can read; must be signed in to post
+    match /forum_topics/{topicId} {
+      allow read: if true;
+      allow create: if true; // Any user can create a topic
+      allow update, delete: if true; // Author or admin can modify
+
+      match /posts/{postId} {
+        allow read: if true;
+        allow create: if true;
+        allow update, delete: if true;
+      }
+    }
+
+    // ====== 4. STUDENT NOTES & BOOKMARKS ======
+    // Only the owner can read/write their notes
+    match /notes/{userId}/items/{noteId} {
+      allow read, write: if true; // In production: if request.auth.uid == userId
+    }
+
+    // ====== 5. ANNOUNCEMENTS ======
+    // Anyone can read; only admins can write
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update, delete: if true; // In production: verify admin role
+    }
+
+    // ====== 6. MOCK TEST RANKINGS ======
+    // Anyone can read; users can update their own ranking
+    match /mockRankings/{rankingId} {
+      allow read: if true;
+      allow write: if true; // In production: if request.auth.uid == userId
+    }
+  }
+}
+
+// ===== NOTES ON SECURITY ======
+// These rules are set to allow all reads/writes for development/testing.
+// For production, you should tighten the rules:
+//
+// 1. Leaderboard: Only allow users to write their own entry
+//    allow write: if request.auth != null && request.auth.uid == userId;
+//
+// 2. Activity Feed: Only allow server-side writes (use Admin SDK)
+//    allow write: if false; // Server only
+//
+// 3. Forum: Require authentication
+//    allow create: if request.auth != null;
+//
+// 4. Notes: Only owner can access
+//    allow read, write: if request.auth != null && request.auth.uid == userId;
+//
+// 5. Announcements: Only admins can write (verify via custom claims or DB lookup)
+//    allow create, update, delete: if request.auth != null && isAdmin();
+//
+// 6. Mock Rankings: Only the test taker can update their own
+//    allow write: if request.auth != null && request.auth.uid == userId;

@@ -100,7 +100,63 @@ export async function POST(req: NextRequest) {
     await logActivity(user.id, "mock_complete",
       `mockTestId=${mockTestId};score=${score}/${total}`,
       timeTakenSec);
-    const updatedUser = await db.user.findUnique({ where: { id: user.id } });
+    const updatedUser = await db.user.findUnique({ where: { id: user.id }, include: { college: true, department: true } });
+    const mockTestTitle = mt?.title || "Mock Test";
+
+    // Sync to Firestore (leaderboard + activity + mock ranking)
+    if (updatedUser) {
+      const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/nptel-constitution-of-india/databases/(default)/documents`;
+      // Update leaderboard
+      fetch(`${FIRESTORE_URL}/leaderboard/${updatedUser.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: {
+          userId: { stringValue: updatedUser.id },
+          name: { stringValue: updatedUser.name },
+          username: { stringValue: updatedUser.username || "" },
+          xp: { integerValue: String(updatedUser.xp) },
+          level: { integerValue: String(updatedUser.level) },
+          streak: { integerValue: String(updatedUser.streak) },
+          collegeCode: { stringValue: updatedUser.college?.code || "" },
+          deptCode: { stringValue: updatedUser.department?.code || "" },
+          collegeName: { stringValue: updatedUser.college?.name || "" },
+          updatedAt: { timestampValue: new Date().toISOString() },
+        }}),
+      }).catch(() => {});
+      // Add to activity feed
+      fetch(`${FIRESTORE_URL}/activityFeed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: {
+          userId: { stringValue: updatedUser.id },
+          userName: { stringValue: updatedUser.name },
+          userRole: { stringValue: updatedUser.role },
+          action: { stringValue: "mock_complete" },
+          details: { stringValue: `🎯 ${mockTestTitle}: ${score}/${total}` },
+          collegeCode: { stringValue: updatedUser.college?.code || "" },
+          collegeName: { stringValue: updatedUser.college?.name || "" },
+          timestamp: { timestampValue: new Date().toISOString() },
+        }}),
+      }).catch(() => {});
+      // Update mock ranking
+      const docId = `${mockTestId}_${updatedUser.id}`;
+      fetch(`${FIRESTORE_URL}/mockRankings/${docId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: {
+          mockTestId: { stringValue: mockTestId },
+          mockTestTitle: { stringValue: mockTestTitle },
+          userId: { stringValue: updatedUser.id },
+          userName: { stringValue: updatedUser.name },
+          collegeCode: { stringValue: updatedUser.college?.code || "" },
+          score: { integerValue: String(score) },
+          total: { integerValue: String(total) },
+          status: { stringValue: "completed" },
+          startedAt: { timestampValue: new Date(Date.now() - (timeTakenSec || 0) * 1000).toISOString() },
+          completedAt: { timestampValue: new Date().toISOString() },
+        }}),
+      }).catch(() => {});
+    }
 
     return NextResponse.json({
       attemptId: attempt.id,

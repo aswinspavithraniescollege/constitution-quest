@@ -89,6 +89,47 @@ export async function POST(req: NextRequest) {
       await awardXp(user.id, XP_REWARDS.DAILY_LOGIN);
     }
 
+    // Sync to Firestore (leaderboard + activity) — non-blocking
+    const updatedUser = await db.user.findUnique({
+      where: { id: user.id },
+      include: { college: true, department: true },
+    });
+    if (updatedUser) {
+      const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/nptel-constitution-of-india/databases/(default)/documents`;
+      if (updatedUser.role === "STUDENT") {
+        fetch(`${FIRESTORE_URL}/leaderboard/${updatedUser.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fields: {
+            userId: { stringValue: updatedUser.id },
+            name: { stringValue: updatedUser.name },
+            username: { stringValue: updatedUser.username || "" },
+            xp: { integerValue: String(updatedUser.xp) },
+            level: { integerValue: String(updatedUser.level) },
+            streak: { integerValue: String(updatedUser.streak) },
+            collegeCode: { stringValue: updatedUser.college?.code || "" },
+            deptCode: { stringValue: updatedUser.department?.code || "" },
+            collegeName: { stringValue: updatedUser.college?.name || "" },
+            updatedAt: { timestampValue: new Date().toISOString() },
+          }}),
+        }).catch(() => {});
+      }
+      fetch(`${FIRESTORE_URL}/activityFeed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: {
+          userId: { stringValue: updatedUser.id },
+          userName: { stringValue: updatedUser.name },
+          userRole: { stringValue: updatedUser.role },
+          action: { stringValue: "login" },
+          details: { stringValue: "method=firebase" },
+          collegeCode: { stringValue: updatedUser.college?.code || "" },
+          collegeName: { stringValue: updatedUser.college?.name || "" },
+          timestamp: { timestampValue: new Date().toISOString() },
+        }}),
+      }).catch(() => {});
+    }
+
     const { password: _, ...safeUser } = user;
     return NextResponse.json({ user: safeUser });
   } catch (e) {

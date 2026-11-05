@@ -8,10 +8,15 @@ import {
   Loader2, Trophy, Flame, Zap, Star, Target, Award, BookOpen, LogOut,
   CheckCircle2, XCircle, ChevronRight, Home, Brain, Crown, Medal,
   Calendar, TrendingUp, Clock, Sparkles, RefreshCw, AlertTriangle, Lightbulb,
-  User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save
+  User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save, MessageCircle, Bookmark
 } from "lucide-react";
+import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
+import { DiscussionForum } from "@/components/realtime/discussion-forum";
+import { AnnouncementsDisplay } from "@/components/realtime/announcements";
+import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
+import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
 
-type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile";
+type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks";
 
 export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [view, setView] = useState<View>("home");
@@ -56,6 +61,8 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
     { key: "practice-list", label: "Practice", icon: Brain, color: "from-blue-500 to-cyan-500" },
     { key: "mock-list", label: "Mock Tests", icon: Target, color: "from-amber-500 to-orange-500" },
     { key: "leaderboard", label: "Leaderboard", icon: Crown, color: "from-yellow-500 to-amber-500" },
+    { key: "forum", label: "Forum", icon: MessageCircle, color: "from-cyan-500 to-blue-500" },
+    { key: "bookmarks", label: "Notes", icon: Bookmark, color: "from-amber-500 to-yellow-500" },
     { key: "badges", label: "Badges", icon: Award, color: "from-green-500 to-emerald-500" },
     { key: "history", label: "History", icon: Clock, color: "from-violet-500 to-purple-500" },
     { key: "profile", label: "Profile", icon: UserIcon, color: "from-pink-500 to-rose-500" },
@@ -125,21 +132,23 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
                 <PracticeListView dash={dash} onSelectWeek={(w) => { setSelectedWeek(w); setView("practice-play"); }} />
               )}
               {view === "practice-play" && selectedWeek && (
-                <PracticePlayView week={selectedWeek} onExit={() => { setView("practice-list"); loadDash(); }} onLevelUp={() => loadDash()} />
+                <PracticePlayView user={user} week={selectedWeek} onExit={() => { setView("practice-list"); loadDash(); }} onLevelUp={() => loadDash()} />
               )}
               {view === "mock-list" && (
                 <MockListView dash={dash} onSelectMock={(m) => { setSelectedMock(m); setView("mock-play"); }} />
               )}
               {view === "mock-play" && selectedMock && (
-                <MockPlayView mockTest={selectedMock} onComplete={(r) => { setMockResult(r); setView("mock-result"); loadDash(); }} onExit={() => setView("mock-list")} />
+                <MockPlayView user={user} mockTest={selectedMock} onComplete={(r) => { setMockResult(r); setView("mock-result"); loadDash(); }} onExit={() => setView("mock-list")} />
               )}
               {view === "mock-result" && mockResult && (
                 <MockResultView result={mockResult} onExit={() => { setView("mock-list"); setMockResult(null); }} onHome={() => { setView("home"); setMockResult(null); }} />
               )}
-              {view === "leaderboard" && <LeaderboardView user={user} />}
+              {view === "leaderboard" && <RealtimeLeaderboard user={user} scope="global" />}
               {view === "badges" && dash && <BadgesView dash={dash} />}
               {view === "history" && dash && <HistoryView dash={dash} />}
               {view === "profile" && <ProfileView user={user} onUpdated={loadDash} />}
+              {view === "forum" && <DiscussionForum user={user} />}
+              {view === "bookmarks" && <BookmarksView user={user} />}
             </motion.div>
           </AnimatePresence>
         )}
@@ -182,6 +191,9 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }: any) {
 
   return (
     <div className="space-y-6">
+      {/* Announcements (real-time from Firestore) */}
+      <AnnouncementsDisplay collegeId={u.collegeId || null} />
+
       {/* Hero welcome */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
@@ -404,7 +416,7 @@ function PracticeListView({ dash, onSelectWeek }: any) {
 }
 
 // ============== PRACTICE PLAY ==============
-function PracticePlayView({ week, onExit, onLevelUp }: any) {
+function PracticePlayView({ user, week, onExit, onLevelUp }: any) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -533,6 +545,7 @@ function PracticePlayView({ week, onExit, onLevelUp }: any) {
           {q.previouslyCorrect && <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">✓ solved</span>}
         </div>
         <h2 className="text-xl sm:text-2xl font-bold leading-snug">{q.questionText}</h2>
+        <QuestionNotePanel user={user} questionId={q.id} questionText={q.questionText} weekNumber={week.number} />
       </div>
 
       {/* Options */}
@@ -704,7 +717,7 @@ function MockListView({ dash, onSelectMock }: any) {
 }
 
 // ============== MOCK PLAY ==============
-function MockPlayView({ mockTest, onComplete, onExit }: any) {
+function MockPlayView({ user, mockTest, onComplete, onExit }: any) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -718,6 +731,22 @@ function MockPlayView({ mockTest, onComplete, onExit }: any) {
         const res = await fetch(`/api/student/submit-mock?mockTestId=${mockTest.id}`);
         const data = await res.json();
         setQuestions(data.questions);
+        // Sync to Firestore: mark as "in_progress" in mock rankings
+        fetch("/api/firestore/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "mock_ranking",
+            data: {
+              mockTestId: mockTest.id,
+              mockTestTitle: mockTest.title,
+              score: 0,
+              total: data.questions?.length || 0,
+              status: "in_progress",
+              startedAt: new Date().toISOString(),
+            },
+          }),
+        }).catch(() => {});
       } finally { setLoading(false); }
     })();
   }, [mockTest.id]);
@@ -785,6 +814,11 @@ function MockPlayView({ mockTest, onComplete, onExit }: any) {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Live Rankings (real-time from Firestore) */}
+      <div className="mb-4">
+        <LiveMockRankings mockTestId={mockTest.id} mockTestTitle={mockTest.title} />
       </div>
 
       {/* Questions */}
