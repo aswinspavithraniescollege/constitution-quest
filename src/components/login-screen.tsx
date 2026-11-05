@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   Loader2, Sparkles, Shield, Trophy, BookOpen, Flame, GraduationCap, ChevronRight,
-  UserPlus, LogIn, AlertCircle, AtSign, Key, User, Building2, Hash, Phone, Eye, EyeOff
+  UserPlus, LogIn, AlertCircle, AtSign, Key, User, Building2, Hash, Phone, Eye, EyeOff,
+  Mail, ArrowLeft, Send, CheckCircle2, HelpCircle
 } from "lucide-react";
 import {
   auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "@/lib/firebase";
 import type { User as FirebaseUser } from "firebase/auth";
 
@@ -71,6 +73,12 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   // For admin dual-mode: "email" = Firebase email/password, "username" = local username/password
   const [adminLoginMethod, setAdminLoginMethod] = useState<"email" | "username">("email");
 
+  // Forgot password state
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSending, setResetSending] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
   // Signup form state
   const [colleges, setColleges] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
@@ -93,6 +101,10 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     setSignupForm({ name: "", collegeId: "", departmentId: "", mentorId: "", rollNumber: "", phone: "" });
     // Default admin login method to "email" (Firebase) since main admin uses Firebase
     setAdminLoginMethod("email");
+    // Reset forgot password state
+    setShowForgotPassword(false);
+    setResetEmail("");
+    setResetSent(false);
   }, [role, mode]);
 
   // Load colleges for signup
@@ -312,6 +324,52 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       toast.error("Network error", { description: "Please check your connection and try again." });
     } finally {
       setLoading(false);
+    }
+  }
+
+  // ======== FORGOT PASSWORD HANDLER ========
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (!resetEmail.trim()) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(resetEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    setResetSending(true);
+    try {
+      if (!auth) {
+        toast.error("Firebase is not initialized. Please refresh the page.");
+        return;
+      }
+      await sendPasswordResetEmail(auth, resetEmail.trim());
+      setResetSent(true);
+      toast.success("Password reset email sent!", {
+        description: `Check ${resetEmail} for instructions to reset your password.`,
+      });
+    } catch (err: any) {
+      const code = err?.code || "";
+      let msg = "Failed to send reset email";
+      if (code === "auth/user-not-found") {
+        // For security, Firebase doesn't reveal if email exists. But we can show a success-like message.
+        setResetSent(true);
+        toast.success("If an account exists with this email, a reset link has been sent.", {
+          description: "Check your inbox and spam folder.",
+        });
+        return;
+      } else if (code === "auth/invalid-email") {
+        msg = "Invalid email format";
+      } else if (code === "auth/network-request-failed") {
+        msg = "Network error. Check your connection.";
+      } else {
+        msg = err?.message || "Failed to send reset email";
+      }
+      toast.error(msg);
+    } finally {
+      setResetSending(false);
     }
   }
 
@@ -785,11 +843,24 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             </>
           )}
         </div>
-        {mode === "login" && role !== "ADMIN" && (
-          <div className="mt-2 text-center text-[11px]">
-            <button onClick={() => setMode("signup")} className="text-purple-300 hover:text-purple-200 underline">
-              Don't have an account? Sign up
-            </button>
+
+        {/* Forgot Password & Sign Up links */}
+        {mode === "login" && (
+          <div className="mt-2 text-center text-[11px] flex items-center justify-center gap-3 flex-wrap">
+            {/* Forgot Password link — only for Firebase-enabled roles (Student, Mentor) and Admin in email mode */}
+            {((config.dualMode ? adminLoginMethod === "email" : config.firebaseEnabled)) && (
+              <button
+                onClick={() => { setShowForgotPassword(true); setResetEmail(email || ""); setResetSent(false); }}
+                className="text-pink-300 hover:text-pink-200 underline flex items-center gap-1"
+              >
+                <HelpCircle className="w-3 h-3" /> Forgot Password?
+              </button>
+            )}
+            {role !== "ADMIN" && (
+              <button onClick={() => setMode("signup")} className="text-purple-300 hover:text-purple-200 underline">
+                Don't have an account? Sign up
+              </button>
+            )}
           </div>
         )}
         {mode === "signup" && (
@@ -800,6 +871,117 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           </div>
         )}
       </div>
+
+      {/* ======== FORGOT PASSWORD MODAL ======== */}
+      <AnimatePresence>
+        {showForgotPassword && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowForgotPassword(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="bg-gradient-to-br from-[#1e1338] to-[#15102e] border border-white/15 rounded-3xl p-6 w-full max-w-md cq-glow"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-black flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-pink-300" /> Reset Password
+                </h3>
+                <button
+                  onClick={() => setShowForgotPassword(false)}
+                  className="p-1.5 rounded-lg hover:bg-white/10 text-white/50 hover:text-white"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+              </div>
+
+              {!resetSent ? (
+                <>
+                  <p className="text-xs text-white/60 mb-4 leading-relaxed">
+                    Enter your registered email address and we'll send you a link to reset your password.
+                    This works for <strong className="text-white/80">Firebase accounts</strong> (students & mentors who signed up with email).
+                  </p>
+                  <form onSubmit={handleForgotPassword} className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-white/70 mb-1.5">Email Address</label>
+                      <div className="relative">
+                        <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                        <input
+                          type="email"
+                          value={resetEmail}
+                          onChange={(e) => setResetEmail(e.target.value)}
+                          placeholder="you@example.com"
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition"
+                          required
+                          autoFocus
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={resetSending}
+                      className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm flex items-center justify-center gap-2 hover:scale-[1.02] transition disabled:opacity-60"
+                    >
+                      {resetSending ? (
+                        <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                      ) : (
+                        <><Send className="w-4 h-4" /> Send Reset Link</>
+                      )}
+                    </button>
+                  </form>
+                  <div className="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-400/20 text-[11px] text-blue-200/80 leading-relaxed">
+                    <strong className="text-blue-200">Admin/Sub-Admin accounts:</strong> If you login with a username (not email), please contact the main admin to reset your password. The main admin can reset it from the admin dashboard.
+                  </div>
+                </>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-4"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", delay: 0.1 }}
+                    className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400/40 mb-4"
+                  >
+                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                  </motion.div>
+                  <h4 className="font-bold text-base mb-2">Check Your Email</h4>
+                  <p className="text-xs text-white/60 mb-4 leading-relaxed">
+                    If an account exists for <strong className="text-white/80">{resetEmail}</strong>, a password reset link has been sent. Check your inbox and spam folder.
+                  </p>
+                  <p className="text-[11px] text-white/40 mb-4">
+                    The reset link will expire in 1 hour. After resetting your password, come back here to sign in.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { setResetSent(false); setResetEmail(""); }}
+                      className="flex-1 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-sm hover:bg-white/15 transition"
+                    >
+                      Try Another Email
+                    </button>
+                    <button
+                      onClick={() => setShowForgotPassword(false)}
+                      className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-sm"
+                    >
+                      Back to Login
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
