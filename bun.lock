@@ -12,6 +12,7 @@
         "@mdxeditor/editor": "^3.39.1",
         "@neon/config": "^1.11.3",
         "@neon/env": "^1.6.15",
+        "@netlify/plugin-nextjs": "^5.16.6",
         "@prisma/client": "^6.11.1",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -532,6 +533,8 @@
     "@neon/env": ["@neon/env@1.6.15", "", { "dependencies": { "@neon/config": "1.11.3", "yargs": "^18.0.0", "zod": "^4.5.4" }, "optionalDependencies": { "@napi-rs/keyring": "1.3.0" }, "bin": { "neon-env": "dist/cli.js" } }, "sha512-Rr8EJnW4l2Z2aSer3TE/CTPOZQiRYEwXQYLsy7L+NNLkj/602RnXO1vH/78ZxI4ntMK7y8gvxjTt2OwrqGRTZA=="],
 
     "@neon/sdk": ["@neon/sdk@7.10.0", "", {}, "sha512-OrBjiE2EtwXH19RFqs9WlJLInJk6aM+wdOfhipeHxqWDVYdgjeEw7/ghlO03gpvkK7K6sv+tEt7uO17yfdCwDQ=="],
+
+    "@netlify/plugin-nextjs": ["@netlify/plugin-nextjs@5.16.6", "", {}, "sha512-BXy5WhogsaQOKz+C+KMlWrQupdGkV1a6TmJ6RLF6RwUMz6Oi419RejMD8yB8ttBKqImQDkOE4MmNLx3uEEKxPw=="],
 
     "@next/env": ["@next/env@16.1.3", "https://registry.npmjs.com/@next/env/-/env-16.1.3.tgz", {}, "sha512-BLP14oBOvZWXgfdJf9ao+VD8O30uE+x7PaV++QtACLX329WcRSJRO5YJ+Bcvu0Q+c/lei41TjSiFf6pXqnpbQA=="],
 
