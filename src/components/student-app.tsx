@@ -15,6 +15,7 @@ import { DiscussionForum } from "@/components/realtime/discussion-forum";
 import { AnnouncementsDisplay } from "@/components/realtime/announcements";
 import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
 import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
+import { syncLeaderboardClient, addActivityClient, syncMockRankingClient } from "@/lib/firestore";
 
 type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks";
 
@@ -470,6 +471,20 @@ function PracticePlayView({ user, week, onExit, onLevelUp }: any) {
         if (data.userStats?.level > (q.level || 0)) {
           onLevelUp();
         }
+        // Sync to Firestore (leaderboard + activity) — client-side for auth
+        if (data.userStats) {
+          syncLeaderboardClient({
+            id: user.id, name: user.name, username: user.username,
+            xp: data.userStats.xp, level: data.userStats.level, streak: data.userStats.streak,
+            collegeCode: user.college?.code, collegeName: user.college?.name,
+          }).catch(() => {});
+          addActivityClient({
+            userId: user.id, userName: user.name, userRole: "STUDENT",
+            action: "practice_answer",
+            details: `${isCorrect ? "✓" : "✗"} Week ${week.number} question`,
+            collegeCode: user.college?.code, collegeName: user.college?.name,
+          }).catch(() => {});
+        }
       } else {
         setStreakCount(0);
         setSessionStats(s => ({ ...s, wrong: s.wrong + 1 }));
@@ -731,21 +746,17 @@ function MockPlayView({ user, mockTest, onComplete, onExit }: any) {
         const res = await fetch(`/api/student/submit-mock?mockTestId=${mockTest.id}`);
         const data = await res.json();
         setQuestions(data.questions);
-        // Sync to Firestore: mark as "in_progress" in mock rankings
-        fetch("/api/firestore/sync", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: "mock_ranking",
-            data: {
-              mockTestId: mockTest.id,
-              mockTestTitle: mockTest.title,
-              score: 0,
-              total: data.questions?.length || 0,
-              status: "in_progress",
-              startedAt: new Date().toISOString(),
-            },
-          }),
+        // Sync to Firestore: mark as "in_progress" in mock rankings (client-side for auth)
+        syncMockRankingClient({
+          mockTestId: mockTest.id,
+          mockTestTitle: mockTest.title,
+          userId: user.id,
+          userName: user.name,
+          collegeCode: user.college?.code,
+          score: 0,
+          total: data.questions?.length || 0,
+          status: "in_progress",
+          startedAt: new Date().toISOString(),
         }).catch(() => {});
       } finally { setLoading(false); }
     })();
@@ -778,6 +789,28 @@ function MockPlayView({ user, mockTest, onComplete, onExit }: any) {
         body: JSON.stringify({ mockTestId: mockTest.id, answers, timeTakenSec }),
       });
       const data = await res.json();
+      // Sync to Firestore (leaderboard + activity + mock ranking) — client-side for auth
+      if (data.userStats) {
+        syncLeaderboardClient({
+          id: user.id, name: user.name, username: user.username,
+          xp: data.userStats.xp, level: data.userStats.level, streak: data.userStats.streak,
+          collegeCode: user.college?.code, collegeName: user.college?.name,
+        }).catch(() => {});
+        addActivityClient({
+          userId: user.id, userName: user.name, userRole: "STUDENT",
+          action: "mock_complete",
+          details: `🎯 ${mockTest.title}: ${data.score}/${data.total}`,
+          collegeCode: user.college?.code, collegeName: user.college?.name,
+        }).catch(() => {});
+        syncMockRankingClient({
+          mockTestId: mockTest.id, mockTestTitle: mockTest.title,
+          userId: user.id, userName: user.name,
+          collegeCode: user.college?.code,
+          score: data.score, total: data.total,
+          status: "completed",
+          startedAt: new Date(startTimeRef.current).toISOString(),
+        }).catch(() => {});
+      }
       onComplete(data);
     } finally { setSubmitting(false); }
   }

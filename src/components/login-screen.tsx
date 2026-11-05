@@ -17,6 +17,7 @@ import {
   signInWithPopup,
 } from "@/lib/firebase";
 import type { User as FirebaseUser } from "firebase/auth";
+import { syncUserProfile, syncLeaderboardClient, addActivityClient } from "@/lib/firestore";
 
 type Role = "ADMIN" | "MENTOR" | "STUDENT";
 type Mode = "login" | "signup";
@@ -215,8 +216,44 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         toast.success(`Welcome, ${data.user.name}! 🎉`, {
           description: `Logged in as ${data.user.role.toLowerCase()}`,
         });
+        // Sync user profile to Firestore (for security rules)
+        if (cred) {
+          await syncUserProfile({
+            id: data.user.id,
+            name: data.user.name,
+            role: data.user.role,
+            collegeId: data.user.collegeId,
+            collegeCode: data.user.college?.code,
+            collegeName: data.user.college?.name,
+            username: data.user.username,
+            email: data.user.email,
+            firebaseUid: cred.uid,
+          });
+          // Sync leaderboard if student
+          if (data.user.role === "STUDENT") {
+            await syncLeaderboardClient({
+              id: data.user.id,
+              name: data.user.name,
+              username: data.user.username,
+              xp: data.user.xp || 0,
+              level: data.user.level || 1,
+              streak: data.user.streak || 0,
+              collegeCode: data.user.college?.code,
+              collegeName: data.user.college?.name,
+            });
+          }
+          // Add login activity to Firestore
+          await addActivityClient({
+            userId: data.user.id,
+            userName: data.user.name,
+            userRole: data.user.role,
+            action: "login",
+            details: "method=firebase",
+            collegeCode: data.user.college?.code,
+            collegeName: data.user.college?.name,
+          });
+        }
         // Wait briefly to ensure the session cookie is fully processed by the browser
-        // before the dashboard starts making API calls
         await new Promise(r => setTimeout(r, 300));
         onLogin(data.user);
       } else {
@@ -324,6 +361,28 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       toast.success(`Welcome, ${data.user.name}! 🎉`, {
         description: "Your account has been created successfully!",
       });
+      // Sync user profile to Firestore
+      if (cred) {
+        await syncUserProfile({
+          id: data.user.id, name: data.user.name, role: data.user.role,
+          collegeId: data.user.collegeId, collegeCode: data.user.college?.code,
+          collegeName: data.user.college?.name, username: data.user.username,
+          email: data.user.email, firebaseUid: cred.uid,
+        });
+        if (data.user.role === "STUDENT") {
+          await syncLeaderboardClient({
+            id: data.user.id, name: data.user.name, username: data.user.username,
+            xp: 0, level: 1, streak: 1,
+            collegeCode: data.user.college?.code, collegeName: data.user.college?.name,
+          });
+        }
+        await addActivityClient({
+          userId: data.user.id, userName: data.user.name, userRole: data.user.role,
+          action: "signup", details: "method=email",
+          collegeCode: data.user.college?.code, collegeName: data.user.college?.name,
+        });
+      }
+      await new Promise(r => setTimeout(r, 300));
       onLogin(data.user);
     } catch (err: any) {
       toast.error("Network error", { description: "Please check your connection and try again." });
@@ -406,6 +465,25 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       toast.success(`Welcome, ${data.user.name}! 🎉`, {
         description: `Logged in as ${data.user.role.toLowerCase()}`,
       });
+      // Sync user profile to Firestore
+      await syncUserProfile({
+        id: data.user.id, name: data.user.name, role: data.user.role,
+        collegeId: data.user.collegeId, collegeCode: data.user.college?.code,
+        collegeName: data.user.college?.name, username: data.user.username,
+        email: data.user.email, firebaseUid: result.user.uid,
+      });
+      if (data.user.role === "STUDENT") {
+        await syncLeaderboardClient({
+          id: data.user.id, name: data.user.name, username: data.user.username,
+          xp: data.user.xp || 0, level: data.user.level || 1, streak: data.user.streak || 0,
+          collegeCode: data.user.college?.code, collegeName: data.user.college?.name,
+        });
+      }
+      await addActivityClient({
+        userId: data.user.id, userName: data.user.name, userRole: data.user.role,
+        action: "login", details: "method=google",
+        collegeCode: data.user.college?.code, collegeName: data.user.college?.name,
+      });
       await new Promise(r => setTimeout(r, 300));
       onLogin(data.user);
     } catch (err: any) {
@@ -479,6 +557,43 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       toast.success(`Welcome, ${data.user.name}! 🎉`, {
         description: "Your account has been created successfully!",
       });
+      // Sync user profile to Firestore (for security rules)
+      if (user) {
+        await syncUserProfile({
+          id: data.user.id,
+          name: data.user.name,
+          role: data.user.role,
+          collegeId: data.user.collegeId,
+          collegeCode: data.user.college?.code,
+          collegeName: data.user.college?.name,
+          username: data.user.username,
+          email: data.user.email,
+          firebaseUid: user.uid,
+        });
+        // Sync leaderboard if student
+        if (data.user.role === "STUDENT") {
+          await syncLeaderboardClient({
+            id: data.user.id,
+            name: data.user.name,
+            username: data.user.username,
+            xp: 0,
+            level: 1,
+            streak: 1,
+            collegeCode: data.user.college?.code,
+            collegeName: data.user.college?.name,
+          });
+        }
+        // Add signup activity
+        await addActivityClient({
+          userId: data.user.id,
+          userName: data.user.name,
+          userRole: data.user.role,
+          action: "signup",
+          details: "method=google",
+          collegeCode: data.user.college?.code,
+          collegeName: data.user.college?.name,
+        });
+      }
       await new Promise(r => setTimeout(r, 300));
       onLogin(data.user);
     } catch (err: any) {

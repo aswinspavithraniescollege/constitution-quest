@@ -568,3 +568,116 @@ export function timeAgo(ts: any): string {
   if (days < 7) return `${days}d ago`;
   return date.toLocaleDateString();
 }
+
+// ====== USER PROFILE SYNC ======
+// Called after Firebase login to create/update the user's profile in Firestore.
+// This profile is used by the security rules to determine access.
+export async function syncUserProfile(user: {
+  id: string;        // internal DB userId
+  name: string;
+  role: string;      // ADMIN | SUB_ADMIN | MENTOR | STUDENT
+  collegeId?: string | null;
+  collegeCode?: string | null;
+  collegeName?: string | null;
+  username?: string | null;
+  email?: string | null;
+  firebaseUid: string;
+}) {
+  if (!db || !user.firebaseUid) return;
+  try {
+    await setDoc(doc(db, "userProfiles", user.firebaseUid), {
+      userId: user.id,
+      name: user.name,
+      role: user.role,
+      collegeId: user.collegeId || "",
+      collegeCode: user.collegeCode || "",
+      collegeName: user.collegeName || "",
+      username: user.username || "",
+      email: user.email || "",
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+  } catch (e) {
+    console.error("syncUserProfile error:", e);
+  }
+}
+
+// ====== CLIENT-SIDE LEADERBOARD SYNC ======
+// Called after XP changes (practice answer, mock test, daily login).
+// The client writes directly to Firestore (authenticated).
+export async function syncLeaderboardClient(user: {
+  id: string;
+  name: string;
+  username?: string | null;
+  xp: number;
+  level: number;
+  streak: number;
+  collegeCode?: string | null;
+  deptCode?: string | null;
+  collegeName?: string | null;
+}) {
+  if (!db) return;
+  try {
+    await setDoc(doc(db, "leaderboard", user.id), {
+      userId: user.id,
+      name: user.name,
+      username: user.username || "",
+      xp: user.xp,
+      level: user.level,
+      streak: user.streak,
+      collegeCode: user.collegeCode || "",
+      deptCode: user.deptCode || "",
+      collegeName: user.collegeName || "",
+      updatedAt: serverTimestamp(),
+    });
+  } catch (e) {
+    console.error("syncLeaderboardClient error:", e);
+  }
+}
+
+// ====== CLIENT-SIDE ACTIVITY SYNC ======
+// Called after any user action (practice, mock, login, etc.)
+export async function addActivityClient(activity: {
+  userId: string;
+  userName: string;
+  userRole: string;
+  action: string;
+  details?: string;
+  collegeCode?: string;
+  collegeName?: string;
+}) {
+  if (!db) return;
+  try {
+    await addDoc(collection(db, "activityFeed"), {
+      ...activity,
+      collegeId: activity.collegeCode || "", // Used by rules for college-based filtering
+      timestamp: serverTimestamp(),
+    });
+  } catch (e) {
+    console.error("addActivityClient error:", e);
+  }
+}
+
+// ====== CLIENT-SIDE MOCK RANKING SYNC ======
+export async function syncMockRankingClient(ranking: {
+  mockTestId: string;
+  mockTestTitle: string;
+  userId: string;
+  userName: string;
+  collegeCode?: string;
+  score: number;
+  total: number;
+  status: "in_progress" | "completed";
+  startedAt?: any;
+}) {
+  if (!db) return;
+  try {
+    const docId = `${ranking.mockTestId}_${ranking.userId}`;
+    await setDoc(doc(db, "mockRankings", docId), {
+      ...ranking,
+      startedAt: ranking.startedAt || serverTimestamp(),
+      completedAt: ranking.status === "completed" ? serverTimestamp() : null,
+    });
+  } catch (e) {
+    console.error("syncMockRankingClient error:", e);
+  }
+}

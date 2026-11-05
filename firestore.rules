@@ -1,81 +1,164 @@
-// Firestore Security Rules for Constitution Quest
-// Deploy these in Firebase Console → Firestore Database → Rules tab
-//
-// Copy and paste the rules below, then click "Publish"
-
 rules_version = '2';
+
+// ============================================================================
+// Constitution Quest — Firestore Security Rules
+// ============================================================================
+// Role-based access control using a userProfiles collection.
+//
+// Each Firebase-authenticated user has a document at:
+//   userProfiles/{firebaseUid}
+// containing: { role, collegeId, collegeCode, userId, name, email }
+//
+// Access levels:
+//   ADMIN     — Full access to everything (main admin only)
+//   SUB_ADMIN — Access to their assigned college's data only
+//   MENTOR    — Read access to student data in their college
+//   STUDENT   — Read/write their own data only
+// ============================================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ====== 1. LEADERBOARD ======
-    // Anyone can read; writes are allowed from the app (clients update their own XP)
+    // ========== HELPER FUNCTIONS ==========
+
+    // Check if user is authenticated AND has a profile document
+    function hasProfile() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/userProfiles/$(request.auth.uid));
+    }
+
+    // Get the user's role from their profile
+    function role() {
+      return get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.role;
+    }
+
+    // Get the user's collegeId from their profile
+    function collegeId() {
+      return get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.collegeId;
+    }
+
+    // Get the user's internal DB userId from their profile
+    function dbUserId() {
+      return get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.userId;
+    }
+
+    // Role check helpers
+    function isMainAdmin()  { return hasProfile() && role() == 'ADMIN'; }
+    function isSubAdmin()   { return hasProfile() && role() == 'SUB_ADMIN'; }
+    function isMentor()     { return hasProfile() && role() == 'MENTOR'; }
+    function isStudent()    { return hasProfile() && role() == 'STUDENT'; }
+    function isAdmin()      { return isMainAdmin() || isSubAdmin(); }
+    function isAdminOrMentor() { return isAdmin() || isMentor(); }
+
+    // ========== 1. USER PROFILES ==========
+    // This collection stores each user's role, collegeId, and internal userId.
+    // It's used by all other rules to determine access.
+    //
+    // Any authenticated user can CREATE their own profile (first-time setup after login).
+    // Users can READ their own profile. Admins and mentors can READ all profiles.
+    // Users can UPDATE their own profile. Main admin can UPDATE any.
+    match /userProfiles/{uid} {
+      allow create: if request.auth != null && request.auth.uid == uid;
+      allow read: if request.auth != null && (
+        request.auth.uid == uid || (hasProfile() && isAdminOrMentor())
+      );
+      allow update: if request.auth != null && (
+        request.auth.uid == uid || isMainAdmin()
+      );
+      allow delete: if isMainAdmin();
+    }
+
+    // ========== 2. LEADERBOARD ==========
+    // All authenticated users can READ the leaderboard (it's a public ranking).
+    // Users can WRITE only their own entry (matched by internal userId).
+    // Main admin can write/delete any entry.
     match /leaderboard/{userId} {
-      allow read: if true;
-      allow write: if true; // In production, restrict to the user themselves or server
+      allow read: if hasProfile();
+      allow create, update: if hasProfile() && (
+        userId == dbUserId() || isMainAdmin()
+      );
+      allow delete: if isMainAdmin();
     }
 
-    // ====== 2. ACTIVITY FEED ======
-    // Admins and mentors can read all; students can read their college's
+    // ========== 3. ACTIVITY FEED ==========
+    // Main admin: can read ALL activities.
+    // Sub-admin: can read activities from their college only.
+    // Mentor: can read activities from their college only.
+    // Student: can read their OWN activities only.
+    // Any authenticated user can CREATE an activity (their own).
+    // Only admins can UPDATE or DELETE activities.
     match /activityFeed/{activityId} {
-      allow read: if true;
-      allow write: if true; // Allow app to write activity logs
+      allow read: if hasProfile() && (
+        isMainAdmin() ||
+        (isAdminOrMentor() && resource.data.collegeId == collegeId()) ||
+        (isStudent() && resource.data.userId == dbUserId())
+      );
+      allow create: if hasProfile();
+      allow update, delete: if isAdmin();
     }
 
-    // ====== 3. DISCUSSION FORUM ======
-    // Anyone authenticated can read; must be signed in to post
+    // ========== 4. DISCUSSION FORUM ==========
+    // All authenticated users can READ topics and posts.
+    // Any authenticated user can CREATE topics and posts.
+    // Users can UPDATE/DELETE their own topics/posts. Admins can delete any.
     match /forum_topics/{topicId} {
-      allow read: if true;
-      allow create: if true; // Any user can create a topic
-      allow update, delete: if true; // Author or admin can modify
+      allow read: if hasProfile();
+      allow create: if hasProfile();
+      allow update, delete: if hasProfile() && (
+        resource.data.authorId == dbUserId() || isAdmin()
+      );
 
+      // Posts (replies) within topics
       match /posts/{postId} {
-        allow read: if true;
-        allow create: if true;
-        allow update, delete: if true;
+        allow read: if hasProfile();
+        allow create: if hasProfile();
+        allow update, delete: if hasProfile() && (
+          resource.data.authorId == dbUserId() || isAdmin()
+        );
       }
     }
 
-    // ====== 4. STUDENT NOTES & BOOKMARKS ======
-    // Only the owner can read/write their notes
+    // ========== 5. STUDENT NOTES & BOOKMARKS ==========
+    // Only the owner can READ or WRITE their notes.
+    // The path is: notes/{userId}/items/{noteId}
+    // userId here is the internal DB userId (not Firebase UID).
     match /notes/{userId}/items/{noteId} {
-      allow read, write: if true; // In production: if request.auth.uid == userId
+      allow read, write: if hasProfile() && userId == dbUserId();
     }
 
-    // ====== 5. ANNOUNCEMENTS ======
-    // Anyone can read; only admins can write
+    // ========== 6. ANNOUNCEMENTS ==========
+    // All authenticated users can READ announcements.
+    // Only admins (main + sub) can CREATE, UPDATE, or DELETE announcements.
+    // Sub-admins can only manage announcements for their own college
+    // (enforced by checking targetCollegeId in the document).
     match /announcements/{announcementId} {
-      allow read: if true;
-      allow create, update, delete: if true; // In production: verify admin role
+      allow read: if hasProfile();
+      allow create: if isAdmin() && (
+        isMainAdmin() ||
+        (isSubAdmin() && request.resource.data.targetCollegeId == collegeId())
+      );
+      allow update, delete: if isAdmin() && (
+        isMainAdmin() ||
+        (isSubAdmin() && resource.data.targetCollegeId == collegeId())
+      );
     }
 
-    // ====== 6. MOCK TEST RANKINGS ======
-    // Anyone can read; users can update their own ranking
+    // ========== 7. LIVE MOCK TEST RANKINGS ==========
+    // All authenticated users can READ rankings (to see who's taking the test).
+    // Users can WRITE only their own ranking entry.
+    // Admins can write/delete any.
     match /mockRankings/{rankingId} {
-      allow read: if true;
-      allow write: if true; // In production: if request.auth.uid == userId
+      allow read: if hasProfile();
+      allow create, update: if hasProfile() && (
+        request.resource.data.userId == dbUserId() || isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // ========== DEFAULT DENY ==========
+    // Any collection not explicitly matched above is denied.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
-
-// ===== NOTES ON SECURITY ======
-// These rules are set to allow all reads/writes for development/testing.
-// For production, you should tighten the rules:
-//
-// 1. Leaderboard: Only allow users to write their own entry
-//    allow write: if request.auth != null && request.auth.uid == userId;
-//
-// 2. Activity Feed: Only allow server-side writes (use Admin SDK)
-//    allow write: if false; // Server only
-//
-// 3. Forum: Require authentication
-//    allow create: if request.auth != null;
-//
-// 4. Notes: Only owner can access
-//    allow read, write: if request.auth != null && request.auth.uid == userId;
-//
-// 5. Announcements: Only admins can write (verify via custom claims or DB lookup)
-//    allow create, update, delete: if request.auth != null && isAdmin();
-//
-// 6. Mock Rankings: Only the test taker can update their own
-//    allow write: if request.auth != null && request.auth.uid == userId;
