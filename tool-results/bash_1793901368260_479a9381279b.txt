@@ -1,0 +1,724 @@
+rm '.next/dev/build-manifest.json'
+rm '.next/dev/build/chunks/[root-of-the-server]__51225daf._.js'
+rm '.next/dev/build/chunks/[root-of-the-server]__51225daf._.js.map'
+rm '.next/dev/build/chunks/[root-of-the-server]__974941ed._.js'
+rm '.next/dev/build/chunks/[root-of-the-server]__974941ed._.js.map'
+rm '.next/dev/build/chunks/[turbopack-node]_transforms_postcss_ts_6920245c._.js'
+rm '.next/dev/build/chunks/[turbopack-node]_transforms_postcss_ts_6920245c._.js.map'
+rm '.next/dev/build/chunks/[turbopack]_runtime.js'
+rm '.next/dev/build/chunks/[turbopack]_runtime.js.map'
+rm '.next/dev/build/chunks/node_modules_fe693df6._.js'
+rm '.next/dev/build/chunks/node_modules_fe693df6._.js.map'
+rm '.next/dev/build/package.json'
+rm '.next/dev/build/postcss.js'
+rm '.next/dev/build/postcss.js.map'
+rm '.next/dev/cache/config.json'
+rm '.next/dev/cache/next-devtools-config.json'
+rm '.next/dev/cache/turbopack/731ace46/00000006.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000009.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000010.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000011.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000012.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000013.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000015.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000016.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000017.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000019.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000020.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000021.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000024.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000025.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000026.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000027.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000028.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000029.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000031.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000032.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000033.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000035.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000036.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000037.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000038.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000039.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000041.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000042.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000043.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000045.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000046.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000047.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000048.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000049.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000051.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000052.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000053.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000055.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000056.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000057.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000059.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000061.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000062.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000063.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000065.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000067.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000068.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000069.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000071.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000073.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000074.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000075.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000077.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000079.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000080.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000081.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000083.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000085.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000086.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000087.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000088.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000089.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000091.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000092.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000093.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000095.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000096.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000097.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000098.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000099.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000101.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000102.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000103.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000104.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000105.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000106.del'
+rm '.next/dev/cache/turbopack/731ace46/00000107.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000108.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000109.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000110.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000111.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000112.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000113.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000114.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000115.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000116.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000117.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000118.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000119.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000120.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000121.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000122.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000123.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000124.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000125.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000126.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000127.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000128.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000129.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000130.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000131.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000132.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000133.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000134.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000135.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000136.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000137.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000138.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000139.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000140.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000141.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000142.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000143.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000144.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000145.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000146.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000147.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000148.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000149.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000150.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000151.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000152.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000153.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000154.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000155.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000156.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000157.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000158.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000159.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000160.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000161.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000162.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000163.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000164.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000165.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000166.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000167.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000168.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000169.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000170.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000171.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000172.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000173.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000174.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000175.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000176.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000177.sst'
+rm '.next/dev/cache/turbopack/731ace46/00000178.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000179.meta'
+rm '.next/dev/cache/turbopack/731ace46/00000180.meta'
+rm '.next/dev/cache/turbopack/731ace46/CURRENT'
+rm '.next/dev/cache/turbopack/731ace46/LOG'
+rm '.next/dev/fallback-build-manifest.json'
+rm '.next/dev/lock'
+rm '.next/dev/logs/next-development.log'
+rm '.next/dev/package.json'
+rm '.next/dev/prerender-manifest.json'
+rm '.next/dev/routes-manifest.json'
+rm '.next/dev/server/app-paths-manifest.json'
+rm '.next/dev/server/app/api/auth/route.js'
+rm '.next/dev/server/app/api/auth/route.js.map'
+rm '.next/dev/server/app/api/auth/route/app-paths-manifest.json'
+rm '.next/dev/server/app/api/auth/route/build-manifest.json'
+rm '.next/dev/server/app/api/auth/route/server-reference-manifest.json'
+rm '.next/dev/server/app/api/auth/route_client-reference-manifest.js'
+rm '.next/dev/server/app/page.js'
+rm '.next/dev/server/app/page.js.map'
+rm '.next/dev/server/app/page/app-paths-manifest.json'
+rm '.next/dev/server/app/page/build-manifest.json'
+rm '.next/dev/server/app/page/next-font-manifest.json'
+rm '.next/dev/server/app/page/react-loadable-manifest.json'
+rm '.next/dev/server/app/page/server-reference-manifest.json'
+rm '.next/dev/server/app/page_client-reference-manifest.js'
+rm '.next/dev/server/chunks/[root-of-the-server]__3bceaec9._.js'
+rm '.next/dev/server/chunks/[root-of-the-server]__3bceaec9._.js.map'
+rm '.next/dev/server/chunks/[root-of-the-server]__eab03f1f._.js'
+rm '.next/dev/server/chunks/[root-of-the-server]__eab03f1f._.js.map'
+rm '.next/dev/server/chunks/[turbopack]_runtime.js'
+rm '.next/dev/server/chunks/[turbopack]_runtime.js.map'
+rm '.next/dev/server/chunks/_next-internal_server_app_api_auth_route_actions_693293fe.js'
+rm '.next/dev/server/chunks/_next-internal_server_app_api_auth_route_actions_693293fe.js.map'
+rm '.next/dev/server/chunks/ssr/[externals]__44cdd76e._.js'
+rm '.next/dev/server/chunks/ssr/[externals]__44cdd76e._.js.map'
+rm '.next/dev/server/chunks/ssr/[externals]__864ab248._.js'
+rm '.next/dev/server/chunks/ssr/[externals]__864ab248._.js.map'
+rm '.next/dev/server/chunks/ssr/[externals]_next_dist_1aaf5479._.js'
+rm '.next/dev/server/chunks/ssr/[externals]_next_dist_1aaf5479._.js.map'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__994f99ac._.js'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__994f99ac._.js.map'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__c2c32f1c._.js'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__c2c32f1c._.js.map'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__f782b2d4._.js'
+rm '.next/dev/server/chunks/ssr/[root-of-the-server]__f782b2d4._.js.map'
+rm '.next/dev/server/chunks/ssr/[turbopack]_runtime.js'
+rm '.next/dev/server/chunks/ssr/[turbopack]_runtime.js.map'
+rm '.next/dev/server/chunks/ssr/_next-internal_server_app_page_actions_39d4fc33.js'
+rm '.next/dev/server/chunks/ssr/_next-internal_server_app_page_actions_39d4fc33.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_224d9df1._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_224d9df1._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_899bc574._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_899bc574._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_9154c5b2._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_9154c5b2._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_97b4c17f._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_97b4c17f._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_auth_dist_node-esm_40606eaf._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_auth_dist_node-esm_40606eaf._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_common-Df3sVSu-_node_mjs_d7efdd3d._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_common-Df3sVSu-_node_mjs_d7efdd3d._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_0373aebb._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_0373aebb._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_8bec9454._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_8bec9454._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_@grpc_grpc-js_c1502fba._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_@grpc_grpc-js_c1502fba._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_framer-motion_dist_es_c17d5921._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_framer-motion_dist_es_c17d5921._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_motion-dom_dist_es_4f3eef22._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_motion-dom_dist_es_4f3eef22._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_6f8eeec8._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_6f8eeec8._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_afb60855._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_afb60855._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_9774470f._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_9774470f._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_forbidden_45780354.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_forbidden_45780354.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_ece394eb.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_ece394eb.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_15817684.js'
+rm '.next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_15817684.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_protobufjs_548891cd._.js'
+rm '.next/dev/server/chunks/ssr/node_modules_protobufjs_548891cd._.js.map'
+rm '.next/dev/server/chunks/ssr/node_modules_re2js_build_index_b36e148c.js'
+rm '.next/dev/server/chunks/ssr/node_modules_re2js_build_index_b36e148c.js.map'
+rm '.next/dev/server/chunks/ssr/src_7786aa66._.js'
+rm '.next/dev/server/chunks/ssr/src_7786aa66._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_admin-dashboard_tsx_ba2857b5._.js'
+rm '.next/dev/server/chunks/ssr/src_components_admin-dashboard_tsx_ba2857b5._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_ae653c1f._.js'
+rm '.next/dev/server/chunks/ssr/src_components_ae653c1f._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_login-screen_tsx_2d9898fc._.js'
+rm '.next/dev/server/chunks/ssr/src_components_login-screen_tsx_2d9898fc._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_mentor-dashboard_tsx_a998e344._.js'
+rm '.next/dev/server/chunks/ssr/src_components_mentor-dashboard_tsx_a998e344._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_mock-test-player_tsx_0e14ba5e._.js'
+rm '.next/dev/server/chunks/ssr/src_components_mock-test-player_tsx_0e14ba5e._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_realtime_3ca0bd91._.js'
+rm '.next/dev/server/chunks/ssr/src_components_realtime_3ca0bd91._.js.map'
+rm '.next/dev/server/chunks/ssr/src_components_student-app_tsx_37851330._.js'
+rm '.next/dev/server/chunks/ssr/src_components_student-app_tsx_37851330._.js.map'
+rm '.next/dev/server/interception-route-rewrite-manifest.js'
+rm '.next/dev/server/middleware-build-manifest.js'
+rm '.next/dev/server/middleware-manifest.json'
+rm '.next/dev/server/next-font-manifest.js'
+rm '.next/dev/server/next-font-manifest.json'
+rm '.next/dev/server/pages-manifest.json'
+rm '.next/dev/server/server-reference-manifest.js'
+rm '.next/dev/server/server-reference-manifest.json'
+rm '.next/dev/static/chunks/[next]_internal_font_google_inter_7ad8496e_module_css_bad6b30c._.single.css'
+rm '.next/dev/static/chunks/[next]_internal_font_google_inter_7ad8496e_module_css_bad6b30c._.single.css.map'
+rm '.next/dev/static/chunks/[root-of-the-server]__459db605._.css'
+rm '.next/dev/static/chunks/[root-of-the-server]__459db605._.css.map'
+rm '.next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_956a0d3a._.js'
+rm '.next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_956a0d3a._.js.map'
+rm '.next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c7192189._.js'
+rm '.next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c8c997ce._.js'
+rm '.next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c8c997ce._.js.map'
+rm '.next/dev/static/chunks/_23a915ee._.js.map'
+rm '.next/dev/static/chunks/_a0ff3932._.js'
+rm '.next/dev/static/chunks/node_modules_0f9315bb._.js'
+rm '.next/dev/static/chunks/node_modules_0f9315bb._.js.map'
+rm '.next/dev/static/chunks/node_modules_6a9cc560._.js'
+rm '.next/dev/static/chunks/node_modules_6a9cc560._.js.map'
+rm '.next/dev/static/chunks/node_modules_@firebase_auth_dist_esm_48abb60a._.js'
+rm '.next/dev/static/chunks/node_modules_@firebase_auth_dist_esm_48abb60a._.js.map'
+rm '.next/dev/static/chunks/node_modules_@firebase_firestore_dist_common-aOCKfaeU_esm_a55ee716.js'
+rm '.next/dev/static/chunks/node_modules_@firebase_firestore_dist_common-aOCKfaeU_esm_a55ee716.js.map'
+rm '.next/dev/static/chunks/node_modules_@firebase_firestore_dist_index_esm_fb938bba.js'
+rm '.next/dev/static/chunks/node_modules_@firebase_firestore_dist_index_esm_fb938bba.js.map'
+rm '.next/dev/static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js'
+rm '.next/dev/static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js.map'
+rm '.next/dev/static/chunks/node_modules_e02af49c._.js'
+rm '.next/dev/static/chunks/node_modules_e02af49c._.js.map'
+rm '.next/dev/static/chunks/node_modules_framer-motion_dist_es_1c28304b._.js'
+rm '.next/dev/static/chunks/node_modules_framer-motion_dist_es_1c28304b._.js.map'
+rm '.next/dev/static/chunks/node_modules_motion-dom_dist_es_b195f008._.js'
+rm '.next/dev/static/chunks/node_modules_motion-dom_dist_es_b195f008._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_be32b49c._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_be32b49c._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_client_17643121._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_client_17643121._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_client_components_builtin_global-error_1cf6b850.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_1dd7fb59.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_1dd7fb59.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js.map'
+rm '.next/dev/static/chunks/node_modules_next_dist_f3530cac._.js'
+rm '.next/dev/static/chunks/node_modules_next_dist_f3530cac._.js.map'
+rm '.next/dev/static/chunks/node_modules_re2js_build_index_7ffc1e61.js'
+rm '.next/dev/static/chunks/node_modules_re2js_build_index_7ffc1e61.js.map'
+rm '.next/dev/static/chunks/src_89911c52._.js'
+rm '.next/dev/static/chunks/src_89911c52._.js.map'
+rm '.next/dev/static/chunks/src_app_globals_css_bad6b30c._.single.css'
+rm '.next/dev/static/chunks/src_app_globals_css_bad6b30c._.single.css.map'
+rm '.next/dev/static/chunks/src_app_layout_tsx_1cf6b850._.js'
+rm '.next/dev/static/chunks/src_app_page_tsx_d8a1047c._.js'
+rm '.next/dev/static/chunks/src_bef3dd59._.js'
+rm '.next/dev/static/chunks/src_bef3dd59._.js.map'
+rm '.next/dev/static/chunks/src_components_admin-dashboard_tsx_2c7c8d56._.js'
+rm '.next/dev/static/chunks/src_components_admin-dashboard_tsx_2c7c8d56._.js.map'
+rm '.next/dev/static/chunks/src_components_cc8aabe8._.js'
+rm '.next/dev/static/chunks/src_components_cc8aabe8._.js.map'
+rm '.next/dev/static/chunks/src_components_login-screen_tsx_2fd79ced._.js'
+rm '.next/dev/static/chunks/src_components_login-screen_tsx_2fd79ced._.js.map'
+rm '.next/dev/static/chunks/src_components_mentor-dashboard_tsx_20a680a6._.js'
+rm '.next/dev/static/chunks/src_components_mentor-dashboard_tsx_20a680a6._.js.map'
+rm '.next/dev/static/chunks/src_components_mock-test-player_tsx_efcf8d5d._.js'
+rm '.next/dev/static/chunks/src_components_mock-test-player_tsx_efcf8d5d._.js.map'
+rm '.next/dev/static/chunks/src_components_realtime_42bf5ff9._.js'
+rm '.next/dev/static/chunks/src_components_realtime_42bf5ff9._.js.map'
+rm '.next/dev/static/chunks/src_components_student-app_tsx_b65816ac._.js'
+rm '.next/dev/static/chunks/src_components_student-app_tsx_b65816ac._.js.map'
+rm '.next/dev/static/chunks/turbopack-_23a915ee._.js'
+rm '.next/dev/static/development/_buildManifest.js'
+rm '.next/dev/static/development/_clientMiddlewareManifest.json'
+rm '.next/dev/static/development/_ssgManifest.js'
+rm '.next/dev/static/media/1bffadaabf893a1e-s.7cd81963.woff2'
+rm '.next/dev/static/media/2bbe8d2671613f1f-s.76dcb0b2.woff2'
+rm '.next/dev/static/media/2c55a0e60120577a-s.2a48534a.woff2'
+rm '.next/dev/static/media/5476f68d60460930-s.c995e352.woff2'
+rm '.next/dev/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2'
+rm '.next/dev/static/media/9c72aa0f40e4eef8-s.18a48cbc.woff2'
+rm '.next/dev/static/media/ad66f9afd8947f86-s.7a40eb73.woff2'
+rm '.next/dev/trace'
+rm '.next/dev/types/cache-life.d.ts'
+rm '.next/dev/types/routes.d.ts'
+rm '.next/dev/types/validator.ts'
+ain e1b24d3] Remove .next cache
+ 360 files changed, 399019 deletions(-)
+ delete mode 100644 .next/dev/build-manifest.json
+ delete mode 100644 .next/dev/build/chunks/[root-of-the-server]__51225daf._.js
+ delete mode 100644 .next/dev/build/chunks/[root-of-the-server]__51225daf._.js.map
+ delete mode 100644 .next/dev/build/chunks/[root-of-the-server]__974941ed._.js
+ delete mode 100644 .next/dev/build/chunks/[root-of-the-server]__974941ed._.js.map
+ delete mode 100644 .next/dev/build/chunks/[turbopack-node]_transforms_postcss_ts_6920245c._.js
+ delete mode 100644 .next/dev/build/chunks/[turbopack-node]_transforms_postcss_ts_6920245c._.js.map
+ delete mode 100644 .next/dev/build/chunks/[turbopack]_runtime.js
+ delete mode 100644 .next/dev/build/chunks/[turbopack]_runtime.js.map
+ delete mode 100644 .next/dev/build/chunks/node_modules_fe693df6._.js
+ delete mode 100644 .next/dev/build/chunks/node_modules_fe693df6._.js.map
+ delete mode 100644 .next/dev/build/package.json
+ delete mode 100644 .next/dev/build/postcss.js
+ delete mode 100644 .next/dev/build/postcss.js.map
+ delete mode 100644 .next/dev/cache/config.json
+ delete mode 100644 .next/dev/cache/next-devtools-config.json
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000006.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000009.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000010.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000011.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000012.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000013.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000015.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000016.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000017.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000019.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000020.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000021.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000024.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000025.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000026.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000027.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000028.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000029.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000031.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000032.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000033.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000035.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000036.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000037.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000038.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000039.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000041.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000042.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000043.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000045.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000046.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000047.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000048.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000049.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000051.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000052.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000053.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000055.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000056.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000057.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000059.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000061.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000062.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000063.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000065.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000067.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000068.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000069.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000071.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000073.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000074.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000075.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000077.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000079.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000080.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000081.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000083.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000085.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000086.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000087.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000088.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000089.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000091.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000092.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000093.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000095.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000096.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000097.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000098.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000099.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000101.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000102.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000103.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000104.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000105.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000106.del
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000107.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000108.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000109.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000110.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000111.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000112.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000113.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000114.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000115.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000116.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000117.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000118.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000119.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000120.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000121.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000122.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000123.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000124.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000125.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000126.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000127.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000128.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000129.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000130.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000131.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000132.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000133.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000134.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000135.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000136.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000137.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000138.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000139.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000140.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000141.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000142.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000143.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000144.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000145.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000146.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000147.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000148.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000149.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000150.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000151.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000152.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000153.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000154.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000155.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000156.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000157.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000158.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000159.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000160.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000161.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000162.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000163.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000164.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000165.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000166.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000167.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000168.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000169.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000170.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000171.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000172.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000173.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000174.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000175.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000176.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000177.sst
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000178.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000179.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/00000180.meta
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/CURRENT
+ delete mode 100644 .next/dev/cache/turbopack/731ace46/LOG
+ delete mode 100644 .next/dev/fallback-build-manifest.json
+ delete mode 100644 .next/dev/lock
+ delete mode 100644 .next/dev/logs/next-development.log
+ delete mode 100644 .next/dev/package.json
+ delete mode 100644 .next/dev/prerender-manifest.json
+ delete mode 100644 .next/dev/routes-manifest.json
+ delete mode 100644 .next/dev/server/app-paths-manifest.json
+ delete mode 100644 .next/dev/server/app/api/auth/route.js
+ delete mode 100644 .next/dev/server/app/api/auth/route.js.map
+ delete mode 100644 .next/dev/server/app/api/auth/route/app-paths-manifest.json
+ delete mode 100644 .next/dev/server/app/api/auth/route/build-manifest.json
+ delete mode 100644 .next/dev/server/app/api/auth/route/server-reference-manifest.json
+ delete mode 100644 .next/dev/server/app/api/auth/route_client-reference-manifest.js
+ delete mode 100644 .next/dev/server/app/page.js
+ delete mode 100644 .next/dev/server/app/page.js.map
+ delete mode 100644 .next/dev/server/app/page/app-paths-manifest.json
+ delete mode 100644 .next/dev/server/app/page/build-manifest.json
+ delete mode 100644 .next/dev/server/app/page/next-font-manifest.json
+ delete mode 100644 .next/dev/server/app/page/react-loadable-manifest.json
+ delete mode 100644 .next/dev/server/app/page/server-reference-manifest.json
+ delete mode 100644 .next/dev/server/app/page_client-reference-manifest.js
+ delete mode 100644 .next/dev/server/chunks/[root-of-the-server]__3bceaec9._.js
+ delete mode 100644 .next/dev/server/chunks/[root-of-the-server]__3bceaec9._.js.map
+ delete mode 100644 .next/dev/server/chunks/[root-of-the-server]__eab03f1f._.js
+ delete mode 100644 .next/dev/server/chunks/[root-of-the-server]__eab03f1f._.js.map
+ delete mode 100644 .next/dev/server/chunks/[turbopack]_runtime.js
+ delete mode 100644 .next/dev/server/chunks/[turbopack]_runtime.js.map
+ delete mode 100644 .next/dev/server/chunks/_next-internal_server_app_api_auth_route_actions_693293fe.js
+ delete mode 100644 .next/dev/server/chunks/_next-internal_server_app_api_auth_route_actions_693293fe.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]__44cdd76e._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]__44cdd76e._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]__864ab248._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]__864ab248._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]_next_dist_1aaf5479._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[externals]_next_dist_1aaf5479._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__994f99ac._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__994f99ac._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__c2c32f1c._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__c2c32f1c._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__f782b2d4._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[root-of-the-server]__f782b2d4._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/[turbopack]_runtime.js
+ delete mode 100644 .next/dev/server/chunks/ssr/[turbopack]_runtime.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/_next-internal_server_app_page_actions_39d4fc33.js
+ delete mode 100644 .next/dev/server/chunks/ssr/_next-internal_server_app_page_actions_39d4fc33.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_224d9df1._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_224d9df1._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_899bc574._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_899bc574._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_9154c5b2._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_9154c5b2._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_97b4c17f._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_97b4c17f._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_auth_dist_node-esm_40606eaf._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_auth_dist_node-esm_40606eaf._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_common-Df3sVSu-_node_mjs_d7efdd3d._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_common-Df3sVSu-_node_mjs_d7efdd3d._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_0373aebb._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_0373aebb._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_8bec9454._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@firebase_firestore_dist_index_node_mjs_8bec9454._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@grpc_grpc-js_c1502fba._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_@grpc_grpc-js_c1502fba._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_framer-motion_dist_es_c17d5921._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_framer-motion_dist_es_c17d5921._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_motion-dom_dist_es_4f3eef22._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_motion-dom_dist_es_4f3eef22._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_6f8eeec8._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_6f8eeec8._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_afb60855._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_afb60855._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_9774470f._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_9774470f._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_forbidden_45780354.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_forbidden_45780354.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_ece394eb.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_ece394eb.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_15817684.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_15817684.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_protobufjs_548891cd._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_protobufjs_548891cd._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_re2js_build_index_b36e148c.js
+ delete mode 100644 .next/dev/server/chunks/ssr/node_modules_re2js_build_index_b36e148c.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_7786aa66._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_7786aa66._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_admin-dashboard_tsx_ba2857b5._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_admin-dashboard_tsx_ba2857b5._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_ae653c1f._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_ae653c1f._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_login-screen_tsx_2d9898fc._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_login-screen_tsx_2d9898fc._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_mentor-dashboard_tsx_a998e344._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_mentor-dashboard_tsx_a998e344._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_mock-test-player_tsx_0e14ba5e._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_mock-test-player_tsx_0e14ba5e._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_realtime_3ca0bd91._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_realtime_3ca0bd91._.js.map
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_student-app_tsx_37851330._.js
+ delete mode 100644 .next/dev/server/chunks/ssr/src_components_student-app_tsx_37851330._.js.map
+ delete mode 100644 .next/dev/server/interception-route-rewrite-manifest.js
+ delete mode 100644 .next/dev/server/middleware-build-manifest.js
+ delete mode 100644 .next/dev/server/middleware-manifest.json
+ delete mode 100644 .next/dev/server/next-font-manifest.js
+ delete mode 100644 .next/dev/server/next-font-manifest.json
+ delete mode 100644 .next/dev/server/pages-manifest.json
+ delete mode 100644 .next/dev/server/server-reference-manifest.js
+ delete mode 100644 .next/dev/server/server-reference-manifest.json
+ delete mode 100644 .next/dev/static/chunks/[next]_internal_font_google_inter_7ad8496e_module_css_bad6b30c._.single.css
+ delete mode 100644 .next/dev/static/chunks/[next]_internal_font_google_inter_7ad8496e_module_css_bad6b30c._.single.css.map
+ delete mode 100644 .next/dev/static/chunks/[root-of-the-server]__459db605._.css
+ delete mode 100644 .next/dev/static/chunks/[root-of-the-server]__459db605._.css.map
+ delete mode 100644 .next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_956a0d3a._.js
+ delete mode 100644 .next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_956a0d3a._.js.map
+ delete mode 100644 .next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c7192189._.js
+ delete mode 100644 .next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c8c997ce._.js
+ delete mode 100644 .next/dev/static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_c8c997ce._.js.map
+ delete mode 100644 .next/dev/static/chunks/_23a915ee._.js.map
+ delete mode 100644 .next/dev/static/chunks/_a0ff3932._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_0f9315bb._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_0f9315bb._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_6a9cc560._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_6a9cc560._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_auth_dist_esm_48abb60a._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_auth_dist_esm_48abb60a._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_firestore_dist_common-aOCKfaeU_esm_a55ee716.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_firestore_dist_common-aOCKfaeU_esm_a55ee716.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_firestore_dist_index_esm_fb938bba.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_@firebase_firestore_dist_index_esm_fb938bba.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_e02af49c._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_e02af49c._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_framer-motion_dist_es_1c28304b._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_framer-motion_dist_es_1c28304b._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_motion-dom_dist_es_b195f008._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_motion-dom_dist_es_b195f008._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_be32b49c._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_be32b49c._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_client_17643121._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_client_17643121._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_client_components_builtin_global-error_1cf6b850.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_1dd7fb59.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_1dd7fb59.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_f3530cac._.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_next_dist_f3530cac._.js.map
+ delete mode 100644 .next/dev/static/chunks/node_modules_re2js_build_index_7ffc1e61.js
+ delete mode 100644 .next/dev/static/chunks/node_modules_re2js_build_index_7ffc1e61.js.map
+ delete mode 100644 .next/dev/static/chunks/src_89911c52._.js
+ delete mode 100644 .next/dev/static/chunks/src_89911c52._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_app_globals_css_bad6b30c._.single.css
+ delete mode 100644 .next/dev/static/chunks/src_app_globals_css_bad6b30c._.single.css.map
+ delete mode 100644 .next/dev/static/chunks/src_app_layout_tsx_1cf6b850._.js
+ delete mode 100644 .next/dev/static/chunks/src_app_page_tsx_d8a1047c._.js
+ delete mode 100644 .next/dev/static/chunks/src_bef3dd59._.js
+ delete mode 100644 .next/dev/static/chunks/src_bef3dd59._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_admin-dashboard_tsx_2c7c8d56._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_admin-dashboard_tsx_2c7c8d56._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_cc8aabe8._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_cc8aabe8._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_login-screen_tsx_2fd79ced._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_login-screen_tsx_2fd79ced._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_mentor-dashboard_tsx_20a680a6._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_mentor-dashboard_tsx_20a680a6._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_mock-test-player_tsx_efcf8d5d._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_mock-test-player_tsx_efcf8d5d._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_realtime_42bf5ff9._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_realtime_42bf5ff9._.js.map
+ delete mode 100644 .next/dev/static/chunks/src_components_student-app_tsx_b65816ac._.js
+ delete mode 100644 .next/dev/static/chunks/src_components_student-app_tsx_b65816ac._.js.map
+ delete mode 100644 .next/dev/static/chunks/turbopack-_23a915ee._.js
+ delete mode 100644 .next/dev/static/development/_buildManifest.js
+ delete mode 100644 .next/dev/static/development/_clientMiddlewareManifest.json
+ delete mode 100644 .next/dev/static/development/_ssgManifest.js
+ delete mode 100644 .next/dev/static/media/1bffadaabf893a1e-s.7cd81963.woff2
+ delete mode 100644 .next/dev/static/media/2bbe8d2671613f1f-s.76dcb0b2.woff2
+ delete mode 100644 .next/dev/static/media/2c55a0e60120577a-s.2a48534a.woff2
+ delete mode 100644 .next/dev/static/media/5476f68d60460930-s.c995e352.woff2
+ delete mode 100644 .next/dev/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2
+ delete mode 100644 .next/dev/static/media/9c72aa0f40e4eef8-s.18a48cbc.woff2
+ delete mode 100644 .next/dev/static/media/ad66f9afd8947f86-s.7a40eb73.woff2
+ delete mode 100644 .next/dev/trace
+ delete mode 100644 .next/dev/types/cache-life.d.ts
+ delete mode 100644 .next/dev/types/routes.d.ts
+ delete mode 100644 .next/dev/types/validator.ts
+To https://github.com/aswinspavithraniescollege/constitution-quest.git
+   a85e8f2..e1b24d3  main -> main
