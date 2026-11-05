@@ -691,12 +691,12 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         </div>
 
         {/* Role selector tabs */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className={`grid gap-2 mb-4 ${mode === "signup" ? "grid-cols-2" : "grid-cols-3"}`}>
           {(Object.keys(ROLE_CONFIG) as Role[]).map(r => {
             const cfg = ROLE_CONFIG[r];
             const RIcon = cfg.icon;
             const active = role === r;
-            // In signup mode, hide Admin (no self-signup for admins)
+            // In signup mode, hide Admin (no self-signup for admins — created by main admin only)
             if (mode === "signup" && r === "ADMIN") return null;
             return (
               <button
