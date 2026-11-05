@@ -54,3 +54,38 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create college" }, { status: 500 });
   }
 }
+
+// DELETE /api/admin/colleges?id=... — delete a college (MAIN ADMIN only)
+// Cannot delete if the college has any users (mentors, students, sub-admins)
+export async function DELETE(req: NextRequest) {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Only the main admin can delete colleges" }, { status: 403 });
+  }
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "College id required" }, { status: 400 });
+    }
+    // Check if the college has any users
+    const userCount = await db.user.count({ where: { collegeId: id } });
+    if (userCount > 0) {
+      return NextResponse.json({
+        error: `Cannot delete this college because it has ${userCount} user(s) assigned (mentors, students, or sub-admins). Please delete or reassign those users first.`,
+      }, { status: 400 });
+    }
+    // Check if the college has any departments
+    const deptCount = await db.department.count({ where: { collegeId: id } });
+    if (deptCount > 0) {
+      return NextResponse.json({
+        error: `Cannot delete this college because it has ${deptCount} department(s). Please delete those departments first.`,
+      }, { status: 400 });
+    }
+    await db.college.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Failed to delete college" }, { status: 500 });
+  }
+}

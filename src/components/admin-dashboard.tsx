@@ -7,7 +7,7 @@ import {
   Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
   Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound,
-  UserCheck
+  UserCheck, AlertCircle
 } from "lucide-react";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports";
@@ -303,6 +303,7 @@ function CollegesTab({ colleges, onRefresh }: any) {
   const [code, setCode] = useState("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -320,6 +321,23 @@ function CollegesTab({ colleges, onRefresh }: any) {
       setName(""); setCode(""); setLocation("");
       onRefresh();
     } finally { setLoading(false); }
+  }
+
+  async function del(id: string, name: string) {
+    if (!confirm(`Delete "${name}"?\n\nThis will permanently remove the college. You can only delete a college that has no departments and no users (mentors, students, or sub-admins).`)) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/admin/colleges?id=${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to delete college");
+        return;
+      }
+      toast.success("College deleted");
+      onRefresh();
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -351,21 +369,42 @@ function CollegesTab({ colleges, onRefresh }: any) {
       <div className="lg:col-span-2 space-y-3">
         <h3 className="font-bold">Colleges ({colleges.length})</h3>
         {colleges.length === 0 ? <div className="text-center py-12 text-slate-400">No colleges yet</div> :
-          colleges.map(c => (
-            <div key={c.id} className="rounded-2xl bg-white border border-slate-200 p-4 flex items-center justify-between">
-              <div>
-                <div className="font-bold flex items-center gap-2">
-                  {c.name}
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
+          colleges.map(c => {
+            const hasUsers = c._count.users > 0;
+            const hasDepts = c._count.departments > 0;
+            const canDelete = !hasUsers && !hasDepts;
+            return (
+              <div key={c.id} className="rounded-2xl bg-white border border-slate-200 p-4 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="font-bold flex items-center gap-2 flex-wrap">
+                    {c.name}
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
+                  </div>
+                  <div className="text-xs text-slate-500 mt-0.5">{c.location || "No location"}</div>
+                  {(hasUsers || hasDepts) && (
+                    <div className="text-[10px] text-amber-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      Cannot delete: {hasDepts && `${c._count.departments} dept(s)`}{hasDepts && hasUsers && ", "}{hasUsers && `${c._count.users} user(s)`} assigned
+                    </div>
+                  )}
                 </div>
-                <div className="text-xs text-slate-500 mt-0.5">{c.location || "No location"}</div>
+                <div className="flex gap-3 items-center">
+                  <div className="flex gap-4 text-center">
+                    <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
+                    <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
+                  </div>
+                  <button
+                    onClick={() => del(c.id, c.name)}
+                    disabled={!canDelete || deletingId === c.id}
+                    title={canDelete ? "Delete college" : "Delete all departments and users first"}
+                    className="p-1.5 rounded hover:bg-red-50 text-red-500 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                  >
+                    {deletingId === c.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-4 text-center">
-                <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
-                <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
-              </div>
-            </div>
-          ))
+            );
+          })
         }
       </div>
     </div>
