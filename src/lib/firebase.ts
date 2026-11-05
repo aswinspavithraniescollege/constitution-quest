@@ -8,6 +8,8 @@ import {
   signOut as fbSignOut,
   sendPasswordResetEmail,
   updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -37,6 +39,8 @@ export {
   fbSignOut,
   sendPasswordResetEmail,
   updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 };
 
 export const FIREBASE_API_KEY = firebaseConfig.apiKey;
