@@ -37,7 +37,7 @@ const ROLE_CONFIG: Record<Role, {
     label: "Admin",
     icon: Shield,
     tagline: "Main & Sub-Admins",
-    description: "Main admin can login with email & password (Firebase) OR username & password. Sub-admins use username & password only.",
+    description: "Main admin can login with email & password OR username & password. Sub-admins use username & password only.",
     gradient: "from-purple-600 via-fuchsia-600 to-pink-600",
     accent: "text-purple-300",
     // hint removed — no demo credentials shown
@@ -170,7 +170,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       if (useFirebase) {
         // Firebase email/password login
         if (!auth) {
-          toast.error("Firebase is not initialized. Please refresh the page.");
+          toast.error("Authentication service not available. Please refresh the page.");
           return;
         }
         if (!email || !password) {
@@ -248,7 +248,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             userName: data.user.name,
             userRole: data.user.role,
             action: "login",
-            details: "method=firebase",
+            details: "method=email",
             collegeCode: data.user.college?.code,
             collegeName: data.user.college?.name,
           });
@@ -294,7 +294,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     if (!auth) {
-      toast.error("Firebase is not initialized. Please refresh the page.");
+      toast.error("Authentication service not available. Please refresh the page.");
       return;
     }
     // Validate required fields
@@ -406,7 +406,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     setResetSending(true);
     try {
       if (!auth) {
-        toast.error("Firebase is not initialized. Please refresh the page.");
+        toast.error("Authentication service not available. Please refresh the page.");
         return;
       }
       await sendPasswordResetEmail(auth, resetEmail.trim());
@@ -440,7 +440,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   // ======== GOOGLE SIGN-IN HANDLER (LOGIN) ========
   async function handleGoogleLogin() {
     if (!auth) {
-      toast.error("Firebase is not initialized. Please refresh the page.");
+      toast.error("Authentication service not available. Please refresh the page.");
       return;
     }
     setGoogleLoading(true);
@@ -511,7 +511,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   // then send the ID token + profile data to our signup API.
   async function handleGoogleSignup() {
     if (!auth) {
-      toast.error("Firebase is not initialized. Please refresh the page.");
+      toast.error("Authentication service not available. Please refresh the page.");
       return;
     }
     // Validate required fields first (same as email/password signup)
@@ -900,19 +900,6 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                   </>
                 )}
 
-                {config.hint && (
-                  <div className="mt-4 pt-3 border-t border-white/10">
-                    <div className="flex items-start gap-2 text-[11px] text-white/50">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-300 mt-0.5 shrink-0" />
-                      <div>
-                        <span className="text-white/60 font-medium">Demo:</span>{" "}
-                        <code className="text-amber-300 bg-white/5 px-1.5 py-0.5 rounded">admin</code>
-                        {" / "}
-                        <code className="text-amber-300 bg-white/5 px-1.5 py-0.5 rounded">nptelmoocadmin</code>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </>
             ) : (
               <>
@@ -1126,7 +1113,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                   )}
                 </button>
                 <p className="text-[10px] text-white/40 text-center mt-2">
-                  Google will use your email for authentication. You'll still need to fill in the form above for college details.
+                  Sign up with your Google account. You'll still need to fill in the form above for college details.
                 </p>
               </>
             )}
@@ -1137,8 +1124,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         <div className="mt-4 text-center text-[11px] text-white/40 leading-relaxed">
           {mode === "login" ? (
             <>
-              {role === "STUDENT" && "📧 Students sign in with email & password (Firebase). Admin-issued credentials also work — just use the username in the email field."}
-              {role === "MENTOR" && "🎓 Mentors sign in with their college email & password (Firebase)."}
+              {role === "STUDENT" && "📧 Students sign in with email & password. Admin-issued credentials also work — just use the username in the email field."}
+              {role === "MENTOR" && "🎓 Mentors sign in with their college email & password."}
               {role === "ADMIN" && "🛡️ Main admin & sub-admins use username + password issued by the main admin."}
             </>
           ) : (
@@ -1212,7 +1199,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                 <>
                   <p className="text-xs text-white/60 mb-4 leading-relaxed">
                     Enter your registered email address and we'll send you a link to reset your password.
-                    This works for <strong className="text-white/80">Firebase accounts</strong> (students & mentors who signed up with email).
+                    This works for <strong className="text-white/80">email accounts</strong> (students & mentors who signed up with email).
                   </p>
                   <form onSubmit={handleForgotPassword} className="space-y-3">
                     <div>

@@ -764,7 +764,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
                         {m.name}
                         <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">{m.username}</span>
                         {!m.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
-                        {m.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
+                        
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
                         {m.college?.name} • {m.department?.code || "No dept"}
@@ -1018,7 +1018,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
                         {s.name}
                         <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username || s.email}</span>
                         {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
-                        {s.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
+                        
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
                         {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}

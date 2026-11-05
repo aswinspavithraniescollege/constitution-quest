@@ -231,7 +231,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                 <div className="text-xs text-slate-500 truncate">{profile.email || profile.username}</div>
                 <div className="flex gap-1 mt-0.5">
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold uppercase">Mentor</span>
-                  {profile.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
+                  
                   {profile.authMethod === "LOCAL" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">LOCAL</span>}
                 </div>
               </div>
@@ -279,7 +279,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                 </>
               ) : (
                 <p className="text-xs text-slate-500 p-3 rounded-lg bg-amber-50 border border-amber-200">
-                  Your account uses Firebase authentication. To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
+                  To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
                 </p>
               )}
             </div>

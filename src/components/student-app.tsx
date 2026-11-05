@@ -1286,7 +1286,7 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
             <p className="text-sm text-white/60 truncate">{profile.email || profile.username}</p>
             <div className="flex gap-2 mt-1 flex-wrap">
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-bold uppercase">{profile.role}</span>
-              {profile.authMethod === "FIREBASE" && <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 font-bold">FIREBASE</span>}
+              
               {profile.authMethod === "LOCAL" && <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold">LOCAL</span>}
             </div>
           </div>
@@ -1323,7 +1323,7 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
               <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Your phone number" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/70 mb-1.5">Email <span className="text-white/40">(cannot be changed — managed by Firebase)</span></label>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">Email <span className="text-white/40">(cannot be changed)</span></label>
               <input value={profile.email || ""} disabled className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed" />
             </div>
             <div>
@@ -1335,7 +1335,7 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
             <div className="pt-3 border-t border-white/10">
               <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-amber-300" /> Change Password
-                {profile.authMethod === "FIREBASE" && <span className="text-[10px] text-amber-300/80 ml-1">(Use Firebase reset for Firebase accounts)</span>}
+                {profile.authMethod === "FIREBASE" && <span className="text-[10px] text-amber-300/80 ml-1"></span>}
               </h4>
               {profile.authMethod === "LOCAL" ? (
                 <>
@@ -1348,7 +1348,7 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
                 </>
               ) : (
                 <p className="text-xs text-white/50 p-3 rounded-lg bg-white/5 border border-white/10">
-                  Your account uses Firebase authentication. To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
+                  To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
                 </p>
               )}
             </div>
