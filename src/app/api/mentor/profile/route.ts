@@ -38,6 +38,7 @@ export async function PATCH(req: NextRequest) {
       if (newPassword.length < 6) {
         return NextResponse.json({ error: "New password must be at least 6 characters" }, { status: 400 });
       }
+      // Password change — works for ALL users (LOCAL and email-signup)
       if (user.authMethod === "LOCAL" && user.password) {
         const ok = await verifyPassword(currentPassword, user.password);
         if (!ok) {
@@ -45,9 +46,11 @@ export async function PATCH(req: NextRequest) {
         }
         data.password = await hashPassword(newPassword);
       } else {
-        return NextResponse.json({
-          error: "Your account uses Firebase authentication. To change your password, please use the 'Forgot Password' link on the login page, or contact your admin.",
-        }, { status: 400 });
+        // Email-signup users: set password in DB
+        if (!currentPassword) {
+          return NextResponse.json({ error: "Current password is required" }, { status: 400 });
+        }
+        data.password = await hashPassword(newPassword);
       }
     }
 

@@ -268,20 +268,12 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-amber-500" /> Change Password
               </h4>
-              {profile.authMethod === "LOCAL" ? (
-                <>
-                  <div className="mb-2">
-                    <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Current password (required to change)" />
-                  </div>
-                  <div>
-                    <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="New password (min 6 chars) — leave blank to keep" />
-                  </div>
-                </>
-              ) : (
-                <p className="text-xs text-slate-500 p-3 rounded-lg bg-amber-50 border border-amber-200">
-                  To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
-                </p>
-              )}
+              <div className="mb-2">
+                <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Current password (required to change)" />
+              </div>
+              <div>
+                <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="New password (min 6 chars) — leave blank to keep" />
+              </div>
             </div>
 
             <div className="flex gap-2 pt-2">

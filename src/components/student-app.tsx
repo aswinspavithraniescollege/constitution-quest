@@ -1335,22 +1335,13 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
             <div className="pt-3 border-t border-white/10">
               <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-amber-300" /> Change Password
-                {profile.authMethod === "FIREBASE" && <span className="text-[10px] text-amber-300/80 ml-1"></span>}
               </h4>
-              {profile.authMethod === "LOCAL" ? (
-                <>
-                  <div className="mb-2">
-                    <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Current password (required to change)" />
-                  </div>
-                  <div>
-                    <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="New password (min 6 chars) — leave blank to keep" />
-                  </div>
-                </>
-              ) : (
-                <p className="text-xs text-white/50 p-3 rounded-lg bg-white/5 border border-white/10">
-                  To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
-                </p>
-              )}
+              <div className="mb-2">
+                <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Current password (required to change)" />
+              </div>
+              <div>
+                <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="New password (min 6 chars) — leave blank to keep" />
+              </div>
             </div>
 
             <div className="flex gap-2 pt-2">
