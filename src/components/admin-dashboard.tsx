@@ -145,18 +145,42 @@ function OverviewTab({ isMainAdmin, user }: { isMainAdmin: boolean; user: any })
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [collegeFilter, setCollegeFilter] = useState("");
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   const load = useCallback(async () => {
-    setLoading(true);
     try {
       const url = collegeFilter ? `/api/admin/stats?collegeId=${collegeFilter}` : "/api/admin/stats";
       const res = await fetch(url);
       const data = await res.json();
-      setStats(data);
+      if (res.ok) {
+        setStats(data);
+        setLastUpdated(new Date());
+      }
+    } catch (e) {
+      // ignore
     } finally { setLoading(false); }
   }, [collegeFilter]);
 
   useEffect(() => { load(); }, [load]);
+
+  // Auto-refresh every 15 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      load();
+    }, 15000);
+    return () => clearInterval(interval);
+  }, [load]);
+
+  // Also refresh when the tab becomes visible again
+  useEffect(() => {
+    const handler = () => {
+      if (document.visibilityState === "visible") {
+        load();
+      }
+    };
+    document.addEventListener("visibilitychange", handler);
+    return () => document.removeEventListener("visibilitychange", handler);
+  }, [load]);
 
   if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-purple-500" /></div>;
 
@@ -178,16 +202,22 @@ function OverviewTab({ isMainAdmin, user }: { isMainAdmin: boolean; user: any })
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-2xl font-black">{isMainAdmin ? "Platform Overview" : "College Overview"}</h2>
-        {isMainAdmin && (
-          <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-black">{isMainAdmin ? "Platform Overview" : "College Overview"}</h2>
+          <span className="text-[10px] text-slate-400 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Updated {lastUpdated.toLocaleTimeString()}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          {isMainAdmin && (
             <select value={collegeFilter} onChange={e => setCollegeFilter(e.target.value)} className="px-3 py-2 rounded-lg border border-slate-200 text-sm">
               <option value="">All Colleges</option>
               {collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
             </select>
-            <button onClick={load} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50"><RefreshCw className="w-4 h-4" /></button>
-          </div>
-        )}
+          )}
+          <button onClick={() => load()} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50" title="Refresh now"><RefreshCw className="w-4 h-4" /></button>
+        </div>
       </div>
 
       {/* Stat cards */}
