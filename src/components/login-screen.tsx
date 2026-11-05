@@ -198,6 +198,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         toast.success(`Welcome, ${data.user.name}! 🎉`, {
           description: `Logged in as ${data.user.role.toLowerCase()}`,
         });
+        // Wait briefly to ensure the session cookie is fully processed by the browser
+        // before the dashboard starts making API calls
+        await new Promise(r => setTimeout(r, 300));
         onLogin(data.user);
       } else {
         // Local username/password login (admin & sub-admin)
@@ -222,6 +225,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         toast.success(`Welcome, ${data.user.name}! 🎉`, {
           description: `Logged in as ${data.user.role === "SUB_ADMIN" ? "sub-admin" : data.user.role.toLowerCase()}`,
         });
+        // Wait briefly to ensure the session cookie is fully processed by the browser
+        await new Promise(r => setTimeout(r, 300));
         onLogin(data.user);
       }
     } catch (err: any) {

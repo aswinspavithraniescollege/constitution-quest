@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/auth");
+        const res = await fetch("/api/auth", { credentials: "same-origin" });
         const data = await res.json();
         setUser(data.user);
       } catch {
@@ -25,7 +25,21 @@ export default function Home() {
     })();
   }, []);
 
-  function handleLogin(u: any) {
+  async function handleLogin(u: any) {
+    // Verify the session is set by calling GET /api/auth
+    // This ensures the cookie is fully processed by the browser
+    // before the dashboard renders and starts making API calls
+    try {
+      const res = await fetch("/api/auth", { credentials: "same-origin" });
+      const data = await res.json();
+      if (data.user) {
+        setUser(data.user);
+        return;
+      }
+    } catch {
+      // If verification fails, fall back to the login response user
+    }
+    // Fallback: use the user from the login response
     setUser(u);
   }
 
