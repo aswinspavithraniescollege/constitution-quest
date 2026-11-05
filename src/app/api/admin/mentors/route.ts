@@ -109,6 +109,11 @@ export async function DELETE(req: NextRequest) {
   if (count > 0) {
     return NextResponse.json({ error: "Cannot delete mentor with students assigned" }, { status: 400 });
   }
+
+  // Clean up Firestore data
+  const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/nptel-constitution-of-india/databases/(default)/documents`;
+  fetch(`${FIRESTORE_URL}/leaderboard/${id}`, { method: "DELETE" }).catch(() => {});
+
   await db.user.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }

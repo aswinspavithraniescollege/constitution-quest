@@ -21,3 +21,4 @@ https://nextjs.org/telemetry
  GET /api/auth 200 in 8ms (compile: 2ms, render: 6ms)
 ✓ Compiled in 214ms
 ✓ Compiled in 231ms
+ GET / 200 in 145ms (compile: 24ms, render: 121ms)

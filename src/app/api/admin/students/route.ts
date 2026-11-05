@@ -107,6 +107,14 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Student not found in your college" }, { status: 403 });
     }
   }
+
+  // Clean up Firestore data (leaderboard, etc.)
+  const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/nptel-constitution-of-india/databases/(default)/documents`;
+  // Delete leaderboard entry
+  fetch(`${FIRESTORE_URL}/leaderboard/${id}`, { method: "DELETE" }).catch(() => {});
+  // Note: activity feed entries can't be easily deleted (no userId index),
+  // but they'll naturally age out. Notes are under the user's collection.
+
   await db.user.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
