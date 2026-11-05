@@ -68,13 +68,18 @@ export async function POST(req: NextRequest) {
     }
 
     // If a role was specified, verify the user has that role
-    if (role && user.role !== role) {
-      return NextResponse.json(
-        {
-          error: `This account is a ${user.role.toLowerCase()}, not a ${role.toLowerCase()}. Please use the correct portal.`,
-        },
-        { status: 403 }
-      );
+    // For the ADMIN portal, both ADMIN and SUB_ADMIN roles are accepted
+    if (role) {
+      const roleMatches = user.role === role ||
+        (role === "ADMIN" && (user.role === "ADMIN" || user.role === "SUB_ADMIN"));
+      if (!roleMatches) {
+        return NextResponse.json(
+          {
+            error: `This account is a ${user.role.toLowerCase()}, not a ${role.toLowerCase()}. Please use the correct portal.`,
+          },
+          { status: 403 }
+        );
+      }
     }
 
     await createSession(user.id);

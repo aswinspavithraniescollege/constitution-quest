@@ -26,16 +26,18 @@ const ROLE_CONFIG: Record<Role, {
   accent: string;
   hint?: string;
   firebaseEnabled: boolean;
+  dualMode?: boolean; // true = supports BOTH username/password AND email/password login
 }> = {
   ADMIN: {
     label: "Admin",
     icon: Shield,
     tagline: "Main & Sub-Admins",
-    description: "Main admin sees all colleges. Sub-admins manage their assigned college only. Login with username & password issued by the main admin.",
+    description: "Main admin can login with email & password (Firebase) OR username & password. Sub-admins use username & password only.",
     gradient: "from-purple-600 via-fuchsia-600 to-pink-600",
     accent: "text-purple-300",
-    hint: "Main admin: admin / nptelmoocadmin",
-    firebaseEnabled: false,
+    hint: "Main admin: aswin2001sp@gmail.com / IESNPTELadmin",
+    firebaseEnabled: true,
+    dualMode: true,
   },
   MENTOR: {
     label: "Mentor",
@@ -66,6 +68,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  // For admin dual-mode: "email" = Firebase email/password, "username" = local username/password
+  const [adminLoginMethod, setAdminLoginMethod] = useState<"email" | "username">("email");
 
   // Signup form state
   const [colleges, setColleges] = useState<any[]>([]);
@@ -87,6 +91,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     setPassword("");
     setConfirmPassword("");
     setSignupForm({ name: "", collegeId: "", departmentId: "", mentorId: "", rollNumber: "", phone: "" });
+    // Default admin login method to "email" (Firebase) since main admin uses Firebase
+    setAdminLoginMethod("email");
   }, [role, mode]);
 
   // Load colleges for signup
@@ -134,7 +140,16 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     e.preventDefault();
     setLoading(true);
     try {
-      if (config.firebaseEnabled) {
+      // Determine whether to use Firebase (email) or local (username) login
+      // - Admin in dual-mode: depends on adminLoginMethod toggle
+      // - Admin NOT in dual-mode (legacy): use username
+      // - Mentor/Student with firebaseEnabled: use Firebase email/password
+      // - Otherwise: local username/password
+      const useFirebase = config.dualMode
+        ? (adminLoginMethod === "email")
+        : config.firebaseEnabled;
+
+      if (useFirebase) {
         // Firebase email/password login
         if (!auth) {
           toast.error("Firebase is not initialized. Please refresh the page.");
@@ -376,7 +391,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             const RIcon = cfg.icon;
             const active = role === r;
             // In signup mode, hide Admin (no self-signup for admins)
-            if (mode === "signup" && !cfg.firebaseEnabled) return null;
+            if (mode === "signup" && r === "ADMIN") return null;
             return (
               <button
                 key={r}
@@ -424,8 +439,31 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             {mode === "login" ? (
               <>
                 <p className="text-xs text-white/60 mb-4 leading-relaxed">{config.description}</p>
+                {/* Admin dual-mode toggle: Email (Firebase) vs Username (Local) */}
+                {config.dualMode && (
+                  <div className="grid grid-cols-2 gap-1 mb-4 p-1 rounded-xl bg-white/5 border border-white/10">
+                    <button
+                      type="button"
+                      onClick={() => setAdminLoginMethod("email")}
+                      className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                        adminLoginMethod === "email" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "text-white/60 hover:text-white"
+                      }`}
+                    >
+                      <AtSign className="w-3.5 h-3.5" /> Email (Main Admin)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAdminLoginMethod("username")}
+                      className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                        adminLoginMethod === "username" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "text-white/60 hover:text-white"
+                      }`}
+                    >
+                      <User className="w-3.5 h-3.5" /> Username (Sub-Admin)
+                    </button>
+                  </div>
+                )}
                 <form onSubmit={handleLogin} className="space-y-3">
-                  {config.firebaseEnabled ? (
+                  {(config.dualMode ? adminLoginMethod === "email" : config.firebaseEnabled) ? (
                     <>
                       {/* Email/Password for Firebase login */}
                       <div>

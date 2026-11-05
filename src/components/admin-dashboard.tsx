@@ -155,7 +155,21 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
 
   if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-purple-500" /></div>;
 
+  // Defensive: handle missing or malformed stats
+  if (!stats || !stats.counts) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-500 mb-3">Failed to load stats. Please try again.</p>
+        <button onClick={load} className="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-bold">Retry</button>
+      </div>
+    );
+  }
+
   const c = stats.counts;
+  const collegeStats = stats.collegeStats || [];
+  const topStudents = stats.topStudents || [];
+  const recentActivity = stats.recentActivity || [];
+  const mockAttempts = stats.mockAttempts || [];
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
@@ -164,7 +178,7 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
           <div className="flex items-center gap-2">
             <select value={collegeFilter} onChange={e => setCollegeFilter(e.target.value)} className="px-3 py-2 rounded-lg border border-slate-200 text-sm">
               <option value="">All Colleges</option>
-              {stats.collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
+              {collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
             </select>
             <button onClick={load} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50"><RefreshCw className="w-4 h-4" /></button>
           </div>
@@ -192,8 +206,8 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
         <div className="rounded-2xl bg-white border border-slate-200 p-5">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Crown className="w-4 h-4 text-amber-500" /> Top 10 Students (by XP)</h3>
           <div className="space-y-2">
-            {stats.topStudents.length === 0 ? <div className="text-sm text-slate-400 py-6 text-center">No students yet</div> :
-              stats.topStudents.map((s: any, i: number) => (
+            {topStudents.length === 0 ? <div className="text-sm text-slate-400 py-6 text-center">No students yet</div> :
+              topStudents.map((s: any, i: number) => (
                 <div key={s.id} className="flex items-center gap-3 py-2 border-b border-slate-100 last:border-0">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-xs ${i === 0 ? "bg-amber-400 text-white" : i === 1 ? "bg-slate-300" : i === 2 ? "bg-orange-300" : "bg-slate-100"}`}>{i + 1}</div>
                   <div className="flex-1 min-w-0">
@@ -212,25 +226,27 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
 
         {/* College breakdown */}
         <div className="rounded-2xl bg-white border border-slate-200 p-5">
-          <h3 className="font-bold mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> College Breakdown</h3>
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> {isMainAdmin ? "College Breakdown" : "My College"}</h3>
           <div className="space-y-2">
-            {stats.collegeStats.map((cs: any) => (
-              <div key={cs.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="flex items-center justify-between mb-2">
-                  <div>
-                    <div className="font-bold text-sm">{cs.name}</div>
-                    <div className="text-xs text-slate-500">{cs.location}</div>
+            {collegeStats.length === 0 ? <div className="text-sm text-slate-400 py-6 text-center">No data</div> :
+              collegeStats.map((cs: any) => (
+                <div key={cs.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <div className="font-bold text-sm">{cs.name}</div>
+                      <div className="text-xs text-slate-500">{cs.location}</div>
+                    </div>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{cs.code}</span>
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{cs.code}</span>
+                  <div className="grid grid-cols-4 gap-2 text-center">
+                    <div><div className="text-base font-black text-purple-600">{cs.students}</div><div className="text-[10px] text-slate-500 uppercase">Students</div></div>
+                    <div><div className="text-base font-black text-emerald-600">{cs.mentors}</div><div className="text-[10px] text-slate-500 uppercase">Mentors</div></div>
+                    <div><div className="text-base font-black text-cyan-600">{cs.practiceAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Practice</div></div>
+                    <div><div className="text-base font-black text-amber-600">{cs.mockAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Mocks</div></div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-4 gap-2 text-center">
-                  <div><div className="text-base font-black text-purple-600">{cs.students}</div><div className="text-[10px] text-slate-500 uppercase">Students</div></div>
-                  <div><div className="text-base font-black text-emerald-600">{cs.mentors}</div><div className="text-[10px] text-slate-500 uppercase">Mentors</div></div>
-                  <div><div className="text-base font-black text-cyan-600">{cs.practiceAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Practice</div></div>
-                  <div><div className="text-base font-black text-amber-600">{cs.mockAttempts}</div><div className="text-[10px] text-slate-500 uppercase">Mocks</div></div>
-                </div>
-              </div>
-            ))}
+              ))
+            }
           </div>
         </div>
       </div>
@@ -251,7 +267,9 @@ function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
               </tr>
             </thead>
             <tbody>
-              {stats.recentActivity.map((a: any, i: number) => (
+              {recentActivity.length === 0 ? (
+                <tr><td colSpan={6} className="py-6 text-center text-slate-400">No recent activity</td></tr>
+              ) : recentActivity.map((a: any, i: number) => (
                 <tr key={i} className="border-b border-slate-50">
                   <td className="py-2 pr-2 whitespace-nowrap text-slate-400">{new Date(a.createdAt).toLocaleString()}</td>
                   <td className="py-2 pr-2 font-medium">{a.user?.name || "—"}</td>
