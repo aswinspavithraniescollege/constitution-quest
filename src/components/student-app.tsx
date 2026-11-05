@@ -7,10 +7,11 @@ import confetti from "canvas-confetti";
 import {
   Loader2, Trophy, Flame, Zap, Star, Target, Award, BookOpen, LogOut,
   CheckCircle2, XCircle, ChevronRight, Home, Brain, Crown, Medal,
-  Calendar, TrendingUp, Clock, Sparkles, RefreshCw, AlertTriangle, Lightbulb
+  Calendar, TrendingUp, Clock, Sparkles, RefreshCw, AlertTriangle, Lightbulb,
+  User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save
 } from "lucide-react";
 
-type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history";
+type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile";
 
 export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [view, setView] = useState<View>("home");
@@ -57,6 +58,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
     { key: "leaderboard", label: "Leaderboard", icon: Crown, color: "from-yellow-500 to-amber-500" },
     { key: "badges", label: "Badges", icon: Award, color: "from-green-500 to-emerald-500" },
     { key: "history", label: "History", icon: Clock, color: "from-violet-500 to-purple-500" },
+    { key: "profile", label: "Profile", icon: UserIcon, color: "from-pink-500 to-rose-500" },
   ];
 
   return (
@@ -137,6 +139,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               {view === "leaderboard" && <LeaderboardView user={user} />}
               {view === "badges" && dash && <BadgesView dash={dash} />}
               {view === "history" && dash && <HistoryView dash={dash} />}
+              {view === "profile" && <ProfileView user={user} onUpdated={loadDash} />}
             </motion.div>
           </AnimatePresence>
         )}
@@ -1138,6 +1141,184 @@ function HistoryView({ dash }: any) {
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ============== PROFILE ==============
+function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) {
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", rollNumber: "", newPassword: "", currentPassword: "" });
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/student/profile");
+      const data = await res.json();
+      if (res.ok && data.profile) {
+        setProfile(data.profile);
+        setForm({
+          name: data.profile.name || "",
+          phone: data.profile.phone || "",
+          rollNumber: data.profile.rollNumber || "",
+          newPassword: "",
+          currentPassword: "",
+        });
+      }
+    } finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const body: any = { name: form.name, phone: form.phone, rollNumber: form.rollNumber };
+      if (form.newPassword) {
+        body.newPassword = form.newPassword;
+        body.currentPassword = form.currentPassword;
+      }
+      const res = await fetch("/api/student/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Profile updated!");
+      setEditing(false);
+      setForm(f => ({ ...f, newPassword: "", currentPassword: "" }));
+      load();
+      onUpdated();
+    } finally { setSaving(false); }
+  }
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-purple-400" /></div>;
+  if (!profile) return <div className="text-center py-20 text-white/60">Failed to load profile.</div>;
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <h2 className="text-2xl font-black mb-1 flex items-center gap-2">
+        <UserIcon className="w-6 h-6 text-pink-300" /> My Profile
+      </h2>
+      <p className="text-white/60 text-sm mb-6">View and edit your personal information.</p>
+
+      {/* Profile Card */}
+      <div className="rounded-3xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 p-6 mb-4">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 flex items-center justify-center text-3xl font-black cq-glow shrink-0">
+            {profile.name?.charAt(0).toUpperCase() || "?"}
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-xl font-bold truncate">{profile.name}</h3>
+            <p className="text-sm text-white/60 truncate">{profile.email || profile.username}</p>
+            <div className="flex gap-2 mt-1 flex-wrap">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-bold uppercase">{profile.role}</span>
+              {profile.authMethod === "FIREBASE" && <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 font-bold">FIREBASE</span>}
+              {profile.authMethod === "LOCAL" && <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold">LOCAL</span>}
+            </div>
+          </div>
+          {!editing && (
+            <button onClick={() => setEditing(true)} className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-sm flex items-center gap-2 hover:scale-105 transition shrink-0">
+              <Pencil className="w-4 h-4" /> Edit
+            </button>
+          )}
+        </div>
+
+        {/* Info grid (read-only) */}
+        {!editing ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <InfoRow icon={BookOpen} label="College" value={profile.college?.name} />
+            <InfoRow icon={Shield} label="Department" value={profile.department?.name} />
+            <InfoRow icon={UserIcon} label="Mentor" value={profile.mentor?.name} />
+            <InfoRow icon={Hash} label="KTU Reg. Number" value={profile.rollNumber} />
+            <InfoRow icon={Mail} label="Email" value={profile.email} />
+            <InfoRow icon={Phone} label="Phone" value={profile.phone} />
+          </div>
+        ) : (
+          /* Edit form */
+          <form onSubmit={save} className="space-y-3">
+            <div>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">Full Name *</label>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" required />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">KTU Register Number</label>
+              <input value={form.rollNumber} onChange={e => setForm(f => ({ ...f, rollNumber: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="e.g., IES21CSE001" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">Phone</label>
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Your phone number" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">Email <span className="text-white/40">(cannot be changed — managed by Firebase)</span></label>
+              <input value={profile.email || ""} disabled className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-white/70 mb-1.5">College / Department <span className="text-white/40">(contact admin to change)</span></label>
+              <input value={`${profile.college?.name || ""} • ${profile.department?.name || ""}`} disabled className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed" />
+            </div>
+
+            {/* Password change section */}
+            <div className="pt-3 border-t border-white/10">
+              <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-amber-300" /> Change Password
+                {profile.authMethod === "FIREBASE" && <span className="text-[10px] text-amber-300/80 ml-1">(Use Firebase reset for Firebase accounts)</span>}
+              </h4>
+              {profile.authMethod === "LOCAL" ? (
+                <>
+                  <div className="mb-2">
+                    <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Current password (required to change)" />
+                  </div>
+                  <div>
+                    <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="New password (min 6 chars) — leave blank to keep" />
+                  </div>
+                </>
+              ) : (
+                <p className="text-xs text-white/50 p-3 rounded-lg bg-white/5 border border-white/10">
+                  Your account uses Firebase authentication. To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
+                </p>
+              )}
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button type="button" onClick={() => { setEditing(false); setForm({ name: profile.name, phone: profile.phone, rollNumber: profile.rollNumber, newPassword: "", currentPassword: "" }); }} className="flex-1 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-sm hover:bg-white/15 transition">
+                Cancel
+              </button>
+              <button type="submit" disabled={saving} className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" /> Save Changes</>}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+
+      {/* Account info */}
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+        <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-amber-300" /> Account Details</h4>
+        <div className="grid grid-cols-2 gap-3 text-xs">
+          <div><span className="text-white/50">Account Type:</span> <span className="font-bold text-white/80">{profile.authMethod}</span></div>
+          <div><span className="text-white/50">Status:</span> <span className={`font-bold ${profile.active ? "text-emerald-300" : "text-red-300"}`}>{profile.active ? "Active" : "Inactive"}</span></div>
+          <div><span className="text-white/50">Joined:</span> <span className="font-bold text-white/80">{new Date(profile.createdAt).toLocaleDateString()}</span></div>
+          <div><span className="text-white/50">Last Login:</span> <span className="font-bold text-white/80">{profile.lastLoginAt ? new Date(profile.lastLoginAt).toLocaleString() : "—"}</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoRow({ icon: Icon, label, value }: any) {
+  return (
+    <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/5">
+      <Icon className="w-4 h-4 text-white/40 mt-0.5 shrink-0" />
+      <div className="min-w-0">
+        <div className="text-[10px] uppercase tracking-wider text-white/40 font-bold">{label}</div>
+        <div className="text-sm text-white/90 truncate">{value || "—"}</div>
       </div>
     </div>
   );

@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
-  TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown
+  TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown,
+  User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen
 } from "lucide-react";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -49,7 +51,14 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
               <div className="text-xs text-slate-500 leading-tight truncate">Mentor: {user.name} • {user.college?.name}</div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setShowProfile(true)}
+              className="px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-bold flex items-center gap-2"
+              title="Edit Profile"
+            >
+              <UserIcon className="w-4 h-4" /> <span className="hidden sm:inline">Profile</span>
+            </button>
             <a
               href="/api/mentor/export"
               className="px-3 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-sm font-bold flex items-center gap-2"
@@ -99,6 +108,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
           </div>
         )}
       </main>
+
+      {/* Profile Edit Modal */}
+      <AnimatePresence>
+        {showProfile && (
+          <MentorProfileModal user={user} onClose={() => setShowProfile(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -110,6 +126,160 @@ function StatBox({ icon: Icon, label, value, color }: any) {
       <div className="text-2xl font-black">{value}</div>
       <div className="text-xs opacity-75">{label}</div>
     </div>
+  );
+}
+
+// ============== MENTOR PROFILE MODAL ==============
+function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void }) {
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", newPassword: "", currentPassword: "" });
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/mentor/profile");
+      const data = await res.json();
+      if (res.ok && data.profile) {
+        setProfile(data.profile);
+        setForm({
+          name: data.profile.name || "",
+          phone: data.profile.phone || "",
+          newPassword: "",
+          currentPassword: "",
+        });
+      }
+    } finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const body: any = { name: form.name, phone: form.phone };
+      if (form.newPassword) {
+        body.newPassword = form.newPassword;
+        body.currentPassword = form.currentPassword;
+      }
+      const res = await fetch("/api/mentor/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Profile updated!");
+      setForm(f => ({ ...f, newPassword: "", currentPassword: "" }));
+      load();
+    } finally { setSaving(false); }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl">
+          <h3 className="font-bold text-base flex items-center gap-2"><Pencil className="w-4 h-4 text-emerald-500" /> My Profile</h3>
+          <button onClick={onClose} className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-emerald-500" /></div>
+        ) : profile ? (
+          <form onSubmit={save} className="p-4 space-y-3">
+            {/* Profile header */}
+            <div className="flex items-center gap-3 mb-2 p-3 rounded-xl bg-slate-50">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-black text-white shrink-0">
+                {profile.name?.charAt(0).toUpperCase() || "?"}
+              </div>
+              <div className="min-w-0">
+                <div className="font-bold truncate">{profile.name}</div>
+                <div className="text-xs text-slate-500 truncate">{profile.email || profile.username}</div>
+                <div className="flex gap-1 mt-0.5">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold uppercase">Mentor</span>
+                  {profile.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
+                  {profile.authMethod === "LOCAL" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">LOCAL</span>}
+                </div>
+              </div>
+            </div>
+
+            {/* Read-only info */}
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="p-2 rounded-lg bg-slate-50">
+                <div className="text-slate-400 uppercase text-[10px] font-bold">College</div>
+                <div className="text-slate-700 truncate">{profile.college?.name || "—"}</div>
+              </div>
+              <div className="p-2 rounded-lg bg-slate-50">
+                <div className="text-slate-400 uppercase text-[10px] font-bold">Department</div>
+                <div className="text-slate-700 truncate">{profile.department?.name || "—"}</div>
+              </div>
+            </div>
+
+            {/* Editable fields */}
+            <div>
+              <label className="text-xs font-bold text-slate-600">Full Name *</label>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Phone</label>
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Your phone number" />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Email <span className="text-slate-400">(cannot be changed)</span></label>
+              <input value={profile.email || ""} disabled className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed" />
+            </div>
+
+            {/* Password change section */}
+            <div className="pt-3 border-t border-slate-200">
+              <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-amber-500" /> Change Password
+              </h4>
+              {profile.authMethod === "LOCAL" ? (
+                <>
+                  <div className="mb-2">
+                    <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Current password (required to change)" />
+                  </div>
+                  <div>
+                    <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="New password (min 6 chars) — leave blank to keep" />
+                  </div>
+                </>
+              ) : (
+                <p className="text-xs text-slate-500 p-3 rounded-lg bg-amber-50 border border-amber-200">
+                  Your account uses Firebase authentication. To change your password, please use the "Forgot Password" feature on the login page, or ask your admin to reset it.
+                </p>
+              )}
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button type="button" onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50">
+                Close
+              </button>
+              <button type="submit" disabled={saving} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" /> Save Changes</>}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="text-center py-12 text-slate-400">Failed to load profile.</div>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
 

@@ -7,7 +7,7 @@ import {
   Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
   Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound,
-  UserCheck, AlertCircle
+  UserCheck, AlertCircle, Pencil, X
 } from "lucide-react";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports";
@@ -304,6 +304,7 @@ function CollegesTab({ colleges, onRefresh }: any) {
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<any | null>(null);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -338,6 +339,24 @@ function CollegesTab({ colleges, onRefresh }: any) {
     } finally {
       setDeletingId(null);
     }
+  }
+
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editing) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/colleges", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editing.id, name: editing.name, code: editing.code, location: editing.location }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("College updated!");
+      setEditing(null);
+      onRefresh();
+    } finally { setLoading(false); }
   }
 
   return (
@@ -388,11 +407,18 @@ function CollegesTab({ colleges, onRefresh }: any) {
                     </div>
                   )}
                 </div>
-                <div className="flex gap-3 items-center">
-                  <div className="flex gap-4 text-center">
+                <div className="flex gap-1 items-center">
+                  <div className="flex gap-4 text-center mr-2">
                     <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
                     <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
                   </div>
+                  <button
+                    onClick={() => setEditing({ ...c })}
+                    title="Edit college"
+                    className="p-1.5 rounded hover:bg-blue-50 text-blue-500"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={() => del(c.id, c.name)}
                     disabled={!canDelete || deletingId === c.id}
@@ -407,6 +433,24 @@ function CollegesTab({ colleges, onRefresh }: any) {
           })
         }
       </div>
+
+      {/* Edit Modal */}
+      {editing && (
+        <EditModal title="Edit College" onClose={() => setEditing(null)} onSave={saveEdit} loading={loading}>
+          <div>
+            <label className="text-xs font-bold text-slate-600">College Name</label>
+            <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Code (unique)</label>
+            <input value={editing.code} onChange={e => setEditing({ ...editing, code: e.target.value.toUpperCase() })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Location</label>
+            <input value={editing.location || ""} onChange={e => setEditing({ ...editing, location: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="City, State" />
+          </div>
+        </EditModal>
+      )}
     </div>
   );
 }
@@ -420,6 +464,8 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
   // For sub-admins, lock the college to their assigned college
   const [selectedCollege, setSelectedCollege] = useState(isSubAdmin ? collegeId : (colleges[0]?.id || ""));
   const [submitting, setSubmitting] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -458,6 +504,24 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
     const res = await fetch(`/api/admin/departments?id=${id}`, { method: "DELETE" });
     if (res.ok) { toast.success("Deleted"); load(); }
     else { const d = await res.json(); toast.error(d.error); }
+  }
+
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editing) return;
+    setEditLoading(true);
+    try {
+      const res = await fetch("/api/admin/departments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editing.id, name: editing.name, code: editing.code }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Department updated!");
+      setEditing(null);
+      load();
+    } finally { setEditLoading(false); }
   }
 
   return (
@@ -502,9 +566,14 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
                     </div>
                     <div className="text-xs text-slate-500">{d.college?.name}</div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-500">{d._count.users} users</span>
-                    <button onClick={() => del(d.id)} className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-500 mr-2">{d._count.users} users</span>
+                    <button onClick={() => setEditing({ ...d })} title="Edit department" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => del(d.id)} title="Delete department" className="p-1.5 rounded hover:bg-red-50 text-red-500">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               ))
@@ -512,6 +581,19 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         }
       </div>
+
+      {editing && (
+        <EditModal title="Edit Department" onClose={() => setEditing(null)} onSave={saveEdit} loading={editLoading}>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Department Name</label>
+            <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Code</label>
+            <input value={editing.code} onChange={e => setEditing({ ...editing, code: e.target.value.toUpperCase() })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+        </EditModal>
+      )}
     </div>
   );
 }
@@ -523,6 +605,9 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: collegeId || colleges[0]?.id || "", departmentId: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editDepartments, setEditDepartments] = useState<any[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -537,7 +622,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
   useEffect(() => { load(); }, [load]);
   useEffect(() => { if (colleges.length > 0 && !form.collegeId) setForm(f => ({ ...f, collegeId: colleges[0].id })); }, [colleges, form.collegeId]);
 
-  // Load departments when college changes
+  // Load departments when college changes (for add form)
   useEffect(() => {
     if (!form.collegeId) return;
     (async () => {
@@ -547,6 +632,16 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
       setForm(f => ({ ...f, departmentId: "" }));
     })();
   }, [form.collegeId]);
+
+  // Load departments for edit modal when editing changes
+  useEffect(() => {
+    if (!editing?.collegeId) return;
+    (async () => {
+      const res = await fetch(`/api/admin/departments?collegeId=${editing.collegeId}`);
+      const data = await res.json();
+      setEditDepartments(data.departments || []);
+    })();
+  }, [editing?.collegeId]);
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -571,6 +666,32 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
     const res = await fetch(`/api/admin/mentors?id=${id}`, { method: "DELETE" });
     if (res.ok) { toast.success("Deleted"); load(); }
     else { const d = await res.json(); toast.error(d.error); }
+  }
+
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editing) return;
+    setEditLoading(true);
+    try {
+      const res = await fetch("/api/admin/mentors", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editing.id,
+          name: editing.name,
+          departmentId: editing.departmentId || null,
+          email: editing.email || null,
+          phone: editing.phone || null,
+          active: editing.active,
+          password: editing.newPassword || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Mentor updated!");
+      setEditing(null);
+      load();
+    } finally { setEditLoading(false); }
   }
 
   return (
@@ -625,24 +746,31 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
           <div className="space-y-2">
             {mentors.length === 0 ? <div className="text-center py-12 text-slate-400">No mentors yet</div> :
               mentors.map(m => (
-                <div key={m.id} className="rounded-xl bg-white border border-slate-200 p-4">
+                <div key={m.id} className={`rounded-xl bg-white border p-4 ${m.active ? "border-slate-200" : "border-red-200 bg-red-50"}`}>
                   <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-bold flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold flex items-center gap-2 flex-wrap">
                         {m.name}
                         <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">{m.username}</span>
+                        {!m.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
+                        {m.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
                         {m.college?.name} • {m.department?.code || "No dept"}
                         {m.email && ` • ${m.email}`}
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-center">
+                    <div className="flex items-center gap-2">
+                      <div className="text-center mr-2">
                         <div className="font-black text-amber-600">{m._count.students}</div>
                         <div className="text-[10px] text-slate-500 uppercase">Students</div>
                       </div>
-                      <button onClick={() => del(m.id)} className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => setEditing({ ...m, newPassword: "" })} title="Edit mentor" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => del(m.id)} title="Delete mentor" className="p-1.5 rounded hover:bg-red-50 text-red-500">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -651,6 +779,42 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         }
       </div>
+
+      {editing && (
+        <EditModal title="Edit Mentor" onClose={() => setEditing(null)} onSave={saveEdit} loading={editLoading}>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Full Name</label>
+            <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Username (cannot be changed)</label>
+            <input value={editing.username || ""} disabled className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Department</label>
+            <select value={editing.departmentId || ""} onChange={e => setEditing({ ...editing, departmentId: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <option value="">— None —</option>
+              {editDepartments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Email</label>
+            <input value={editing.email || ""} onChange={e => setEditing({ ...editing, email: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Phone</label>
+            <input value={editing.phone || ""} onChange={e => setEditing({ ...editing, phone: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">New Password (leave blank to keep current)</label>
+            <input value={editing.newPassword || ""} onChange={e => setEditing({ ...editing, newPassword: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Enter new password (optional)" />
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" checked={editing.active} onChange={e => setEditing({ ...editing, active: e.target.checked })} id="mentor-active" className="rounded" />
+            <label htmlFor="mentor-active" className="text-xs font-bold text-slate-600">Active (uncheck to deactivate)</label>
+          </div>
+        </EditModal>
+      )}
     </div>
   );
 }
@@ -664,6 +828,9 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: collegeId || colleges[0]?.id || "", departmentId: "", mentorId: "", email: "", phone: "", rollNumber: "" });
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState<any>(null);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editDepartments, setEditDepartments] = useState<any[]>([]);
+  const [editMentors, setEditMentors] = useState<any[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -694,6 +861,21 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
     })();
   }, [form.collegeId]);
 
+  // Load departments & mentors for edit modal when editing.collegeId changes
+  useEffect(() => {
+    if (!editing?.collegeId) return;
+    (async () => {
+      const [dr, mr] = await Promise.all([
+        fetch(`/api/admin/departments?collegeId=${editing.collegeId}`),
+        fetch(`/api/admin/mentors?collegeId=${editing.collegeId}`),
+      ]);
+      const dd = await dr.json();
+      const md = await mr.json();
+      setEditDepartments(dd.departments || []);
+      setEditMentors(md.mentors || []);
+    })();
+  }, [editing?.collegeId]);
+
   async function add(e: React.FormEvent) {
     e.preventDefault();
     if (!form.username || !form.password || !form.name || !form.collegeId || !form.departmentId) return;
@@ -712,6 +894,34 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
     } finally { setSubmitting(false); }
   }
 
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editing) return;
+    setEditLoading(true);
+    try {
+      const res = await fetch("/api/admin/students", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editing.id,
+          name: editing.name,
+          departmentId: editing.departmentId || null,
+          mentorId: editing.mentorId || null,
+          rollNumber: editing.rollNumber || null,
+          email: editing.email || null,
+          phone: editing.phone || null,
+          active: editing.active,
+          password: editing.newPassword || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Student updated!");
+      setEditing(null);
+      load();
+    } finally { setEditLoading(false); }
+  }
+
   async function toggleActive(s: any) {
     const res = await fetch("/api/admin/students", {
       method: "PATCH",
@@ -719,17 +929,6 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
       body: JSON.stringify({ id: s.id, active: !s.active }),
     });
     if (res.ok) { toast.success(s.active ? "Deactivated" : "Activated"); load(); }
-  }
-
-  async function resetPassword(s: any) {
-    const pw = prompt(`Enter new password for ${s.name}:`);
-    if (!pw) return;
-    const res = await fetch("/api/admin/students", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: s.id, password: pw }),
-    });
-    if (res.ok) toast.success("Password updated");
   }
 
   async function del(id: string) {
@@ -806,14 +1005,15 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
                     <div className="min-w-0 flex-1">
                       <div className="font-bold flex items-center gap-2 flex-wrap">
                         {s.name}
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username}</span>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username || s.email}</span>
                         {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
+                        {s.authMethod === "FIREBASE" && <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">FIREBASE</span>}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
                         {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
                         {s.mentor && ` • Mentor: ${s.mentor.name}`}
                       </div>
-                      <div className="flex gap-3 mt-2 text-xs">
+                      <div className="flex gap-3 mt-2 text-xs flex-wrap">
                         <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
                         <span className="text-purple-600 font-bold">Lvl {s.level}</span>
                         <span className="text-orange-600 font-bold">🔥{s.streak}</span>
@@ -824,7 +1024,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
                       </div>
                     </div>
                     <div className="flex gap-1 shrink-0">
-                      <button onClick={() => resetPassword(s)} title="Reset password" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><KeyRound className="w-4 h-4" /></button>
+                      <button onClick={() => setEditing({ ...s, newPassword: "" })} title="Edit student" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><Pencil className="w-4 h-4" /></button>
                       <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
                       <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
                     </div>
@@ -835,6 +1035,53 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         }
       </div>
+
+      {editing && (
+        <EditModal title="Edit Student" onClose={() => setEditing(null)} onSave={saveEdit} loading={editLoading}>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Full Name</label>
+            <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Username / Email (cannot be changed)</label>
+            <input value={editing.username || editing.email || ""} disabled className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Roll Number (KTU Reg)</label>
+            <input value={editing.rollNumber || ""} onChange={e => setEditing({ ...editing, rollNumber: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES21CSE001" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Department</label>
+            <select value={editing.departmentId || ""} onChange={e => setEditing({ ...editing, departmentId: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <option value="">— None —</option>
+              {editDepartments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Mentor</label>
+            <select value={editing.mentorId || ""} onChange={e => setEditing({ ...editing, mentorId: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <option value="">— None —</option>
+              {editMentors.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Email</label>
+            <input value={editing.email || ""} onChange={e => setEditing({ ...editing, email: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Phone</label>
+            <input value={editing.phone || ""} onChange={e => setEditing({ ...editing, phone: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">New Password (leave blank to keep current)</label>
+            <input value={editing.newPassword || ""} onChange={e => setEditing({ ...editing, newPassword: e.target.value })} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="Enter new password (optional)" />
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" checked={editing.active} onChange={e => setEditing({ ...editing, active: e.target.checked })} id="student-active" className="rounded" />
+            <label htmlFor="student-active" className="text-xs font-bold text-slate-600">Active (uncheck to deactivate)</label>
+          </div>
+        </EditModal>
+      )}
     </div>
   );
 }
@@ -956,6 +1203,39 @@ function SubAdminsTab() {
             }
           </div>
         }
+      </div>
+    </div>
+  );
+}
+
+// ============== REUSABLE EDIT MODAL ==============
+function EditModal({ title, onClose, onSave, loading, children }: {
+  title: string;
+  onClose: () => void;
+  onSave: (e: React.FormEvent) => void;
+  loading: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl">
+          <h3 className="font-bold text-base flex items-center gap-2"><Pencil className="w-4 h-4 text-purple-500" /> {title}</h3>
+          <button onClick={onClose} className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <form onSubmit={onSave} className="p-4 space-y-3">
+          {children}
+          <div className="flex gap-2 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50">
+              Cancel
+            </button>
+            <button type="submit" disabled={loading} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Pencil className="w-4 h-4" /> Save Changes</>}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

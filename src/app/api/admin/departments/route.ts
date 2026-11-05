@@ -83,3 +83,41 @@ export async function DELETE(req: NextRequest) {
   await db.department.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
+
+// PATCH /api/admin/departments — update a department
+// Body: { id, name?, code? }
+export async function PATCH(req: NextRequest) {
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  try {
+    const { id, name, code } = await req.json();
+    if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+    const dept = await db.department.findUnique({ where: { id } });
+    if (!dept) return NextResponse.json({ error: "Department not found" }, { status: 404 });
+    // Sub-admins can only edit departments in their college
+    if (user.role === "SUB_ADMIN" && dept.collegeId !== user.collegeId) {
+      return NextResponse.json({ error: "Department not found in your college" }, { status: 403 });
+    }
+    // Check for duplicate code within the same college (excluding current)
+    if (code) {
+      const existing = await db.department.findFirst({
+        where: {
+          collegeId: dept.collegeId,
+          code: code.toUpperCase(),
+          id: { not: id },
+        },
+      });
+      if (existing) {
+        return NextResponse.json({ error: "Department with this code already exists in this college" }, { status: 400 });
+      }
+    }
+    const data: any = {};
+    if (name !== undefined) data.name = name;
+    if (code !== undefined) data.code = code.toUpperCase();
+    const updated = await db.department.update({ where: { id }, data });
+    return NextResponse.json({ department: updated });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Failed to update department" }, { status: 500 });
+  }
+}

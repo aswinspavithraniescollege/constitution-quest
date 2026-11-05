@@ -116,7 +116,7 @@ export async function PATCH(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
-    const { id, mentorId, active, password, name, departmentId, rollNumber } = await req.json();
+    const { id, mentorId, active, password, name, departmentId, rollNumber, email, phone } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
     // Sub-admins can only update students in their college
     if (user.role === "SUB_ADMIN") {
@@ -129,8 +129,10 @@ export async function PATCH(req: NextRequest) {
     if (mentorId !== undefined) data.mentorId = mentorId || null;
     if (active !== undefined) data.active = active;
     if (name !== undefined) data.name = name;
-    if (departmentId !== undefined) data.departmentId = departmentId;
-    if (rollNumber !== undefined) data.rollNumber = rollNumber;
+    if (departmentId !== undefined) data.departmentId = departmentId || null;
+    if (rollNumber !== undefined) data.rollNumber = rollNumber || null;
+    if (email !== undefined) data.email = email || null;
+    if (phone !== undefined) data.phone = phone || null;
     if (password) data.password = await hashPassword(password);
     const updated = await db.user.update({ where: { id }, data });
     return NextResponse.json({ ok: true, user: { id: updated.id, name: updated.name } });

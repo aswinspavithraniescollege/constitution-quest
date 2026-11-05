@@ -97,3 +97,39 @@ export async function DELETE(req: NextRequest) {
   await db.user.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
+
+// PATCH /api/admin/mentors — update a mentor
+// Body: { id, name?, departmentId?, email?, phone?, active?, password? }
+export async function PATCH(req: NextRequest) {
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  try {
+    const { id, name, departmentId, email, phone, active, password } = await req.json();
+    if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+    const mentor = await db.user.findUnique({ where: { id } });
+    if (!mentor || mentor.role !== "MENTOR") {
+      return NextResponse.json({ error: "Mentor not found" }, { status: 404 });
+    }
+    // Sub-admins can only edit mentors in their college
+    if (user.role === "SUB_ADMIN" && mentor.collegeId !== user.collegeId) {
+      return NextResponse.json({ error: "Mentor not found in your college" }, { status: 403 });
+    }
+    const data: any = {};
+    if (name !== undefined) data.name = name;
+    if (departmentId !== undefined) data.departmentId = departmentId || null;
+    if (email !== undefined) data.email = email || null;
+    if (phone !== undefined) data.phone = phone || null;
+    if (active !== undefined) data.active = active;
+    if (password) data.password = await hashPassword(password);
+    const updated = await db.user.update({
+      where: { id },
+      data,
+      include: { college: true, department: true },
+    });
+    const { password: _, ...safe } = updated;
+    return NextResponse.json({ mentor: safe });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Failed to update mentor" }, { status: 500 });
+  }
+}

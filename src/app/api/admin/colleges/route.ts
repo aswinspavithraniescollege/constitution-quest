@@ -89,3 +89,50 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Failed to delete college" }, { status: 500 });
   }
 }
+
+// PATCH /api/admin/colleges — update a college (MAIN ADMIN only)
+// Body: { id, name?, code?, location? }
+export async function PATCH(req: NextRequest) {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Only the main admin can edit colleges" }, { status: 403 });
+  }
+  try {
+    const { id, name, code, location } = await req.json();
+    if (!id) {
+      return NextResponse.json({ error: "College id required" }, { status: 400 });
+    }
+    const college = await db.college.findUnique({ where: { id } });
+    if (!college) {
+      return NextResponse.json({ error: "College not found" }, { status: 404 });
+    }
+    // Check for duplicate name/code (excluding current)
+    if (name || code) {
+      const existing = await db.college.findFirst({
+        where: {
+          AND: [
+            { id: { not: id } },
+            {
+              OR: [
+                ...(name ? [{ name }] : []),
+                ...(code ? [{ code: code.toUpperCase() }] : []),
+              ],
+            },
+          ],
+        },
+      });
+      if (existing) {
+        return NextResponse.json({ error: "Another college with this name or code already exists" }, { status: 400 });
+      }
+    }
+    const data: any = {};
+    if (name !== undefined) data.name = name;
+    if (code !== undefined) data.code = code.toUpperCase();
+    if (location !== undefined) data.location = location;
+    const updated = await db.college.update({ where: { id }, data });
+    return NextResponse.json({ college: updated });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Failed to update college" }, { status: 500 });
+  }
+}
