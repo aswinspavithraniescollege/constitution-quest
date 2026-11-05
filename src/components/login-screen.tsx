@@ -40,7 +40,7 @@ const ROLE_CONFIG: Record<Role, {
     description: "Main admin can login with email & password (Firebase) OR username & password. Sub-admins use username & password only.",
     gradient: "from-purple-600 via-fuchsia-600 to-pink-600",
     accent: "text-purple-300",
-    hint: "Main admin: aswin2001sp@gmail.com / IESNPTELadmin",
+    // hint removed — no demo credentials shown
     firebaseEnabled: true,
     dualMode: true,
   },
