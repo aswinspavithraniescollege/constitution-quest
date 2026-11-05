@@ -1,15 +1,2 @@
-node_modules/
-.next/
-db/
-*.log
-.env.local
-.env.production
-.neon/
-download/
-upload/
-scripts/
-tests/
-examples/
 skills/
-.zscripts/
-.env
+node_modules/

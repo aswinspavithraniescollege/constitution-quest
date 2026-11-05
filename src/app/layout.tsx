@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,15 +15,25 @@ export const metadata: Metadata = {
   keywords: ["Indian Constitution", "NPTEL", "mock test", "gamified learning", "IES College", "Constitution Quest"],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#1a0b2e",
+  colorScheme: "dark",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning style={{ colorScheme: "dark" }}>
       <body
-        className={`${interSans.variable} antialiased bg-background text-foreground`}
+        className={`${interSans.variable} antialiased`}
+        style={{ backgroundColor: "#1a0b2e", color: "#ffffff", overflowX: "hidden" }}
       >
         {children}
         <Toaster />

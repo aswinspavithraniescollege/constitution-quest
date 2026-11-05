@@ -49,7 +49,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", minHeight: "100vh" }}>
         <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
       </div>
     );

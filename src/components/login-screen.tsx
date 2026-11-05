@@ -617,7 +617,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#1a0b2e] via-[#2d1b4e] to-[#0f1c3f] text-white flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen relative overflow-hidden text-white flex items-center justify-center px-4 py-8" style={{ backgroundColor: "#1a0b2e", backgroundImage: "linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #0f1c3f 100%)", minHeight: "100vh", WebkitOverflowScrolling: "touch" }}>
       {/* Animated background grid */}
       <div className="absolute inset-0 cq-grid-bg opacity-50" />
       {/* Floating blobs */}
@@ -651,7 +651,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         <Flame className="w-10 h-10" />
       </motion.div>
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md sm:max-w-md mx-auto" style={{ maxWidth: "min(448px, calc(100vw - 2rem))" }}>
         {/* Brand */}
         <div className="text-center mb-5">
           <motion.div

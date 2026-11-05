@@ -70,7 +70,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900 text-white">
+    <div className="min-h-screen text-white" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", minHeight: "100vh" }}>
       {/* Top bar */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-slate-950/70 border-b border-purple-500/20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
@@ -90,9 +90,9 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
         </div>
       </header>
 
-      {/* Nav (horizontal on mobile, sidebar on desktop) */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 pt-4 pb-2">
-        <nav className="flex gap-2 overflow-x-auto cq-scroll pb-2 md:grid md:grid-cols-6 md:gap-2 md:overflow-visible">
+      {/* Nav (horizontal scroll on mobile, grid on desktop) */}
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 pt-3 pb-2">
+        <nav className="flex gap-1.5 sm:gap-2 overflow-x-auto cq-scroll pb-2 md:grid md:grid-cols-9 md:gap-2 md:overflow-visible" style={{ WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory" }}>
           {navItems.map(item => {
             const Icon = item.icon;
             const active = view === item.key || (item.key === "practice-list" && (view === "practice-play")) || (item.key === "mock-list" && (view === "mock-play" || view === "mock-result"));
@@ -100,7 +100,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               <button
                 key={item.key}
                 onClick={() => { setView(item.key); setSelectedWeek(null); setSelectedMock(null); setMockResult(null); }}
-                className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all shrink-0 ${
                   active
                     ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
                     : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10"
