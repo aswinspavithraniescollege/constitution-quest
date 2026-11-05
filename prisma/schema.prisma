@@ -47,6 +47,7 @@ model User {
   mentorId     String?
   phone        String?
   rollNumber   String?  // KTU register number for students
+  mentorCode   String?  @unique // Unique code for mentors (e.g., MENTOR-IES-CSE-001)
   active       Boolean  @default(true)
 
   // Gamification

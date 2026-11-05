@@ -301,7 +301,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     if (!signupForm.name.trim()) { toast.error("Please enter your full name"); return; }
     if (!signupForm.collegeId) { toast.error("Please select your college"); return; }
     if (!signupForm.departmentId) { toast.error("Please select your department"); return; }
-    if (role === "STUDENT" && !signupForm.mentorId) { toast.error("Please select your mentor"); return; }
+    if (role === "STUDENT" && !signupForm.mentorCode?.trim()) { toast.error("Please enter your Mentor Code"); return; }
     if (role === "STUDENT" && !signupForm.rollNumber.trim()) { toast.error("Please enter your KTU register number"); return; }
     if (!email.trim()) { toast.error("Please enter your email"); return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -346,7 +346,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           name: signupForm.name,
           collegeId: signupForm.collegeId,
           departmentId: signupForm.departmentId,
-          mentorId: role === "STUDENT" ? signupForm.mentorId : undefined,
+          mentorCode: signupForm.mentorCode || undefined,
           rollNumber: role === "STUDENT" ? signupForm.rollNumber : undefined,
           phone: signupForm.phone || undefined,
         }),
@@ -518,7 +518,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     if (!signupForm.name.trim()) { toast.error("Please enter your full name"); return; }
     if (!signupForm.collegeId) { toast.error("Please select your college"); return; }
     if (!signupForm.departmentId) { toast.error("Please select your department"); return; }
-    if (role === "STUDENT" && !signupForm.mentorId) { toast.error("Please select your mentor"); return; }
+    if (role === "STUDENT" && !signupForm.mentorCode?.trim()) { toast.error("Please enter your Mentor Code"); return; }
     if (role === "STUDENT" && !signupForm.rollNumber.trim()) { toast.error("Please enter your KTU register number"); return; }
 
     setGoogleLoading(true);
@@ -542,7 +542,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           name: signupForm.name,
           collegeId: signupForm.collegeId,
           departmentId: signupForm.departmentId,
-          mentorId: role === "STUDENT" ? signupForm.mentorId : undefined,
+          mentorCode: signupForm.mentorCode || undefined,
           rollNumber: role === "STUDENT" ? signupForm.rollNumber : undefined,
           phone: signupForm.phone || undefined,
         }),
@@ -691,13 +691,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         </div>
 
         {/* Role selector tabs */}
-        <div className={`grid gap-2 mb-4 ${mode === "signup" ? "grid-cols-2" : "grid-cols-3"}`}>
+        <div className={`grid gap-2 mb-4 ${mode === "signup" ? "grid-cols-1" : "grid-cols-3"}`}>
           {(Object.keys(ROLE_CONFIG) as Role[]).map(r => {
             const cfg = ROLE_CONFIG[r];
             const RIcon = cfg.icon;
             const active = role === r;
-            // In signup mode, hide Admin (no self-signup for admins — created by main admin only)
-            if (mode === "signup" && r === "ADMIN") return null;
+            // In signup mode, hide Admin and Mentor (created by admin only)
+            if (mode === "signup" && (r === "ADMIN" || r === "MENTOR")) return null;
             return (
               <button
                 key={r}
@@ -952,29 +952,24 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       {departments.map(d => <option key={d.id} value={d.id} className="bg-slate-800">{d.name} ({d.code})</option>)}
                     </select>
                   </div>
-                  {/* Mentor (students only) */}
+                  {/* Mentor Code (students only) — entered manually, not from dropdown */}
                   {role === "STUDENT" && (
                     <div>
-                      <label className="block text-xs font-medium text-white/70 mb-1.5">Mentor *</label>
-                      <select
-                        value={signupForm.mentorId}
-                        onChange={(e) => setSignupForm(f => ({ ...f, mentorId: e.target.value }))}
-                        disabled={!signupForm.collegeId}
-                        className="w-full px-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                        required
-                      >
-                        <option value="">{signupForm.collegeId ? "— Select your mentor —" : "Select college first"}</option>
-                        {mentors.map(m => (
-                          <option key={m.id} value={m.id} className="bg-slate-800">
-                            {m.name}{m.department ? ` (${m.department.code})` : ""}
-                          </option>
-                        ))}
-                      </select>
-                      {signupForm.collegeId && mentors.length === 0 && (
-                        <p className="text-[10px] text-amber-300 mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" /> No mentors available yet. Ask your admin to add a mentor first.
-                        </p>
-                      )}
+                      <label className="block text-xs font-medium text-white/70 mb-1.5">Mentor Code *</label>
+                      <div className="relative">
+                        <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                        <input
+                          type="text"
+                          value={signupForm.mentorCode || ""}
+                          onChange={(e) => setSignupForm(f => ({ ...f, mentorCode: e.target.value.toUpperCase() }))}
+                          placeholder="e.g., MENTOR-IES-CSE-001"
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition uppercase"
+                          required
+                        />
+                      </div>
+                      <p className="text-[10px] text-white/40 mt-1">
+                        Enter the Mentor Code given by your mentor or admin. This links you to your mentor.
+                      </p>
                     </div>
                   )}
                   {/* KTU Register Number (students only) */}

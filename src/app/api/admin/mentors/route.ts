@@ -37,7 +37,8 @@ export async function GET(req: NextRequest) {
 }
 
 // POST - create mentor (admin-issued credentials fallback for mentors)
-// Note: most mentors self-register via Firebase, but admin can create username/password accounts.
+// POST - create mentor (admin-issued credentials)
+// Admin creates mentor with username/password. A unique mentorCode is auto-generated.
 export async function POST(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -54,6 +55,19 @@ export async function POST(req: NextRequest) {
     if (existing) {
       return NextResponse.json({ error: "Username already exists" }, { status: 400 });
     }
+
+    // Generate a unique mentor code: MENTOR-COLLEGE-CODE-XXXX
+    const college = await db.college.findUnique({ where: { id: collegeId } });
+    const dept = departmentId ? await db.department.findUnique({ where: { id: departmentId } }) : null;
+    const prefix = `MENTOR-${college?.code || "XXX"}-${dept?.code || "GEN"}`;
+    // Find the next available number
+    let codeNum = 1;
+    let mentorCode = `${prefix}-${String(codeNum).padStart(3, "0")}`;
+    while (await db.user.findUnique({ where: { mentorCode } })) {
+      codeNum++;
+      mentorCode = `${prefix}-${String(codeNum).padStart(3, "0")}`;
+    }
+
     const hashed = await hashPassword(password);
     const mentor = await db.user.create({
       data: {
@@ -66,6 +80,7 @@ export async function POST(req: NextRequest) {
         departmentId: departmentId || null,
         email: email || null,
         phone: phone || null,
+        mentorCode,
       },
       include: { college: true, department: true },
     });

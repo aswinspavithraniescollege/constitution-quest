@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       name,
       collegeId,
       departmentId,
-      mentorId,
+      mentorCode,  // Changed from mentorId to mentorCode
       rollNumber,
       phone,
     } = body;
@@ -40,19 +40,20 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (role !== "STUDENT" && role !== "MENTOR") {
+    // Only students can self-register (mentors are created by admin only)
+    if (role !== "STUDENT") {
       return NextResponse.json(
-        { error: "Invalid role. Only students and mentors can self-register." },
+        { error: "Only students can self-register. Mentors are created by the admin." },
         { status: 400 }
       );
     }
-    if (role === "STUDENT" && !mentorId) {
+    if (!mentorCode || !mentorCode.trim()) {
       return NextResponse.json(
-        { error: "Please select your mentor. Ask your admin if you don't see your mentor listed." },
+        { error: "Mentor Code is required. Please enter the code given by your mentor or admin." },
         { status: 400 }
       );
     }
-    if (role === "STUDENT" && !rollNumber) {
+    if (!rollNumber) {
       return NextResponse.json(
         { error: "KTU register number is required for students." },
         { status: 400 }
@@ -104,13 +105,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify mentor (if student) — mentor must be in same college
+    // Verify mentor by mentorCode — must be in same college
     let mentor = null;
-    if (role === "STUDENT" && mentorId) {
-      mentor = await db.user.findUnique({ where: { id: mentorId } });
-      if (!mentor || mentor.role !== "MENTOR" || mentor.collegeId !== collegeId) {
+    if (mentorCode) {
+      mentor = await db.user.findUnique({ where: { mentorCode: mentorCode.trim().toUpperCase() } });
+      if (!mentor || mentor.role !== "MENTOR") {
         return NextResponse.json(
-          { error: "Selected mentor does not exist in this college." },
+          { error: "Invalid Mentor Code. Please check the code and try again." },
+          { status: 400 }
+        );
+      }
+      if (mentor.collegeId !== collegeId) {
+        return NextResponse.json(
+          { error: "This Mentor Code does not belong to your selected college. Please check your college selection." },
+          { status: 400 }
+        );
+      }
+      if (!mentor.active) {
+        return NextResponse.json(
+          { error: "This mentor account is inactive. Please contact your admin." },
           { status: 400 }
         );
       }
@@ -147,8 +160,8 @@ export async function POST(req: NextRequest) {
         role,
         collegeId,
         departmentId,
-        mentorId: role === "STUDENT" ? mentorId : null,
-        rollNumber: role === "STUDENT" ? rollNumber : null,
+        mentorId: mentor?.id || null,
+        rollNumber,
         phone: phone || null,
       },
       include: { college: true, department: true, mentor: true },
