@@ -2,18 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 
-async function requireAdmin() {
+async function requireAdminLike() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") return null;
   return user;
 }
 
 // GET /api/admin/departments?collegeId=...
+// - Main admin: any college (filter optional)
+// - Sub-admin: only their college (filter forced to their collegeId)
 export async function GET(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
-  const collegeId = url.searchParams.get("collegeId");
+  let collegeId = url.searchParams.get("collegeId");
+  // Sub-admins can only see their own college
+  if (user.role === "SUB_ADMIN") {
+    collegeId = user.collegeId;
+  }
   const departments = await db.department.findMany({
     where: collegeId ? { collegeId } : undefined,
     include: {
@@ -26,12 +33,19 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
     const { name, code, collegeId } = await req.json();
     if (!name || !code || !collegeId) {
       return NextResponse.json({ error: "Name, code and collegeId required" }, { status: 400 });
+    }
+    // Sub-admins can only add departments to their own college
+    if (user.role === "SUB_ADMIN" && collegeId !== user.collegeId) {
+      return NextResponse.json(
+        { error: "You can only manage departments in your assigned college" },
+        { status: 403 }
+      );
     }
     const existing = await db.department.findUnique({
       where: { code_collegeId: { code: code.toUpperCase(), collegeId } },
@@ -50,12 +64,18 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
-  // Check no users exist
+  // Verify the department belongs to the sub-admin's college
+  if (user.role === "SUB_ADMIN") {
+    const dept = await db.department.findUnique({ where: { id } });
+    if (!dept || dept.collegeId !== user.collegeId) {
+      return NextResponse.json({ error: "Department not found in your college" }, { status: 403 });
+    }
+  }
   const count = await db.user.count({ where: { departmentId: id } });
   if (count > 0) {
     return NextResponse.json({ error: "Cannot delete department with users assigned" }, { status: 400 });

@@ -2,18 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
 
-async function requireAdmin() {
+async function requireAdminLike() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") return null;
   return user;
 }
 
 // GET /api/admin/mentors?collegeId=...
+// - Main admin: any college (filter optional)
+// - Sub-admin: forced to their college
 export async function GET(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
-  const collegeId = url.searchParams.get("collegeId");
+  let collegeId = url.searchParams.get("collegeId");
+  if (user.role === "SUB_ADMIN") {
+    collegeId = user.collegeId;
+  }
   const mentors = await db.user.findMany({
     where: {
       role: "MENTOR",
@@ -26,18 +32,23 @@ export async function GET(req: NextRequest) {
     },
     orderBy: { createdAt: "desc" },
   });
-  const safe = mentors.map(({ password, ...rest }) => rest);
+  const safe = mentors.map(({ password, ...rest }: any) => rest);
   return NextResponse.json({ mentors: safe });
 }
 
-// POST - create mentor
+// POST - create mentor (admin-issued credentials fallback for mentors)
+// Note: most mentors self-register via Firebase, but admin can create username/password accounts.
 export async function POST(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
     const { username, password, name, collegeId, departmentId, email, phone } = await req.json();
     if (!username || !password || !name || !collegeId) {
       return NextResponse.json({ error: "Username, password, name and collegeId required" }, { status: 400 });
+    }
+    // Sub-admins can only create mentors in their own college
+    if (user.role === "SUB_ADMIN" && collegeId !== user.collegeId) {
+      return NextResponse.json({ error: "You can only create mentors in your assigned college" }, { status: 403 });
     }
     const existing = await db.user.findUnique({ where: { username: username.trim() } });
     if (existing) {
@@ -48,6 +59,7 @@ export async function POST(req: NextRequest) {
       data: {
         username: username.trim(),
         password: hashed,
+        authMethod: "LOCAL",
         name,
         role: "MENTOR",
         collegeId,
@@ -66,12 +78,18 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
-  // Check no students assigned
+  // Sub-admins can only delete mentors in their college
+  if (user.role === "SUB_ADMIN") {
+    const mentor = await db.user.findUnique({ where: { id } });
+    if (!mentor || mentor.collegeId !== user.collegeId) {
+      return NextResponse.json({ error: "Mentor not found in your college" }, { status: 403 });
+    }
+  }
   const count = await db.user.count({ where: { mentorId: id } });
   if (count > 0) {
     return NextResponse.json({ error: "Cannot delete mentor with students assigned" }, { status: 400 });

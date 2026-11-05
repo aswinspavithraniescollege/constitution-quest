@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 
-async function requireAdmin() {
+async function requireAdminLike() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") return null;
   return user;
 }
 
@@ -18,12 +19,15 @@ function csvEscape(s: any): string {
 }
 
 // GET /api/admin/export?type=students|activity|mock|mentors&collegeId=
+// - Main admin: optional collegeId filter
+// - Sub-admin: forced to their collegeId
 export async function GET(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
   const type = url.searchParams.get("type") || "students";
-  const collegeId = url.searchParams.get("collegeId");
+  // Sub-admins always scoped to their college
+  const collegeId = user.role === "SUB_ADMIN" ? user.collegeId! : (url.searchParams.get("collegeId") || "");
 
   let headers: string[] = [];
   let rows: any[][] = [];
@@ -46,13 +50,13 @@ export async function GET(req: NextRequest) {
       },
       orderBy: { createdAt: "desc" },
     });
-    headers = ["Username", "Name", "College", "Department", "RollNo", "Mentor", "Email", "Phone", "XP", "Level", "Streak", "LongestStreak", "PracticeCount", "MockCount", "BadgeCount", "LoginCount", "Active", "CreatedAt", "LastLogin"];
+    headers = ["Username", "Name", "Email", "College", "Department", "RollNo", "Mentor", "Phone", "XP", "Level", "Streak", "LongestStreak", "PracticeCount", "MockCount", "BadgeCount", "LoginCount", "AuthMethod", "Active", "CreatedAt", "LastLogin"];
     rows = students.map(s => [
-      s.username, s.name, s.college?.name, s.department?.name, s.rollNumber,
-      s.mentor?.name || "", s.email, s.phone,
+      s.username || "", s.name, s.email || "", s.college?.name, s.department?.name, s.rollNumber,
+      s.mentor?.name || "", s.phone,
       s.xp, s.level, s.streak, s.longestStreak,
       s._count.practiceAttempts, s._count.mockAttempts, s._count.studentBadges,
-      s._count.activityLogs, s.active ? "Yes" : "No",
+      s._count.activityLogs, s.authMethod, s.active ? "Yes" : "No",
       s.createdAt.toISOString(), s.lastLoginAt?.toISOString() || "",
     ]);
   } else if (type === "activity") {
@@ -73,7 +77,7 @@ export async function GET(req: NextRequest) {
     });
     headers = ["Timestamp", "Username", "Name", "Role", "College", "Department", "Action", "Details", "DurationSec"];
     rows = logs.map(l => [
-      l.createdAt.toISOString(), l.user.username, l.user.name, l.user.role,
+      l.createdAt.toISOString(), l.user.username || l.user.email || "", l.user.name, l.user.role,
       l.user.college?.name || "", l.user.department?.name || "",
       l.action, l.details || "", l.durationSec || "",
     ]);
@@ -97,7 +101,7 @@ export async function GET(req: NextRequest) {
     headers = ["Timestamp", "Username", "Name", "College", "Department", "MockTest", "Score", "Total", "Percent", "TimeTakenSec"];
     rows = attempts.map(a => [
       a.completedAt?.toISOString() || a.startedAt.toISOString(),
-      a.user.username, a.user.name, a.user.college?.name || "", a.user.department?.name || "",
+      a.user.username || a.user.email || "", a.user.name, a.user.college?.name || "", a.user.department?.name || "",
       a.mockTest.title, a.score, a.totalQuestions,
       a.totalQuestions > 0 ? Math.round((a.score / a.totalQuestions) * 100) : 0,
       a.timeTakenSec,
@@ -113,10 +117,10 @@ export async function GET(req: NextRequest) {
       },
       orderBy: { createdAt: "desc" },
     });
-    headers = ["Username", "Name", "College", "Department", "Email", "Phone", "StudentsCount", "Active", "CreatedAt"];
+    headers = ["Username", "Name", "Email", "College", "Department", "Phone", "StudentsCount", "AuthMethod", "Active", "CreatedAt"];
     rows = mentors.map(m => [
-      m.username, m.name, m.college?.name, m.department?.name,
-      m.email, m.phone, m._count.students, m.active ? "Yes" : "No",
+      m.username || "", m.name, m.email || "", m.college?.name, m.department?.name,
+      m.phone, m._count.students, m.authMethod, m.active ? "Yes" : "No",
       m.createdAt.toISOString(),
     ]);
   }

@@ -33,18 +33,20 @@ model Department {
 
 model User {
   id           String   @id @default(cuid())
-  username     String   @unique
-  password     String
+  username     String?  @unique
+  password     String?
+  firebaseUid  String?  @unique
+  email        String?  @unique
+  authMethod   String   @default("LOCAL") // LOCAL | FIREBASE
   name         String
-  role         String   // ADMIN | MENTOR | STUDENT
+  role         String   // ADMIN | SUB_ADMIN | MENTOR | STUDENT
   collegeId    String?
   college      College? @relation(fields: [collegeId], references: [id])
   departmentId String?
   department   Department? @relation(fields: [departmentId], references: [id])
   mentorId     String?
-  email        String?
   phone        String?
-  rollNumber   String?
+  rollNumber   String?  // KTU register number for students
   active       Boolean  @default(true)
 
   // Gamification
@@ -52,7 +54,7 @@ model User {
   level        Int      @default(1)
   streak       Int      @default(0)
   longestStreak Int     @default(0)
-  lastActiveDate String?  // YYYY-MM-DD for streak tracking
+  lastActiveDate String?
   lastLoginAt  DateTime?
 
   createdAt    DateTime @default(now())

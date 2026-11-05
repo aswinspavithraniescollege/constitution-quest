@@ -2,17 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
 
-async function requireAdmin() {
+// Helper: returns the user if they are ADMIN (main) or SUB_ADMIN.
+// Sub-admins have a collegeId and can only manage their own college.
+async function requireAdminLike() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") return null;
   return user;
 }
 
-// GET /api/admin/colleges - list all colleges
+// GET /api/admin/colleges — list colleges
+// - Main admin: all colleges
+// - Sub-admin: only their college
 export async function GET() {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const where = user.role === "SUB_ADMIN" && user.collegeId ? { id: user.collegeId } : {};
   const colleges = await db.college.findMany({
+    where,
     orderBy: { createdAt: "asc" },
     include: {
       _count: { select: { departments: true, users: true } },
@@ -21,10 +28,12 @@ export async function GET() {
   return NextResponse.json({ colleges });
 }
 
-// POST /api/admin/colleges - create new college
+// POST /api/admin/colleges — create new college (MAIN ADMIN only)
 export async function POST(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await getCurrentUser();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Only the main admin can add colleges" }, { status: 403 });
+  }
   try {
     const { name, code, location } = await req.json();
     if (!name || !code) {

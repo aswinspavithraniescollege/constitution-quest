@@ -45,7 +45,7 @@ export default function Home() {
     return <LoginScreen onLogin={handleLogin} />;
   }
 
-  if (user.role === "ADMIN") {
+  if (user.role === "ADMIN" || user.role === "SUB_ADMIN") {
     return <AdminDashboard user={user} onLogout={handleLogout} />;
   }
 

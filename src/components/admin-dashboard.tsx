@@ -6,21 +6,29 @@ import { toast } from "sonner";
 import {
   Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
-  Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound
+  Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound,
+  UserCheck
 } from "lucide-react";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "exports";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
   const [colleges, setColleges] = useState<any[]>([]);
   const [selectedCollegeId, setSelectedCollegeId] = useState<string>("");
 
+  const isMainAdmin = user.role === "ADMIN";
+  const isSubAdmin = user.role === "SUB_ADMIN";
+
   const loadColleges = useCallback(async () => {
     const res = await fetch("/api/admin/colleges");
     const data = await res.json();
     setColleges(data.colleges || []);
-  }, []);
+    // Sub-admins are scoped to their college
+    if (isSubAdmin && user.collegeId) {
+      setSelectedCollegeId(user.collegeId);
+    }
+  }, [isSubAdmin, user.collegeId]);
 
   useEffect(() => { loadColleges(); }, [loadColleges]);
 
@@ -29,9 +37,11 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     onLogout();
   }
 
+  // Tabs differ for main admin vs sub-admin
   const tabs: { key: Tab; label: string; icon: any }[] = [
     { key: "overview", label: "Overview", icon: BarChart3 },
-    { key: "colleges", label: "Colleges", icon: Building2 },
+    ...(isMainAdmin ? [{ key: "colleges" as Tab, label: "Colleges", icon: Building2 }] : []),
+    ...(isMainAdmin ? [{ key: "sub-admins" as Tab, label: "Sub-Admins", icon: UserCheck }] : []),
     { key: "departments", label: "Departments", icon: Layers },
     { key: "mentors", label: "Mentors", icon: GraduationCap },
     { key: "students", label: "Students", icon: Users },
@@ -47,13 +57,18 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center text-xl shadow-lg shrink-0">⚖️</div>
             <div className="min-w-0">
               <div className="font-black text-lg leading-tight bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Constitution Quest</div>
-              <div className="text-xs text-slate-500 leading-tight">Admin Control Panel</div>
+              <div className="text-xs text-slate-500 leading-tight">
+                {isMainAdmin ? "Main Admin Control Panel" : `Sub-Admin Panel • ${user.college?.name || ""}`}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
-              <Shield className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-bold text-purple-700">{user.name}</span>
+            <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border ${isMainAdmin ? "bg-purple-50 border-purple-200" : "bg-emerald-50 border-emerald-200"}`}>
+              <Shield className={`w-4 h-4 ${isMainAdmin ? "text-purple-600" : "text-emerald-600"}`} />
+              <span className={`text-sm font-bold ${isMainAdmin ? "text-purple-700" : "text-emerald-700"}`}>{user.name}</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase ${isMainAdmin ? "bg-purple-200 text-purple-800" : "bg-emerald-200 text-emerald-800"}`}>
+                {isMainAdmin ? "MAIN" : "SUB"}
+              </span>
             </div>
             <button onClick={handleLogout} className="p-2 rounded-lg bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 hover:text-red-600 transition" title="Logout">
               <LogOut className="w-4 h-4" />
@@ -86,8 +101,8 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
       </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-20">
-        {/* College filter for relevant tabs */}
-        {(tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && (
+        {/* College filter for relevant tabs — only main admin can filter; sub-admin is auto-scoped */}
+        {(tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && isMainAdmin && (
           <div className="mb-5 flex items-center gap-3 flex-wrap">
             <Filter className="w-4 h-4 text-slate-400" />
             <span className="text-sm text-slate-500">Filter by college:</span>
@@ -101,12 +116,19 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
             </select>
           </div>
         )}
+        {isSubAdmin && (tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && (
+          <div className="mb-5 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">
+            <Shield className="w-4 h-4 inline mr-2" />
+            You are scoped to <strong>{user.college?.name}</strong>. All data shown is for your assigned college only.
+          </div>
+        )}
 
-        {tab === "overview" && <OverviewTab />}
-        {tab === "colleges" && <CollegesTab colleges={colleges} onRefresh={loadColleges} />}
-        {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} />}
-        {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} />}
-        {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} />}
+        {tab === "overview" && <OverviewTab isMainAdmin={isMainAdmin} />}
+        {tab === "colleges" && isMainAdmin && <CollegesTab colleges={colleges} onRefresh={loadColleges} />}
+        {tab === "sub-admins" && isMainAdmin && <SubAdminsTab />}
+        {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
+        {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
+        {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
       </main>
     </div>
@@ -114,7 +136,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
 }
 
 // ============== OVERVIEW ==============
-function OverviewTab() {
+function OverviewTab({ isMainAdmin }: { isMainAdmin: boolean }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [collegeFilter, setCollegeFilter] = useState("");
@@ -137,14 +159,16 @@ function OverviewTab() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-2xl font-black">Platform Overview</h2>
-        <div className="flex items-center gap-2">
-          <select value={collegeFilter} onChange={e => setCollegeFilter(e.target.value)} className="px-3 py-2 rounded-lg border border-slate-200 text-sm">
-            <option value="">All Colleges</option>
-            {stats.collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
-          </select>
-          <button onClick={load} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50"><RefreshCw className="w-4 h-4" /></button>
-        </div>
+        <h2 className="text-2xl font-black">{isMainAdmin ? "Platform Overview" : "College Overview"}</h2>
+        {isMainAdmin && (
+          <div className="flex items-center gap-2">
+            <select value={collegeFilter} onChange={e => setCollegeFilter(e.target.value)} className="px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <option value="">All Colleges</option>
+              {stats.collegeStats.map((cs: any) => <option key={cs.id} value={cs.id}>{cs.name}</option>)}
+            </select>
+            <button onClick={load} className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50"><RefreshCw className="w-4 h-4" /></button>
+          </div>
+        )}
       </div>
 
       {/* Stat cards */}
@@ -331,23 +355,25 @@ function CollegesTab({ colleges, onRefresh }: any) {
 }
 
 // ============== DEPARTMENTS ==============
-function DepartmentsTab({ collegeId, colleges }: any) {
+function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
-  const [selectedCollege, setSelectedCollege] = useState(collegeId || colleges[0]?.id || "");
+  // For sub-admins, lock the college to their assigned college
+  const [selectedCollege, setSelectedCollege] = useState(isSubAdmin ? collegeId : (colleges[0]?.id || ""));
   const [submitting, setSubmitting] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const url = collegeId ? `/api/admin/departments?collegeId=${collegeId}` : "/api/admin/departments";
+      // Sub-admins are auto-scoped server-side; main admin passes collegeId
+      const url = collegeId || isSubAdmin ? `/api/admin/departments?collegeId=${collegeId}` : "/api/admin/departments";
       const res = await fetch(url);
       const data = await res.json();
       setDepartments(data.departments || []);
     } finally { setLoading(false); }
-  }, [collegeId]);
+  }, [collegeId, isSubAdmin]);
 
   useEffect(() => { load(); }, [load]);
   useEffect(() => { if (colleges.length > 0 && !selectedCollege) setSelectedCollege(colleges[0].id); }, [colleges, selectedCollege]);
@@ -385,7 +411,7 @@ function DepartmentsTab({ collegeId, colleges }: any) {
           <form onSubmit={add} className="space-y-3">
             <div>
               <label className="text-xs font-bold text-slate-600">College</label>
-              <select value={selectedCollege} onChange={e => setSelectedCollege(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <select value={selectedCollege} onChange={e => setSelectedCollege(e.target.value)} disabled={isSubAdmin} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed">
                 {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
@@ -434,7 +460,7 @@ function DepartmentsTab({ collegeId, colleges }: any) {
 }
 
 // ============== MENTORS ==============
-function MentorsTab({ collegeId, colleges }: any) {
+function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [mentors, setMentors] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -498,7 +524,7 @@ function MentorsTab({ collegeId, colleges }: any) {
           <form onSubmit={add} className="space-y-3">
             <div>
               <label className="text-xs font-bold text-slate-600">College</label>
-              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} disabled={isSubAdmin} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed">
                 {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
@@ -573,7 +599,7 @@ function MentorsTab({ collegeId, colleges }: any) {
 }
 
 // ============== STUDENTS ==============
-function StudentsTab({ collegeId, colleges }: any) {
+function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [students, setStudents] = useState<any[]>([]);
   const [mentors, setMentors] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
@@ -663,7 +689,7 @@ function StudentsTab({ collegeId, colleges }: any) {
           <form onSubmit={add} className="space-y-3">
             <div>
               <label className="text-xs font-bold text-slate-600">College</label>
-              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} disabled={isSubAdmin} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed">
                 {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
@@ -746,6 +772,128 @@ function StudentsTab({ collegeId, colleges }: any) {
                       <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </div>
+                </div>
+              ))
+            }
+          </div>
+        }
+      </div>
+    </div>
+  );
+}
+
+// ============== SUB-ADMINS ==============
+function SubAdminsTab() {
+  const [subAdmins, setSubAdmins] = useState<any[]>([]);
+  const [colleges, setColleges] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: "", email: "", phone: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [r1, r2] = await Promise.all([
+        fetch("/api/admin/sub-admins"),
+        fetch("/api/admin/colleges"),
+      ]);
+      const d1 = await r1.json();
+      const d2 = await r2.json();
+      setSubAdmins(d1.subAdmins || []);
+      setColleges(d2.colleges || []);
+    } finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (colleges.length > 0 && !form.collegeId) setForm(f => ({ ...f, collegeId: colleges[0].id })); }, [colleges, form.collegeId]);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.username || !form.password || !form.name || !form.collegeId) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/sub-admins", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Sub-Admin created!");
+      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, email: "", phone: "" });
+      load();
+    } finally { setSubmitting(false); }
+  }
+
+  async function del(id: string) {
+    if (!confirm("Delete this sub-admin? They will lose access immediately.")) return;
+    const res = await fetch(`/api/admin/sub-admins?id=${id}`, { method: "DELETE" });
+    if (res.ok) { toast.success("Deleted"); load(); }
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div>
+        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-emerald-500" /> Add Sub-Admin</h3>
+          <div className="text-xs text-slate-500 mb-3 p-2 rounded-lg bg-emerald-50 border border-emerald-200">
+            A sub-admin can only manage <strong>one college</strong> (departments, mentors, students) and view only that college's analytics.
+          </div>
+          <form onSubmit={add} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-slate-600">College (will be locked to this college)</label>
+              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required>
+                <option value="">— Select College —</option>
+                {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Full Name</label>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Username (for login)</label>
+              <input value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Password</label>
+              <input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Email (optional)</label>
+              <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+            </div>
+            <button type="submit" disabled={submitting} className="w-full py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Sub-Admin</>}
+            </button>
+          </form>
+          <p className="text-xs text-slate-400 mt-3">Sub-admins log in via the <strong>Admin Portal</strong> with the username and password you set here. They cannot create colleges or see other colleges' data.</p>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2">
+        <h3 className="font-bold mb-3">Sub-Admins ({subAdmins.length})</h3>
+        {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
+          <div className="space-y-2">
+            {subAdmins.length === 0 ? <div className="text-center py-12 text-slate-400">No sub-admins yet. Add one to delegate college management.</div> :
+              subAdmins.map(s => (
+                <div key={s.id} className="rounded-xl bg-white border border-slate-200 p-4 flex items-center justify-between">
+                  <div>
+                    <div className="font-bold flex items-center gap-2 flex-wrap">
+                      {s.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">{s.username}</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold uppercase">Sub-Admin</span>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      College: <strong>{s.college?.name}</strong>
+                      {s.email && ` • ${s.email}`}
+                    </div>
+                  </div>
+                  <button onClick={() => del(s.id)} className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
                 </div>
               ))
             }

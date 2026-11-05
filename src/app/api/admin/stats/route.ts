@@ -2,18 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 
-async function requireAdmin() {
+async function requireAdminLike() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user) return null;
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") return null;
   return user;
 }
 
-// GET /api/admin/stats - overall platform stats with optional college filter
+// GET /api/admin/stats
+// - Main admin: can pass collegeId to filter, otherwise sees everything
+// - Sub-admin: forced to their college
 export async function GET(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  const user = await requireAdminLike();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   const url = new URL(req.url);
-  const collegeId = url.searchParams.get("collegeId");
+  // Sub-admins always scoped to their college
+  const collegeId = user.role === "SUB_ADMIN" ? user.collegeId! : (url.searchParams.get("collegeId") || "");
 
   const where = collegeId ? { collegeId } : {};
 
@@ -26,7 +30,6 @@ export async function GET(req: NextRequest) {
     db.mockTest.count(),
   ]);
 
-  // Activity: total logins, practice attempts, mock attempts
   const [totalLogins, totalPractice, totalMock] = await Promise.all([
     db.activityLog.count({
       where: {
@@ -59,43 +62,61 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  // Per-college breakdown
-  const collegesWithStats = await db.college.findMany({
-    include: {
-      _count: {
-        select: {
-          users: true,
-          departments: true,
-        },
-      },
-    },
-  });
-
-  const collegeStats = [];
-  for (const c of collegesWithStats) {
-    const [s, m, pa, ma] = await Promise.all([
-      db.user.count({ where: { collegeId: c.id, role: "STUDENT" } }),
-      db.user.count({ where: { collegeId: c.id, role: "MENTOR" } }),
-      db.practiceAttempt.count({ where: { user: { collegeId: c.id } } }),
-      db.mockTestAttempt.count({ where: { user: { collegeId: c.id } } }),
-    ]);
-    collegeStats.push({
-      id: c.id,
-      name: c.name,
-      code: c.code,
-      location: c.location,
-      students: s,
-      mentors: m,
-      departments: c._count.departments,
-      practiceAttempts: pa,
-      mockAttempts: ma,
+  // Per-college breakdown — only main admin sees all colleges
+  let collegeStats: any[] = [];
+  if (user.role === "ADMIN") {
+    const collegesWithCounts = await db.college.findMany({
+      include: { _count: { select: { users: true, departments: true } } },
     });
+    for (const c of collegesWithCounts) {
+      const [s, m, pa, ma] = await Promise.all([
+        db.user.count({ where: { collegeId: c.id, role: "STUDENT" } }),
+        db.user.count({ where: { collegeId: c.id, role: "MENTOR" } }),
+        db.practiceAttempt.count({ where: { user: { collegeId: c.id } } }),
+        db.mockTestAttempt.count({ where: { user: { collegeId: c.id } } }),
+      ]);
+      collegeStats.push({
+        id: c.id,
+        name: c.name,
+        code: c.code,
+        location: c.location,
+        students: s,
+        mentors: m,
+        departments: c._count.departments,
+        practiceAttempts: pa,
+        mockAttempts: ma,
+      });
+    }
+  } else if (user.role === "SUB_ADMIN" && user.collegeId) {
+    // Sub-admin sees only their college summary
+    const c = await db.college.findUnique({ where: { id: user.collegeId } });
+    if (c) {
+      const [s, m, pa, ma, d] = await Promise.all([
+        db.user.count({ where: { collegeId: c.id, role: "STUDENT" } }),
+        db.user.count({ where: { collegeId: c.id, role: "MENTOR" } }),
+        db.practiceAttempt.count({ where: { user: { collegeId: c.id } } }),
+        db.mockTestAttempt.count({ where: { user: { collegeId: c.id } } }),
+        db.department.count({ where: { collegeId: c.id } }),
+      ]);
+      collegeStats.push({
+        id: c.id,
+        name: c.name,
+        code: c.code,
+        location: c.location,
+        students: s,
+        mentors: m,
+        departments: d,
+        practiceAttempts: pa,
+        mockAttempts: ma,
+      });
+    }
   }
 
-  // Recent activity (last 50)
+  // Recent activity (last 50) — scoped
   const recentActivity = await db.activityLog.findMany({
     take: 50,
     orderBy: { createdAt: "desc" },
+    where: collegeId ? { user: { collegeId } } : undefined,
     include: {
       user: {
         select: {
@@ -109,7 +130,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  // Mock test performance distribution
+  // Mock test performance (last 100)
   const mockAttempts = await db.mockTestAttempt.findMany({
     where: collegeId ? { user: { collegeId } } : undefined,
     include: {
@@ -136,5 +157,7 @@ export async function GET(req: NextRequest) {
     collegeStats,
     recentActivity,
     mockAttempts,
+    // Tell the client what scope they have
+    scope: user.role === "SUB_ADMIN" ? { collegeId: user.collegeId, isSubAdmin: true } : { isMainAdmin: true },
   });
 }
