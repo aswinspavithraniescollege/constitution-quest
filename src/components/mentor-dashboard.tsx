@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
   TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown,
-  User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen
+  User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen,
+  Trash2, AlertCircle
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
 
@@ -285,11 +286,63 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               </button>
             </div>
           </form>
+          {/* Delete Account Section */}
+          {profile && <MentorDeleteAccount user={profile} onDeleted={onClose} />}
         ) : (
           <div className="text-center py-12 text-slate-400">Failed to load profile.</div>
         )}
       </motion.div>
     </motion.div>
+  );
+}
+
+// ============== MENTOR DELETE ACCOUNT SECTION ==============
+function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => void }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function deleteAccount(e: React.FormEvent) {
+    e.preventDefault();
+    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account. This cannot be undone.")) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/mentor/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Account deleted. Goodbye! 👋");
+      setTimeout(() => onDeleted(), 1000);
+    } finally { setLoading(false); }
+  }
+
+  return (
+    <div className="mt-4 rounded-xl bg-red-50 border border-red-200 p-3">
+      <h4 className="text-sm font-bold mb-1.5 flex items-center gap-1.5 text-red-600">
+        <AlertCircle className="w-4 h-4" /> Danger Zone
+      </h4>
+      {!showConfirm ? (
+        <button onClick={() => setShowConfirm(true)} className="px-3 py-1.5 rounded-lg bg-red-100 border border-red-300 text-red-600 font-bold text-xs flex items-center gap-1.5 hover:bg-red-200 transition">
+          <Trash2 className="w-3.5 h-3.5" /> Delete My Account
+        </button>
+      ) : (
+        <form onSubmit={deleteAccount} className="space-y-2">
+          <p className="text-xs text-red-600 bg-red-50 p-2 rounded">⚠️ This will permanently delete your account. You cannot delete if you have students assigned.</p>
+          {user.authMethod === "LOCAL" && (
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-red-200 text-sm" placeholder="Your password" required />
+          )}
+          <div className="flex gap-2">
+            <button type="button" onClick={() => { setShowConfirm(false); setPassword(""); }} className="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-xs">Cancel</button>
+            <button type="submit" disabled={loading} className="flex-1 py-2 rounded-lg bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-1 disabled:opacity-60">
+              {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Delete Forever"}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }
 

@@ -5,3 +5,54 @@
 [00:02:26.591] Server  LOG     ✓ Compiled in 131ms
 [00:02:37.371] Server  LOG     ✓ Compiled in 214ms
 [00:02:55.979] Server  LOG     ✓ Compiled in 231ms
+[00:25:57.322] Server  LOG     ✓ Compiled in 0ms
+[00:26:15.096] Server  LOG     ✓ Compiled in 149ms
+[00:26:26.389] Server  LOG     ✓ Compiled in 385ms
+[00:27:40.939] Server  LOG     ✓ Compiled in 284ms
+[00:27:41.277] Browser ERROR   ./src/components/mentor-dashboard.tsx:345:9
+Parsing ecmascript source code failed
+  343 |   );
+  344 | }
+> 345 |         )}
+      |         ^
+  346 |       </motion.div>
+  347 |     </motion.div>
+  348 |   );
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/components/mentor-dashboard.tsx [Client Component Browser]
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/mentor-dashboard.tsx [Client Component SSR]
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[00:27:46.928] Server  LOG     ✓ Compiled in 187ms
+[00:27:57.697] Server  LOG     ✓ Compiled in 175ms
+[00:28:14.609] Server  LOG     ✓ Compiled in 149ms
+[00:28:14.972] Browser ERROR   ./src/components/mentor-dashboard.tsx:289:11
+Parsing ecmascript source code failed
+  287 |             </div>
+  288 |           </form>
+> 289 |           {/* Delete Account Section */}
+      |           ^
+  290 |           {profile && <MentorDeleteAccount user={profile} onDeleted={onClose} />}
+  291 |         ) : (
+  292 |           <div className="text-center py-12 text-slate-400">Failed to load profile.</div>
+
+Expected '</', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./src/components/mentor-dashboard.tsx [Client Component Browser]
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/mentor-dashboard.tsx [Client Component SSR]
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]

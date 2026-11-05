@@ -29,6 +29,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield.js [app-ssr] (ecmascript) <export default as Shield>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/save.js [app-ssr] (ecmascript) <export default as Save>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-ssr] (ecmascript) <export default as Trash2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-ssr] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$mock$2d$test$2d$player$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/mock-test-player.tsx [app-ssr] (ecmascript)");
 "use client";
 ;
@@ -94,7 +96,7 @@ function MentorDashboard({ user, onLogout }) {
                                     children: "⚖️"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 50,
+                                    lineNumber: 51,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -105,7 +107,7 @@ function MentorDashboard({ user, onLogout }) {
                                             children: "Constitution Quest"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 52,
+                                            lineNumber: 53,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -118,19 +120,19 @@ function MentorDashboard({ user, onLogout }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 53,
+                                            lineNumber: 54,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 51,
+                                    lineNumber: 52,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 49,
+                            lineNumber: 50,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -145,7 +147,7 @@ function MentorDashboard({ user, onLogout }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 62,
+                                            lineNumber: 63,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -154,13 +156,13 @@ function MentorDashboard({ user, onLogout }) {
                                             children: "Test Mock Tests"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 62,
+                                            lineNumber: 63,
                                             columnNumber: 46
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 57,
+                                    lineNumber: 58,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -172,7 +174,7 @@ function MentorDashboard({ user, onLogout }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 70,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -181,13 +183,13 @@ function MentorDashboard({ user, onLogout }) {
                                             children: "Profile"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 70,
                                             columnNumber: 48
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 65,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -198,7 +200,7 @@ function MentorDashboard({ user, onLogout }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 75,
+                                            lineNumber: 76,
                                             columnNumber: 15
                                         }, this),
                                         " ",
@@ -207,13 +209,13 @@ function MentorDashboard({ user, onLogout }) {
                                             children: "Export CSV"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 75,
+                                            lineNumber: 76,
                                             columnNumber: 48
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 71,
+                                    lineNumber: 72,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -224,29 +226,29 @@ function MentorDashboard({ user, onLogout }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 78,
+                                        lineNumber: 79,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 78,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 56,
+                            lineNumber: 57,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 48,
+                    lineNumber: 49,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 47,
+                lineNumber: 48,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -260,7 +262,7 @@ function MentorDashboard({ user, onLogout }) {
                                 children: "My Students"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 86,
+                                lineNumber: 87,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -268,13 +270,13 @@ function MentorDashboard({ user, onLogout }) {
                                 children: "You can only see students assigned to you. Click a student to view their detailed progress."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 87,
+                                lineNumber: 88,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 85,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -287,7 +289,7 @@ function MentorDashboard({ user, onLogout }) {
                                 color: "bg-amber-50 text-amber-600 border-amber-200"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 92,
+                                lineNumber: 93,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -297,7 +299,7 @@ function MentorDashboard({ user, onLogout }) {
                                 color: "bg-purple-50 text-purple-600 border-purple-200"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 93,
+                                lineNumber: 94,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -307,7 +309,7 @@ function MentorDashboard({ user, onLogout }) {
                                 color: "bg-cyan-50 text-cyan-600 border-cyan-200"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 94,
+                                lineNumber: 95,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -317,7 +319,7 @@ function MentorDashboard({ user, onLogout }) {
                                 color: "bg-orange-50 text-orange-600 border-orange-200"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 95,
+                                lineNumber: 96,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -327,13 +329,13 @@ function MentorDashboard({ user, onLogout }) {
                                 color: "bg-pink-50 text-pink-600 border-pink-200"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 96,
+                                lineNumber: 97,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 91,
+                        lineNumber: 92,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -342,12 +344,12 @@ function MentorDashboard({ user, onLogout }) {
                             className: "w-8 h-8 animate-spin text-emerald-500"
                         }, void 0, false, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 100,
+                            lineNumber: 101,
                             columnNumber: 54
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 100,
+                        lineNumber: 101,
                         columnNumber: 11
                     }, this) : students.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "text-center py-20 text-slate-400",
@@ -356,14 +358,14 @@ function MentorDashboard({ user, onLogout }) {
                                 className: "w-12 h-12 mx-auto mb-3 opacity-50"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 103,
+                                lineNumber: 104,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: "No students assigned to you yet."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 104,
+                                lineNumber: 105,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -371,13 +373,13 @@ function MentorDashboard({ user, onLogout }) {
                                 children: "Ask the admin to assign students to your account."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 105,
+                                lineNumber: 106,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 102,
+                        lineNumber: 103,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-3",
@@ -387,18 +389,18 @@ function MentorDashboard({ user, onLogout }) {
                                 onToggle: ()=>setExpanded(expanded === s.id ? null : s.id)
                             }, s.id, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 110,
+                                lineNumber: 111,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 108,
+                        lineNumber: 109,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 84,
+                lineNumber: 85,
                 columnNumber: 7
             }, this),
             showMockTests && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -410,17 +412,17 @@ function MentorDashboard({ user, onLogout }) {
                         onExit: ()=>setShowMockTests(false)
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 125,
+                        lineNumber: 126,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 124,
+                    lineNumber: 125,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 123,
+                lineNumber: 124,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -429,18 +431,18 @@ function MentorDashboard({ user, onLogout }) {
                     onClose: ()=>setShowProfile(false)
                 }, void 0, false, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 133,
+                    lineNumber: 134,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 131,
+                lineNumber: 132,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/mentor-dashboard.tsx",
-        lineNumber: 46,
+        lineNumber: 47,
         columnNumber: 5
     }, this);
 }
@@ -452,7 +454,7 @@ function StatBox({ icon: Icon, label, value, color }) {
                 className: "w-5 h-5 mb-2"
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 143,
+                lineNumber: 144,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -460,7 +462,7 @@ function StatBox({ icon: Icon, label, value, color }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 144,
+                lineNumber: 145,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -468,13 +470,13 @@ function StatBox({ icon: Icon, label, value, color }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 145,
+                lineNumber: 146,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/mentor-dashboard.tsx",
-        lineNumber: 142,
+        lineNumber: 143,
         columnNumber: 5
     }, this);
 }
@@ -585,14 +587,14 @@ function MentorProfileModal({ user, onClose }) {
                                     className: "w-4 h-4 text-emerald-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 214,
+                                    lineNumber: 215,
                                     columnNumber: 71
                                 }, this),
                                 " My Profile"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 214,
+                            lineNumber: 215,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -602,18 +604,18 @@ function MentorProfileModal({ user, onClose }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 216,
+                                lineNumber: 217,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 215,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 213,
+                    lineNumber: 214,
                     columnNumber: 9
                 }, this),
                 loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -622,12 +624,12 @@ function MentorProfileModal({ user, onClose }) {
                         className: "w-6 h-6 animate-spin text-emerald-500"
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 221,
+                        lineNumber: 222,
                         columnNumber: 54
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 221,
+                    lineNumber: 222,
                     columnNumber: 11
                 }, this) : profile ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                     onSubmit: save,
@@ -641,7 +643,7 @@ function MentorProfileModal({ user, onClose }) {
                                     children: profile.name?.charAt(0).toUpperCase() || "?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 226,
+                                    lineNumber: 227,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -652,7 +654,7 @@ function MentorProfileModal({ user, onClose }) {
                                             children: profile.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 231,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -660,7 +662,7 @@ function MentorProfileModal({ user, onClose }) {
                                             children: profile.email || profile.username
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 231,
+                                            lineNumber: 232,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -671,7 +673,7 @@ function MentorProfileModal({ user, onClose }) {
                                                     children: "Mentor"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                    lineNumber: 233,
+                                                    lineNumber: 234,
                                                     columnNumber: 19
                                                 }, this),
                                                 profile.authMethod === "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -679,25 +681,25 @@ function MentorProfileModal({ user, onClose }) {
                                                     children: "LOCAL"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                    lineNumber: 235,
+                                                    lineNumber: 236,
                                                     columnNumber: 54
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 232,
+                                            lineNumber: 233,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 229,
+                                    lineNumber: 230,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 225,
+                            lineNumber: 226,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -711,7 +713,7 @@ function MentorProfileModal({ user, onClose }) {
                                             children: "College"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 243,
+                                            lineNumber: 244,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -719,13 +721,13 @@ function MentorProfileModal({ user, onClose }) {
                                             children: profile.college?.name || "—"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 245,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 242,
+                                    lineNumber: 243,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -736,7 +738,7 @@ function MentorProfileModal({ user, onClose }) {
                                             children: "Department"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 248,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -744,19 +746,19 @@ function MentorProfileModal({ user, onClose }) {
                                             children: profile.department?.name || "—"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 248,
+                                            lineNumber: 249,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 247,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 241,
+                            lineNumber: 242,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -766,7 +768,7 @@ function MentorProfileModal({ user, onClose }) {
                                     children: "Full Name *"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 254,
+                                    lineNumber: 255,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -779,13 +781,13 @@ function MentorProfileModal({ user, onClose }) {
                                     required: true
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 255,
+                                    lineNumber: 256,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 253,
+                            lineNumber: 254,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -795,7 +797,7 @@ function MentorProfileModal({ user, onClose }) {
                                     children: "Phone"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 258,
+                                    lineNumber: 259,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -808,13 +810,13 @@ function MentorProfileModal({ user, onClose }) {
                                     placeholder: "Your phone number"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 259,
+                                    lineNumber: 260,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 257,
+                            lineNumber: 258,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -828,13 +830,13 @@ function MentorProfileModal({ user, onClose }) {
                                             children: "(cannot be changed)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 263,
                                             columnNumber: 73
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 262,
+                                    lineNumber: 263,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -843,13 +845,13 @@ function MentorProfileModal({ user, onClose }) {
                                     className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 263,
+                                    lineNumber: 264,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 261,
+                            lineNumber: 262,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -862,14 +864,14 @@ function MentorProfileModal({ user, onClose }) {
                                             className: "w-4 h-4 text-amber-500"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 269,
+                                            lineNumber: 270,
                                             columnNumber: 17
                                         }, this),
                                         " Change Password"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 268,
+                                    lineNumber: 269,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -885,12 +887,12 @@ function MentorProfileModal({ user, onClose }) {
                                         placeholder: "Current password (required to change)"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 272,
+                                        lineNumber: 273,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 271,
+                                    lineNumber: 272,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -905,18 +907,18 @@ function MentorProfileModal({ user, onClose }) {
                                         placeholder: "New password (min 6 chars) — leave blank to keep"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 275,
+                                        lineNumber: 276,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 274,
+                                    lineNumber: 275,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 267,
+                            lineNumber: 268,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -929,7 +931,7 @@ function MentorProfileModal({ user, onClose }) {
                                     children: "Close"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 280,
+                                    lineNumber: 281,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -940,7 +942,7 @@ function MentorProfileModal({ user, onClose }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 284,
+                                        lineNumber: 285,
                                         columnNumber: 27
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -948,7 +950,7 @@ function MentorProfileModal({ user, onClose }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 284,
+                                                lineNumber: 285,
                                                 columnNumber: 76
                                             }, this),
                                             " Save Changes"
@@ -956,37 +958,179 @@ function MentorProfileModal({ user, onClose }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 284,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                            lineNumber: 279,
+                            lineNumber: 280,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 223,
+                    lineNumber: 224,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "text-center py-12 text-slate-400",
                     children: "Failed to load profile."
                 }, void 0, false, {
                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                    lineNumber: 289,
+                    lineNumber: 290,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/mentor-dashboard.tsx",
-            lineNumber: 206,
+            lineNumber: 207,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/mentor-dashboard.tsx",
-        lineNumber: 199,
+        lineNumber: 200,
+        columnNumber: 5
+    }, this);
+}
+// ============== MENTOR DELETE ACCOUNT SECTION ==============
+function MentorDeleteAccount({ user, onDeleted }) {
+    const [showConfirm, setShowConfirm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    async function deleteAccount(e) {
+        e.preventDefault();
+        if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account. This cannot be undone.")) return;
+        setLoading(true);
+        try {
+            const res = await fetch("/api/mentor/delete-account", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    currentPassword: password
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(data.error);
+                return;
+            }
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success("Account deleted. Goodbye! 👋");
+            setTimeout(()=>onDeleted(), 1000);
+        } finally{
+            setLoading(false);
+        }
+    }
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "mt-4 rounded-xl bg-red-50 border border-red-200 p-3",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                className: "text-sm font-bold mb-1.5 flex items-center gap-1.5 text-red-600",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                        className: "w-4 h-4"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/mentor-dashboard.tsx",
+                        lineNumber: 323,
+                        columnNumber: 9
+                    }, this),
+                    " Danger Zone"
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/mentor-dashboard.tsx",
+                lineNumber: 322,
+                columnNumber: 7
+            }, this),
+            !showConfirm ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: ()=>setShowConfirm(true),
+                className: "px-3 py-1.5 rounded-lg bg-red-100 border border-red-300 text-red-600 font-bold text-xs flex items-center gap-1.5 hover:bg-red-200 transition",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                        className: "w-3.5 h-3.5"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/mentor-dashboard.tsx",
+                        lineNumber: 327,
+                        columnNumber: 11
+                    }, this),
+                    " Delete My Account"
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/mentor-dashboard.tsx",
+                lineNumber: 326,
+                columnNumber: 9
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                onSubmit: deleteAccount,
+                className: "space-y-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-red-600 bg-red-50 p-2 rounded",
+                        children: "⚠️ This will permanently delete your account. You cannot delete if you have students assigned."
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/mentor-dashboard.tsx",
+                        lineNumber: 331,
+                        columnNumber: 11
+                    }, this),
+                    user.authMethod === "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                        type: "password",
+                        value: password,
+                        onChange: (e)=>setPassword(e.target.value),
+                        className: "w-full px-3 py-2 rounded-lg border border-red-200 text-sm",
+                        placeholder: "Your password",
+                        required: true
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/mentor-dashboard.tsx",
+                        lineNumber: 333,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex gap-2",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "button",
+                                onClick: ()=>{
+                                    setShowConfirm(false);
+                                    setPassword("");
+                                },
+                                className: "flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-xs",
+                                children: "Cancel"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/mentor-dashboard.tsx",
+                                lineNumber: 336,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "submit",
+                                disabled: loading,
+                                className: "flex-1 py-2 rounded-lg bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-1 disabled:opacity-60",
+                                children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                    className: "w-3.5 h-3.5 animate-spin"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/mentor-dashboard.tsx",
+                                    lineNumber: 338,
+                                    columnNumber: 26
+                                }, this) : "Delete Forever"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/mentor-dashboard.tsx",
+                                lineNumber: 337,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/mentor-dashboard.tsx",
+                        lineNumber: 335,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/mentor-dashboard.tsx",
+                lineNumber: 330,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/components/mentor-dashboard.tsx",
+        lineNumber: 321,
         columnNumber: 5
     }, this);
 }
@@ -1006,7 +1150,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                 children: s.name.charAt(0).toUpperCase()
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 304,
+                                lineNumber: 355,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1021,7 +1165,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 children: s.username
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 310,
+                                                lineNumber: 361,
                                                 columnNumber: 15
                                             }, this),
                                             s.rollNumber && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1029,13 +1173,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 children: s.rollNumber
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 311,
+                                                lineNumber: 362,
                                                 columnNumber: 32
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 308,
+                                        lineNumber: 359,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1043,19 +1187,19 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: s.department?.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 313,
+                                        lineNumber: 364,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 307,
+                                lineNumber: 358,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 303,
+                        lineNumber: 354,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1071,14 +1215,14 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 className: "w-3 h-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 318,
+                                                lineNumber: 369,
                                                 columnNumber: 80
                                             }, this),
                                             s.xp
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 318,
+                                        lineNumber: 369,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1086,13 +1230,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "XP"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 370,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 317,
+                                lineNumber: 368,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1106,7 +1250,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 322,
+                                        lineNumber: 373,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1114,13 +1258,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Level"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 323,
+                                        lineNumber: 374,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 321,
+                                lineNumber: 372,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1133,14 +1277,14 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 className: "w-3 h-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 326,
+                                                lineNumber: 377,
                                                 columnNumber: 81
                                             }, this),
                                             s.streak
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 326,
+                                        lineNumber: 377,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1148,13 +1292,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Streak"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 327,
+                                        lineNumber: 378,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 325,
+                                lineNumber: 376,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1165,7 +1309,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: s._count.practiceAttempts
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 330,
+                                        lineNumber: 381,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1173,13 +1317,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Practice"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 382,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 329,
+                                lineNumber: 380,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1190,7 +1334,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: s._count.mockAttempts
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 334,
+                                        lineNumber: 385,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1198,38 +1342,38 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Mocks"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 335,
+                                        lineNumber: 386,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 333,
+                                lineNumber: 384,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 316,
+                        lineNumber: 367,
                         columnNumber: 9
                     }, this),
                     expanded ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronUp$3e$__["ChevronUp"], {
                         className: "w-5 h-5 text-slate-400 shrink-0"
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 338,
+                        lineNumber: 389,
                         columnNumber: 21
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                         className: "w-5 h-5 text-slate-400 shrink-0"
                     }, void 0, false, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 338,
+                        lineNumber: 389,
                         columnNumber: 81
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 299,
+                lineNumber: 350,
                 columnNumber: 7
             }, this),
             expanded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1254,7 +1398,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: s.xp
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 349,
+                                        lineNumber: 400,
                                         columnNumber: 66
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1262,13 +1406,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "XP"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 349,
+                                        lineNumber: 400,
                                         columnNumber: 120
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 349,
+                                lineNumber: 400,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1282,7 +1426,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 350,
+                                        lineNumber: 401,
                                         columnNumber: 66
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1290,13 +1434,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Level"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 350,
+                                        lineNumber: 401,
                                         columnNumber: 128
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 350,
+                                lineNumber: 401,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1310,7 +1454,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 402,
                                         columnNumber: 66
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1318,19 +1462,19 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "Streak"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 402,
                                         columnNumber: 130
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 351,
+                                lineNumber: 402,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 348,
+                        lineNumber: 399,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1346,14 +1490,14 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 className: "w-4 h-4 text-emerald-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 357,
+                                                lineNumber: 408,
                                                 columnNumber: 78
                                             }, this),
                                             " Week-wise Practice Progress"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 357,
+                                        lineNumber: 408,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1363,7 +1507,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                             children: "No practice attempts yet."
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 360,
+                                            lineNumber: 411,
                                             columnNumber: 19
                                         }, this) : s.weekStats.map((ws, i)=>{
                                             const pct = ws.attempted > 0 ? Math.round(ws.correct / ws.attempted * 100) : 0;
@@ -1378,7 +1522,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 366,
+                                                        lineNumber: 417,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1390,12 +1534,12 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                            lineNumber: 368,
+                                                            lineNumber: 419,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 367,
+                                                        lineNumber: 418,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1410,19 +1554,19 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 370,
+                                                        lineNumber: 421,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 365,
+                                                lineNumber: 416,
                                                 columnNumber: 23
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 358,
+                                        lineNumber: 409,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
@@ -1432,14 +1576,14 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 className: "w-4 h-4 text-amber-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 378,
+                                                lineNumber: 429,
                                                 columnNumber: 83
                                             }, this),
                                             " Mock Test Results"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 378,
+                                        lineNumber: 429,
                                         columnNumber: 15
                                     }, this),
                                     s.mockAttempts.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1447,7 +1591,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                         children: "No mock tests attempted yet."
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 380,
+                                        lineNumber: 431,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "space-y-1.5",
@@ -1459,7 +1603,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         children: m.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 385,
+                                                        lineNumber: 436,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1477,7 +1621,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                                lineNumber: 387,
+                                                                lineNumber: 438,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1485,30 +1629,30 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                                 children: new Date(m.completedAt).toLocaleDateString()
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                                lineNumber: 390,
+                                                                lineNumber: 441,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 386,
+                                                        lineNumber: 437,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 384,
+                                                lineNumber: 435,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 382,
+                                        lineNumber: 433,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 356,
+                                lineNumber: 407,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1520,14 +1664,14 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 className: "w-4 h-4 text-cyan-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 400,
+                                                lineNumber: 451,
                                                 columnNumber: 78
                                             }, this),
                                             " Recent Activity"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 400,
+                                        lineNumber: 451,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1537,7 +1681,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                             children: "No activity yet"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 403,
+                                            lineNumber: 454,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "space-y-1",
@@ -1552,7 +1696,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                                     children: a.action
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                                    lineNumber: 409,
+                                                                    lineNumber: 460,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1560,13 +1704,13 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                                     children: new Date(a.timestamp).toLocaleString()
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                                    lineNumber: 410,
+                                                                    lineNumber: 461,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                            lineNumber: 408,
+                                                            lineNumber: 459,
                                                             columnNumber: 25
                                                         }, this),
                                                         a.details && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1574,23 +1718,23 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                             children: a.details
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                            lineNumber: 412,
+                                                            lineNumber: 463,
                                                             columnNumber: 39
                                                         }, this)
                                                     ]
                                                 }, i, true, {
                                                     fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                    lineNumber: 407,
+                                                    lineNumber: 458,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                            lineNumber: 405,
+                                            lineNumber: 456,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 401,
+                                        lineNumber: 452,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1602,7 +1746,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         children: "Last login:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 419,
+                                                        lineNumber: 470,
                                                         columnNumber: 22
                                                     }, this),
                                                     " ",
@@ -1610,7 +1754,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 419,
+                                                lineNumber: 470,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1619,7 +1763,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         children: "Total logins:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 420,
+                                                        lineNumber: 471,
                                                         columnNumber: 22
                                                     }, this),
                                                     " ",
@@ -1627,7 +1771,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 420,
+                                                lineNumber: 471,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1636,7 +1780,7 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                         children: "Badges earned:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                        lineNumber: 421,
+                                                        lineNumber: 472,
                                                         columnNumber: 22
                                                     }, this),
                                                     " ",
@@ -1644,37 +1788,37 @@ function StudentRow({ student: s, expanded, onToggle }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                                lineNumber: 421,
+                                                lineNumber: 472,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                        lineNumber: 418,
+                                        lineNumber: 469,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                                lineNumber: 399,
+                                lineNumber: 450,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mentor-dashboard.tsx",
-                        lineNumber: 354,
+                        lineNumber: 405,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/mentor-dashboard.tsx",
-                lineNumber: 342,
+                lineNumber: 393,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/mentor-dashboard.tsx",
-        lineNumber: 298,
+        lineNumber: 349,
         columnNumber: 5
     }, this);
 }

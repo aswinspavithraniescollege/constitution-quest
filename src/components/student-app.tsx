@@ -8,7 +8,8 @@ import {
   Loader2, Trophy, Flame, Zap, Star, Target, Award, BookOpen, LogOut,
   CheckCircle2, XCircle, ChevronRight, Home, Brain, Crown, Medal,
   Calendar, TrendingUp, Clock, Sparkles, RefreshCw, AlertTriangle, Lightbulb,
-  User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save, MessageCircle, Bookmark
+  User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save, MessageCircle, Bookmark,
+  Trash2
 } from "lucide-react";
 import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
 import { DiscussionForum } from "@/components/realtime/discussion-forum";
@@ -1366,6 +1367,71 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
           <div><span className="text-white/50">Last Login:</span> <span className="font-bold text-white/80">{profile.lastLoginAt ? new Date(profile.lastLoginAt).toLocaleString() : "—"}</span></div>
         </div>
       </div>
+
+      {/* Delete Account */}
+      <DeleteAccountSection user={user} onLogout={onUpdated} />
+    </div>
+  );
+}
+
+function DeleteAccountSection({ user, onLogout }: { user: any; onLogout: () => void }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function deleteAccount(e: React.FormEvent) {
+    e.preventDefault();
+    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, and XP. This cannot be undone.")) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/student/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Account deleted. Goodbye! 👋");
+      setTimeout(() => onLogout(), 1000);
+    } finally { setLoading(false); }
+  }
+
+  return (
+    <div className="rounded-2xl bg-red-500/5 border border-red-400/20 p-4">
+      <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-red-300">
+        <AlertTriangle className="w-4 h-4" /> Danger Zone
+      </h4>
+      {!showConfirm ? (
+        <div>
+          <p className="text-xs text-white/50 mb-3">Permanently delete your account and all associated data. This action cannot be undone.</p>
+          <button onClick={() => setShowConfirm(true)} className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-400/40 text-red-300 font-bold text-sm flex items-center gap-2 hover:bg-red-500/30 transition">
+            <Trash2 className="w-4 h-4" /> Delete My Account
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={deleteAccount} className="space-y-3">
+          <p className="text-xs text-red-300/80 bg-red-500/10 p-2 rounded-lg">
+            ⚠️ This will permanently delete your account, all practice attempts, mock test results, badges, XP, and notes. This cannot be undone.
+          </p>
+          {user.authMethod === "LOCAL" && (
+            <div>
+              <label className="text-xs font-medium text-white/70 mb-1.5 block">Enter your password to confirm</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-red-400/30 text-white text-sm focus:outline-none focus:border-red-400" placeholder="Your password" required />
+            </div>
+          )}
+          {user.authMethod !== "LOCAL" && (
+            <p className="text-xs text-white/50">Click the button below to permanently delete your account.</p>
+          )}
+          <div className="flex gap-2">
+            <button type="button" onClick={() => { setShowConfirm(false); setPassword(""); }} className="flex-1 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-sm hover:bg-white/15 transition">
+              Cancel
+            </button>
+            <button type="submit" disabled={loading} className="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4" /> Yes, Delete Forever</>}
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

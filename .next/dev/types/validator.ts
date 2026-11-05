@@ -155,6 +155,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../src/app/api/mentor/delete-account/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mentor/delete-account">> = Specific
+  const handler = {} as typeof import("../../../src/app/api/mentor/delete-account/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../src/app/api/mentor/export/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mentor/export">> = Specific
@@ -240,6 +249,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/student/dashboard">> = Specific
   const handler = {} as typeof import("../../../src/app/api/student/dashboard/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../src/app/api/student/delete-account/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/student/delete-account">> = Specific
+  const handler = {} as typeof import("../../../src/app/api/student/delete-account/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

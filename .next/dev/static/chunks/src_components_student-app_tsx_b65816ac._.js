@@ -43,6 +43,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/save.js [app-client] (ecmascript) <export default as Save>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/message-circle.js [app-client] (ecmascript) <export default as MessageCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bookmark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bookmark$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bookmark.js [app-client] (ecmascript) <export default as Bookmark>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-client] (ecmascript) <export default as Trash2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$realtime$2d$leaderboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/realtime-leaderboard.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$discussion$2d$forum$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/discussion-forum.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$announcements$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/announcements.tsx [app-client] (ecmascript)");
@@ -50,7 +51,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtim
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$live$2d$mock$2d$rankings$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/live-mock-rankings.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/firestore.ts [app-client] (ecmascript)");
 ;
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
@@ -198,7 +199,7 @@ function StudentApp({ user, onLogout }) {
                                     children: "⚖️"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 78,
+                                    lineNumber: 79,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -209,7 +210,7 @@ function StudentApp({ user, onLogout }) {
                                             children: "Constitution Quest"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 80,
+                                            lineNumber: 81,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -217,19 +218,19 @@ function StudentApp({ user, onLogout }) {
                                             children: user.college?.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 81,
+                                            lineNumber: 82,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 80,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 77,
+                            lineNumber: 78,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -239,7 +240,7 @@ function StudentApp({ user, onLogout }) {
                                     dash: dash
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 85,
+                                    lineNumber: 86,
                                     columnNumber: 22
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -250,29 +251,29 @@ function StudentApp({ user, onLogout }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 87,
+                                        lineNumber: 88,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 86,
+                                    lineNumber: 87,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 84,
+                            lineNumber: 85,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 76,
+                    lineNumber: 77,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 75,
+                lineNumber: 76,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -299,7 +300,7 @@ function StudentApp({ user, onLogout }) {
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 109,
+                                    lineNumber: 110,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -307,24 +308,24 @@ function StudentApp({ user, onLogout }) {
                                     children: item.label
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 111,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, item.key, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 100,
+                            lineNumber: 101,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 95,
+                    lineNumber: 96,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 94,
+                lineNumber: 95,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -335,12 +336,12 @@ function StudentApp({ user, onLogout }) {
                         className: "w-8 h-8 animate-spin text-purple-400"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 120,
+                        lineNumber: 121,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 119,
+                    lineNumber: 120,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
                     mode: "wait",
@@ -368,7 +369,7 @@ function StudentApp({ user, onLogout }) {
                                 onLeaderboard: ()=>setView("leaderboard")
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 131,
+                                lineNumber: 132,
                                 columnNumber: 43
                             }, this),
                             view === "practice-list" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(PracticeListView, {
@@ -379,7 +380,7 @@ function StudentApp({ user, onLogout }) {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 133,
+                                lineNumber: 134,
                                 columnNumber: 17
                             }, this),
                             view === "practice-play" && selectedWeek && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(PracticePlayView, {
@@ -392,7 +393,7 @@ function StudentApp({ user, onLogout }) {
                                 onLevelUp: ()=>loadDash()
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 136,
+                                lineNumber: 137,
                                 columnNumber: 17
                             }, this),
                             view === "mock-list" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MockListView, {
@@ -403,7 +404,7 @@ function StudentApp({ user, onLogout }) {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 139,
+                                lineNumber: 140,
                                 columnNumber: 17
                             }, this),
                             view === "mock-play" && selectedMock && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MockPlayView, {
@@ -417,7 +418,7 @@ function StudentApp({ user, onLogout }) {
                                 onExit: ()=>setView("mock-list")
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 142,
+                                lineNumber: 143,
                                 columnNumber: 17
                             }, this),
                             view === "mock-result" && mockResult && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MockResultView, {
@@ -432,7 +433,7 @@ function StudentApp({ user, onLogout }) {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 145,
+                                lineNumber: 146,
                                 columnNumber: 17
                             }, this),
                             view === "leaderboard" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$realtime$2d$leaderboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["RealtimeLeaderboard"], {
@@ -440,21 +441,21 @@ function StudentApp({ user, onLogout }) {
                                 scope: "global"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 147,
+                                lineNumber: 148,
                                 columnNumber: 42
                             }, this),
                             view === "badges" && dash && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(BadgesView, {
                                 dash: dash
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 148,
+                                lineNumber: 149,
                                 columnNumber: 45
                             }, this),
                             view === "history" && dash && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HistoryView, {
                                 dash: dash
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 149,
+                                lineNumber: 150,
                                 columnNumber: 46
                             }, this),
                             view === "profile" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ProfileView, {
@@ -462,37 +463,37 @@ function StudentApp({ user, onLogout }) {
                                 onUpdated: loadDash
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 150,
+                                lineNumber: 151,
                                 columnNumber: 38
                             }, this),
                             view === "forum" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$discussion$2d$forum$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DiscussionForum"], {
                                 user: user
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 151,
+                                lineNumber: 152,
                                 columnNumber: 36
                             }, this),
                             view === "bookmarks" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$notes$2d$bookmarks$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BookmarksView"], {
                                 user: user
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 152,
+                                lineNumber: 153,
                                 columnNumber: 40
                             }, this)
                         ]
                     }, view, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 124,
+                        lineNumber: 125,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 123,
+                    lineNumber: 124,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 117,
+                lineNumber: 118,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
@@ -500,13 +501,13 @@ function StudentApp({ user, onLogout }) {
                 children: "Constitution Quest • Gamified Learning Platform • IES College of Engineering"
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 158,
+                lineNumber: 159,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 73,
+        lineNumber: 74,
         columnNumber: 5
     }, this);
 }
@@ -544,7 +545,7 @@ function UserStatPills({ dash }) {
                         className: `w-3.5 h-3.5 ${s.color}`
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 177,
+                        lineNumber: 178,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -552,7 +553,7 @@ function UserStatPills({ dash }) {
                         children: s.value
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 178,
+                        lineNumber: 179,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -560,19 +561,19 @@ function UserStatPills({ dash }) {
                         children: s.label
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 179,
+                        lineNumber: 180,
                         columnNumber: 13
                     }, this)
                 ]
             }, i, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 176,
+                lineNumber: 177,
                 columnNumber: 11
             }, this);
         })
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 172,
+        lineNumber: 173,
         columnNumber: 5
     }, this);
 }
@@ -589,7 +590,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                 collegeId: u.collegeId || null
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 196,
+                lineNumber: 197,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -607,14 +608,14 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                         className: "absolute -right-12 -top-12 w-48 h-48 rounded-full bg-purple-500/20 blur-2xl"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 204,
+                        lineNumber: 205,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute -left-12 -bottom-12 w-40 h-40 rounded-full bg-pink-500/20 blur-2xl"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 205,
+                        lineNumber: 206,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -627,7 +628,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: "Welcome back, hero!"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 209,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -635,7 +636,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: u.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 209,
+                                        lineNumber: 210,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -652,13 +653,13 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 212,
+                                                lineNumber: 213,
                                                 columnNumber: 28
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 210,
+                                        lineNumber: 211,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -672,14 +673,14 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 216,
+                                                        lineNumber: 217,
                                                         columnNumber: 17
                                                     }, this),
                                                     " Practice"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 215,
+                                                lineNumber: 216,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -690,14 +691,14 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 219,
+                                                        lineNumber: 220,
                                                         columnNumber: 17
                                                     }, this),
                                                     " Take Mock Test"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 218,
+                                                lineNumber: 219,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -708,26 +709,26 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 222,
+                                                        lineNumber: 223,
                                                         columnNumber: 17
                                                     }, this),
                                                     " Leaderboard"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 221,
+                                                lineNumber: 222,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 214,
+                                        lineNumber: 215,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 207,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -751,7 +752,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                             strokeWidth: "8"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/student-app.tsx",
-                                                            lineNumber: 231,
+                                                            lineNumber: 232,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].circle, {
@@ -775,7 +776,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                             strokeDasharray: "277"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/student-app.tsx",
-                                                            lineNumber: 232,
+                                                            lineNumber: 233,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("defs", {
@@ -791,7 +792,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                                         stopColor: "#a855f7"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                                        lineNumber: 241,
+                                                                        lineNumber: 242,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
@@ -799,7 +800,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                                         stopColor: "#ec4899"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                                        lineNumber: 242,
+                                                                        lineNumber: 243,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
@@ -807,24 +808,24 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                                         stopColor: "#f59e0b"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                                        lineNumber: 243,
+                                                                        lineNumber: 244,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                                lineNumber: 240,
+                                                                lineNumber: 241,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/student-app.tsx",
-                                                            lineNumber: 239,
+                                                            lineNumber: 240,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 230,
+                                                    lineNumber: 231,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -835,7 +836,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                             children: "Level"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/student-app.tsx",
-                                                            lineNumber: 248,
+                                                            lineNumber: 249,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -843,19 +844,19 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                             children: u.level
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/student-app.tsx",
-                                                            lineNumber: 249,
+                                                            lineNumber: 250,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 247,
+                                                    lineNumber: 248,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 229,
+                                            lineNumber: 230,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -866,30 +867,30 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 252,
+                                            lineNumber: 253,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 228,
+                                    lineNumber: 229,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 227,
+                                lineNumber: 228,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 206,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 199,
+                lineNumber: 200,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -903,7 +904,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                         iconColor: "text-cyan-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 260,
+                        lineNumber: 261,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatCard, {
@@ -914,7 +915,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                         iconColor: "text-amber-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 261,
+                        lineNumber: 262,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatCard, {
@@ -925,7 +926,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                         iconColor: "text-emerald-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 262,
+                        lineNumber: 263,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatCard, {
@@ -936,13 +937,13 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                         iconColor: "text-pink-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 263,
+                        lineNumber: 264,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 259,
+                lineNumber: 260,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -956,7 +957,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                 children: "🔥"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 269,
+                                lineNumber: 270,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -966,7 +967,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: "Current Streak"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 271,
+                                        lineNumber: 272,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -979,13 +980,13 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                 children: "days"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 272,
+                                                lineNumber: 273,
                                                 columnNumber: 61
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 272,
+                                        lineNumber: 273,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -997,19 +998,19 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 273,
+                                        lineNumber: 274,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 270,
+                                lineNumber: 271,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 268,
+                        lineNumber: 269,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1020,7 +1021,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                 children: "Daily login earns"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 277,
+                                lineNumber: 278,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1028,19 +1029,19 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                 children: "+10 XP"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 278,
+                                lineNumber: 279,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 276,
+                        lineNumber: 277,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 267,
+                lineNumber: 268,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1052,14 +1053,14 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                 className: "w-5 h-5 text-purple-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 285,
+                                lineNumber: 286,
                                 columnNumber: 11
                             }, this),
                             "Your Quest Map — 8 Weeks"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 284,
+                        lineNumber: 285,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1080,27 +1081,27 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                 children: w.number
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 306,
+                                                lineNumber: 307,
                                                 columnNumber: 19
                                             }, this),
                                             isComplete && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                                 className: "w-5 h-5 text-green-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 310,
                                                 columnNumber: 34
                                             }, this),
                                             pct > 0 && !isComplete && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"], {
                                                 className: "w-4 h-4 text-amber-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 310,
+                                                lineNumber: 311,
                                                 columnNumber: 46
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 305,
+                                        lineNumber: 306,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1111,7 +1112,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 313,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1119,7 +1120,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: w.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 313,
+                                        lineNumber: 314,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1132,7 +1133,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                         children: "Progress"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 316,
+                                                        lineNumber: 317,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1143,13 +1144,13 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 317,
+                                                        lineNumber: 318,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 316,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1167,12 +1168,12 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 320,
+                                                    lineNumber: 321,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 320,
                                                 columnNumber: 19
                                             }, this),
                                             w.progress.attempted > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1183,31 +1184,31 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 328,
+                                                lineNumber: 329,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 314,
+                                        lineNumber: 315,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, w.id, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 294,
+                                lineNumber: 295,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 288,
+                        lineNumber: 289,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 283,
+                lineNumber: 284,
                 columnNumber: 7
             }, this),
             dash.badges.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1219,14 +1220,14 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                 className: "w-5 h-5 text-pink-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 341,
+                                lineNumber: 342,
                                 columnNumber: 13
                             }, this),
                             "Recent Badges"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 340,
+                        lineNumber: 341,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1242,7 +1243,7 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: b.icon
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 347,
+                                        lineNumber: 348,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1250,30 +1251,30 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }) {
                                         children: b.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 348,
+                                        lineNumber: 349,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, b.id, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 346,
+                                lineNumber: 347,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 344,
+                        lineNumber: 345,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 339,
+                lineNumber: 340,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 194,
+        lineNumber: 195,
         columnNumber: 5
     }, this);
 }
@@ -1286,7 +1287,7 @@ function StatCard({ icon: Icon, label, value, color, iconColor }) {
                 className: `w-5 h-5 ${iconColor} mb-2`
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 361,
+                lineNumber: 362,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1294,7 +1295,7 @@ function StatCard({ icon: Icon, label, value, color, iconColor }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 362,
+                lineNumber: 363,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1302,13 +1303,13 @@ function StatCard({ icon: Icon, label, value, color, iconColor }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 363,
+                lineNumber: 364,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 360,
+        lineNumber: 361,
         columnNumber: 5
     }, this);
 }
@@ -1324,14 +1325,14 @@ function PracticeListView({ dash, onSelectWeek }) {
                         className: "w-6 h-6 text-cyan-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 373,
+                        lineNumber: 374,
                         columnNumber: 9
                     }, this),
                     " Practice Arena"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 372,
+                lineNumber: 373,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1339,7 +1340,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                 children: "Pick a week to start practicing. Every correct answer earns XP!"
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 375,
+                lineNumber: 376,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1372,7 +1373,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                 children: w.number
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 390,
+                                                lineNumber: 391,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1385,7 +1386,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 394,
+                                                        lineNumber: 395,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1393,32 +1394,32 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                         children: w.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 395,
+                                                        lineNumber: 396,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 393,
+                                                lineNumber: 394,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 389,
+                                        lineNumber: 390,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                         className: "w-5 h-5 text-white/30 group-hover:text-purple-300 group-hover:translate-x-1 transition"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 398,
+                                        lineNumber: 399,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 388,
+                                lineNumber: 389,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1426,7 +1427,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                 children: w.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 400,
+                                lineNumber: 401,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1442,7 +1443,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                         className: "w-3 h-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 403,
+                                                        lineNumber: 404,
                                                         columnNumber: 61
                                                     }, this),
                                                     " ",
@@ -1451,7 +1452,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 403,
+                                                lineNumber: 404,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1461,7 +1462,7 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                         className: "w-3 h-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/student-app.tsx",
-                                                        lineNumber: 404,
+                                                        lineNumber: 405,
                                                         columnNumber: 61
                                                     }, this),
                                                     " ",
@@ -1470,13 +1471,13 @@ function PracticeListView({ dash, onSelectWeek }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 404,
+                                                lineNumber: 405,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 402,
+                                        lineNumber: 403,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1487,13 +1488,13 @@ function PracticeListView({ dash, onSelectWeek }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 406,
+                                        lineNumber: 407,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 401,
+                                lineNumber: 402,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1505,30 +1506,30 @@ function PracticeListView({ dash, onSelectWeek }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 409,
+                                    lineNumber: 410,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 408,
+                                lineNumber: 409,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, w.id, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 380,
+                        lineNumber: 381,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 376,
+                lineNumber: 377,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 371,
+        lineNumber: 372,
         columnNumber: 5
     }, this);
 }
@@ -1674,12 +1675,12 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
             className: "w-8 h-8 animate-spin text-purple-400"
         }, void 0, false, {
             fileName: "[project]/src/components/student-app.tsx",
-            lineNumber: 509,
+            lineNumber: 510,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 509,
+        lineNumber: 510,
         columnNumber: 23
     }, this);
     if (!q) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1687,7 +1688,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
         children: "No questions found."
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 510,
+        lineNumber: 511,
         columnNumber: 18
     }, this);
     const options = [
@@ -1720,7 +1721,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         children: "← Back to weeks"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 522,
+                        lineNumber: 523,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1732,7 +1733,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 children: idx + 1
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 526,
+                                lineNumber: 527,
                                 columnNumber: 20
                             }, this),
                             " / ",
@@ -1740,13 +1741,13 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 525,
+                        lineNumber: 526,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 521,
+                lineNumber: 522,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1761,12 +1762,12 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 532,
+                    lineNumber: 533,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 531,
+                lineNumber: 532,
                 columnNumber: 7
             }, this),
             streakCount >= 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1782,7 +1783,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         className: "w-4 h-4"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 546,
+                        lineNumber: 547,
                         columnNumber: 11
                     }, this),
                     " ",
@@ -1791,7 +1792,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 541,
+                lineNumber: 542,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1808,7 +1809,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 553,
+                                lineNumber: 554,
                                 columnNumber: 11
                             }, this),
                             q.topic && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1819,7 +1820,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 554,
+                                lineNumber: 555,
                                 columnNumber: 23
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1827,7 +1828,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 children: q.difficulty
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 555,
+                                lineNumber: 556,
                                 columnNumber: 11
                             }, this),
                             q.previouslyCorrect && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1835,13 +1836,13 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 children: "✓ solved"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 560,
+                                lineNumber: 561,
                                 columnNumber: 35
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 552,
+                        lineNumber: 553,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1849,7 +1850,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         children: q.questionText
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 562,
+                        lineNumber: 563,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$notes$2d$bookmarks$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["QuestionNotePanel"], {
@@ -1859,13 +1860,13 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         weekNumber: week.number
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 563,
+                        lineNumber: 564,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 551,
+                lineNumber: 552,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1883,7 +1884,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 children: opt.key
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 583,
+                                lineNumber: 584,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1891,33 +1892,33 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                 children: opt.text
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 588,
+                                lineNumber: 589,
                                 columnNumber: 15
                             }, this),
                             isCorrect1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                 className: "w-5 h-5 text-emerald-400"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 589,
+                                lineNumber: 590,
                                 columnNumber: 29
                             }, this),
                             isWrongPick && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
                                 className: "w-5 h-5 text-red-400"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 590,
+                                lineNumber: 591,
                                 columnNumber: 31
                             }, this)
                         ]
                     }, opt.key, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 572,
+                        lineNumber: 573,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 567,
+                lineNumber: 568,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1945,7 +1946,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                 className: "w-5 h-5 text-emerald-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 607,
+                                                lineNumber: 608,
                                                 columnNumber: 21
                                             }, this),
                                             " Correct! +",
@@ -1958,7 +1959,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                 className: "w-5 h-5 text-amber-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 609,
+                                                lineNumber: 610,
                                                 columnNumber: 21
                                             }, this),
                                             " Not quite — but you learned something!"
@@ -1966,7 +1967,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 605,
+                                    lineNumber: 606,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1974,13 +1975,13 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                     children: result.explanation
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 612,
+                                    lineNumber: 613,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 604,
+                            lineNumber: 605,
                             columnNumber: 13
                         }, this),
                         result.isCorrect && (result.whyWrongA || result.whyWrongB || result.whyWrongC || result.whyWrongD) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1993,14 +1994,14 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             className: "w-4 h-4 text-amber-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 618,
+                                            lineNumber: 619,
                                             columnNumber: 19
                                         }, this),
                                         " Why the other options are wrong:"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 617,
+                                    lineNumber: 618,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -2013,7 +2014,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "A:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 621,
+                                                    lineNumber: 622,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2021,7 +2022,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 621,
+                                            lineNumber: 622,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongB && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2031,7 +2032,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "B:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 622,
+                                                    lineNumber: 623,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2039,7 +2040,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 622,
+                                            lineNumber: 623,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongC && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2049,7 +2050,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "C:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 623,
+                                                    lineNumber: 624,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2057,7 +2058,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 623,
+                                            lineNumber: 624,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongD && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2067,7 +2068,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "D:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 624,
+                                                    lineNumber: 625,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2075,19 +2076,19 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 624,
+                                            lineNumber: 625,
                                             columnNumber: 40
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 620,
+                                    lineNumber: 621,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 616,
+                            lineNumber: 617,
                             columnNumber: 15
                         }, this),
                         !result.isCorrect && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2100,14 +2101,14 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             className: "w-4 h-4 text-red-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 631,
+                                            lineNumber: 632,
                                             columnNumber: 19
                                         }, this),
                                         " Why others are wrong:"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 630,
+                                    lineNumber: 631,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -2120,7 +2121,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "A:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 634,
+                                                    lineNumber: 635,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2128,7 +2129,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 634,
+                                            lineNumber: 635,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongB && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2138,7 +2139,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "B:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 635,
+                                                    lineNumber: 636,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2146,7 +2147,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 635,
+                                            lineNumber: 636,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongC && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2156,7 +2157,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "C:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 636,
+                                                    lineNumber: 637,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2164,7 +2165,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 636,
+                                            lineNumber: 637,
                                             columnNumber: 40
                                         }, this),
                                         result.whyWrongD && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2174,7 +2175,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                                     children: "D:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 637,
+                                                    lineNumber: 638,
                                                     columnNumber: 44
                                                 }, this),
                                                 " ",
@@ -2182,30 +2183,30 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 637,
+                                            lineNumber: 638,
                                             columnNumber: 40
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 633,
+                                    lineNumber: 634,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 629,
+                            lineNumber: 630,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 599,
+                    lineNumber: 600,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 597,
+                lineNumber: 598,
                 columnNumber: 7
             }, this),
             result && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -2224,13 +2225,13 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 653,
+                        lineNumber: 654,
                         columnNumber: 78
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 647,
+                lineNumber: 648,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2243,7 +2244,7 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 659,
+                        lineNumber: 660,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2253,19 +2254,19 @@ function PracticePlayView({ user, week, onExit, onLevelUp }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 660,
+                        lineNumber: 661,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 658,
+                lineNumber: 659,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 520,
+        lineNumber: 521,
         columnNumber: 5
     }, this);
 }
@@ -2297,12 +2298,12 @@ function MockListView({ dash, onSelectMock }) {
             className: "w-8 h-8 animate-spin text-amber-400"
         }, void 0, false, {
             fileName: "[project]/src/components/student-app.tsx",
-            lineNumber: 681,
+            lineNumber: 682,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 681,
+        lineNumber: 682,
         columnNumber: 23
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2314,14 +2315,14 @@ function MockListView({ dash, onSelectMock }) {
                         className: "w-6 h-6 text-amber-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 686,
+                        lineNumber: 687,
                         columnNumber: 9
                     }, this),
                     " Mock Test Arena"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 685,
+                lineNumber: 686,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2329,7 +2330,7 @@ function MockListView({ dash, onSelectMock }) {
                 children: "Test your knowledge under time pressure. Earn massive XP for perfect scores!"
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 688,
+                lineNumber: 689,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2361,7 +2362,7 @@ function MockListView({ dash, onSelectMock }) {
                                             children: m.weekNumber === null ? "🏆" : "🎯"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 703,
+                                            lineNumber: 704,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2371,7 +2372,7 @@ function MockListView({ dash, onSelectMock }) {
                                                     children: m.weekNumber === null ? "Grand Final" : `Week ${m.weekNumber}`
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 707,
+                                                    lineNumber: 708,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2379,24 +2380,24 @@ function MockListView({ dash, onSelectMock }) {
                                                     children: m.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 710,
+                                                    lineNumber: 711,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 706,
+                                            lineNumber: 707,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 702,
+                                    lineNumber: 703,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 701,
+                                lineNumber: 702,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2404,7 +2405,7 @@ function MockListView({ dash, onSelectMock }) {
                                 children: m.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 714,
+                                lineNumber: 715,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2421,7 +2422,7 @@ function MockListView({ dash, onSelectMock }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 717,
+                                                lineNumber: 718,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2432,13 +2433,13 @@ function MockListView({ dash, onSelectMock }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 718,
+                                                lineNumber: 719,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 716,
+                                        lineNumber: 717,
                                         columnNumber: 17
                                     }, this),
                                     attempted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2450,31 +2451,31 @@ function MockListView({ dash, onSelectMock }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 721,
+                                        lineNumber: 722,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 715,
+                                lineNumber: 716,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, m.id, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 693,
+                        lineNumber: 694,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 689,
+                lineNumber: 690,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 684,
+        lineNumber: 685,
         columnNumber: 5
     }, this);
 }
@@ -2608,12 +2609,12 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
             className: "w-8 h-8 animate-spin text-amber-400"
         }, void 0, false, {
             fileName: "[project]/src/components/student-app.tsx",
-            lineNumber: 821,
+            lineNumber: 822,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 821,
+        lineNumber: 822,
         columnNumber: 23
     }, this);
     const mins = Math.floor(timeLeft / 60);
@@ -2634,7 +2635,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                     children: mockTest.title
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 833,
+                                    lineNumber: 834,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2647,13 +2648,13 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 834,
+                                    lineNumber: 835,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 832,
+                            lineNumber: 833,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2666,7 +2667,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 838,
+                                            lineNumber: 839,
                                             columnNumber: 15
                                         }, this),
                                         String(mins).padStart(2, "0"),
@@ -2675,7 +2676,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 837,
+                                    lineNumber: 838,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2685,24 +2686,24 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                     children: submitting ? "Submitting..." : "Submit"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 841,
+                                    lineNumber: 842,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 836,
+                            lineNumber: 837,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 831,
+                    lineNumber: 832,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 830,
+                lineNumber: 831,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2712,12 +2713,12 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                     mockTestTitle: mockTest.title
                 }, void 0, false, {
                     fileName: "[project]/src/components/student-app.tsx",
-                    lineNumber: 854,
+                    lineNumber: 855,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 853,
+                lineNumber: 854,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2735,7 +2736,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                         children: i + 1
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 864,
+                                        lineNumber: 865,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2743,13 +2744,13 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                         children: q.questionText
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 865,
+                                        lineNumber: 866,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 863,
+                                lineNumber: 864,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2783,7 +2784,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                                 children: opt.k
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 883,
+                                                lineNumber: 884,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2791,30 +2792,30 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                                 children: opt.t
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 884,
+                                                lineNumber: 885,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, opt.k, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 874,
+                                        lineNumber: 875,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 867,
+                                lineNumber: 868,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, q.id, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 862,
+                        lineNumber: 863,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 858,
+                lineNumber: 859,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2825,7 +2826,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                         children: allAnswered ? "✅ All answered!" : `${questions.length - answeredCount} unanswered`
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 895,
+                        lineNumber: 896,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2838,7 +2839,7 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                                     className: "w-4 h-4 animate-spin"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 903,
+                                    lineNumber: 904,
                                     columnNumber: 27
                                 }, this),
                                 " Submitting..."
@@ -2848,19 +2849,19 @@ function MockPlayView({ user, mockTest, onComplete, onExit }) {
                         }, void 0, false)
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 898,
+                        lineNumber: 899,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 894,
+                lineNumber: 895,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 828,
+        lineNumber: 829,
         columnNumber: 5
     }, this);
 }
@@ -2939,7 +2940,7 @@ function MockResultView({ result, onExit, onHome }) {
                         children: emoji
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 936,
+                        lineNumber: 937,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2947,7 +2948,7 @@ function MockResultView({ result, onExit, onHome }) {
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 942,
+                        lineNumber: 943,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2959,7 +2960,7 @@ function MockResultView({ result, onExit, onHome }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 943,
+                        lineNumber: 944,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2970,7 +2971,7 @@ function MockResultView({ result, onExit, onHome }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 944,
+                        lineNumber: 945,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2980,7 +2981,7 @@ function MockResultView({ result, onExit, onHome }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 946,
+                                lineNumber: 947,
                                 columnNumber: 11
                             }, this),
                             " +",
@@ -2989,7 +2990,7 @@ function MockResultView({ result, onExit, onHome }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 945,
+                        lineNumber: 946,
                         columnNumber: 9
                     }, this),
                     newBadges?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3014,18 +3015,18 @@ function MockResultView({ result, onExit, onHome }) {
                                 ]
                             }, b.id, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 951,
+                                lineNumber: 952,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 949,
+                        lineNumber: 950,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 931,
+                lineNumber: 932,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3038,14 +3039,14 @@ function MockResultView({ result, onExit, onHome }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 967,
+                                lineNumber: 968,
                                 columnNumber: 67
                             }, this),
                             " Detailed Review"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 967,
+                        lineNumber: 968,
                         columnNumber: 9
                     }, this),
                     detail.map((d, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3059,7 +3060,7 @@ function MockResultView({ result, onExit, onHome }) {
                                             children: i + 1
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 971,
+                                            lineNumber: 972,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3067,26 +3068,26 @@ function MockResultView({ result, onExit, onHome }) {
                                             children: d.questionText
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 972,
+                                            lineNumber: 973,
                                             columnNumber: 15
                                         }, this),
                                         d.isCorrect ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                             className: "w-5 h-5 text-emerald-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 973,
+                                            lineNumber: 974,
                                             columnNumber: 30
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
                                             className: "w-5 h-5 text-red-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 973,
+                                            lineNumber: 974,
                                             columnNumber: 86
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 970,
+                                    lineNumber: 971,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3119,7 +3120,7 @@ function MockResultView({ result, onExit, onHome }) {
                                                     children: opt.k
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 983,
+                                                    lineNumber: 984,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3127,33 +3128,33 @@ function MockResultView({ result, onExit, onHome }) {
                                                     children: opt.t
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 984,
+                                                    lineNumber: 985,
                                                     columnNumber: 21
                                                 }, this),
                                                 correct && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                                     className: "w-3 h-3 text-emerald-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 985,
+                                                    lineNumber: 986,
                                                     columnNumber: 33
                                                 }, this),
                                                 chosen && !correct && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
                                                     className: "w-3 h-3 text-red-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 986,
+                                                    lineNumber: 987,
                                                     columnNumber: 44
                                                 }, this)
                                             ]
                                         }, opt.k, true, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 982,
+                                            lineNumber: 983,
                                             columnNumber: 19
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 975,
+                                    lineNumber: 976,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3164,7 +3165,7 @@ function MockResultView({ result, onExit, onHome }) {
                                             children: "Explanation:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 991,
+                                            lineNumber: 992,
                                             columnNumber: 55
                                         }, this),
                                         " ",
@@ -3172,19 +3173,19 @@ function MockResultView({ result, onExit, onHome }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 991,
+                                    lineNumber: 992,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, d.questionId, true, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 969,
+                            lineNumber: 970,
                             columnNumber: 11
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 966,
+                lineNumber: 967,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3196,7 +3197,7 @@ function MockResultView({ result, onExit, onHome }) {
                         children: "Back to Mock Tests"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 997,
+                        lineNumber: 998,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3205,19 +3206,19 @@ function MockResultView({ result, onExit, onHome }) {
                         children: "Go Home"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1000,
+                        lineNumber: 1001,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 996,
+                lineNumber: 997,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 930,
+        lineNumber: 931,
         columnNumber: 5
     }, this);
 }
@@ -3253,12 +3254,12 @@ function LeaderboardView({ user }) {
             className: "w-8 h-8 animate-spin text-amber-400"
         }, void 0, false, {
             fileName: "[project]/src/components/student-app.tsx",
-            lineNumber: 1025,
+            lineNumber: 1026,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1025,
+        lineNumber: 1026,
         columnNumber: 23
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3273,14 +3274,14 @@ function LeaderboardView({ user }) {
                                 className: "w-6 h-6 text-yellow-400"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1031,
+                                lineNumber: 1032,
                                 columnNumber: 11
                             }, this),
                             " Leaderboard"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1030,
+                        lineNumber: 1031,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3292,7 +3293,7 @@ function LeaderboardView({ user }) {
                                 children: "My College"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1034,
+                                lineNumber: 1035,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3301,19 +3302,19 @@ function LeaderboardView({ user }) {
                                 children: "All Colleges"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1037,
+                                lineNumber: 1038,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1033,
+                        lineNumber: 1034,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1029,
+                lineNumber: 1030,
                 columnNumber: 7
             }, this),
             data?.myRank && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3326,7 +3327,7 @@ function LeaderboardView({ user }) {
                                 children: "Your Rank"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1046,
+                                lineNumber: 1047,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3337,26 +3338,26 @@ function LeaderboardView({ user }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1047,
+                                lineNumber: 1048,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1045,
+                        lineNumber: 1046,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"], {
                         className: "w-12 h-12 text-amber-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1049,
+                        lineNumber: 1050,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1044,
+                lineNumber: 1045,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3380,7 +3381,7 @@ function LeaderboardView({ user }) {
                                 children: u.rank
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1069,
+                                lineNumber: 1070,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3395,13 +3396,13 @@ function LeaderboardView({ user }) {
                                                 children: "YOU"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1077,
+                                                lineNumber: 1078,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1075,
+                                        lineNumber: 1076,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3413,13 +3414,13 @@ function LeaderboardView({ user }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1079,
+                                        lineNumber: 1080,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1074,
+                                lineNumber: 1075,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3432,7 +3433,7 @@ function LeaderboardView({ user }) {
                                                 className: "w-3 h-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1083,
+                                                lineNumber: 1084,
                                                 columnNumber: 17
                                             }, this),
                                             " ",
@@ -3440,7 +3441,7 @@ function LeaderboardView({ user }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1082,
+                                        lineNumber: 1083,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3454,30 +3455,30 @@ function LeaderboardView({ user }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1085,
+                                        lineNumber: 1086,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1081,
+                                lineNumber: 1082,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, u.id, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1055,
+                        lineNumber: 1056,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1053,
+                lineNumber: 1054,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1028,
+        lineNumber: 1029,
         columnNumber: 5
     }, this);
 }
@@ -3578,14 +3579,14 @@ function BadgesView({ dash }) {
                         className: "w-6 h-6 text-pink-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1120,
+                        lineNumber: 1121,
                         columnNumber: 9
                     }, this),
                     " Badge Collection"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1119,
+                lineNumber: 1120,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3599,7 +3600,7 @@ function BadgesView({ dash }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1122,
+                lineNumber: 1123,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3629,7 +3630,7 @@ function BadgesView({ dash }) {
                                 children: isEarned ? b.icon : "🔒"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1139,
+                                lineNumber: 1140,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3637,7 +3638,7 @@ function BadgesView({ dash }) {
                                 children: b.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1142,
+                                lineNumber: 1143,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3645,7 +3646,7 @@ function BadgesView({ dash }) {
                                 children: b.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1143,
+                                lineNumber: 1144,
                                 columnNumber: 15
                             }, this),
                             isEarned && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3653,25 +3654,25 @@ function BadgesView({ dash }) {
                                 children: "✓ Unlocked"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1145,
+                                lineNumber: 1146,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, b.name, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1128,
+                        lineNumber: 1129,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1123,
+                lineNumber: 1124,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1118,
+        lineNumber: 1119,
         columnNumber: 5
     }, this);
 }
@@ -3687,14 +3688,14 @@ function HistoryView({ dash }) {
                         className: "w-6 h-6 text-violet-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1162,
+                        lineNumber: 1163,
                         columnNumber: 9
                     }, this),
                     " Your Activity"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1161,
+                lineNumber: 1162,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3702,7 +3703,7 @@ function HistoryView({ dash }) {
                 children: "Track your recent attempts and progress over time."
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1164,
+                lineNumber: 1165,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3715,14 +3716,14 @@ function HistoryView({ dash }) {
                                 className: "w-4 h-4 text-purple-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1168,
+                                lineNumber: 1169,
                                 columnNumber: 72
                             }, this),
                             " Recent Practice Attempts"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1168,
+                        lineNumber: 1169,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3732,7 +3733,7 @@ function HistoryView({ dash }) {
                             children: "No attempts yet — start practicing!"
                         }, void 0, false, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 1171,
+                            lineNumber: 1172,
                             columnNumber: 13
                         }, this) : dash.recentAttempts.map((a)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: `rounded-xl p-3 border flex items-start gap-3 ${a.isCorrect ? "bg-emerald-500/5 border-emerald-400/20" : "bg-red-500/5 border-red-400/20"}`,
@@ -3743,18 +3744,18 @@ function HistoryView({ dash }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1176,
+                                            lineNumber: 1177,
                                             columnNumber: 34
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1176,
+                                            lineNumber: 1177,
                                             columnNumber: 73
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1175,
+                                        lineNumber: 1176,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3765,7 +3766,7 @@ function HistoryView({ dash }) {
                                                 children: a.question?.questionText
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1179,
+                                                lineNumber: 1180,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3780,13 +3781,13 @@ function HistoryView({ dash }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1180,
+                                                lineNumber: 1181,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1178,
+                                        lineNumber: 1179,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3794,24 +3795,24 @@ function HistoryView({ dash }) {
                                         children: new Date(a.timestamp).toLocaleDateString()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1184,
+                                        lineNumber: 1185,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, a.id, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1174,
+                                lineNumber: 1175,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1169,
+                        lineNumber: 1170,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1167,
+                lineNumber: 1168,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3823,14 +3824,14 @@ function HistoryView({ dash }) {
                                 className: "w-4 h-4 text-purple-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1195,
+                                lineNumber: 1196,
                                 columnNumber: 72
                             }, this),
                             " Activity Log"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1195,
+                        lineNumber: 1196,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3840,7 +3841,7 @@ function HistoryView({ dash }) {
                             children: "No activity yet."
                         }, void 0, false, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 1198,
+                            lineNumber: 1199,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "space-y-1.5",
@@ -3852,7 +3853,7 @@ function HistoryView({ dash }) {
                                             children: new Date(a.timestamp).toLocaleString()
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1203,
+                                            lineNumber: 1204,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3860,7 +3861,7 @@ function HistoryView({ dash }) {
                                             children: a.action
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1204,
+                                            lineNumber: 1205,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3868,35 +3869,35 @@ function HistoryView({ dash }) {
                                             children: a.details
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1205,
+                                            lineNumber: 1206,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, i, true, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 1202,
+                                    lineNumber: 1203,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/components/student-app.tsx",
-                            lineNumber: 1200,
+                            lineNumber: 1201,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1196,
+                        lineNumber: 1197,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1194,
+                lineNumber: 1195,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1160,
+        lineNumber: 1161,
         columnNumber: 5
     }, this);
 }
@@ -3987,12 +3988,12 @@ function ProfileView({ user, onUpdated }) {
             className: "w-8 h-8 animate-spin text-purple-400"
         }, void 0, false, {
             fileName: "[project]/src/components/student-app.tsx",
-            lineNumber: 1268,
+            lineNumber: 1269,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1268,
+        lineNumber: 1269,
         columnNumber: 23
     }, this);
     if (!profile) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4000,7 +4001,7 @@ function ProfileView({ user, onUpdated }) {
         children: "Failed to load profile."
     }, void 0, false, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1269,
+        lineNumber: 1270,
         columnNumber: 24
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4013,14 +4014,14 @@ function ProfileView({ user, onUpdated }) {
                         className: "w-6 h-6 text-pink-300"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1274,
+                        lineNumber: 1275,
                         columnNumber: 9
                     }, this),
                     " My Profile"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1273,
+                lineNumber: 1274,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4028,7 +4029,7 @@ function ProfileView({ user, onUpdated }) {
                 children: "View and edit your personal information."
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1276,
+                lineNumber: 1277,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4042,7 +4043,7 @@ function ProfileView({ user, onUpdated }) {
                                 children: profile.name?.charAt(0).toUpperCase() || "?"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1281,
+                                lineNumber: 1282,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4053,7 +4054,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: profile.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1285,
+                                        lineNumber: 1286,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4061,7 +4062,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: profile.email || profile.username
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1286,
+                                        lineNumber: 1287,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4072,7 +4073,7 @@ function ProfileView({ user, onUpdated }) {
                                                 children: profile.role
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1288,
+                                                lineNumber: 1289,
                                                 columnNumber: 15
                                             }, this),
                                             profile.authMethod === "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4080,19 +4081,19 @@ function ProfileView({ user, onUpdated }) {
                                                 children: "LOCAL"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1290,
+                                                lineNumber: 1291,
                                                 columnNumber: 50
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1287,
+                                        lineNumber: 1288,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1284,
+                                lineNumber: 1285,
                                 columnNumber: 11
                             }, this),
                             !editing && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4103,20 +4104,20 @@ function ProfileView({ user, onUpdated }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1295,
+                                        lineNumber: 1296,
                                         columnNumber: 15
                                     }, this),
                                     " Edit"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1294,
+                                lineNumber: 1295,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1280,
+                        lineNumber: 1281,
                         columnNumber: 9
                     }, this),
                     !editing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4128,7 +4129,7 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.college?.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1303,
+                                lineNumber: 1304,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoRow, {
@@ -4137,7 +4138,7 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.department?.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1304,
+                                lineNumber: 1305,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoRow, {
@@ -4146,7 +4147,7 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.mentor?.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1305,
+                                lineNumber: 1306,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoRow, {
@@ -4155,7 +4156,7 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.rollNumber
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1306,
+                                lineNumber: 1307,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoRow, {
@@ -4164,7 +4165,7 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.email
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1307,
+                                lineNumber: 1308,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoRow, {
@@ -4173,13 +4174,13 @@ function ProfileView({ user, onUpdated }) {
                                 value: profile.phone
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1308,
+                                lineNumber: 1309,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1302,
+                        lineNumber: 1303,
                         columnNumber: 11
                     }, this) : /* Edit form */ /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                         onSubmit: save,
@@ -4192,7 +4193,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: "Full Name *"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1314,
+                                        lineNumber: 1315,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4205,13 +4206,13 @@ function ProfileView({ user, onUpdated }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1315,
+                                        lineNumber: 1316,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1313,
+                                lineNumber: 1314,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4221,7 +4222,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: "KTU Register Number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1318,
+                                        lineNumber: 1319,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4234,13 +4235,13 @@ function ProfileView({ user, onUpdated }) {
                                         placeholder: "e.g., IES21CSE001"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1319,
+                                        lineNumber: 1320,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1317,
+                                lineNumber: 1318,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4250,7 +4251,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: "Phone"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1322,
+                                        lineNumber: 1323,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4263,13 +4264,13 @@ function ProfileView({ user, onUpdated }) {
                                         placeholder: "Your phone number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1323,
+                                        lineNumber: 1324,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1321,
+                                lineNumber: 1322,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4283,13 +4284,13 @@ function ProfileView({ user, onUpdated }) {
                                                 children: "(cannot be changed)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1326,
+                                                lineNumber: 1327,
                                                 columnNumber: 87
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1326,
+                                        lineNumber: 1327,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4298,13 +4299,13 @@ function ProfileView({ user, onUpdated }) {
                                         className: "w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1327,
+                                        lineNumber: 1328,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1325,
+                                lineNumber: 1326,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4318,13 +4319,13 @@ function ProfileView({ user, onUpdated }) {
                                                 children: "(contact admin to change)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1330,
+                                                lineNumber: 1331,
                                                 columnNumber: 102
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1330,
+                                        lineNumber: 1331,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4333,13 +4334,13 @@ function ProfileView({ user, onUpdated }) {
                                         className: "w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1331,
+                                        lineNumber: 1332,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1329,
+                                lineNumber: 1330,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4352,14 +4353,14 @@ function ProfileView({ user, onUpdated }) {
                                                 className: "w-4 h-4 text-amber-300"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/student-app.tsx",
-                                                lineNumber: 1337,
+                                                lineNumber: 1338,
                                                 columnNumber: 17
                                             }, this),
                                             " Change Password"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1336,
+                                        lineNumber: 1337,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4375,12 +4376,12 @@ function ProfileView({ user, onUpdated }) {
                                             placeholder: "Current password (required to change)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1340,
+                                            lineNumber: 1341,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1339,
+                                        lineNumber: 1340,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4395,18 +4396,18 @@ function ProfileView({ user, onUpdated }) {
                                             placeholder: "New password (min 6 chars) — leave blank to keep"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1343,
+                                            lineNumber: 1344,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1342,
+                                        lineNumber: 1343,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1335,
+                                lineNumber: 1336,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4428,7 +4429,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1348,
+                                        lineNumber: 1349,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4439,7 +4440,7 @@ function ProfileView({ user, onUpdated }) {
                                             className: "w-4 h-4 animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1352,
+                                            lineNumber: 1353,
                                             columnNumber: 27
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                             children: [
@@ -4447,7 +4448,7 @@ function ProfileView({ user, onUpdated }) {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/student-app.tsx",
-                                                    lineNumber: 1352,
+                                                    lineNumber: 1353,
                                                     columnNumber: 76
                                                 }, this),
                                                 " Save Changes"
@@ -4455,25 +4456,25 @@ function ProfileView({ user, onUpdated }) {
                                         }, void 0, true)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1351,
+                                        lineNumber: 1352,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1347,
+                                lineNumber: 1348,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1312,
+                        lineNumber: 1313,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1279,
+                lineNumber: 1280,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4486,14 +4487,14 @@ function ProfileView({ user, onUpdated }) {
                                 className: "w-4 h-4 text-amber-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1361,
+                                lineNumber: 1362,
                                 columnNumber: 74
                             }, this),
                             " Account Details"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1361,
+                        lineNumber: 1362,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4506,7 +4507,7 @@ function ProfileView({ user, onUpdated }) {
                                         children: "Account Type:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1363,
+                                        lineNumber: 1364,
                                         columnNumber: 16
                                     }, this),
                                     " ",
@@ -4515,33 +4516,8 @@ function ProfileView({ user, onUpdated }) {
                                         children: profile.authMethod
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1363,
+                                        lineNumber: 1364,
                                         columnNumber: 69
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1363,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-white/50",
-                                        children: "Status:"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1364,
-                                        columnNumber: 16
-                                    }, this),
-                                    " ",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: `font-bold ${profile.active ? "text-emerald-300" : "text-red-300"}`,
-                                        children: profile.active ? "Active" : "Inactive"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/student-app.tsx",
-                                        lineNumber: 1364,
-                                        columnNumber: 63
                                     }, this)
                                 ]
                             }, void 0, true, {
@@ -4553,7 +4529,7 @@ function ProfileView({ user, onUpdated }) {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-white/50",
-                                        children: "Joined:"
+                                        children: "Status:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
                                         lineNumber: 1365,
@@ -4561,8 +4537,8 @@ function ProfileView({ user, onUpdated }) {
                                     }, this),
                                     " ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "font-bold text-white/80",
-                                        children: new Date(profile.createdAt).toLocaleDateString()
+                                        className: `font-bold ${profile.active ? "text-emerald-300" : "text-red-300"}`,
+                                        children: profile.active ? "Active" : "Inactive"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
                                         lineNumber: 1365,
@@ -4578,7 +4554,7 @@ function ProfileView({ user, onUpdated }) {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-white/50",
-                                        children: "Last Login:"
+                                        children: "Joined:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
                                         lineNumber: 1366,
@@ -4587,39 +4563,267 @@ function ProfileView({ user, onUpdated }) {
                                     " ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "font-bold text-white/80",
-                                        children: profile.lastLoginAt ? new Date(profile.lastLoginAt).toLocaleString() : "—"
+                                        children: new Date(profile.createdAt).toLocaleDateString()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/student-app.tsx",
                                         lineNumber: 1366,
-                                        columnNumber: 67
+                                        columnNumber: 63
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/student-app.tsx",
                                 lineNumber: 1366,
                                 columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-white/50",
+                                        children: "Last Login:"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/student-app.tsx",
+                                        lineNumber: 1367,
+                                        columnNumber: 16
+                                    }, this),
+                                    " ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "font-bold text-white/80",
+                                        children: profile.lastLoginAt ? new Date(profile.lastLoginAt).toLocaleString() : "—"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/student-app.tsx",
+                                        lineNumber: 1367,
+                                        columnNumber: 67
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1367,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1362,
+                        lineNumber: 1363,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1360,
+                lineNumber: 1361,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(DeleteAccountSection, {
+                user: user,
+                onLogout: onUpdated
+            }, void 0, false, {
+                fileName: "[project]/src/components/student-app.tsx",
+                lineNumber: 1372,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1272,
+        lineNumber: 1273,
         columnNumber: 5
     }, this);
 }
 _s6(ProfileView, "FNjLc1MJs73h1Dbw1RBy88mnRKQ=");
 _c12 = ProfileView;
+function DeleteAccountSection({ user, onLogout }) {
+    _s7();
+    const [showConfirm, setShowConfirm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    async function deleteAccount(e) {
+        e.preventDefault();
+        if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, and XP. This cannot be undone.")) return;
+        setLoading(true);
+        try {
+            const res = await fetch("/api/student/delete-account", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    currentPassword: password
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(data.error);
+                return;
+            }
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Account deleted. Goodbye! 👋");
+            setTimeout(()=>onLogout(), 1000);
+        } finally{
+            setLoading(false);
+        }
+    }
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "rounded-2xl bg-red-500/5 border border-red-400/20 p-4",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                className: "text-sm font-bold mb-2 flex items-center gap-1.5 text-red-300",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__["AlertTriangle"], {
+                        className: "w-4 h-4"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1402,
+                        columnNumber: 9
+                    }, this),
+                    " Danger Zone"
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/student-app.tsx",
+                lineNumber: 1401,
+                columnNumber: 7
+            }, this),
+            !showConfirm ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-white/50 mb-3",
+                        children: "Permanently delete your account and all associated data. This action cannot be undone."
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1406,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setShowConfirm(true),
+                        className: "px-4 py-2 rounded-xl bg-red-500/20 border border-red-400/40 text-red-300 font-bold text-sm flex items-center gap-2 hover:bg-red-500/30 transition",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                className: "w-4 h-4"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1408,
+                                columnNumber: 13
+                            }, this),
+                            " Delete My Account"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1407,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/student-app.tsx",
+                lineNumber: 1405,
+                columnNumber: 9
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                onSubmit: deleteAccount,
+                className: "space-y-3",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-red-300/80 bg-red-500/10 p-2 rounded-lg",
+                        children: "⚠️ This will permanently delete your account, all practice attempts, mock test results, badges, XP, and notes. This cannot be undone."
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1413,
+                        columnNumber: 11
+                    }, this),
+                    user.authMethod === "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                className: "text-xs font-medium text-white/70 mb-1.5 block",
+                                children: "Enter your password to confirm"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1418,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "password",
+                                value: password,
+                                onChange: (e)=>setPassword(e.target.value),
+                                className: "w-full px-4 py-2.5 rounded-xl bg-white/5 border border-red-400/30 text-white text-sm focus:outline-none focus:border-red-400",
+                                placeholder: "Your password",
+                                required: true
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1419,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1417,
+                        columnNumber: 13
+                    }, this),
+                    user.authMethod !== "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-white/50",
+                        children: "Click the button below to permanently delete your account."
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1423,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex gap-2",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "button",
+                                onClick: ()=>{
+                                    setShowConfirm(false);
+                                    setPassword("");
+                                },
+                                className: "flex-1 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-sm hover:bg-white/15 transition",
+                                children: "Cancel"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1426,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "submit",
+                                disabled: loading,
+                                className: "flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60",
+                                children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                    className: "w-4 h-4 animate-spin"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/student-app.tsx",
+                                    lineNumber: 1430,
+                                    columnNumber: 26
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                            className: "w-4 h-4"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/student-app.tsx",
+                                            lineNumber: 1430,
+                                            columnNumber: 75
+                                        }, this),
+                                        " Yes, Delete Forever"
+                                    ]
+                                }, void 0, true)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/student-app.tsx",
+                                lineNumber: 1429,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/student-app.tsx",
+                        lineNumber: 1425,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/student-app.tsx",
+                lineNumber: 1412,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/components/student-app.tsx",
+        lineNumber: 1400,
+        columnNumber: 5
+    }, this);
+}
+_s7(DeleteAccountSection, "AlHTL/SyzTjd95fTXZVHigzxTgI=");
+_c13 = DeleteAccountSection;
 function InfoRow({ icon: Icon, label, value }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-start gap-2.5 p-2.5 rounded-xl bg-white/5",
@@ -4628,7 +4832,7 @@ function InfoRow({ icon: Icon, label, value }) {
                 className: "w-4 h-4 text-white/40 mt-0.5 shrink-0"
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1376,
+                lineNumber: 1442,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4639,7 +4843,7 @@ function InfoRow({ icon: Icon, label, value }) {
                         children: label
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1378,
+                        lineNumber: 1444,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4647,29 +4851,29 @@ function InfoRow({ icon: Icon, label, value }) {
                         children: value || "—"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1379,
+                        lineNumber: 1445,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1377,
+                lineNumber: 1443,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1375,
+        lineNumber: 1441,
         columnNumber: 5
     }, this);
 }
-_c13 = InfoRow;
+_c14 = InfoRow;
 // ============== HELPERS ==============
 function xpForLevel(level) {
     if (level <= 1) return 0;
     return (level - 1) * level * 50;
 }
-var _c, _c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10, _c11, _c12, _c13;
+var _c, _c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10, _c11, _c12, _c13, _c14;
 __turbopack_context__.k.register(_c, "StudentApp");
 __turbopack_context__.k.register(_c1, "UserStatPills");
 __turbopack_context__.k.register(_c2, "HomeView");
@@ -4683,7 +4887,8 @@ __turbopack_context__.k.register(_c9, "LeaderboardView");
 __turbopack_context__.k.register(_c10, "BadgesView");
 __turbopack_context__.k.register(_c11, "HistoryView");
 __turbopack_context__.k.register(_c12, "ProfileView");
-__turbopack_context__.k.register(_c13, "InfoRow");
+__turbopack_context__.k.register(_c13, "DeleteAccountSection");
+__turbopack_context__.k.register(_c14, "InfoRow");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
