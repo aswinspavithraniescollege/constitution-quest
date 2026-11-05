@@ -681,7 +681,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           </button>
           <button
             type="button"
-            onClick={() => setMode("signup")}
+            onClick={() => { setMode("signup"); setRole("STUDENT"); }}
             className={`flex items-center justify-center gap-2 py-2 rounded-xl text-sm font-bold transition ${
               mode === "signup" ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white" : "text-white/60 hover:text-white"
             }`}
@@ -1162,7 +1162,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
               </button>
             )}
             {role !== "ADMIN" && (
-              <button onClick={() => setMode("signup")} className="text-purple-300 hover:text-purple-200 underline">
+              <button onClick={() => { setMode("signup"); setRole("STUDENT"); }} className="text-purple-300 hover:text-purple-200 underline">
                 Don't have an account? Sign up
               </button>
             )}
