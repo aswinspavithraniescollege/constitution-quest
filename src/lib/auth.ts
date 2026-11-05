@@ -24,11 +24,17 @@ function verifyToken(token: string): string | null {
   return null;
 }
 
-// Detect if the request is coming over HTTPS (preview URLs are HTTPS)
+// Detect if the request is coming over HTTPS.
+// Preview/production environments use HTTPS, localhost uses HTTP.
+// We check multiple headers to be safe.
 async function isHttps(): Promise<boolean> {
   const headerStore = await headers();
+  // Check x-forwarded-proto (set by Caddy, Nginx, etc.)
   const forwardedProto = headerStore.get("x-forwarded-proto");
-  if (forwardedProto === "https") return true;
+  if (forwardedProto && forwardedProto.includes("https")) return true;
+  // Check if the host is NOT localhost (preview/production = HTTPS)
+  const host = headerStore.get("host") || "";
+  if (!host.startsWith("localhost") && !host.startsWith("127.0.0.1")) return true;
   return false;
 }
 
@@ -84,4 +90,3 @@ export async function hashPassword(plain: string): Promise<string> {
 }
 
 export type SessionUser = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
-// trigger reload Thu Nov  5 05:30:26 UTC 2026

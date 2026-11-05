@@ -344,7 +344,7 @@ function CollegesTab({ colleges, onRefresh }: any) {
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Add College</>}
             </button>
           </form>
-          <p className="text-xs text-slate-400 mt-3">Each college has its own departments, mentors and students. Only you (admin) manage all colleges.</p>
+          <p className="text-xs text-slate-400 mt-3">Each college has its own departments, mentors and students. As the main admin, you can add and manage all colleges.</p>
         </div>
       </div>
 
