@@ -8,12 +8,14 @@ import {
   TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown,
   User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen
 } from "lucide-react";
+import { MockTestPlayer } from "@/components/mock-test-player";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showProfile, setShowProfile] = useState(false);
+  const [showMockTests, setShowMockTests] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -52,6 +54,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setShowMockTests(true)}
+              className="px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 text-sm font-bold flex items-center gap-2"
+              title="Test Mock Tests"
+            >
+              <Target className="w-4 h-4" /> <span className="hidden sm:inline">Test Mock Tests</span>
+            </button>
             <button
               onClick={() => setShowProfile(true)}
               className="px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-bold flex items-center gap-2"
@@ -108,6 +117,15 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
           </div>
         )}
       </main>
+
+      {/* Mock Test Player (full screen overlay) */}
+      {showMockTests && (
+        <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+            <MockTestPlayer user={user} onExit={() => setShowMockTests(false)} />
+          </div>
+        </div>
+      )}
 
       {/* Profile Edit Modal */}
       <AnimatePresence>

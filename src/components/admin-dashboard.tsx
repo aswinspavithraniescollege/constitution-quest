@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
 import { AnnouncementsManager } from "@/components/realtime/announcements";
+import { MockTestPlayer } from "@/components/mock-test-player";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -48,6 +49,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     { key: "mentors", label: "Mentors", icon: GraduationCap },
     { key: "students", label: "Students", icon: Users },
     { key: "exports", label: "Export Data", icon: Download },
+    { key: "mock-tests", label: "Test Mock Tests", icon: Target },
   ];
 
   return (
@@ -132,6 +134,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
+        {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
       </main>
     </div>
   );
