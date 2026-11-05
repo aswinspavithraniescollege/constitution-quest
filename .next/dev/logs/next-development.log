@@ -56,3 +56,26 @@ Import traces:
     ./src/components/mentor-dashboard.tsx [Client Component SSR]
     ./src/app/page.tsx [Client Component SSR]
     ./src/app/page.tsx [Server Component]
+[00:30:13.372] Browser ERROR   ./src/components/mentor-dashboard.tsx:289:11
+Parsing ecmascript source code failed
+  287 |             </div>
+  288 |           </form>
+> 289 |           {profile && <MentorDeleteAccount user={profile} onDeleted={onClose} />}
+      |           ^
+  290 |         </div>
+  291 |         ) : (
+  292 |           <div className="text-center py-12 text-slate-400">Failed to load profile.</div>
+
+Expected '</', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./src/components/mentor-dashboard.tsx [Client Component Browser]
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/mentor-dashboard.tsx [Client Component SSR]
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[00:31:01.824] Server  LOG     ✓ Compiled in 173ms

@@ -286,11 +286,10 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               </button>
             </div>
           </form>
-          {/* Delete Account Section */}
-          {profile && <MentorDeleteAccount user={profile} onDeleted={onClose} />}
         ) : (
           <div className="text-center py-12 text-slate-400">Failed to load profile.</div>
         )}
+        {profile && <MentorDeleteAccount user={profile} onDeleted={onClose} />}
       </motion.div>
     </motion.div>
   );
