@@ -105,7 +105,8 @@ export async function GET() {
   }
 
   // DM chat — students (and mentors) can DM others in the same department.
-  // We return a list of same-department students so the UI can render a picker.
+  // We return a list of same-department users (students + the mentor) so the
+  // UI can render a picker for private 1:1 DMs.
   let dmRecipients: { id: string; name: string; role: string }[] = [];
   let dmVisible = true;
   if (user.departmentId) {
@@ -113,13 +114,16 @@ export async function GET() {
     try {
       const peers = await db.user.findMany({
         where: {
-          role: "STUDENT",
-          active: true,
-          departmentId: user.departmentId,
+          // Include both students AND the mentor assigned to this department.
+          // (Admins/sub-admins are excluded — they're not part of the dept chat.)
+          OR: [
+            { role: "STUDENT", active: true, departmentId: user.departmentId },
+            { role: "MENTOR", active: true, departmentId: user.departmentId },
+          ],
           id: { not: user.id }, // exclude self
         },
         select: { id: true, name: true, role: true },
-        orderBy: { name: "asc" },
+        orderBy: [{ role: "asc" }, { name: "asc" }],
       });
       dmRecipients = peers;
     } catch (e) {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Loader2, MessageCircle, EyeOff, Users, User as UserIcon } from "lucide-react";
+import { Loader2, MessageCircle, EyeOff, Users, User as UserIcon, GraduationCap, ArrowLeft } from "lucide-react";
 import { ChatPanel } from "./chat-panel";
 import { chatIdFor } from "@/lib/chat";
 
@@ -15,22 +15,21 @@ type ChatConfig = {
   dm: { visible: boolean; recipients: DmRecipient[] };
 };
 
-// ChatView — fetches the chat config for the current user and renders tabs
-// for each visible chat. Used by students, mentors, and admins.
-//
-// Chat types (tabs shown depending on role + visibility):
-//   - dept:           students + mentor + admins in the same department
-//   - dept-students:  STUDENTS ONLY in the same department (no mentor/admin)
-//   - college:        everyone in the same college
-//   - global:         all users
-//   - mentor:         mentors only (same college)
-//   - dm:             private 1:1 — student picks a same-department peer
+const ROLE_BADGES: Record<string, { icon: any; color: string; label: string }> = {
+  MENTOR: { icon: GraduationCap, color: "bg-emerald-500/20 text-emerald-300 border-emerald-400/30", label: "Mentor" },
+  STUDENT: { icon: UserIcon, color: "bg-amber-500/20 text-amber-300 border-amber-400/30", label: "Student" },
+};
+
+// ChatView — fetches the chat config for the current user and renders either
+// the group chat tabs OR the DM recipient picker. A top-level toggle switches
+// between "Group Chats" and "Direct Messages".
 export function ChatView({ user }: { user: any }) {
   const [config, setConfig] = useState<ChatConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
-  // DM selection: the selected recipient's userId. When set, the DM chat panel
-  // is shown instead of the tab list.
+  // "groups" = show group chat tabs; "dm-list" = show DM recipient picker
+  const [view, setView] = useState<"groups" | "dm-list">("groups");
+  // When a DM recipient is selected, we show the DM chat panel.
   const [dmRecipient, setDmRecipient] = useState<DmRecipient | null>(null);
 
   useEffect(() => {
@@ -65,10 +64,7 @@ export function ChatView({ user }: { user: any }) {
     );
   }
 
-  // Only show chats that are visible (not toggled off by admin/mentor).
   const visibleChats = config.chats.filter(c => c.visible);
-
-  // Check if DMs are enabled and the user has recipients.
   const dmEnabled = config.dm.visible && config.dm.recipients.length > 0;
 
   if (visibleChats.length === 0 && !dmEnabled) {
@@ -81,20 +77,24 @@ export function ChatView({ user }: { user: any }) {
     );
   }
 
-  // If a DM recipient is selected, show the DM chat panel.
+  // If a DM recipient is selected, show the private 1:1 chat panel.
   if (dmRecipient && config.user.id) {
     const dmChatId = chatIdFor("dm", config.user.id, dmRecipient.id);
+    const RBadge = ROLE_BADGES[dmRecipient.role] || ROLE_BADGES.STUDENT;
     return (
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h2 className="text-xl font-black flex items-center gap-2">
             <UserIcon className="w-5 h-5 text-cyan-400" /> Direct message with {dmRecipient.name}
+            <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase flex items-center gap-1 ${RBadge.color}`}>
+              <RBadge.icon className="w-3 h-3" /> {RBadge.label}
+            </span>
           </h2>
           <button
             onClick={() => setDmRecipient(null)}
-            className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white text-sm font-bold"
+            className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white text-sm font-bold flex items-center gap-1"
           >
-            ← Back to chats
+            <ArrowLeft className="w-4 h-4" /> Back
           </button>
         </div>
         <ChatPanel
@@ -107,21 +107,98 @@ export function ChatView({ user }: { user: any }) {
     );
   }
 
+  // DM recipient picker view
+  if (view === "dm-list") {
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <h2 className="text-xl font-black flex items-center gap-2">
+            <Users className="w-5 h-5 text-cyan-400" /> Direct Messages
+            <span className="text-xs font-normal text-white/40">(same department)</span>
+          </h2>
+          <button
+            onClick={() => setView("groups")}
+            className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white text-sm font-bold flex items-center gap-1"
+          >
+            <ArrowLeft className="w-4 h-4" /> Group Chats
+          </button>
+        </div>
+        <p className="text-xs text-white/40 mb-4">
+          Pick someone to start a private 1:1 conversation. Messages auto-delete after 24 hours.
+        </p>
+        {config.dm.recipients.length === 0 ? (
+          <div className="text-center py-12 text-white/40">
+            <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
+            <p>No one else is in your department yet.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {config.dm.recipients.map((r) => {
+              const badge = ROLE_BADGES[r.role] || ROLE_BADGES.STUDENT;
+              const BIcon = badge.icon;
+              return (
+                <button
+                  key={r.id}
+                  onClick={() => setDmRecipient(r)}
+                  className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-400/30 transition text-left"
+                >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 ${r.role === "MENTOR" ? "bg-gradient-to-br from-emerald-500 to-teal-500" : "bg-gradient-to-br from-cyan-500 to-blue-500"}`}>
+                    {r.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-sm truncate">{r.name}</div>
+                    <div className={`text-[10px] px-1.5 py-0.5 rounded border inline-flex items-center gap-0.5 ${badge.color}`}>
+                      <BIcon className="w-2.5 h-2.5" /> {badge.label}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Default: group chats view
   const activeChat = visibleChats[Math.min(activeTab, visibleChats.length - 1)];
 
   return (
     <div>
-      {/* Tabs */}
+      {/* Top-level toggle: Group Chats vs Direct Messages */}
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setView("groups")}
+          className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+            "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg"
+          }`}
+        >
+          <MessageCircle className="w-4 h-4" /> Group Chats
+        </button>
+        {dmEnabled && (
+          <button
+            onClick={() => setView("dm-list")}
+            className="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-white/5 border border-white/10 text-white/60 hover:text-white"
+          >
+            <Users className="w-4 h-4" /> Direct Messages
+            <span className="text-[10px] bg-cyan-500/30 text-cyan-200 px-1.5 py-0.5 rounded-full">
+              {config.dm.recipients.length}
+            </span>
+          </button>
+        )}
+      </div>
+
+      {/* Group chat tabs (My Department, Students Only, My College, Global, etc.) */}
       {visibleChats.length > 1 && (
         <div className="flex gap-2 mb-4 flex-wrap">
           {visibleChats.map((chat, i) => (
             <button
               key={chat.chatId}
               onClick={() => setActiveTab(i)}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                 i === activeTab
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg"
-                  : "bg-white/5 border border-white/10 text-white/60 hover:text-white"
+                  ? "bg-white/10 border border-cyan-400/30 text-white"
+                  : "bg-white/5 border border-white/10 text-white/50 hover:text-white"
               }`}
             >
               {chat.label}
@@ -130,14 +207,13 @@ export function ChatView({ user }: { user: any }) {
         </div>
       )}
 
-      {/* Active chat panel */}
+      {/* Active group chat panel */}
       {activeChat && (
         <motion.div
           key={activeChat.chatId}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
-          className="mb-6"
         >
           <ChatPanel
             chatId={activeChat.chatId}
@@ -146,34 +222,6 @@ export function ChatView({ user }: { user: any }) {
             user={config.user}
           />
         </motion.div>
-      )}
-
-      {/* DM section (students only — private 1:1 within same department) */}
-      {dmEnabled && (
-        <div className="mt-8 pt-6 border-t border-white/10">
-          <h3 className="text-lg font-bold flex items-center gap-2 mb-3">
-            <Users className="w-5 h-5 text-cyan-400" /> Direct Messages
-            <span className="text-xs font-normal text-white/40">(same department only)</span>
-          </h3>
-          <p className="text-xs text-white/40 mb-3">Pick a classmate to start a private conversation. Messages auto-delete after 24 hours.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {config.dm.recipients.map((r) => (
-              <button
-                key={r.id}
-                onClick={() => setDmRecipient(r)}
-                className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-400/30 transition text-left"
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                  {r.name.charAt(0).toUpperCase()}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="font-bold text-sm truncate">{r.name}</div>
-                  <div className="text-[10px] text-white/40 uppercase">{r.role}</div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );
