@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { ensureSettingsTable, resetSettingsTableCache } from "@/lib/settings";
 
 // GET /api/mentor/department-leaderboard
 // Returns the current leaderboard-visibility settings for the mentor's department.
@@ -80,6 +81,9 @@ export async function PATCH(req: NextRequest) {
     }
 
     try {
+      // Self-heal: create the Setting table if it doesn't exist yet, so the
+      // mentor can toggle without waiting for an admin to run db:push.
+      await ensureSettingsTable();
       if (typeof leaderboardVisible === "boolean") {
         await db.setting.upsert({
           where: { key: `lbvis:dept:${user.departmentId}` },
@@ -96,8 +100,9 @@ export async function PATCH(req: NextRequest) {
       }
     } catch (e) {
       console.error("Failed to persist department leaderboard setting:", e);
+      resetSettingsTableCache(); // retry creation next time
       return NextResponse.json(
-        { error: "Could not save the setting. Please run `npm run db:push` to create the Setting table." },
+        { error: "Could not save the setting. Please try again, or ask the main admin to run `npm run db:push`." },
         { status: 500 }
       );
     }

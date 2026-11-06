@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
+import { ensureSettingsTable, resetSettingsTableCache } from "@/lib/settings";
 
 // Helper: returns the user if they are ADMIN (main) or SUB_ADMIN.
 // Sub-admins have a collegeId and can only manage their own college.
@@ -135,6 +136,7 @@ export async function PATCH(req: NextRequest) {
     // Stored as a Setting row: key = "lbvis:college:{collegeId}", value = "true"/"false".
     if (leaderboardVisible !== undefined) {
       try {
+        await ensureSettingsTable();
         await db.setting.upsert({
           where: { key: `lbvis:college:${id}` },
           update: { value: leaderboardVisible ? "true" : "false" },
@@ -142,6 +144,7 @@ export async function PATCH(req: NextRequest) {
         });
       } catch (e) {
         console.error("Failed to update college leaderboard visibility setting:", e);
+        resetSettingsTableCache();
       }
     }
 

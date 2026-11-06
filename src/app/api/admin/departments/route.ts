@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { ensureSettingsTable, resetSettingsTableCache } from "@/lib/settings";
 
 async function requireAdminLike() {
   const user = await getCurrentUser();
@@ -120,6 +121,7 @@ export async function PATCH(req: NextRequest) {
     // Stored as a Setting row: key = "lbvis:dept:{departmentId}", value = "true"/"false".
     if (leaderboardVisible !== undefined) {
       try {
+        await ensureSettingsTable();
         await db.setting.upsert({
           where: { key: `lbvis:dept:${id}` },
           update: { value: leaderboardVisible ? "true" : "false" },
@@ -127,6 +129,7 @@ export async function PATCH(req: NextRequest) {
         });
       } catch (e) {
         console.error("Failed to update department leaderboard visibility setting:", e);
+        resetSettingsTableCache();
       }
     }
 
@@ -135,6 +138,7 @@ export async function PATCH(req: NextRequest) {
     // This is a per-department override on top of the college-wide toggle.
     if (collegeLeaderboardVisibleForDept !== undefined) {
       try {
+        await ensureSettingsTable();
         await db.setting.upsert({
           where: { key: `lbvis:college-for-dept:${id}` },
           update: { value: collegeLeaderboardVisibleForDept ? "true" : "false" },
@@ -142,6 +146,7 @@ export async function PATCH(req: NextRequest) {
         });
       } catch (e) {
         console.error("Failed to update college-leaderboard-for-department visibility setting:", e);
+        resetSettingsTableCache();
       }
     }
 
