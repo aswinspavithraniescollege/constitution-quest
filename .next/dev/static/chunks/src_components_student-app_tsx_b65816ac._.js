@@ -4636,9 +4636,34 @@ function DeleteAccountSection({ user, onLogout }) {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     async function deleteAccount(e) {
         e.preventDefault();
-        if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, and XP. This cannot be undone.")) return;
+        if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, XP, and your login credentials. This cannot be undone.")) return;
         setLoading(true);
         try {
+            // Step 1: Delete Firebase account on the CLIENT side (not server)
+            // The Firebase auth session doesn't persist, so we need to re-authenticate
+            const { auth, signInWithEmailAndPassword } = await __turbopack_context__.A("[project]/src/lib/firebase.ts [app-client] (ecmascript, async loader)");
+            if (auth) {
+                try {
+                    // Try to sign in with email + password to get a Firebase session
+                    if (user.email && password) {
+                        await signInWithEmailAndPassword(auth, user.email, password);
+                    }
+                    // Now auth.currentUser should exist — delete the Firebase account
+                    if (auth.currentUser) {
+                        await auth.currentUser.delete();
+                    }
+                } catch (fbErr) {
+                    // If sign-in fails (e.g., Google-only account), try to delete currentUser if it exists
+                    if (auth.currentUser) {
+                        try {
+                            await auth.currentUser.delete();
+                        } catch  {}
+                    }
+                    // If we can't delete Firebase, continue with DB deletion anyway
+                    console.error("Firebase deletion failed (DB will still be deleted):", fbErr?.code);
+                }
+            }
+            // Step 2: Delete from database (server side)
             const res = await fetch("/api/student/delete-account", {
                 method: "POST",
                 headers: {
@@ -4653,6 +4678,11 @@ function DeleteAccountSection({ user, onLogout }) {
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(data.error);
                 return;
             }
+            // Step 3: Sign out from Firebase
+            try {
+                const { auth } = await __turbopack_context__.A("[project]/src/lib/firebase.ts [app-client] (ecmascript, async loader)");
+                if (auth) await auth.signOut();
+            } catch  {}
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Account deleted. Goodbye! 👋");
             setTimeout(()=>onLogout(), 1000);
         } finally{
@@ -4669,14 +4699,14 @@ function DeleteAccountSection({ user, onLogout }) {
                         className: "w-4 h-4"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1402,
+                        lineNumber: 1433,
                         columnNumber: 9
                     }, this),
                     " Danger Zone"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1401,
+                lineNumber: 1432,
                 columnNumber: 7
             }, this),
             !showConfirm ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4686,7 +4716,7 @@ function DeleteAccountSection({ user, onLogout }) {
                         children: "Permanently delete your account and all associated data. This action cannot be undone."
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1406,
+                        lineNumber: 1437,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4697,20 +4727,20 @@ function DeleteAccountSection({ user, onLogout }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1408,
+                                lineNumber: 1439,
                                 columnNumber: 13
                             }, this),
                             " Delete My Account"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1407,
+                        lineNumber: 1438,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1405,
+                lineNumber: 1436,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                 onSubmit: deleteAccount,
@@ -4721,17 +4751,17 @@ function DeleteAccountSection({ user, onLogout }) {
                         children: "⚠️ This will permanently delete your account, all practice attempts, mock test results, badges, XP, and notes. This cannot be undone."
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1413,
+                        lineNumber: 1444,
                         columnNumber: 11
                     }, this),
-                    user.authMethod === "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    user.email && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                 className: "text-xs font-medium text-white/70 mb-1.5 block",
-                                children: "Enter your password to confirm"
+                                children: "Enter your password to confirm *"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1418,
+                                lineNumber: 1449,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4743,21 +4773,13 @@ function DeleteAccountSection({ user, onLogout }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1419,
+                                lineNumber: 1450,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1417,
-                        columnNumber: 13
-                    }, this),
-                    user.authMethod !== "LOCAL" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-xs text-white/50",
-                        children: "Click the button below to permanently delete your account."
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1423,
+                        lineNumber: 1448,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4773,7 +4795,7 @@ function DeleteAccountSection({ user, onLogout }) {
                                 children: "Cancel"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1426,
+                                lineNumber: 1454,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4784,7 +4806,7 @@ function DeleteAccountSection({ user, onLogout }) {
                                     className: "w-4 h-4 animate-spin"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/student-app.tsx",
-                                    lineNumber: 1430,
+                                    lineNumber: 1458,
                                     columnNumber: 26
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                     children: [
@@ -4792,7 +4814,7 @@ function DeleteAccountSection({ user, onLogout }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/student-app.tsx",
-                                            lineNumber: 1430,
+                                            lineNumber: 1458,
                                             columnNumber: 75
                                         }, this),
                                         " Yes, Delete Forever"
@@ -4800,25 +4822,25 @@ function DeleteAccountSection({ user, onLogout }) {
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/student-app.tsx",
-                                lineNumber: 1429,
+                                lineNumber: 1457,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1425,
+                        lineNumber: 1453,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1412,
+                lineNumber: 1443,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1400,
+        lineNumber: 1431,
         columnNumber: 5
     }, this);
 }
@@ -4832,7 +4854,7 @@ function InfoRow({ icon: Icon, label, value }) {
                 className: "w-4 h-4 text-white/40 mt-0.5 shrink-0"
             }, void 0, false, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1442,
+                lineNumber: 1470,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4843,7 +4865,7 @@ function InfoRow({ icon: Icon, label, value }) {
                         children: label
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1444,
+                        lineNumber: 1472,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4851,19 +4873,19 @@ function InfoRow({ icon: Icon, label, value }) {
                         children: value || "—"
                     }, void 0, false, {
                         fileName: "[project]/src/components/student-app.tsx",
-                        lineNumber: 1445,
+                        lineNumber: 1473,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/student-app.tsx",
-                lineNumber: 1443,
+                lineNumber: 1471,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/student-app.tsx",
-        lineNumber: 1441,
+        lineNumber: 1469,
         columnNumber: 5
     }, this);
 }

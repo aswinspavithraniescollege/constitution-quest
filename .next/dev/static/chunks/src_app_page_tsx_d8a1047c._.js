@@ -1,6 +1,7 @@
 (globalThis.TURBOPACK_CHUNK_LISTS || (globalThis.TURBOPACK_CHUNK_LISTS = [])).push({
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
+  "static/chunks/src_lib_firebase_ts_8c33f467._.js",
   "static/chunks/src_components_login-screen_tsx_2fd79ced._.js",
   "static/chunks/src_components_realtime_42bf5ff9._.js",
   "static/chunks/src_components_student-app_tsx_b65816ac._.js",

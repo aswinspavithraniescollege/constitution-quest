@@ -306,26 +306,39 @@ function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => 
     if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account and login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
-      // Get Firebase ID token for account deletion
-      let idToken = "";
-      try {
-        const { auth } = await import("@/lib/firebase");
-        if (auth && auth.currentUser) {
-          idToken = await auth.currentUser.getIdToken();
+      // Step 1: Delete Firebase account on the CLIENT side
+      const { auth, signInWithEmailAndPassword } = await import("@/lib/firebase");
+      if (auth) {
+        try {
+          if (user.email && password) {
+            await signInWithEmailAndPassword(auth, user.email, password);
+          }
+          if (auth.currentUser) {
+            await auth.currentUser.delete();
+          }
+        } catch (fbErr: any) {
+          if (auth.currentUser) {
+            try { await auth.currentUser.delete(); } catch {}
+          }
+          console.error("Firebase deletion failed (DB will still be deleted):", fbErr?.code);
         }
-      } catch {}
+      }
+
+      // Step 2: Delete from database
       const res = await fetch("/api/mentor/delete-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentPassword: password, idToken }),
+        body: JSON.stringify({ currentPassword: password }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
-      // Sign out from Firebase
+
+      // Step 3: Sign out
       try {
         const { auth } = await import("@/lib/firebase");
         if (auth) await auth.signOut();
       } catch {}
+
       toast.success("Account deleted. Goodbye! 👋");
       setTimeout(() => onDeleted(), 1000);
     } finally { setLoading(false); }

@@ -13,3 +13,10 @@
  GET / 200 in 159ms (compile: 41ms, render: 118ms)
  GET / 200 in 40ms (compile: 7ms, render: 33ms)
  GET / 200 in 119ms (compile: 34ms, render: 86ms)
+ GET / 200 in 199ms (compile: 117ms, render: 82ms)
+ GET / 200 in 27ms (compile: 3ms, render: 24ms)
+ GET /api/auth 200 in 119ms (compile: 97ms, render: 23ms)
+ GET /api/public/colleges 200 in 423ms (compile: 26ms, render: 396ms)
+✓ Compiled in 206ms
+✓ Compiled in 148ms
+✓ Compiled in 156ms

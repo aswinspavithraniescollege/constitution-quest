@@ -1384,26 +1384,44 @@ function DeleteAccountSection({ user, onLogout }: { user: any; onLogout: () => v
     if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, XP, and your login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
-      // Get Firebase ID token for account deletion
-      let idToken = "";
-      try {
-        const { auth } = await import("@/lib/firebase");
-        if (auth && auth.currentUser) {
-          idToken = await auth.currentUser.getIdToken();
+      // Step 1: Delete Firebase account on the CLIENT side (not server)
+      // The Firebase auth session doesn't persist, so we need to re-authenticate
+      const { auth, signInWithEmailAndPassword } = await import("@/lib/firebase");
+      if (auth) {
+        try {
+          // Try to sign in with email + password to get a Firebase session
+          if (user.email && password) {
+            await signInWithEmailAndPassword(auth, user.email, password);
+          }
+          // Now auth.currentUser should exist — delete the Firebase account
+          if (auth.currentUser) {
+            await auth.currentUser.delete();
+          }
+        } catch (fbErr: any) {
+          // If sign-in fails (e.g., Google-only account), try to delete currentUser if it exists
+          if (auth.currentUser) {
+            try { await auth.currentUser.delete(); } catch {}
+          }
+          // If we can't delete Firebase, continue with DB deletion anyway
+          console.error("Firebase deletion failed (DB will still be deleted):", fbErr?.code);
         }
-      } catch {}
+      }
+
+      // Step 2: Delete from database (server side)
       const res = await fetch("/api/student/delete-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentPassword: password, idToken }),
+        body: JSON.stringify({ currentPassword: password }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
-      // Sign out from Firebase
+
+      // Step 3: Sign out from Firebase
       try {
         const { auth } = await import("@/lib/firebase");
         if (auth) await auth.signOut();
       } catch {}
+
       toast.success("Account deleted. Goodbye! 👋");
       setTimeout(() => onLogout(), 1000);
     } finally { setLoading(false); }
@@ -1426,14 +1444,11 @@ function DeleteAccountSection({ user, onLogout }: { user: any; onLogout: () => v
           <p className="text-xs text-red-300/80 bg-red-500/10 p-2 rounded-lg">
             ⚠️ This will permanently delete your account, all practice attempts, mock test results, badges, XP, and notes. This cannot be undone.
           </p>
-          {user.authMethod === "LOCAL" && (
+          {user.email && (
             <div>
-              <label className="text-xs font-medium text-white/70 mb-1.5 block">Enter your password to confirm</label>
+              <label className="text-xs font-medium text-white/70 mb-1.5 block">Enter your password to confirm *</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-red-400/30 text-white text-sm focus:outline-none focus:border-red-400" placeholder="Your password" required />
             </div>
-          )}
-          {user.authMethod !== "LOCAL" && (
-            <p className="text-xs text-white/50">Click the button below to permanently delete your account.</p>
           )}
           <div className="flex gap-2">
             <button type="button" onClick={() => { setShowConfirm(false); setPassword(""); }} className="flex-1 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-sm hover:bg-white/15 transition">
