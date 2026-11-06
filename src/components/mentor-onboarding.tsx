@@ -189,21 +189,23 @@ export function MentorOnboarding({
         <div className="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-3xl p-7 shadow-2xl">
           {/* Header */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-              <GraduationCap className="w-6 h-6 text-white" />
+            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${user.role === "SUB_ADMIN" ? "from-purple-600 to-pink-600" : "from-emerald-500 to-teal-500"} flex items-center justify-center shadow-lg`}>
+              {user.role === "SUB_ADMIN" ? <Shield className="w-6 h-6 text-white" /> : <GraduationCap className="w-6 h-6 text-white" />}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Set Up Your Mentor Account</h1>
-              <span className="text-[10px] uppercase tracking-widest text-emerald-300/70 font-bold">
+              <h1 className="text-xl font-bold text-white">
+                Set Up Your {user.role === "SUB_ADMIN" ? "Sub-Admin" : "Mentor"} Account
+              </h1>
+              <span className={`text-[10px] uppercase tracking-widest font-bold ${user.role === "SUB_ADMIN" ? "text-purple-300/70" : "text-emerald-300/70"}`}>
                 One-time setup
               </span>
             </div>
           </div>
 
           {/* Read-only identity summary */}
-          <div className="mb-5 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-1.5">
+          <div className={`mb-5 p-3 rounded-xl ${user.role === "SUB_ADMIN" ? "bg-purple-500/5 border-purple-500/20" : "bg-emerald-500/5 border-emerald-500/20"} border space-y-1.5`}>
             <div className="flex items-center gap-2 text-xs text-white/70">
-              <UserIcon className="w-3.5 h-3.5 text-emerald-300/60" />
+              <UserIcon className={`w-3.5 h-3.5 ${user.role === "SUB_ADMIN" ? "text-purple-300/60" : "text-emerald-300/60"}`} />
               <span className="text-white/40">Name:</span>
               <span className="font-medium text-white">{user.name}</span>
             </div>
@@ -307,7 +309,7 @@ export function MentorOnboarding({
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold text-base tracking-wide shadow-lg hover:scale-[1.02] active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${user.role === "SUB_ADMIN" ? "from-purple-600 via-pink-600 to-fuchsia-600" : "from-emerald-500 via-teal-500 to-cyan-500"} text-white font-bold text-base tracking-wide shadow-lg hover:scale-[1.02] active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Setting up...</>

@@ -37,7 +37,7 @@ const ROLE_CONFIG: Record<Role, {
     label: "Admin",
     icon: Shield,
     tagline: "Main & Sub-Admins",
-    description: "Main admin can login with email & password OR username & password. Sub-admins use username & password only.",
+    description: "Main admin: sign in with your email & password. Sub-admins: first time, use the username & password your admin issued to set up your own email & password; after that, use your email.",
     gradient: "from-purple-600 via-fuchsia-600 to-pink-600",
     accent: "text-purple-300",
     // hint removed — no demo credentials shown
@@ -831,8 +831,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                           ? "Use the email & password you set up during your first login."
                           : "First-time setup — use the temporary username & password your admin issued. You'll set up your email & password next.")
                       : (adminLoginMethod === "email"
-                          ? "Main admin only — sign in with your registered email."
-                          : "Sub-admins use the username & password issued by the main admin.")}
+                          ? "Main admin, or sub-admins who already set up their email."
+                          : "First-time setup for sub-admins — use the temp username & password your admin issued. You'll set up your email & password next.")}
                   </p>
                 )}
                 <form onSubmit={handleLogin} className="space-y-3">

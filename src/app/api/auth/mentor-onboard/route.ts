@@ -36,9 +36,13 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    if (currentUser.role !== "MENTOR") {
+    // Both MENTOR and SUB_ADMIN go through this onboarding flow. The main admin
+    // creates them with temp username/password (authMethod=LOCAL); they use
+    // those temp creds once to reach this screen and set up their own email +
+    // password, which upgrades authMethod to FIREBASE and clears the temp password.
+    if (currentUser.role !== "MENTOR" && currentUser.role !== "SUB_ADMIN") {
       return NextResponse.json(
-        { error: "Only mentor accounts can complete this setup." },
+        { error: "Only mentor or sub-admin accounts can complete this setup." },
         { status: 403 }
       );
     }
