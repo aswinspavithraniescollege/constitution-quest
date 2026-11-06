@@ -1010,7 +1010,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                     <label className="block text-xs font-medium text-white/70 mb-1.5">Department *</label>
                     <select
                       value={signupForm.departmentId}
-                      onChange={(e) => setSignupForm(f => ({ ...f, departmentId: e.target.value }))}
+                      onChange={(e) => setSignupForm(f => ({ ...f, departmentId: e.target.value, mentorId: "" }))}
                       disabled={!signupForm.collegeId}
                       className="w-full px-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                       required
@@ -1031,7 +1031,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                     >
                       <option value="">{signupForm.departmentId ? "— Select your mentor —" : "Select department first"}</option>
                       {mentors.map(m => (
-                        <option key={m.id} value={m.id} className="bg-slate-800">{m.name}</option>
+                        <option key={m.id} value={m.id} className="bg-slate-800">
+                          {m.name}{m.department ? ` (${m.department.code})` : " (College-wide)"}
+                        </option>
                       ))}
                     </select>
                     {signupForm.departmentId && mentors.length === 0 && (
