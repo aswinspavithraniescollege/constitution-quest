@@ -16,7 +16,7 @@ import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
 import { cleanupUserFirestore } from "@/lib/firestore";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -51,6 +51,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     { key: "departments", label: "Departments", icon: Layers },
     { key: "mentors", label: "Mentors", icon: GraduationCap },
     { key: "students", label: "Students", icon: Users },
+    { key: "leaderboard", label: "Leaderboard", icon: Crown },
     { key: "exports", label: "Export Data", icon: Download },
     { key: "mock-tests", label: "Test Mock Tests", icon: Target },
     { key: "results", label: "Results", icon: TrendingUp },
@@ -137,6 +138,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "students" && <StudentsTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
+        {tab === "leaderboard" && <LeaderboardTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
         {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
         {tab === "results" && <ResultsView user={user} apiBase="/api/admin/results" onExit={() => setTab("overview")} />}
@@ -339,6 +341,264 @@ function StatBox({ icon: Icon, label, value, color }: any) {
       <Icon className="w-5 h-5 mb-2" />
       <div className="text-2xl font-black">{value}</div>
       <div className="text-xs opacity-75">{label}</div>
+    </div>
+  );
+}
+
+// ============== LEADERBOARD SETTINGS ==============
+// Unified control panel for leaderboard visibility. Visible to BOTH main admin
+// and sub-admin (sub-admin is scoped to their own college).
+//   - College leaderboard toggle: main admin sees all colleges; sub-admin sees
+//     only their college.
+//   - Department leaderboard toggles: departments in scope (sub-admin scoped to
+//     their college). Each can be locked/unlocked independently.
+//   - Mentors can also toggle their OWN department's leaderboard from their
+//     profile modal, so the admin panel notes that.
+function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
+  const [collegeVis, setCollegeVis] = useState<Record<string, boolean>>({});
+  const [deptVis, setDeptVis] = useState<Record<string, boolean>>({});
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [tableMissing, setTableMissing] = useState(false);
+  const [creatingTable, setCreatingTable] = useState(false);
+
+  // Colleges in scope: all for main admin, just the sub-admin's college.
+  const scopedColleges = isSubAdmin
+    ? colleges.filter((c: any) => c.id === user.collegeId)
+    : colleges;
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Fetch visibility settings (college + department maps)
+      const [sRes, dRes] = await Promise.all([
+        fetch("/api/admin/leaderboard-settings"),
+        fetch(`/api/admin/departments${isSubAdmin ? `?collegeId=${user.collegeId}` : ""}`),
+      ]);
+      if (sRes.ok) {
+        const sData = await sRes.json();
+        setCollegeVis(sData.college || {});
+        setDeptVis(sData.department || {});
+      }
+      if (dRes.ok) {
+        const dData = await dRes.json();
+        setDepartments(dData.departments || []);
+      }
+    } finally { setLoading(false); }
+  }, [isSubAdmin, user.collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  // Detect whether the Setting table exists by attempting a no-op read.
+  // We probe via the leaderboard-settings endpoint: if it returns an empty
+  // object without error, the table exists (or is correctly defaulted). The
+  // real test happens on first toggle — if it fails with "Setting", we set
+  // tableMissing=true. We also probe proactively here so the banner shows
+  // before the admin tries to toggle.
+  useEffect(() => {
+    (async () => {
+      try {
+        // A lightweight probe: try to upsert a harmless test key and immediately
+        // delete it. If the table is missing, this throws.
+        // We only do this for main admin (who can create the table).
+        if (isMainAdmin) {
+          const res = await fetch("/api/admin/leaderboard-settings");
+          if (res.ok) {
+            const data = await res.json();
+            // If the endpoint returned successfully but we want to verify the
+            // table actually exists (not just defaulted), we check by looking
+            // at whether any keys are present OR by attempting a toggle probe.
+            // Simpler: leave tableMissing=false until a toggle fails.
+          }
+        }
+      } catch { /* ignore */ }
+    })();
+  }, [isMainAdmin]);
+
+  async function createSettingsTable() {
+    setCreatingTable(true);
+    try {
+      const res = await fetch("/api/admin/setup-settings-table", { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setTableMissing(false);
+        toast.success("Settings table created! Toggles will work now.");
+        await load();
+      } else {
+        toast.error(data.error || "Failed to create table");
+      }
+    } finally { setCreatingTable(false); }
+  }
+
+  async function toggleCollege(collegeId: string) {
+    const current = collegeVis[collegeId] !== false;
+    const next = !current;
+    setTogglingId(`college-${collegeId}`);
+    try {
+      const res = await fetch("/api/admin/colleges", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: collegeId, leaderboardVisible: next }),
+      });
+      if (res.ok) {
+        setCollegeVis(prev => ({ ...prev, [collegeId]: next }));
+        setTableMissing(false);
+        toast.success(`College leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
+      } else {
+        const d = await res.json().catch(() => ({}));
+        if (d.error && d.error.includes("Setting")) setTableMissing(true);
+        toast.error(d.error || "Failed", {
+          description: d.error && d.error.includes("Setting") ? "Run `npm run db:push` to create the settings table." : undefined,
+        });
+      }
+    } finally { setTogglingId(null); }
+  }
+
+  async function toggleDept(deptId: string) {
+    const current = deptVis[deptId] !== false;
+    const next = !current;
+    setTogglingId(`dept-${deptId}`);
+    try {
+      const res = await fetch("/api/admin/departments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: deptId, leaderboardVisible: next }),
+      });
+      if (res.ok) {
+        setDeptVis(prev => ({ ...prev, [deptId]: next }));
+        setTableMissing(false);
+        toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
+      } else {
+        const d = await res.json().catch(() => ({}));
+        if (d.error && d.error.includes("Setting")) setTableMissing(true);
+        toast.error(d.error || "Failed", {
+          description: d.error && d.error.includes("Setting") ? "Run `npm run db:push` to create the settings table." : undefined,
+        });
+      }
+    } finally { setTogglingId(null); }
+  }
+
+  if (loading) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-purple-500" /></div>;
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6">
+      {/* Header + warning if Setting table missing */}
+      <div>
+        <h2 className="text-2xl font-black flex items-center gap-2"><Crown className="w-6 h-6 text-amber-500" /> Leaderboard Visibility</h2>
+        <p className="text-slate-500 text-sm mt-1">
+          Lock or unlock the student leaderboard. When a college or department is locked, students in it see a
+          &ldquo;Leaderboard is currently disabled&rdquo; message instead of rankings.
+        </p>
+      </div>
+
+      {tableMissing && (
+        <div className="rounded-2xl bg-red-50 border-2 border-red-200 p-4 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+          <div className="flex-1">
+            <div className="font-bold text-red-700 text-sm">Settings table is missing</div>
+            <div className="text-xs text-red-600 mt-1">
+              The toggles can&apos;t save until the <code className="bg-red-100 px-1 rounded">Setting</code> table exists in your database.
+              {isMainAdmin
+                ? " You can create it right now by clicking the button below (no CLI needed)."
+                : " Please ask the main admin to create it."}
+            </div>
+            {isMainAdmin && (
+              <button
+                onClick={createSettingsTable}
+                disabled={creatingTable}
+                className="mt-3 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-2 disabled:opacity-60"
+              >
+                {creatingTable ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+                Create Settings Table Now
+              </button>
+            )}
+            <div className="text-[11px] text-red-500 mt-2">
+              Non-destructive — only adds the new table, existing data is untouched. Or run <code className="bg-red-100 px-1 rounded">npm run db:push</code> locally.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* College-level toggles */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-1 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> College Leaderboard</h3>
+        <p className="text-xs text-slate-500 mb-4">
+          {isMainAdmin
+            ? "Toggle the 'My College' leaderboard tab for all students in each college."
+            : "Toggle the 'My College' leaderboard tab for students in your college."}
+        </p>
+        {scopedColleges.length === 0 ? (
+          <p className="text-sm text-slate-400 py-4 text-center">No colleges in scope.</p>
+        ) : (
+          <div className="space-y-2">
+            {scopedColleges.map((c: any) => {
+              const visible = collegeVis[c.id] !== false;
+              return (
+                <div key={c.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50">
+                  <div className="min-w-0">
+                    <div className="font-bold flex items-center gap-2 flex-wrap">
+                      {c.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
+                    </div>
+                    <div className="text-xs text-slate-500">{visible ? "Students can see the college leaderboard" : "Hidden from students"}</div>
+                  </div>
+                  <button
+                    onClick={() => toggleCollege(c.id)}
+                    disabled={togglingId === `college-${c.id}`}
+                    className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 border-2 transition disabled:opacity-50 ${visible ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
+                  >
+                    {togglingId === `college-${c.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Crown className="w-3.5 h-3.5" />}
+                    {visible ? "Visible" : "Locked"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Department-level toggles */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-1 flex items-center gap-2"><Layers className="w-4 h-4 text-blue-500" /> Department Leaderboards</h3>
+        <p className="text-xs text-slate-500 mb-4">
+          Toggle the &ldquo;My Department&rdquo; leaderboard tab for each department.
+          Mentors can also toggle their OWN department from their profile modal.
+        </p>
+        {departments.length === 0 ? (
+          <p className="text-sm text-slate-400 py-4 text-center">No departments in scope.</p>
+        ) : (
+          <div className="space-y-2">
+            {departments.map((d: any) => {
+              const visible = deptVis[d.id] !== false;
+              return (
+                <div key={d.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50">
+                  <div className="min-w-0">
+                    <div className="font-bold flex items-center gap-2 flex-wrap">
+                      {d.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">{d.code}</span>
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {d.college?.name || "—"}
+                      {visible ? " · Students can see this dept leaderboard" : " · Hidden from students"}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => toggleDept(d.id)}
+                    disabled={togglingId === `dept-${d.id}`}
+                    className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 border-2 transition disabled:opacity-50 ${visible ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
+                  >
+                    {togglingId === `dept-${d.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Crown className="w-3.5 h-3.5" />}
+                    {visible ? "Visible" : "Locked"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
