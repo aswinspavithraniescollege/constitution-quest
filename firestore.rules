@@ -171,6 +171,54 @@ service cloud.firestore {
       );
     }
 
+    // ========== 8. CHAT MESSAGES ==========
+    // Real-time chat messages, organized as:
+    //   chats/{chatId}/messages/{messageId}
+    //
+    // chatId encodes the scope:
+    //   "global"                     — global chat (all colleges)
+    //   "college:{collegeId}"        — college-wide chat
+    //   "dept:{departmentId}"        — department chat (students + mentor)
+    //   "mentor:{collegeId}"         — mentors-only chat for a college
+    //
+    // Visibility is additionally gated by Setting rows (chatvis:*) checked
+    // server-side via /api/chat/config. The Firestore rules here enforce
+    // structural access: a student can't read a mentor chat, a user in
+    // college A can't read college B's chat, etc.
+    //
+    // Any authenticated user can CREATE a message IF the chatId matches their
+    // scope (checked via helper functions). Anyone who can read can also
+    // delete their own messages. Admins can delete any.
+    match /chats/{chatId}/messages/{messageId} {
+      // Read: user must be in scope for this chat type.
+      allow read: if hasProfile() && canAccessChat(chatId);
+
+      // Create: user must be in scope, and the message must include their
+      // own userId (no impersonation).
+      allow create: if hasProfile()
+        && canAccessChat(chatId)
+        && request.resource.data.userId == dbUserId();
+
+      // Update: not allowed (messages are immutable). Delete own or admin.
+      allow update: if false;
+      allow delete: if hasProfile() && (
+        resource.data.userId == dbUserId() || isAdmin()
+      );
+    }
+
+    // Helper: can the current user access a given chatId?
+    function canAccessChat(chatId) {
+      return isMainAdmin()
+        || (chatId == "global" && hasProfile())
+        || (chatId.matches("^college:.*") && chatId == "college:" + collegeId())
+        || (chatId.matches("^dept:.*")
+            && exists(/databases/$(database)/documents/userProfiles/$(request.auth.uid))
+            && get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.departmentId != null
+            && chatId == "dept:" + get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.departmentId)
+        || (chatId.matches("^mentor:.*") && isMentor() && chatId == "mentor:" + collegeId())
+        || (isAdmin() && chatId.matches("^college:.*"));
+    }
+
     // ========== DEFAULT DENY ==========
     // Any collection not explicitly matched above is denied.
     match /{document=**} {

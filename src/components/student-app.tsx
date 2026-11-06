@@ -13,12 +13,13 @@ import {
 } from "lucide-react";
 import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
 import { DiscussionForum } from "@/components/realtime/discussion-forum";
+import { ChatView } from "@/components/realtime/chat-view";
 import { AnnouncementsDisplay } from "@/components/realtime/announcements";
 import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
 import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
 import { syncLeaderboardClient, addActivityClient, syncMockRankingClient, cleanupUserFirestore } from "@/lib/firestore";
 
-type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks";
+type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks" | "chat";
 
 export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [view, setView] = useState<View>("home");
@@ -82,6 +83,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
     { key: "practice-list", label: "Practice", icon: Brain, color: "from-blue-500 to-cyan-500" },
     { key: "mock-list", label: "Mock Tests", icon: Target, color: "from-amber-500 to-orange-500" },
     { key: "leaderboard", label: "Leaderboard", icon: Crown, color: "from-yellow-500 to-amber-500" },
+    { key: "chat", label: "Chat", icon: MessageCircle, color: "from-cyan-500 to-teal-500" },
     { key: "forum", label: "Forum", icon: MessageCircle, color: "from-cyan-500 to-blue-500" },
     { key: "bookmarks", label: "Notes", icon: Bookmark, color: "from-amber-500 to-yellow-500" },
     { key: "badges", label: "Badges", icon: Award, color: "from-green-500 to-emerald-500" },
@@ -171,6 +173,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               {view === "history" && dash && <HistoryView dash={dash} />}
               {view === "profile" && <ProfileView user={user} onUpdated={loadDash} />}
               {view === "forum" && <DiscussionForum user={user} />}
+              {view === "chat" && <ChatView user={user} />}
               {view === "bookmarks" && <BookmarksView user={user} />}
             </motion.div>
           </AnimatePresence>

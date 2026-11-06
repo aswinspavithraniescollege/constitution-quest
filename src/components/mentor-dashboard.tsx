@@ -7,11 +7,12 @@ import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
   TrendingUp, Activity, ChevronDown, ChevronUp, Eye, EyeOff, Crown,
   User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen,
-  Trash2, AlertCircle, RefreshCw
+  Trash2, AlertCircle, RefreshCw, MessageCircle
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
 import { cleanupUserFirestore } from "@/lib/firestore";
+import { ChatView } from "@/components/realtime/chat-view";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
@@ -20,6 +21,7 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
   const [showProfile, setShowProfile] = useState(false);
   const [showMockTests, setShowMockTests] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   // Student management state
   const [editingStudent, setEditingStudent] = useState<any | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -105,6 +107,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setShowChat(true)}
+              className="px-3 py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 text-cyan-700 text-sm font-bold flex items-center gap-2"
+              title="Chat"
+            >
+              <MessageCircle className="w-4 h-4" /> <span className="hidden sm:inline">Chat</span>
+            </button>
             <button
               onClick={load}
               className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 text-sm font-bold flex items-center gap-2"
@@ -215,6 +224,19 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
         </div>
       )}
 
+      {/* Chat (full screen overlay) */}
+      {showChat && (
+        <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-black flex items-center gap-2"><MessageCircle className="w-6 h-6 text-cyan-500" /> Chat</h1>
+              <button onClick={() => setShowChat(false)} className="px-4 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm">Close</button>
+            </div>
+            <ChatView user={user} />
+          </div>
+        </div>
+      )}
+
       {/* Profile Edit Modal */}
       <AnimatePresence>
         {showProfile && (
@@ -259,6 +281,11 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
   // College leaderboard visibility for this mentor's department (per-dept override)
   const [collegeLbForDeptVisible, setCollegeLbForDeptVisible] = useState<boolean | null>(null);
   const [collegeLbForDeptToggling, setCollegeLbForDeptToggling] = useState(false);
+  // Chat visibility toggles (mentor controls dept/college/mentor chat, NOT global)
+  const [deptChatOn, setDeptChatOn] = useState<boolean | null>(null);
+  const [collegeChatOn, setCollegeChatOn] = useState<boolean | null>(null);
+  const [mentorChatOn, setMentorChatOn] = useState<boolean | null>(null);
+  const [chatToggling, setChatToggling] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -284,6 +311,16 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
           setDeptLbHasDept(!!lbData.hasDepartment);
         }
       } catch (e) { console.warn("Failed to load dept leaderboard setting:", e); }
+      // Fetch chat visibility settings
+      try {
+        const chatRes = await fetch("/api/mentor/chat-settings");
+        if (chatRes.ok) {
+          const chatData = await chatRes.json();
+          setDeptChatOn(chatData.deptChatVisible);
+          setCollegeChatOn(chatData.collegeChatVisible);
+          setMentorChatOn(chatData.mentorChatVisible);
+        }
+      } catch (e) { console.warn("Failed to load chat settings:", e); }
     } finally { setLoading(false); }
   }, []);
 
@@ -343,6 +380,31 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
     } catch (e) {
       toast.error("Network error while toggling");
     } finally { setCollegeLbForDeptToggling(false); }
+  }
+
+  // Toggle chat visibility (dept/college/mentor — NOT global, which is admin-only)
+  async function toggleChat(scope: string, current: boolean | null) {
+    if (current === null) return;
+    const next = !current;
+    setChatToggling(scope);
+    try {
+      const res = await fetch("/api/mentor/chat-settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scope, visible: next }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        toast.error(data.error || "Failed to toggle");
+        return;
+      }
+      if (scope === "dept") setDeptChatOn(next);
+      if (scope === "college") setCollegeChatOn(next);
+      if (scope === "mentor") setMentorChatOn(next);
+      toast.success(`${scope === "dept" ? "Department" : scope === "college" ? "College" : "Mentor"} chat ${next ? "ENABLED" : "DISABLED"}.`);
+    } catch (e) {
+      toast.error("Network error while toggling");
+    } finally { setChatToggling(null); }
   }
 
   async function save(e: React.FormEvent) {
@@ -506,6 +568,47 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                 ) : (
                   <p className="text-xs text-slate-400 p-2">You are not assigned to a department, so these settings are unavailable.</p>
                 )}
+              </div>
+            </div>
+
+            {/* Chat visibility toggles */}
+            <div className="pt-3 border-t border-slate-200">
+              <div className="rounded-xl bg-cyan-50 border border-cyan-200 p-3">
+                <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-cyan-800">
+                  <MessageCircle className="w-4 h-4 text-cyan-500" /> Chat Visibility
+                </h4>
+                <p className="text-[11px] text-cyan-700 mb-2">
+                  Control which chat channels your students can see. Messages auto-delete after 24 hours.
+                  (Global chat is admin-only.)
+                </p>
+                <div className="space-y-2">
+                  {([
+                    { scope: "dept", label: "Department Chat", state: deptChatOn, desc: "Students + mentor in your department" },
+                    { scope: "college", label: "College Chat", state: collegeChatOn, desc: "Everyone in your college" },
+                    { scope: "mentor", label: "Mentor Chat", state: mentorChatOn, desc: "Mentors only (your college)" },
+                  ] as const).map(({ scope, label, state, desc }) => (
+                    <label key={scope} className="flex items-center justify-between p-3 rounded-lg bg-white border border-cyan-200 cursor-pointer hover:bg-cyan-50/50">
+                      <div>
+                        <div className="text-sm font-bold text-slate-700">
+                          {state === null ? "Loading…" : `${label}: ${state ? "ON" : "OFF"}`}
+                        </div>
+                        <div className="text-[11px] text-slate-500">{desc}</div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleChat(scope, state)}
+                        disabled={state === null || chatToggling === scope}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${state ? "bg-emerald-500" : "bg-slate-300"}`}
+                      >
+                        {chatToggling === scope ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
+                        ) : (
+                          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${state ? "translate-x-6" : "translate-x-1"}`} />
+                        )}
+                      </button>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 

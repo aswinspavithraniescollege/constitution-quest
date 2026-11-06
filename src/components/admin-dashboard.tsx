@@ -8,15 +8,17 @@ import {
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
   Crown, Zap, Target, Brain, ChevronDown, ChevronLeft, ChevronRight,
   Filter, RefreshCw, UserCog, KeyRound,
-  UserCheck, AlertCircle, Pencil, X, Folder, FolderOpen, Flame
+  UserCheck, AlertCircle, Pencil, X, Folder, FolderOpen, Flame,
+  Globe, MessageCircle
 } from "lucide-react";
 import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
 import { AnnouncementsManager } from "@/components/realtime/announcements";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
 import { cleanupUserFirestore } from "@/lib/firestore";
+import { ChatView } from "@/components/realtime/chat-view";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard" | "chat";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -52,6 +54,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     { key: "mentors", label: "Mentors", icon: GraduationCap },
     { key: "students", label: "Students", icon: Users },
     { key: "leaderboard", label: "Leaderboard", icon: Crown },
+    { key: "chat", label: "Chat", icon: MessageCircle },
     { key: "exports", label: "Export Data", icon: Download },
     { key: "mock-tests", label: "Test Mock Tests", icon: Target },
     { key: "results", label: "Results", icon: TrendingUp },
@@ -141,6 +144,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "students" && <StudentsTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
         {tab === "leaderboard" && <LeaderboardTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
+        {tab === "chat" && <ChatTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
         {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
         {tab === "results" && <ResultsView user={user} apiBase="/api/admin/results" onExit={() => setTab("overview")} />}
@@ -645,6 +649,171 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
             })}
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ============== CHAT ==============
+// Admin chat tab: visibility toggles + the chat view itself.
+// Admins can toggle: global chat, college chat (per college), dept chat
+// (per dept), mentor chat (per college). Sub-admins scoped to their college.
+function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
+  const [settings, setSettings] = useState<any>({});
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [togglingKey, setTogglingKey] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const scopedColleges = isSubAdmin
+    ? colleges.filter((c: any) => c.id === user.collegeId)
+    : colleges;
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [sRes, dRes] = await Promise.all([
+        fetch("/api/admin/chat-settings"),
+        fetch(`/api/admin/departments${isSubAdmin ? `?collegeId=${user.collegeId}` : ""}`),
+      ]);
+      if (sRes.ok) setSettings(await sRes.json());
+      if (dRes.ok) { const d = await dRes.json(); setDepartments(d.departments || []); }
+    } finally { setLoading(false); }
+  }, [isSubAdmin, user.collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function toggle(scope: string, id: string | undefined, current: boolean) {
+    const next = !current;
+    const key = `${scope}-${id || "global"}`;
+    setTogglingKey(key);
+    try {
+      const res = await fetch("/api/admin/chat-settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scope, id, visible: next }),
+      });
+      if (res.ok) {
+        toast.success(`Chat ${next ? "ENABLED" : "DISABLED"}.`);
+        await load();
+      } else {
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error || "Failed");
+      }
+    } finally { setTogglingKey(null); }
+  }
+
+  if (loading) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cyan-500" /></div>;
+  }
+
+  const globalOn = settings.global?.global !== false;
+  const collegeMap = settings.college || {};
+  const deptMap = settings.dept || {};
+  const mentorMap = settings.mentor || {};
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-black flex items-center gap-2"><MessageCircle className="w-6 h-6 text-cyan-500" /> Chat Controls</h2>
+        <p className="text-slate-500 text-sm mt-1">
+          Toggle chat channels on or off. Messages auto-delete after 24 hours.
+          Mentors can additionally control their own department&apos;s chat from their profile.
+        </p>
+      </div>
+
+      {/* Global chat toggle */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><Globe className="w-4 h-4 text-blue-500" /> Global Chat</h3>
+        <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
+          <div>
+            <div className="font-bold text-sm">Global chat {globalOn ? "is ON" : "is OFF"}</div>
+            <div className="text-xs text-slate-500">All users across all colleges can chat together.</div>
+          </div>
+          <button
+            onClick={() => toggle("global", undefined, globalOn)}
+            disabled={togglingKey === "global-global"}
+            className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${globalOn ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+          >
+            {togglingKey === "global-global" ? <Loader2 className="w-3 h-3 animate-spin" /> : globalOn ? "ON" : "OFF"}
+          </button>
+        </div>
+      </div>
+
+      {/* College chat toggles */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> College Chats</h3>
+        <div className="space-y-2">
+          {scopedColleges.map((c: any) => {
+            const on = collegeMap[c.id] !== false;
+            return (
+              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
+                <div className="font-bold text-sm flex items-center gap-2">{c.name} <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">{c.code}</span></div>
+                <button
+                  onClick={() => toggle("college", c.id, on)}
+                  disabled={togglingKey === `college-${c.id}`}
+                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                >
+                  {togglingKey === `college-${c.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : on ? "ON" : "OFF"}
+                </button>
+              </div>
+            );
+          })}
+          {scopedColleges.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No colleges in scope.</p>}
+        </div>
+      </div>
+
+      {/* Department chat toggles */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><Layers className="w-4 h-4 text-blue-500" /> Department Chats</h3>
+        <div className="space-y-2">
+          {departments.map((d: any) => {
+            const on = deptMap[d.id] !== false;
+            return (
+              <div key={d.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
+                <div className="text-sm">
+                  <span className="font-bold">{d.name}</span>
+                  <span className="text-xs text-slate-500 ml-2">{d.college?.name}</span>
+                </div>
+                <button
+                  onClick={() => toggle("dept", d.id, on)}
+                  disabled={togglingKey === `dept-${d.id}`}
+                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                >
+                  {togglingKey === `dept-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : on ? "ON" : "OFF"}
+                </button>
+              </div>
+            );
+          })}
+          {departments.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No departments in scope.</p>}
+        </div>
+      </div>
+
+      {/* Mentor chat toggles */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><GraduationCap className="w-4 h-4 text-emerald-500" /> Mentor Chats</h3>
+        <div className="space-y-2">
+          {scopedColleges.map((c: any) => {
+            const on = mentorMap[c.id] !== false;
+            return (
+              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
+                <div className="font-bold text-sm">{c.name} — Mentors Only</div>
+                <button
+                  onClick={() => toggle("mentor", c.id, on)}
+                  disabled={togglingKey === `mentor-${c.id}`}
+                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                >
+                  {togglingKey === `mentor-${c.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : on ? "ON" : "OFF"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* The chat view itself (admin can participate in all chats they have access to) */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-cyan-500" /> Chat</h3>
+        <ChatView user={user} />
       </div>
     </div>
   );
