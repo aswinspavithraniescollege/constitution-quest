@@ -180,3 +180,15 @@ model StudentBadge {
 
   @@unique([userId, badgeId])
 }
+
+// Generic key-value settings store (visibility toggles, feature flags, etc.)
+// Using a separate table avoids altering existing tables (no data migration).
+// Examples:
+//   "lbvis:college:{collegeId}"    -> "true" | "false"  (college leaderboard visible to students?)
+//   "lbvis:dept:{departmentId}"    -> "true" | "false"  (department leaderboard visible to students?)
+// Absence of a key = default (visible = true).
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

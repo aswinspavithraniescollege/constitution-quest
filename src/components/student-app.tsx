@@ -145,7 +145,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               {view === "mock-result" && mockResult && (
                 <MockResultView result={mockResult} onExit={() => { setView("mock-list"); setMockResult(null); }} onHome={() => { setView("home"); setMockResult(null); }} />
               )}
-              {view === "leaderboard" && <RealtimeLeaderboard user={user} scope="global" />}
+              {view === "leaderboard" && <RealtimeLeaderboard user={user} />}
               {view === "badges" && dash && <BadgesView dash={dash} />}
               {view === "history" && dash && <HistoryView dash={dash} />}
               {view === "profile" && <ProfileView user={user} onUpdated={loadDash} />}

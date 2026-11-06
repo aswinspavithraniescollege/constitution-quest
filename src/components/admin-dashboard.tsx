@@ -351,6 +351,41 @@ function CollegesTab({ colleges, onRefresh }: any) {
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editing, setEditing] = useState<any | null>(null);
+  // Leaderboard visibility settings: { [collegeId]: boolean }
+  const [lbVis, setLbVis] = useState<Record<string, boolean>>({});
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/leaderboard-settings");
+        if (res.ok) {
+          const data = await res.json();
+          setLbVis(data.college || {});
+        }
+      } catch (e) { console.warn("Failed to load leaderboard settings:", e); }
+    })();
+  }, []);
+
+  async function toggleLbVisible(collegeId: string) {
+    const current = lbVis[collegeId] !== false; // default true if absent
+    const next = !current;
+    setTogglingId(collegeId);
+    try {
+      const res = await fetch("/api/admin/colleges", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: collegeId, leaderboardVisible: next }),
+      });
+      if (res.ok) {
+        setLbVis(prev => ({ ...prev, [collegeId]: next }));
+        toast.success(`College leaderboard ${next ? "enabled" : "disabled"} for students.`);
+      } else {
+        const d = await res.json();
+        toast.error(d.error || "Failed to toggle visibility");
+      }
+    } finally { setTogglingId(null); }
+  }
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -459,6 +494,15 @@ function CollegesTab({ colleges, onRefresh }: any) {
                     <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
                   </div>
                   <button
+                    onClick={() => toggleLbVisible(c.id)}
+                    disabled={togglingId === c.id}
+                    title={lbVis[c.id] !== false ? "Leaderboard visible to students — click to hide" : "Leaderboard hidden from students — click to show"}
+                    className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 border transition disabled:opacity-50 ${lbVis[c.id] !== false ? "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200"}`}
+                  >
+                    {togglingId === c.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
+                    {lbVis[c.id] !== false ? "LB On" : "LB Off"}
+                  </button>
+                  <button
                     onClick={() => setEditing({ ...c })}
                     title="Edit college"
                     className="p-1.5 rounded hover:bg-blue-50 text-blue-500"
@@ -512,6 +556,41 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState<any | null>(null);
   const [editLoading, setEditLoading] = useState(false);
+  // Department leaderboard visibility: { [departmentId]: boolean }
+  const [lbVis, setLbVis] = useState<Record<string, boolean>>({});
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/leaderboard-settings");
+        if (res.ok) {
+          const data = await res.json();
+          setLbVis(data.department || {});
+        }
+      } catch (e) { console.warn("Failed to load dept leaderboard settings:", e); }
+    })();
+  }, []);
+
+  async function toggleLbVisible(deptId: string) {
+    const current = lbVis[deptId] !== false;
+    const next = !current;
+    setTogglingId(deptId);
+    try {
+      const res = await fetch("/api/admin/departments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: deptId, leaderboardVisible: next }),
+      });
+      if (res.ok) {
+        setLbVis(prev => ({ ...prev, [deptId]: next }));
+        toast.success(`Department leaderboard ${next ? "enabled" : "disabled"} for students.`);
+      } else {
+        const d = await res.json();
+        toast.error(d.error || "Failed to toggle visibility");
+      }
+    } finally { setTogglingId(null); }
+  }
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -614,6 +693,15 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-500 mr-2">{d._count.users} users</span>
+                    <button
+                      onClick={() => toggleLbVisible(d.id)}
+                      disabled={togglingId === d.id}
+                      title={lbVis[d.id] !== false ? "Department leaderboard visible to students — click to hide" : "Department leaderboard hidden from students — click to show"}
+                      className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 border transition disabled:opacity-50 ${lbVis[d.id] !== false ? "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200"}`}
+                    >
+                      {togglingId === d.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
+                      {lbVis[d.id] !== false ? "LB On" : "LB Off"}
+                    </button>
                     <button onClick={() => setEditing({ ...d })} title="Edit department" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
                       <Pencil className="w-4 h-4" />
                     </button>

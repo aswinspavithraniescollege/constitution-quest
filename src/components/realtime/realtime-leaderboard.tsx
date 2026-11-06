@@ -1,24 +1,119 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Crown, Zap, Flame, Loader2, Radio } from "lucide-react";
+import { Crown, Zap, Flame, Loader2, Radio, EyeOff, Building2, Users } from "lucide-react";
 import { subscribeToLeaderboard, timeAgo, type LeaderboardEntry } from "@/lib/firestore";
 
-export function RealtimeLeaderboard({ user, scope = "global", collegeCode }: { user: any; scope?: "global" | "college"; collegeCode?: string | null }) {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+type Tab = "college" | "department";
 
+type Config = {
+  collegeLeaderboardVisible: boolean;
+  departmentLeaderboardVisible: boolean;
+  collegeUserIds: string[];
+  departmentUserIds: string[];
+  collegeCode: string | null;
+  deptCode: string | null;
+};
+
+// RealtimeLeaderboard
+// Students see TWO scopes (controlled by admin/mentor visibility settings):
+//   - "College"      : all active students in their college
+//   - "My Department": active students in their specific department
+// Deleted users are filtered out via the collegeUserIds/departmentUserIds sets
+// fetched from the server (DB is the source of truth; Firestore entries can
+// linger for deleted users). This also scopes the view so students never see
+// a global leaderboard — only their own college/department peers.
+export function RealtimeLeaderboard({ user }: { user: any }) {
+  const [config, setConfig] = useState<Config | null>(null);
+  const [configLoading, setConfigLoading] = useState(true);
+  const [tab, setTab] = useState<Tab>("college");
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  const [liveLoading, setLiveLoading] = useState(true);
+
+  // 1. Fetch the visibility config + valid userIds from the server.
   useEffect(() => {
-    setLoading(true);
-    const unsub = subscribeToLeaderboard(scope, collegeCode || null, (data) => {
+    let cancelled = false;
+    (async () => {
+      setConfigLoading(true);
+      try {
+        const res = await fetch("/api/student/leaderboard-config");
+        if (!res.ok) {
+          if (!cancelled) setConfig(null);
+          return;
+        }
+        const data = await res.json();
+        if (cancelled) return;
+        setConfig(data);
+        // Pick the default tab: department if visible, else college if visible.
+        if (data.departmentLeaderboardVisible) setTab("department");
+        else if (data.collegeLeaderboardVisible) setTab("college");
+      } catch (e) {
+        console.error("leaderboard-config fetch failed:", e);
+      } finally {
+        if (!cancelled) setConfigLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // 2. Subscribe to the Firestore leaderboard (college-scoped) for real-time
+  //    XP/streak updates. We fetch the whole college's entries once and filter
+  //    client-side into the two tabs — this avoids two Firestore subscriptions
+  //    and keeps the live updates instant.
+  useEffect(() => {
+    if (!config || !config.collegeCode) {
+      setLiveLoading(false);
+      setEntries([]);
+      return;
+    }
+    setLiveLoading(true);
+    const unsub = subscribeToLeaderboard("college", config.collegeCode, (data) => {
       setEntries(data);
-      setLoading(false);
+      setLiveLoading(false);
     });
     return () => { unsub(); };
-  }, [scope, collegeCode]);
+  }, [config?.collegeCode]);
 
-  if (loading) return <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-amber-400" /></div>;
+  // 3. Filter entries for the active tab AND drop deleted users.
+  const visibleEntries = useMemo(() => {
+    if (!config) return [];
+    const validSet = tab === "department"
+      ? new Set(config.departmentUserIds)
+      : new Set(config.collegeUserIds);
+    // Filter to valid (non-deleted, in-scope) users, then sort by XP desc.
+    return entries
+      .filter(e => validSet.has(e.userId))
+      .sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
+  }, [entries, tab, config]);
+
+  // ---- Render states ----
+  if (configLoading) {
+    return <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-amber-400" /></div>;
+  }
+
+  if (!config) {
+    return (
+      <div className="text-center py-16 text-white/40">
+        <Crown className="w-12 h-12 mx-auto mb-3 opacity-30" />
+        <p>Couldn&apos;t load the leaderboard. Please try again later.</p>
+      </div>
+    );
+  }
+
+  const showCollege = config.collegeLeaderboardVisible;
+  const showDepartment = config.departmentLeaderboardVisible;
+
+  // If both scopes are disabled, show a disabled message.
+  if (!showCollege && !showDepartment) {
+    return (
+      <div className="text-center py-16 text-white/40">
+        <EyeOff className="w-12 h-12 mx-auto mb-3 opacity-40" />
+        <p className="font-bold text-white/60">Leaderboard is currently disabled</p>
+        <p className="text-sm mt-1">Your administrator can re-enable it.</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -28,11 +123,45 @@ export function RealtimeLeaderboard({ user, scope = "global", collegeCode }: { u
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><Radio className="w-3 h-3" /> LIVE
         </span>
       </div>
-      {entries.length === 0 ? (
-        <div className="text-center py-16 text-white/40"><Crown className="w-12 h-12 mx-auto mb-3 opacity-30" /><p>No entries yet. Be the first to earn XP!</p></div>
+
+      {/* Scope tabs */}
+      <div className="flex gap-2 mb-4">
+        {showCollege && (
+          <button
+            onClick={() => setTab("college")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition ${
+              tab === "college"
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                : "bg-white/5 border border-white/10 text-white/60 hover:text-white"
+            }`}
+          >
+            <Building2 className="w-4 h-4" /> My College
+          </button>
+        )}
+        {showDepartment && (
+          <button
+            onClick={() => setTab("department")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition ${
+              tab === "department"
+                ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg"
+                : "bg-white/5 border border-white/10 text-white/60 hover:text-white"
+            }`}
+          >
+            <Users className="w-4 h-4" /> My Department
+          </button>
+        )}
+      </div>
+
+      {liveLoading ? (
+        <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-amber-400" /></div>
+      ) : visibleEntries.length === 0 ? (
+        <div className="text-center py-16 text-white/40">
+          <Crown className="w-12 h-12 mx-auto mb-3 opacity-30" />
+          <p>No entries yet. Be the first to earn XP!</p>
+        </div>
       ) : (
         <div className="space-y-2">
-          {entries.map((entry, i) => {
+          {visibleEntries.map((entry, i) => {
             const isCurrentUser = entry.userId === user.id;
             return (
               <motion.div key={entry.userId} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }} layout
@@ -51,6 +180,13 @@ export function RealtimeLeaderboard({ user, scope = "global", collegeCode }: { u
           })}
         </div>
       )}
+
+      <p className="text-center text-[10px] text-white/30 mt-4">
+        {tab === "department"
+          ? `Showing active students in your department${config.deptCode ? ` (${config.deptCode})` : ""}.`
+          : `Showing active students in your college${config.collegeCode ? ` (${config.collegeCode})` : ""}.`}
+        {" "}Deleted accounts are hidden.
+      </p>
     </div>
   );
 }

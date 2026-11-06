@@ -90,7 +90,7 @@ export async function PATCH(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
-    const { id, name, code } = await req.json();
+    const { id, name, code, leaderboardVisible } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
     const dept = await db.department.findUnique({ where: { id } });
     if (!dept) return NextResponse.json({ error: "Department not found" }, { status: 404 });
@@ -115,6 +115,21 @@ export async function PATCH(req: NextRequest) {
     if (name !== undefined) data.name = name;
     if (code !== undefined) data.code = code.toUpperCase();
     const updated = await db.department.update({ where: { id }, data });
+
+    // Toggle department leaderboard visibility for students.
+    // Stored as a Setting row: key = "lbvis:dept:{departmentId}", value = "true"/"false".
+    if (leaderboardVisible !== undefined) {
+      try {
+        await db.setting.upsert({
+          where: { key: `lbvis:dept:${id}` },
+          update: { value: leaderboardVisible ? "true" : "false" },
+          create: { key: `lbvis:dept:${id}`, value: leaderboardVisible ? "true" : "false" },
+        });
+      } catch (e) {
+        console.error("Failed to update department leaderboard visibility setting:", e);
+      }
+    }
+
     return NextResponse.json({ department: updated });
   } catch (e) {
     console.error(e);

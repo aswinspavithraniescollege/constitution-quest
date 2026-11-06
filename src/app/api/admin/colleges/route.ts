@@ -98,7 +98,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Only the main admin can edit colleges" }, { status: 403 });
   }
   try {
-    const { id, name, code, location } = await req.json();
+    const { id, name, code, location, leaderboardVisible } = await req.json();
     if (!id) {
       return NextResponse.json({ error: "College id required" }, { status: 400 });
     }
@@ -130,6 +130,21 @@ export async function PATCH(req: NextRequest) {
     if (code !== undefined) data.code = code.toUpperCase();
     if (location !== undefined) data.location = location;
     const updated = await db.college.update({ where: { id }, data });
+
+    // Toggle college leaderboard visibility for students.
+    // Stored as a Setting row: key = "lbvis:college:{collegeId}", value = "true"/"false".
+    if (leaderboardVisible !== undefined) {
+      try {
+        await db.setting.upsert({
+          where: { key: `lbvis:college:${id}` },
+          update: { value: leaderboardVisible ? "true" : "false" },
+          create: { key: `lbvis:college:${id}`, value: leaderboardVisible ? "true" : "false" },
+        });
+      } catch (e) {
+        console.error("Failed to update college leaderboard visibility setting:", e);
+      }
+    }
+
     return NextResponse.json({ college: updated });
   } catch (e) {
     console.error(e);
