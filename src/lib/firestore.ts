@@ -649,6 +649,8 @@ export async function syncUserProfile(user: {
   collegeId?: string | null;
   collegeCode?: string | null;
   collegeName?: string | null;
+  departmentId?: string | null;  // needed by chat Firestore rules
+  deptCode?: string | null;
   username?: string | null;
   email?: string | null;
   firebaseUid: string;
@@ -662,6 +664,8 @@ export async function syncUserProfile(user: {
       collegeId: user.collegeId || "",
       collegeCode: user.collegeCode || "",
       collegeName: user.collegeName || "",
+      departmentId: user.departmentId || "",
+      deptCode: user.deptCode || "",
       username: user.username || "",
       email: user.email || "",
       updatedAt: serverTimestamp(),

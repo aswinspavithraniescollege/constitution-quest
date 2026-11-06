@@ -17,7 +17,7 @@ import { ChatView } from "@/components/realtime/chat-view";
 import { AnnouncementsDisplay } from "@/components/realtime/announcements";
 import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
 import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
-import { syncLeaderboardClient, addActivityClient, syncMockRankingClient, cleanupUserFirestore } from "@/lib/firestore";
+import { syncLeaderboardClient, addActivityClient, syncMockRankingClient, cleanupUserFirestore, syncUserProfile } from "@/lib/firestore";
 
 type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks" | "chat";
 
@@ -41,6 +41,23 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
         // appear in the live leaderboard (syncLeaderboardClient is otherwise
         // only called after a practice answer or login).
         if (data.user) {
+          // Sync the user's Firestore profile (includes departmentId, which
+          // the chat security rules require). This ensures the profile is
+          // up-to-date even if the user was created before this field existed.
+          syncUserProfile({
+            id: data.user.id,
+            name: data.user.name,
+            role: data.user.role || "STUDENT",
+            collegeId: data.user.collegeId,
+            collegeCode: data.user.college?.code,
+            collegeName: data.user.college?.name,
+            departmentId: data.user.departmentId,
+            deptCode: data.user.department?.code,
+            username: data.user.username,
+            email: data.user.email,
+            firebaseUid: user.firebaseUid || "",
+          }).catch(() => {});
+          // Proactively ensure this student has a Firestore leaderboard entry.
           syncLeaderboardClient({
             id: data.user.id,
             name: data.user.name,

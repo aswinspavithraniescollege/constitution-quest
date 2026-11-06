@@ -251,6 +251,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             collegeId: data.user.collegeId,
             collegeCode: data.user.college?.code,
             collegeName: data.user.college?.name,
+            departmentId: data.user.departmentId,
+            deptCode: data.user.department?.code,
             username: data.user.username,
             email: data.user.email,
             firebaseUid: cred.uid,
@@ -411,6 +413,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           id: data.user.id, name: data.user.name, role: data.user.role,
           collegeId: data.user.collegeId, collegeCode: data.user.college?.code,
           collegeName: data.user.college?.name, username: data.user.username,
+          departmentId: data.user.departmentId, deptCode: data.user.department?.code,
           email: data.user.email, firebaseUid: cred.uid,
         });
         if (data.user.role === "STUDENT") {
@@ -525,6 +528,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         id: data.user.id, name: data.user.name, role: data.user.role,
         collegeId: data.user.collegeId, collegeCode: data.user.college?.code,
         collegeName: data.user.college?.name, username: data.user.username,
+        departmentId: data.user.departmentId, deptCode: data.user.department?.code,
         email: data.user.email, firebaseUid: result.user.uid,
       });
       if (data.user.role === "STUDENT") {
@@ -620,6 +624,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           collegeId: data.user.collegeId,
           collegeCode: data.user.college?.code,
           collegeName: data.user.college?.name,
+          departmentId: data.user.departmentId,
+          deptCode: data.user.department?.code,
           username: data.user.username,
           email: data.user.email,
           firebaseUid: user.uid,

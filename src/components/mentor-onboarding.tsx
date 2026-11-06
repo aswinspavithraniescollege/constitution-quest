@@ -126,6 +126,8 @@ export function MentorOnboarding({
           collegeId: data.user.collegeId,
           collegeCode: data.user.college?.code,
           collegeName: data.user.college?.name,
+          departmentId: data.user.departmentId,
+          deptCode: data.user.department?.code,
           username: data.user.username,
           email: data.user.email,
           firebaseUid,
