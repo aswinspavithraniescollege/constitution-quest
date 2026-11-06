@@ -62,7 +62,7 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
               className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 text-sm font-bold flex items-center gap-2"
               title="Refresh student list"
             >
-              <RefreshCw className="w-4 h-4" /> <span className="hidden sm:inline">Refresh</span>
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> <span>Refresh</span>
             </button>
             <button
               onClick={() => setShowResults(true)}
@@ -99,9 +99,19 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-20">
-        <div className="mb-6">
-          <h1 className="text-2xl font-black">My Students</h1>
-          <p className="text-slate-500 text-sm">You can only see students assigned to you. Click a student to view their detailed progress.</p>
+        <div className="mb-6 flex items-start justify-between gap-3 flex-wrap">
+          <div>
+            <h1 className="text-2xl font-black">My Students</h1>
+            <p className="text-slate-500 text-sm">You can only see students assigned to you. Click a student to view their detailed progress.</p>
+          </div>
+          <button
+            onClick={load}
+            disabled={loading}
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-bold flex items-center gap-2 shadow-sm disabled:opacity-60 transition"
+            title="Refresh student list and progress"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Refresh Results
+          </button>
         </div>
 
         {/* Aggregate stats */}
