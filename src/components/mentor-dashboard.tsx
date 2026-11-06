@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
+import { cleanupUserFirestore } from "@/lib/firestore";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
@@ -52,6 +53,18 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
       if (!res.ok) {
         toast.error(data.error || "Failed to delete student");
         return;
+      }
+      // Server confirmed DB deletion — now clear the student's Firestore data
+      // (leaderboard, mockRankings, activityFeed, notes). This runs on the
+      // client because the Firebase SDK is authenticated, so the (loosened)
+      // security rules allow the mentor to delete these entries.
+      try {
+        const cleanup = await cleanupUserFirestore(student.id);
+        if (!cleanup.ok && cleanup.failed.length > 0) {
+          console.warn("Firestore cleanup partial failure:", cleanup.failed);
+        }
+      } catch (e) {
+        console.warn("Firestore cleanup error (DB record was still deleted):", e);
       }
       toast.success(`${student.name} has been removed.`);
       // Collapse the row if it was expanded
@@ -389,6 +402,16 @@ function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => 
     if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account and login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
+      // Step 0: Clear your own Firestore data (leaderboard, activityFeed,
+      // mockRankings, notes) WHILE STILL AUTHENTICATED. After the Firebase
+      // account is deleted below, the Firestore security rules will block
+      // all writes, so this must happen first.
+      try {
+        await cleanupUserFirestore(user.id);
+      } catch (e) {
+        console.warn("Self-cleanup of Firestore data failed:", e);
+      }
+
       // Step 1: Delete Firebase account on the CLIENT side
       const { auth, signInWithEmailAndPassword } = await import("@/lib/firebase");
       if (auth) {

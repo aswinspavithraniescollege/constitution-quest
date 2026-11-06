@@ -14,6 +14,7 @@ import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-fe
 import { AnnouncementsManager } from "@/components/realtime/announcements";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
+import { cleanupUserFirestore } from "@/lib/firestore";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results";
 
@@ -709,7 +710,11 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
   async function del(id: string) {
     if (!confirm("Delete this mentor?")) return;
     const res = await fetch(`/api/admin/mentors?id=${id}`, { method: "DELETE" });
-    if (res.ok) { toast.success("Deleted"); load(); }
+    if (res.ok) {
+      // Clear the mentor's Firestore data (leaderboard, activityFeed, notes).
+      try { await cleanupUserFirestore(id); } catch (e) { console.warn("Firestore cleanup:", e); }
+      toast.success("Deleted"); load();
+    }
     else { const d = await res.json(); toast.error(d.error); }
   }
 
@@ -1093,6 +1098,10 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     if (!confirm("Delete this student and all their data?")) return;
     const res = await fetch(`/api/admin/students?id=${id}`, { method: "DELETE" });
     if (res.ok) {
+      // Clear the student's Firestore data (leaderboard, mockRankings,
+      // activityFeed, notes). Runs on the client because the Firebase SDK
+      // is authenticated, so the security rules allow the admin to delete.
+      try { await cleanupUserFirestore(id); } catch (e) { console.warn("Firestore cleanup:", e); }
       toast.success("Deleted");
       if (selectedMentor) loadStudents(selectedMentor.id);
     }

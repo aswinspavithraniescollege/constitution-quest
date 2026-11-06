@@ -71,13 +71,16 @@ service cloud.firestore {
     // ========== 2. LEADERBOARD ==========
     // All authenticated users can READ the leaderboard (it's a public ranking).
     // Users can WRITE only their own entry (matched by internal userId).
-    // Main admin can write/delete any entry.
+    // Admins/mentors can delete any entry (for cleanup when an account is removed).
+    // A user can also delete their own entry (self-cleanup on account deletion).
     match /leaderboard/{userId} {
       allow read: if hasProfile();
       allow create, update: if hasProfile() && (
         userId == dbUserId() || isMainAdmin()
       );
-      allow delete: if isMainAdmin();
+      allow delete: if hasProfile() && (
+        userId == dbUserId() || isAdminOrMentor()
+      );
     }
 
     // ========== 3. ACTIVITY FEED ==========
@@ -86,7 +89,9 @@ service cloud.firestore {
     // Mentor: can read activities from their college only.
     // Student: can read their OWN activities only.
     // Any authenticated user can CREATE an activity (their own).
-    // Only admins can UPDATE or DELETE activities.
+    // Admins can UPDATE activities. Admins, mentors, and the entry owner
+    // can DELETE (so a user's activity feed is cleaned up when their account
+    // is removed by an admin/mentor OR self-deleted).
     match /activityFeed/{activityId} {
       allow read: if hasProfile() && (
         isMainAdmin() ||
@@ -94,7 +99,10 @@ service cloud.firestore {
         (isStudent() && resource.data.userId == dbUserId())
       );
       allow create: if hasProfile();
-      allow update, delete: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if hasProfile() && (
+        resource.data.userId == dbUserId() || isAdminOrMentor()
+      );
     }
 
     // ========== 4. DISCUSSION FORUM ==========
@@ -119,11 +127,16 @@ service cloud.firestore {
     }
 
     // ========== 5. STUDENT NOTES & BOOKMARKS ==========
-    // Only the owner can READ or WRITE their notes.
+    // Only the owner can READ, CREATE, or UPDATE their notes.
+    // Admins/mentors can DELETE notes (for cleanup when an account is removed).
+    // The owner can also DELETE their own notes (self-cleanup on account deletion).
     // The path is: notes/{userId}/items/{noteId}
     // userId here is the internal DB userId (not Firebase UID).
     match /notes/{userId}/items/{noteId} {
-      allow read, write: if hasProfile() && userId == dbUserId();
+      allow read, create, update: if hasProfile() && userId == dbUserId();
+      allow delete: if hasProfile() && (
+        userId == dbUserId() || isAdminOrMentor()
+      );
     }
 
     // ========== 6. ANNOUNCEMENTS ==========
@@ -146,13 +159,16 @@ service cloud.firestore {
     // ========== 7. LIVE MOCK TEST RANKINGS ==========
     // All authenticated users can READ rankings (to see who's taking the test).
     // Users can WRITE only their own ranking entry.
-    // Admins can write/delete any.
+    // Admins can write any. Admins, mentors, and the entry owner can delete
+    // (for cleanup when an account is removed).
     match /mockRankings/{rankingId} {
       allow read: if hasProfile();
       allow create, update: if hasProfile() && (
         request.resource.data.userId == dbUserId() || isAdmin()
       );
-      allow delete: if isAdmin();
+      allow delete: if hasProfile() && (
+        resource.data.userId == dbUserId() || isAdminOrMentor()
+      );
     }
 
     // ========== DEFAULT DENY ==========

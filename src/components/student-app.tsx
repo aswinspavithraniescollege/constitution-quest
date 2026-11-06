@@ -16,7 +16,7 @@ import { DiscussionForum } from "@/components/realtime/discussion-forum";
 import { AnnouncementsDisplay } from "@/components/realtime/announcements";
 import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
 import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
-import { syncLeaderboardClient, addActivityClient, syncMockRankingClient } from "@/lib/firestore";
+import { syncLeaderboardClient, addActivityClient, syncMockRankingClient, cleanupUserFirestore } from "@/lib/firestore";
 
 type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks";
 
@@ -1384,6 +1384,16 @@ function DeleteAccountSection({ user, onLogout }: { user: any; onLogout: () => v
     if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, XP, and your login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
+      // Step 0: Clear your own Firestore data (leaderboard, mockRankings,
+      // activityFeed, notes) WHILE STILL AUTHENTICATED. After the Firebase
+      // account is deleted below, the Firestore security rules will block
+      // all writes, so this must happen first.
+      try {
+        await cleanupUserFirestore(user.id);
+      } catch (e) {
+        console.warn("Self-cleanup of Firestore data failed:", e);
+      }
+
       // Step 1: Delete Firebase account on the CLIENT side (not server)
       // The Firebase auth session doesn't persist, so we need to re-authenticate
       const { auth, signInWithEmailAndPassword } = await import("@/lib/firebase");

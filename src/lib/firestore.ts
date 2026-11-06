@@ -453,6 +453,76 @@ export async function deleteAnnouncement(id: string) {
   }
 }
 
+// ====== CLEANUP: remove a user's Firestore data when their account is deleted ======
+// Called from the CLIENT (browser) because the Firebase client SDK is
+// authenticated, so Firestore security rules allow the deletes. The server-side
+// REST cleanup in the API routes is unauthenticated and silently rejected by
+// the rules — so this client-side function is what actually clears the data.
+//
+// Cleans up:
+//   - leaderboard/{userId}
+//   - mockRankings where userId == userId  (doc IDs are {mockTestId}_{userId})
+//   - activityFeed where userId == userId
+//   - notes/{userId}/items/{noteId}  (subcollection)
+//
+// Best-effort: each collection is tried independently and errors are collected.
+// Returns a summary so the caller can surface a toast if anything failed.
+export async function cleanupUserFirestore(userId: string): Promise<{
+  ok: boolean;
+  deleted: string[];
+  failed: string[];
+}> {
+  if (!db) {
+    return { ok: false, deleted: [], failed: ["leaderboard", "mockRankings", "activityFeed", "notes"] };
+  }
+  const deleted: string[] = [];
+  const failed: string[] = [];
+
+  // 1. Leaderboard entry (keyed directly by userId)
+  try {
+    await deleteDoc(doc(db, "leaderboard", userId));
+    deleted.push("leaderboard");
+  } catch (e) {
+    console.error("cleanupUserFirestore: leaderboard delete failed:", e);
+    failed.push("leaderboard");
+  }
+
+  // 2. Mock test rankings (query by userId field)
+  try {
+    const q = query(collection(db, "mockRankings"), where("userId", "==", userId));
+    const snap = await getDocs(q);
+    await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
+    deleted.push("mockRankings");
+  } catch (e) {
+    console.error("cleanupUserFirestore: mockRankings delete failed:", e);
+    failed.push("mockRankings");
+  }
+
+  // 3. Activity feed entries (query by userId field)
+  try {
+    const q = query(collection(db, "activityFeed"), where("userId", "==", userId));
+    const snap = await getDocs(q);
+    await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
+    deleted.push("activityFeed");
+  } catch (e) {
+    console.error("cleanupUserFirestore: activityFeed delete failed:", e);
+    failed.push("activityFeed");
+  }
+
+  // 4. Notes subcollection (notes/{userId}/items/{noteId})
+  try {
+    const q = collection(db, "notes", userId, "items");
+    const snap = await getDocs(q);
+    await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
+    deleted.push("notes");
+  } catch (e) {
+    console.error("cleanupUserFirestore: notes delete failed:", e);
+    failed.push("notes");
+  }
+
+  return { ok: failed.length === 0, deleted, failed };
+}
+
 // Subscribe to announcements (real-time)
 // If collegeId is provided, shows announcements targeted to that college + global ones
 export function subscribeToAnnouncements(
