@@ -703,7 +703,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   }
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cyan-500" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cyan-400" /></div>;
   }
 
   const globalOn = settings.global?.global !== false;
@@ -712,27 +712,27 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const mentorMap = settings.mentor || {};
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", padding: "1.5rem", borderRadius: "1rem", minHeight: "80vh" }}>
       <div>
-        <h2 className="text-2xl font-black flex items-center gap-2"><MessageCircle className="w-6 h-6 text-cyan-500" /> Chat Controls</h2>
-        <p className="text-slate-500 text-sm mt-1">
+        <h2 className="text-2xl font-black flex items-center gap-2 text-white"><MessageCircle className="w-6 h-6 text-cyan-400" /> Chat Controls</h2>
+        <p className="text-white/50 text-sm mt-1">
           Toggle chat channels on or off. Messages auto-delete after 24 hours.
           Mentors can additionally control their own department&apos;s chat from their profile.
         </p>
       </div>
 
       {/* Global chat toggle */}
-      <div className="rounded-2xl bg-white border border-slate-200 p-5">
-        <h3 className="font-bold mb-3 flex items-center gap-2"><Globe className="w-4 h-4 text-blue-500" /> Global Chat</h3>
-        <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2 text-white"><Globe className="w-4 h-4 text-blue-400" /> Global Chat</h3>
+        <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
           <div>
-            <div className="font-bold text-sm">Global chat {globalOn ? "is ON" : "is OFF"}</div>
-            <div className="text-xs text-slate-500">All users across all colleges can chat together.</div>
+            <div className="font-bold text-sm text-white">Global chat {globalOn ? "is ON" : "is OFF"}</div>
+            <div className="text-xs text-white/50">All users across all colleges can chat together.</div>
           </div>
           <button
             onClick={() => toggle("global", undefined, globalOn)}
             disabled={togglingKey === "global-global"}
-            className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${globalOn ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+            className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${globalOn ? "bg-emerald-500/20 border-emerald-400/30 text-emerald-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
           >
             {togglingKey === "global-global" ? <Loader2 className="w-3 h-3 animate-spin" /> : globalOn ? "ON" : "OFF"}
           </button>
@@ -740,36 +740,36 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
       </div>
 
       {/* College chat toggles */}
-      <div className="rounded-2xl bg-white border border-slate-200 p-5">
-        <h3 className="font-bold mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-500" /> College Chats</h3>
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2 text-white"><Building2 className="w-4 h-4 text-purple-400" /> College Chats</h3>
         <div className="space-y-2">
           {scopedColleges.map((c: any) => {
             const on = collegeMap[c.id] !== false;
             return (
-              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
-                <div className="font-bold text-sm flex items-center gap-2">{c.name} <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">{c.code}</span></div>
+              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                <div className="font-bold text-sm flex items-center gap-2 text-white">{c.name} <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300">{c.code}</span></div>
                 <button
                   onClick={() => toggle("college", c.id, on)}
                   disabled={togglingKey === `college-${c.id}`}
-                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-500/20 border-emerald-400/30 text-emerald-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
                 >
                   {togglingKey === `college-${c.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : on ? "ON" : "OFF"}
                 </button>
               </div>
             );
           })}
-          {scopedColleges.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No colleges in scope.</p>}
+          {scopedColleges.length === 0 && <p className="text-sm text-white/40 text-center py-4">No colleges in scope.</p>}
         </div>
       </div>
 
       {/* Department chat toggles — 3 per department: dept, dept-students, dm */}
-      <div className="rounded-2xl bg-white border border-slate-200 p-5">
-        <h3 className="font-bold mb-1 flex items-center gap-2"><Layers className="w-4 h-4 text-blue-500" /> Department Chats</h3>
-        <p className="text-xs text-slate-500 mb-4">
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+        <h3 className="font-bold mb-1 flex items-center gap-2 text-white"><Layers className="w-4 h-4 text-blue-400" /> Department Chats</h3>
+        <p className="text-xs text-white/50 mb-4">
           Each department has 3 chat toggles:
-          <span className="font-bold text-blue-600"> Dept</span> (students + mentor),
-          <span className="font-bold text-cyan-600"> Students-Only</span> (no mentor),
-          <span className="font-bold text-purple-600"> DM</span> (private 1:1).
+          <span className="font-bold text-blue-400"> Dept</span> (students + mentor),
+          <span className="font-bold text-cyan-400"> Students-Only</span> (no mentor),
+          <span className="font-bold text-purple-400"> DM</span> (private 1:1).
         </p>
         <div className="space-y-2">
           {departments.map((d: any) => {
@@ -777,10 +777,10 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
             const studentsOn = (settings.deptStudents || {})[d.id] !== false;
             const dmOn = (settings.dm || {})[d.id] !== false;
             return (
-              <div key={d.id} className="p-3 rounded-xl border border-slate-200 space-y-2">
+              <div key={d.id} className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
                 <div className="text-sm">
-                  <span className="font-bold">{d.name}</span>
-                  <span className="text-xs text-slate-500 ml-2">{d.college?.name}</span>
+                  <span className="font-bold text-white">{d.name}</span>
+                  <span className="text-xs text-white/50 ml-2">{d.college?.name}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {/* Dept chat (students + mentor) */}
@@ -788,7 +788,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     onClick={() => toggle("dept", d.id, deptOn)}
                     disabled={togglingKey === `dept-${d.id}`}
                     title="Department chat (students + mentor)"
-                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${deptOn ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${deptOn ? "bg-emerald-500/20 border-emerald-400/30 text-emerald-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
                   >
                     {togglingKey === `dept-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Layers className="w-3 h-3" />}
                     Dept {deptOn ? "ON" : "OFF"}
@@ -798,7 +798,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     onClick={() => toggle("dept-students", d.id, studentsOn)}
                     disabled={togglingKey === `dept-students-${d.id}`}
                     title="Students-only chat (no mentor/admin)"
-                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${studentsOn ? "bg-cyan-50 border-cyan-300 text-cyan-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${studentsOn ? "bg-cyan-500/20 border-cyan-400/30 text-cyan-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
                   >
                     {togglingKey === `dept-students-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Users className="w-3 h-3" />}
                     Students-Only {studentsOn ? "ON" : "OFF"}
@@ -808,7 +808,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     onClick={() => toggle("dm", d.id, dmOn)}
                     disabled={togglingKey === `dm-${d.id}`}
                     title="Private 1:1 direct messages within department"
-                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${dmOn ? "bg-purple-50 border-purple-300 text-purple-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${dmOn ? "bg-purple-500/20 border-purple-400/30 text-purple-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
                   >
                     {togglingKey === `dm-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserCheck className="w-3 h-3" />}
                     DM {dmOn ? "ON" : "OFF"}
@@ -817,23 +817,23 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
               </div>
             );
           })}
-          {departments.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No departments in scope.</p>}
+          {departments.length === 0 && <p className="text-sm text-white/40 text-center py-4">No departments in scope.</p>}
         </div>
       </div>
 
       {/* Mentor chat toggles */}
-      <div className="rounded-2xl bg-white border border-slate-200 p-5">
-        <h3 className="font-bold mb-3 flex items-center gap-2"><GraduationCap className="w-4 h-4 text-emerald-500" /> Mentor Chats</h3>
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+        <h3 className="font-bold mb-3 flex items-center gap-2 text-white"><GraduationCap className="w-4 h-4 text-emerald-400" /> Mentor Chats</h3>
         <div className="space-y-2">
           {scopedColleges.map((c: any) => {
             const on = mentorMap[c.id] !== false;
             return (
-              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
-                <div className="font-bold text-sm">{c.name} — Mentors Only</div>
+              <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                <div className="font-bold text-sm text-white">{c.name} — Mentors Only</div>
                 <button
                   onClick={() => toggle("mentor", c.id, on)}
                   disabled={togglingKey === `mentor-${c.id}`}
-                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-slate-100 border-slate-300 text-slate-500"} disabled:opacity-50`}
+                  className={`px-3 py-2 rounded-lg text-xs font-bold border-2 ${on ? "bg-emerald-500/20 border-emerald-400/30 text-emerald-300" : "bg-white/5 border-white/10 text-white/50"} disabled:opacity-50`}
                 >
                   {togglingKey === `mentor-${c.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : on ? "ON" : "OFF"}
                 </button>
