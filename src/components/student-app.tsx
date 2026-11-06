@@ -1381,16 +1381,29 @@ function DeleteAccountSection({ user, onLogout }: { user: any; onLogout: () => v
 
   async function deleteAccount(e: React.FormEvent) {
     e.preventDefault();
-    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, and XP. This cannot be undone.")) return;
+    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your account, all your practice attempts, mock test results, badges, XP, and your login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
+      // Get Firebase ID token for account deletion
+      let idToken = "";
+      try {
+        const { auth } = await import("@/lib/firebase");
+        if (auth && auth.currentUser) {
+          idToken = await auth.currentUser.getIdToken();
+        }
+      } catch {}
       const res = await fetch("/api/student/delete-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentPassword: password }),
+        body: JSON.stringify({ currentPassword: password, idToken }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
+      // Sign out from Firebase
+      try {
+        const { auth } = await import("@/lib/firebase");
+        if (auth) await auth.signOut();
+      } catch {}
       toast.success("Account deleted. Goodbye! 👋");
       setTimeout(() => onLogout(), 1000);
     } finally { setLoading(false); }

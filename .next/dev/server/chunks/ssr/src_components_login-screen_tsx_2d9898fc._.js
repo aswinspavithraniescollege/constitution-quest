@@ -216,7 +216,8 @@ function LoginScreen({ onLogin }) {
                     const code = err?.code || "";
                     let msg = "Login failed";
                     if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
-                        msg = "Invalid email or password";
+                        // Could be a Google-only account — check if the email exists with Google provider
+                        msg = "Invalid email or password. If you signed up with Google, please use 'Continue with Google' below.";
                     } else if (code === "auth/too-many-requests") {
                         msg = "Too many failed attempts. Try again later.";
                     } else if (code === "auth/invalid-email") {
@@ -226,7 +227,9 @@ function LoginScreen({ onLogin }) {
                     } else {
                         msg = err?.message || "Login failed";
                     }
-                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(msg);
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(msg, {
+                        description: "Try 'Continue with Google' if you signed up with Google."
+                    });
                     return;
                 }
                 // 2. Get ID token and send to backend
@@ -245,6 +248,14 @@ function LoginScreen({ onLogin }) {
                 if (!res.ok) {
                     // Sign out from Firebase since backend rejected
                     if (__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["auth"]) await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["auth"].signOut();
+                    // If profile is incomplete, switch to signup mode
+                    if (data.error && data.error.includes("incomplete")) {
+                        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Profile incomplete", {
+                            description: "Please complete your registration by filling the Sign Up form."
+                        });
+                        setMode("signup");
+                        return;
+                    }
                     __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(data.error || "Login failed");
                     return;
                 }
@@ -563,6 +574,14 @@ function LoginScreen({ onLogin }) {
             if (!res.ok) {
                 // Sign out from Firebase since backend rejected
                 if (__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["auth"]) await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["auth"].signOut();
+                // If profile is incomplete, switch to signup mode
+                if (data.error && data.error.includes("incomplete")) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Profile incomplete", {
+                        description: "Please complete your registration by filling the Sign Up form."
+                    });
+                    setMode("signup");
+                    return;
+                }
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(data.error || "Google login failed");
                 return;
             }
@@ -758,7 +777,7 @@ function LoginScreen({ onLogin }) {
                 className: "absolute inset-0 cq-grid-bg opacity-50"
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 651,
+                lineNumber: 670,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -786,7 +805,7 @@ function LoginScreen({ onLogin }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 653,
+                lineNumber: 672,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -814,7 +833,7 @@ function LoginScreen({ onLogin }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 658,
+                lineNumber: 677,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -832,7 +851,7 @@ function LoginScreen({ onLogin }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 663,
+                lineNumber: 682,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -852,12 +871,12 @@ function LoginScreen({ onLogin }) {
                     className: "w-12 h-12"
                 }, void 0, false, {
                     fileName: "[project]/src/components/login-screen.tsx",
-                    lineNumber: 671,
+                    lineNumber: 690,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 670,
+                lineNumber: 689,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -878,12 +897,12 @@ function LoginScreen({ onLogin }) {
                     className: "w-10 h-10"
                 }, void 0, false, {
                     fileName: "[project]/src/components/login-screen.tsx",
-                    lineNumber: 674,
+                    lineNumber: 693,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 673,
+                lineNumber: 692,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -904,12 +923,12 @@ function LoginScreen({ onLogin }) {
                     className: "w-11 h-11"
                 }, void 0, false, {
                     fileName: "[project]/src/components/login-screen.tsx",
-                    lineNumber: 677,
+                    lineNumber: 696,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 676,
+                lineNumber: 695,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -930,12 +949,12 @@ function LoginScreen({ onLogin }) {
                     className: "w-10 h-10"
                 }, void 0, false, {
                     fileName: "[project]/src/components/login-screen.tsx",
-                    lineNumber: 680,
+                    lineNumber: 699,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 679,
+                lineNumber: 698,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -966,12 +985,12 @@ function LoginScreen({ onLogin }) {
                                     children: "⚖️"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/login-screen.tsx",
-                                    lineNumber: 692,
+                                    lineNumber: 711,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 686,
+                                lineNumber: 705,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -979,7 +998,7 @@ function LoginScreen({ onLogin }) {
                                 children: "Constitution Quest"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 694,
+                                lineNumber: 713,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -987,13 +1006,13 @@ function LoginScreen({ onLogin }) {
                                 children: "Gamified NPTEL Learning Platform • IES College of Engineering"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 697,
+                                lineNumber: 716,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 685,
+                        lineNumber: 704,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1008,14 +1027,14 @@ function LoginScreen({ onLogin }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 709,
+                                        lineNumber: 728,
                                         columnNumber: 13
                                     }, this),
                                     " Sign In"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 702,
+                                lineNumber: 721,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1030,20 +1049,20 @@ function LoginScreen({ onLogin }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 718,
+                                        lineNumber: 737,
                                         columnNumber: 13
                                     }, this),
                                     " Sign Up"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 711,
+                                lineNumber: 730,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 701,
+                        lineNumber: 720,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1065,7 +1084,7 @@ function LoginScreen({ onLogin }) {
                                         className: `w-5 h-5 mx-auto mb-1 ${active ? "text-white" : "text-white/50"}`
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 741,
+                                        lineNumber: 760,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1073,19 +1092,19 @@ function LoginScreen({ onLogin }) {
                                         children: cfg.label
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 742,
+                                        lineNumber: 761,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, r, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 731,
+                                lineNumber: 750,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 723,
+                        lineNumber: 742,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1120,12 +1139,12 @@ function LoginScreen({ onLogin }) {
                                                 className: "w-6 h-6 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 761,
+                                                lineNumber: 780,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 760,
+                                            lineNumber: 779,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1139,7 +1158,7 @@ function LoginScreen({ onLogin }) {
                                                             children: config.label
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 765,
+                                                            lineNumber: 784,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1147,13 +1166,13 @@ function LoginScreen({ onLogin }) {
                                                             children: mode === "login" ? "Portal" : "Sign Up"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 766,
+                                                            lineNumber: 785,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 764,
+                                                    lineNumber: 783,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1161,19 +1180,19 @@ function LoginScreen({ onLogin }) {
                                                     children: config.tagline
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 770,
+                                                    lineNumber: 789,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 763,
+                                            lineNumber: 782,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/login-screen.tsx",
-                                    lineNumber: 759,
+                                    lineNumber: 778,
                                     columnNumber: 13
                                 }, this),
                                 mode === "login" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1183,7 +1202,7 @@ function LoginScreen({ onLogin }) {
                                             children: config.description
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 776,
+                                            lineNumber: 795,
                                             columnNumber: 17
                                         }, this),
                                         config.dualMode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1198,14 +1217,14 @@ function LoginScreen({ onLogin }) {
                                                             className: "w-3.5 h-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 787,
+                                                            lineNumber: 806,
                                                             columnNumber: 23
                                                         }, this),
                                                         " Email (Main Admin)"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 780,
+                                                    lineNumber: 799,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1217,20 +1236,20 @@ function LoginScreen({ onLogin }) {
                                                             className: "w-3.5 h-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 796,
+                                                            lineNumber: 815,
                                                             columnNumber: 23
                                                         }, this),
                                                         " Username (Sub-Admin)"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 789,
+                                                    lineNumber: 808,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 779,
+                                            lineNumber: 798,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1246,7 +1265,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: "Email"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 805,
+                                                                    lineNumber: 824,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1256,7 +1275,7 @@ function LoginScreen({ onLogin }) {
                                                                             className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 807,
+                                                                            lineNumber: 826,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1270,19 +1289,19 @@ function LoginScreen({ onLogin }) {
                                                                             autoFocus: true
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 808,
+                                                                            lineNumber: 827,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 806,
+                                                                    lineNumber: 825,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 804,
+                                                            lineNumber: 823,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1292,7 +1311,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: "Password"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 821,
+                                                                    lineNumber: 840,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1302,7 +1321,7 @@ function LoginScreen({ onLogin }) {
                                                                             className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 823,
+                                                                            lineNumber: 842,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1315,7 +1334,7 @@ function LoginScreen({ onLogin }) {
                                                                             autoComplete: "current-password"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 824,
+                                                                            lineNumber: 843,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1327,30 +1346,30 @@ function LoginScreen({ onLogin }) {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                                lineNumber: 839,
+                                                                                lineNumber: 858,
                                                                                 columnNumber: 45
                                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                                lineNumber: 839,
+                                                                                lineNumber: 858,
                                                                                 columnNumber: 78
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 833,
+                                                                            lineNumber: 852,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 822,
+                                                                    lineNumber: 841,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 820,
+                                                            lineNumber: 839,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
@@ -1363,7 +1382,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: "Username"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 848,
+                                                                    lineNumber: 867,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1373,7 +1392,7 @@ function LoginScreen({ onLogin }) {
                                                                             className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 850,
+                                                                            lineNumber: 869,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1387,19 +1406,19 @@ function LoginScreen({ onLogin }) {
                                                                             autoFocus: true
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 851,
+                                                                            lineNumber: 870,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 849,
+                                                                    lineNumber: 868,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 847,
+                                                            lineNumber: 866,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1409,7 +1428,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: "Password"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 864,
+                                                                    lineNumber: 883,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1419,7 +1438,7 @@ function LoginScreen({ onLogin }) {
                                                                             className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 866,
+                                                                            lineNumber: 885,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1432,7 +1451,7 @@ function LoginScreen({ onLogin }) {
                                                                             autoComplete: "current-password"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 867,
+                                                                            lineNumber: 886,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1444,30 +1463,30 @@ function LoginScreen({ onLogin }) {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                                lineNumber: 882,
+                                                                                lineNumber: 901,
                                                                                 columnNumber: 45
                                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                                lineNumber: 882,
+                                                                                lineNumber: 901,
                                                                                 columnNumber: 78
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 876,
+                                                                            lineNumber: 895,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 865,
+                                                                    lineNumber: 884,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 863,
+                                                            lineNumber: 882,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
@@ -1482,7 +1501,7 @@ function LoginScreen({ onLogin }) {
                                                                 className: "w-5 h-5 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 894,
+                                                                lineNumber: 913,
                                                                 columnNumber: 25
                                                             }, this),
                                                             " Entering..."
@@ -1496,20 +1515,20 @@ function LoginScreen({ onLogin }) {
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 896,
+                                                                lineNumber: 915,
                                                                 columnNumber: 56
                                                             }, this)
                                                         ]
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 888,
+                                                    lineNumber: 907,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 800,
+                                            lineNumber: 819,
                                             columnNumber: 17
                                         }, this),
                                         mode === "login" && (config.dualMode ? adminLoginMethod === "email" : config.firebaseEnabled) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1521,7 +1540,7 @@ function LoginScreen({ onLogin }) {
                                                             className: "flex-1 h-px bg-white/10"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 905,
+                                                            lineNumber: 924,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1529,20 +1548,20 @@ function LoginScreen({ onLogin }) {
                                                             children: "or"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 906,
+                                                            lineNumber: 925,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "flex-1 h-px bg-white/10"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 907,
+                                                            lineNumber: 926,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 904,
+                                                    lineNumber: 923,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1556,7 +1575,7 @@ function LoginScreen({ onLogin }) {
                                                                 className: "w-5 h-5 animate-spin text-slate-500"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 916,
+                                                                lineNumber: 935,
                                                                 columnNumber: 27
                                                             }, this),
                                                             " Connecting to Google..."
@@ -1573,7 +1592,7 @@ function LoginScreen({ onLogin }) {
                                                                         d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 920,
+                                                                        lineNumber: 939,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1581,7 +1600,7 @@ function LoginScreen({ onLogin }) {
                                                                         d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 921,
+                                                                        lineNumber: 940,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1589,7 +1608,7 @@ function LoginScreen({ onLogin }) {
                                                                         d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 922,
+                                                                        lineNumber: 941,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1597,13 +1616,13 @@ function LoginScreen({ onLogin }) {
                                                                         d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 923,
+                                                                        lineNumber: 942,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 919,
+                                                                lineNumber: 938,
                                                                 columnNumber: 27
                                                             }, this),
                                                             "Continue with Google"
@@ -1611,7 +1630,7 @@ function LoginScreen({ onLogin }) {
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 909,
+                                                    lineNumber: 928,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
@@ -1624,7 +1643,7 @@ function LoginScreen({ onLogin }) {
                                             children: config.description
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 936,
+                                            lineNumber: 955,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1638,7 +1657,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Full Name *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 940,
+                                                            lineNumber: 959,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1648,7 +1667,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 942,
+                                                                    lineNumber: 961,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1664,19 +1683,19 @@ function LoginScreen({ onLogin }) {
                                                                     autoFocus: true
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 943,
+                                                                    lineNumber: 962,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 941,
+                                                            lineNumber: 960,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 939,
+                                                    lineNumber: 958,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1686,7 +1705,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "College *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 956,
+                                                            lineNumber: 975,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1696,7 +1715,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 z-10"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 958,
+                                                                    lineNumber: 977,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1715,7 +1734,7 @@ function LoginScreen({ onLogin }) {
                                                                             children: "— Select your college —"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                                            lineNumber: 965,
+                                                                            lineNumber: 984,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         colleges.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1724,25 +1743,25 @@ function LoginScreen({ onLogin }) {
                                                                                 children: c.name
                                                                             }, c.id, false, {
                                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                                lineNumber: 966,
+                                                                                lineNumber: 985,
                                                                                 columnNumber: 44
                                                                             }, this))
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 959,
+                                                                    lineNumber: 978,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 957,
+                                                            lineNumber: 976,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 955,
+                                                    lineNumber: 974,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1752,7 +1771,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Department *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 972,
+                                                            lineNumber: 991,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1770,7 +1789,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: signupForm.collegeId ? "— Select department —" : "Select college first"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 980,
+                                                                    lineNumber: 999,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 departments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1784,19 +1803,19 @@ function LoginScreen({ onLogin }) {
                                                                         ]
                                                                     }, d.id, true, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 981,
+                                                                        lineNumber: 1000,
                                                                         columnNumber: 45
                                                                     }, this))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 973,
+                                                            lineNumber: 992,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 971,
+                                                    lineNumber: 990,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1806,7 +1825,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Mentor *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 986,
+                                                            lineNumber: 1005,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1824,7 +1843,7 @@ function LoginScreen({ onLogin }) {
                                                                     children: signupForm.departmentId ? "— Select your mentor —" : "Select department first"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 994,
+                                                                    lineNumber: 1013,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 mentors.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1833,13 +1852,13 @@ function LoginScreen({ onLogin }) {
                                                                         children: m.name
                                                                     }, m.id, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 996,
+                                                                        lineNumber: 1015,
                                                                         columnNumber: 25
                                                                     }, this))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 987,
+                                                            lineNumber: 1006,
                                                             columnNumber: 21
                                                         }, this),
                                                         signupForm.departmentId && mentors.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1849,20 +1868,20 @@ function LoginScreen({ onLogin }) {
                                                                     className: "w-3 h-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1001,
+                                                                    lineNumber: 1020,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 " No mentors assigned to this department yet. Please contact your admin."
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1000,
+                                                            lineNumber: 1019,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 985,
+                                                    lineNumber: 1004,
                                                     columnNumber: 19
                                                 }, this),
                                                 role === "STUDENT" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1872,7 +1891,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "KTU Register Number *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1008,
+                                                            lineNumber: 1027,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1882,7 +1901,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1010,
+                                                                    lineNumber: 1029,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1897,19 +1916,19 @@ function LoginScreen({ onLogin }) {
                                                                     required: true
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1011,
+                                                                    lineNumber: 1030,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1009,
+                                                            lineNumber: 1028,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1007,
+                                                    lineNumber: 1026,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1919,7 +1938,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Phone (optional)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1024,
+                                                            lineNumber: 1043,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1929,7 +1948,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1026,
+                                                                    lineNumber: 1045,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1943,19 +1962,19 @@ function LoginScreen({ onLogin }) {
                                                                     className: "w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1027,
+                                                                    lineNumber: 1046,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1025,
+                                                            lineNumber: 1044,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1023,
+                                                    lineNumber: 1042,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1965,7 +1984,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Email *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1038,
+                                                            lineNumber: 1057,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1975,7 +1994,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1040,
+                                                                    lineNumber: 1059,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1988,19 +2007,19 @@ function LoginScreen({ onLogin }) {
                                                                     autoComplete: "email"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1041,
+                                                                    lineNumber: 1060,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1039,
+                                                            lineNumber: 1058,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1037,
+                                                    lineNumber: 1056,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2014,13 +2033,13 @@ function LoginScreen({ onLogin }) {
                                                                     children: "(min 6 characters)"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1054,
+                                                                    lineNumber: 1073,
                                                                     columnNumber: 98
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1054,
+                                                            lineNumber: 1073,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2030,7 +2049,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1056,
+                                                                    lineNumber: 1075,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2043,7 +2062,7 @@ function LoginScreen({ onLogin }) {
                                                                     autoComplete: "new-password"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1057,
+                                                                    lineNumber: 1076,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2055,30 +2074,30 @@ function LoginScreen({ onLogin }) {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 1072,
+                                                                        lineNumber: 1091,
                                                                         columnNumber: 41
                                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                                        lineNumber: 1072,
+                                                                        lineNumber: 1091,
                                                                         columnNumber: 74
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1066,
+                                                                    lineNumber: 1085,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1055,
+                                                            lineNumber: 1074,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1053,
+                                                    lineNumber: 1072,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2088,7 +2107,7 @@ function LoginScreen({ onLogin }) {
                                                             children: "Confirm Password *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1078,
+                                                            lineNumber: 1097,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2098,7 +2117,7 @@ function LoginScreen({ onLogin }) {
                                                                     className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1080,
+                                                                    lineNumber: 1099,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2111,13 +2130,13 @@ function LoginScreen({ onLogin }) {
                                                                     autoComplete: "new-password"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1081,
+                                                                    lineNumber: 1100,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1079,
+                                                            lineNumber: 1098,
                                                             columnNumber: 21
                                                         }, this),
                                                         confirmPassword && confirmPassword !== password && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2127,20 +2146,20 @@ function LoginScreen({ onLogin }) {
                                                                     className: "w-3 h-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                                    lineNumber: 1097,
+                                                                    lineNumber: 1116,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 " Passwords do not match"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1096,
+                                                            lineNumber: 1115,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1077,
+                                                    lineNumber: 1096,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2153,7 +2172,7 @@ function LoginScreen({ onLogin }) {
                                                                 className: "w-5 h-5 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1107,
+                                                                lineNumber: 1126,
                                                                 columnNumber: 25
                                                             }, this),
                                                             " Creating your account..."
@@ -2164,7 +2183,7 @@ function LoginScreen({ onLogin }) {
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1109,
+                                                                lineNumber: 1128,
                                                                 columnNumber: 25
                                                             }, this),
                                                             " Create ",
@@ -2174,13 +2193,13 @@ function LoginScreen({ onLogin }) {
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1101,
+                                                    lineNumber: 1120,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 937,
+                                            lineNumber: 956,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2190,7 +2209,7 @@ function LoginScreen({ onLogin }) {
                                                     className: "flex-1 h-px bg-white/10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1116,
+                                                    lineNumber: 1135,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2198,20 +2217,20 @@ function LoginScreen({ onLogin }) {
                                                     children: "or sign up with"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1117,
+                                                    lineNumber: 1136,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex-1 h-px bg-white/10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/login-screen.tsx",
-                                                    lineNumber: 1118,
+                                                    lineNumber: 1137,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 1115,
+                                            lineNumber: 1134,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2225,7 +2244,7 @@ function LoginScreen({ onLogin }) {
                                                         className: "w-5 h-5 animate-spin text-slate-500"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                        lineNumber: 1127,
+                                                        lineNumber: 1146,
                                                         columnNumber: 23
                                                     }, this),
                                                     " Connecting to Google..."
@@ -2242,7 +2261,7 @@ function LoginScreen({ onLogin }) {
                                                                 d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1131,
+                                                                lineNumber: 1150,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -2250,7 +2269,7 @@ function LoginScreen({ onLogin }) {
                                                                 d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1132,
+                                                                lineNumber: 1151,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -2258,7 +2277,7 @@ function LoginScreen({ onLogin }) {
                                                                 d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1133,
+                                                                lineNumber: 1152,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -2266,13 +2285,13 @@ function LoginScreen({ onLogin }) {
                                                                 d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1134,
+                                                                lineNumber: 1153,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                        lineNumber: 1130,
+                                                        lineNumber: 1149,
                                                         columnNumber: 23
                                                     }, this),
                                                     "Sign up with Google"
@@ -2280,7 +2299,7 @@ function LoginScreen({ onLogin }) {
                                             }, void 0, true)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 1120,
+                                            lineNumber: 1139,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2288,7 +2307,7 @@ function LoginScreen({ onLogin }) {
                                             children: "Sign up with your Google account. You'll still need to fill in the form above for college details."
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 1140,
+                                            lineNumber: 1159,
                                             columnNumber: 17
                                         }, this)
                                     ]
@@ -2296,12 +2315,12 @@ function LoginScreen({ onLogin }) {
                             ]
                         }, `${mode}-${role}`, true, {
                             fileName: "[project]/src/components/login-screen.tsx",
-                            lineNumber: 750,
+                            lineNumber: 769,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 749,
+                        lineNumber: 768,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2320,7 +2339,7 @@ function LoginScreen({ onLogin }) {
                         }, void 0, true)
                     }, void 0, false, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 1149,
+                        lineNumber: 1168,
                         columnNumber: 9
                     }, this),
                     mode === "login" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2338,14 +2357,14 @@ function LoginScreen({ onLogin }) {
                                         className: "w-3 h-3"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1173,
+                                        lineNumber: 1192,
                                         columnNumber: 17
                                     }, this),
                                     " Forgot Password?"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 1169,
+                                lineNumber: 1188,
                                 columnNumber: 15
                             }, this),
                             role !== "ADMIN" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2357,13 +2376,13 @@ function LoginScreen({ onLogin }) {
                                 children: "Don't have an account? Sign up"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 1177,
+                                lineNumber: 1196,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 1166,
+                        lineNumber: 1185,
                         columnNumber: 11
                     }, this),
                     mode === "signup" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2374,18 +2393,18 @@ function LoginScreen({ onLogin }) {
                             children: "Already have an account? Sign in"
                         }, void 0, false, {
                             fileName: "[project]/src/components/login-screen.tsx",
-                            lineNumber: 1185,
+                            lineNumber: 1204,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 1184,
+                        lineNumber: 1203,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 683,
+                lineNumber: 702,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2433,14 +2452,14 @@ function LoginScreen({ onLogin }) {
                                                 className: "w-5 h-5 text-pink-300"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1213,
+                                                lineNumber: 1232,
                                                 columnNumber: 19
                                             }, this),
                                             " Reset Password"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1212,
+                                        lineNumber: 1231,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2450,18 +2469,18 @@ function LoginScreen({ onLogin }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 1219,
+                                            lineNumber: 1238,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1215,
+                                        lineNumber: 1234,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 1211,
+                                lineNumber: 1230,
                                 columnNumber: 15
                             }, this),
                             !resetSent ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2475,14 +2494,14 @@ function LoginScreen({ onLogin }) {
                                                 children: "email accounts"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1227,
+                                                lineNumber: 1246,
                                                 columnNumber: 36
                                             }, this),
                                             " (students & mentors who signed up with email)."
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1225,
+                                        lineNumber: 1244,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -2496,7 +2515,7 @@ function LoginScreen({ onLogin }) {
                                                         children: "Email Address"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                        lineNumber: 1231,
+                                                        lineNumber: 1250,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2506,7 +2525,7 @@ function LoginScreen({ onLogin }) {
                                                                 className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1233,
+                                                                lineNumber: 1252,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2519,19 +2538,19 @@ function LoginScreen({ onLogin }) {
                                                                 autoFocus: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                                lineNumber: 1234,
+                                                                lineNumber: 1253,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/login-screen.tsx",
-                                                        lineNumber: 1232,
+                                                        lineNumber: 1251,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1230,
+                                                lineNumber: 1249,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2544,7 +2563,7 @@ function LoginScreen({ onLogin }) {
                                                             className: "w-4 h-4 animate-spin"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1251,
+                                                            lineNumber: 1270,
                                                             columnNumber: 27
                                                         }, this),
                                                         " Sending..."
@@ -2555,7 +2574,7 @@ function LoginScreen({ onLogin }) {
                                                             className: "w-4 h-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/login-screen.tsx",
-                                                            lineNumber: 1253,
+                                                            lineNumber: 1272,
                                                             columnNumber: 27
                                                         }, this),
                                                         " Send Reset Link"
@@ -2563,13 +2582,13 @@ function LoginScreen({ onLogin }) {
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1245,
+                                                lineNumber: 1264,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1229,
+                                        lineNumber: 1248,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2580,14 +2599,14 @@ function LoginScreen({ onLogin }) {
                                                 children: "Admin/Sub-Admin accounts:"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1258,
+                                                lineNumber: 1277,
                                                 columnNumber: 21
                                             }, this),
                                             " If you login with a username (not email), please contact the main admin to reset your password. The main admin can reset it from the admin dashboard."
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1257,
+                                        lineNumber: 1276,
                                         columnNumber: 19
                                     }, this)
                                 ]
@@ -2618,12 +2637,12 @@ function LoginScreen({ onLogin }) {
                                             className: "w-8 h-8 text-emerald-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/login-screen.tsx",
-                                            lineNumber: 1273,
+                                            lineNumber: 1292,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1267,
+                                        lineNumber: 1286,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
@@ -2631,7 +2650,7 @@ function LoginScreen({ onLogin }) {
                                         children: "Check Your Email"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1275,
+                                        lineNumber: 1294,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2643,14 +2662,14 @@ function LoginScreen({ onLogin }) {
                                                 children: resetEmail
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1277,
+                                                lineNumber: 1296,
                                                 columnNumber: 46
                                             }, this),
                                             ", a password reset link has been sent. Check your inbox and spam folder."
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1276,
+                                        lineNumber: 1295,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2658,7 +2677,7 @@ function LoginScreen({ onLogin }) {
                                         children: "The reset link will expire in 1 hour. After resetting your password, come back here to sign in."
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1279,
+                                        lineNumber: 1298,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2673,7 +2692,7 @@ function LoginScreen({ onLogin }) {
                                                 children: "Try Another Email"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1283,
+                                                lineNumber: 1302,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2682,41 +2701,41 @@ function LoginScreen({ onLogin }) {
                                                 children: "Back to Login"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/login-screen.tsx",
-                                                lineNumber: 1289,
+                                                lineNumber: 1308,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/login-screen.tsx",
-                                        lineNumber: 1282,
+                                        lineNumber: 1301,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/login-screen.tsx",
-                                lineNumber: 1262,
+                                lineNumber: 1281,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/login-screen.tsx",
-                        lineNumber: 1202,
+                        lineNumber: 1221,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/login-screen.tsx",
-                    lineNumber: 1195,
+                    lineNumber: 1214,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/login-screen.tsx",
-                lineNumber: 1193,
+                lineNumber: 1212,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/login-screen.tsx",
-        lineNumber: 649,
+        lineNumber: 668,
         columnNumber: 5
     }, this);
 }

@@ -303,16 +303,29 @@ function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => 
 
   async function deleteAccount(e: React.FormEvent) {
     e.preventDefault();
-    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account. This cannot be undone.")) return;
+    if (!confirm("Are you absolutely sure? This will PERMANENTLY delete your mentor account and login credentials. This cannot be undone.")) return;
     setLoading(true);
     try {
+      // Get Firebase ID token for account deletion
+      let idToken = "";
+      try {
+        const { auth } = await import("@/lib/firebase");
+        if (auth && auth.currentUser) {
+          idToken = await auth.currentUser.getIdToken();
+        }
+      } catch {}
       const res = await fetch("/api/mentor/delete-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentPassword: password }),
+        body: JSON.stringify({ currentPassword: password, idToken }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
+      // Sign out from Firebase
+      try {
+        const { auth } = await import("@/lib/firebase");
+        if (auth) await auth.signOut();
+      } catch {}
       toast.success("Account deleted. Goodbye! 👋");
       setTimeout(() => onDeleted(), 1000);
     } finally { setLoading(false); }
