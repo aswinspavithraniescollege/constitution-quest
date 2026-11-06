@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getSettingsByPrefix } from "@/lib/settings";
 import { getCurrentUser } from "@/lib/auth";
 
 // GET /api/admin/leaderboard-settings
@@ -11,33 +11,29 @@ import { getCurrentUser } from "@/lib/auth";
 //   }
 // Absence of a key in the returned maps means "default = visible (true)".
 //
-// Used by the admin dashboard to render the toggle state for every college
-// and department in one call.
+// Uses raw-SQL getSettingsByPrefix so this works even if the Prisma Client
+// in production doesn't know about the Setting model.
 export async function GET() {
   const user = await getCurrentUser();
   if (!user || (user.role !== "ADMIN" && user.role !== "SUB_ADMIN")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {
-    const rows = await db.setting.findMany({
-      where: { key: { startsWith: "lbvis:" } },
-      select: { key: true, value: true },
-    });
+    const map = await getSettingsByPrefix("lbvis:");
     const college: Record<string, boolean> = {};
     const department: Record<string, boolean> = {};
     const collegeForDept: Record<string, boolean> = {};
-    for (const r of rows) {
-      if (r.key.startsWith("lbvis:college-for-dept:")) {
-        collegeForDept[r.key.slice("lbvis:college-for-dept:".length)] = r.value === "true";
-      } else if (r.key.startsWith("lbvis:college:")) {
-        college[r.key.slice("lbvis:college:".length)] = r.value === "true";
-      } else if (r.key.startsWith("lbvis:dept:")) {
-        department[r.key.slice("lbvis:dept:".length)] = r.value === "true";
+    for (const [key, value] of map.entries()) {
+      if (key.startsWith("lbvis:college-for-dept:")) {
+        collegeForDept[key.slice("lbvis:college-for-dept:".length)] = value === "true";
+      } else if (key.startsWith("lbvis:college:")) {
+        college[key.slice("lbvis:college:".length)] = value === "true";
+      } else if (key.startsWith("lbvis:dept:")) {
+        department[key.slice("lbvis:dept:".length)] = value === "true";
       }
     }
     return NextResponse.json({ college, department, collegeForDept });
   } catch (e) {
-    // Setting table may not exist yet — return empty (all default to visible).
     console.warn("leaderboard-settings: could not read settings:", e);
     return NextResponse.json({ college: {}, department: {}, collegeForDept: {} });
   }

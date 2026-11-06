@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
-import { ensureSettingsTable, resetSettingsTableCache } from "@/lib/settings";
+import { getSettings, setSetting, resetSettingsTableCache } from "@/lib/settings";
 
 // GET /api/mentor/department-leaderboard
 // Returns the current leaderboard-visibility settings for the mentor's department.
@@ -25,17 +24,10 @@ export async function GET() {
   let deptVisible = true;
   let collegeForDeptVisible = true;
   try {
-    const rows = await db.setting.findMany({
-      where: {
-        key: {
-          in: [
-            `lbvis:dept:${user.departmentId}`,
-            `lbvis:college-for-dept:${user.departmentId}`,
-          ],
-        },
-      },
-    });
-    const map = new Map(rows.map(r => [r.key, r.value]));
+    const map = await getSettings([
+      `lbvis:dept:${user.departmentId}`,
+      `lbvis:college-for-dept:${user.departmentId}`,
+    ]);
     const dv = map.get(`lbvis:dept:${user.departmentId}`);
     if (dv !== undefined) deptVisible = dv === "true";
     const cfd = map.get(`lbvis:college-for-dept:${user.departmentId}`);
@@ -81,28 +73,19 @@ export async function PATCH(req: NextRequest) {
     }
 
     try {
-      // Self-heal: create the Setting table if it doesn't exist yet, so the
-      // mentor can toggle without waiting for an admin to run db:push.
-      await ensureSettingsTable();
+      // setSetting self-heals the Setting table (CREATE TABLE IF NOT EXISTS)
+      // before upserting, so the mentor can toggle without db:push.
       if (typeof leaderboardVisible === "boolean") {
-        await db.setting.upsert({
-          where: { key: `lbvis:dept:${user.departmentId}` },
-          update: { value: leaderboardVisible ? "true" : "false" },
-          create: { key: `lbvis:dept:${user.departmentId}`, value: leaderboardVisible ? "true" : "false" },
-        });
+        await setSetting(`lbvis:dept:${user.departmentId}`, leaderboardVisible ? "true" : "false");
       }
       if (typeof collegeLeaderboardVisibleForDept === "boolean") {
-        await db.setting.upsert({
-          where: { key: `lbvis:college-for-dept:${user.departmentId}` },
-          update: { value: collegeLeaderboardVisibleForDept ? "true" : "false" },
-          create: { key: `lbvis:college-for-dept:${user.departmentId}`, value: collegeLeaderboardVisibleForDept ? "true" : "false" },
-        });
+        await setSetting(`lbvis:college-for-dept:${user.departmentId}`, collegeLeaderboardVisibleForDept ? "true" : "false");
       }
     } catch (e) {
       console.error("Failed to persist department leaderboard setting:", e);
       resetSettingsTableCache(); // retry creation next time
       return NextResponse.json(
-        { error: "Could not save the setting. Please try again, or ask the main admin to run `npm run db:push`." },
+        { error: "Could not save the setting. Please try again." },
         { status: 500 }
       );
     }

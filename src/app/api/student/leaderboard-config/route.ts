@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
 
 // GET /api/student/leaderboard-config
 // Returns everything the student leaderboard UI needs to render correctly:
@@ -53,8 +54,9 @@ export async function GET() {
         `lbvis:college-for-dept:${user.departmentId}`,
       ] : []),
     ];
-    const rows = await db.setting.findMany({ where: { key: { in: keys } } });
-    const map = new Map(rows.map(r => [r.key, r.value]));
+    // Use raw-SQL getSettings so this works even if the Prisma Client in
+    // production doesn't know about the Setting model.
+    const map = await getSettings(keys);
     const cv = map.get(`lbvis:college:${user.collegeId}`);
     if (cv !== undefined) collegeVisible = cv === "true";
     if (user.departmentId) {

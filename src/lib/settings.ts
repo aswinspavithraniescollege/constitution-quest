@@ -1,15 +1,26 @@
 import { db } from "./db";
 
-// Ensures the "Setting" table exists before we try to read/write it.
-// This is a self-healing fallback so the leaderboard visibility toggles work
-// without requiring a manual `npm run db:push`. CREATE TABLE IF NOT EXISTS is
-// idempotent and non-destructive — it only adds the table if missing.
+// ============================================================
+// Settings store — self-healing key/value table for feature flags.
 //
-// We cache the "table exists" flag in-process so we only run the DDL once per
-// server instance. If the table is later dropped, the next failed upsert will
-// reset the flag and retry.
+// The Setting table may not exist in the database yet (e.g., the user hasn't
+// run `npm run db:push`, or the Prisma Client in production doesn't know
+// about the Setting model). To handle both cases, we:
+//
+//   1. ensureSettingsTable() — runs CREATE TABLE IF NOT EXISTS via raw SQL.
+//      Idempotent + non-destructive. Cached in-process.
+//   2. getSetting(key) / setSetting(key, value) — use RAW SQL ($queryRaw /
+//      $executeRaw) instead of db.setting, so they work even if the Prisma
+//      Client wasn't regenerated with the Setting model.
+//
+// This makes the leaderboard visibility toggles work out-of-the-box on any
+// deployment without requiring db:push or prisma generate to have picked up
+// the new model.
+// ============================================================
+
 let verified = false;
 
+// Create the Setting table if it doesn't exist. Safe to call repeatedly.
 export async function ensureSettingsTable(): Promise<void> {
   if (verified) return;
   try {
@@ -23,14 +34,81 @@ export async function ensureSettingsTable(): Promise<void> {
     `);
     verified = true;
   } catch (e) {
-    // If this fails (e.g. permissions), the caller's upsert will also fail and
-    // surface the error. We don't set `verified` so the next call retries.
     console.error("ensureSettingsTable: CREATE TABLE failed:", e);
     throw e;
   }
 }
 
-// Reset the cached flag (used if an upsert fails so the next attempt retries).
 export function resetSettingsTableCache() {
   verified = false;
+}
+
+// Read a single setting. Returns null if the key doesn't exist or the table
+// is missing (defaults to "visible"/"true" at the call site).
+export async function getSetting(key: string): Promise<string | null> {
+  try {
+    await ensureSettingsTable();
+    const rows = await db.$queryRaw<{ value: string }[]>`
+      SELECT value FROM "Setting" WHERE key = ${key} LIMIT 1;
+    `;
+    return rows.length > 0 ? rows[0].value : null;
+  } catch (e) {
+    console.error(`getSetting(${key}) failed:`, e);
+    resetSettingsTableCache();
+    return null;
+  }
+}
+
+// Read multiple settings at once. Returns a Map. Missing keys are absent
+// from the map (callers treat absence as the default).
+export async function getSettings(keys: string[]): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  if (keys.length === 0) return result;
+  try {
+    await ensureSettingsTable();
+    // Use ANY with a parameterized array for safe IN-clause.
+    const rows = await db.$queryRaw<{ key: string; value: string }[]>`
+      SELECT key, value FROM "Setting" WHERE key = ANY(${keys}::text[]);
+    `;
+    for (const r of rows) result.set(r.key, r.value);
+  } catch (e) {
+    console.error("getSettings failed:", e);
+    resetSettingsTableCache();
+  }
+  return result;
+}
+
+// Read all settings whose key starts with a prefix (e.g. "lbvis:").
+// Returns a Map of key → value.
+export async function getSettingsByPrefix(prefix: string): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  try {
+    await ensureSettingsTable();
+    const rows = await db.$queryRaw<{ key: string; value: string }[]>`
+      SELECT key, value FROM "Setting" WHERE key LIKE ${prefix + '%'};
+    `;
+    for (const r of rows) result.set(r.key, r.value);
+  } catch (e) {
+    console.error(`getSettingsByPrefix(${prefix}) failed:`, e);
+    resetSettingsTableCache();
+  }
+  return result;
+}
+
+// Upsert a setting. Creates the table first if needed.
+export async function setSetting(key: string, value: string): Promise<void> {
+  try {
+    await ensureSettingsTable();
+    // PostgreSQL upsert via raw SQL.
+    await db.$executeRawUnsafe(
+      `INSERT INTO "Setting" (key, value, "updatedAt")
+       VALUES ($1, $2, NOW())
+       ON CONFLICT (key) DO UPDATE SET value = $2, "updatedAt" = NOW();`,
+      key, value
+    );
+  } catch (e) {
+    console.error(`setSetting(${key}) failed:`, e);
+    resetSettingsTableCache();
+    throw e;
+  }
 }
