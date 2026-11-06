@@ -7,7 +7,7 @@ import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
   TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown,
   User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen,
-  Trash2, AlertCircle
+  Trash2, AlertCircle, RefreshCw
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
@@ -57,6 +57,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={load}
+              className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 text-sm font-bold flex items-center gap-2"
+              title="Refresh student list"
+            >
+              <RefreshCw className="w-4 h-4" /> <span className="hidden sm:inline">Refresh</span>
+            </button>
             <button
               onClick={() => setShowResults(true)}
               className="px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-bold flex items-center gap-2"

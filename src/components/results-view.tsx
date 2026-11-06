@@ -11,6 +11,7 @@ import {
 
 export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: string; onExit: () => void }) {
   const isMainAdmin = user.role === "ADMIN";
+  const isMentor = user.role === "MENTOR";
   const [colleges, setColleges] = useState<any[]>([]);
   const [selectedCollege, setSelectedCollege] = useState<any>(null);
   const [mentors, setMentors] = useState<any[]>([]);
@@ -20,8 +21,13 @@ export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: str
   const [studentDetail, setStudentDetail] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  // Load colleges for main admin
+  // Load initial data based on role
   useEffect(() => {
+    if (isMentor) {
+      // Mentor: load their students directly (no college/mentor drill-down)
+      loadMentorStudents();
+      return;
+    }
     if (!isMainAdmin) {
       // Sub-admin: auto-load their college's mentors
       loadMentors(user.collegeId);
@@ -29,6 +35,15 @@ export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: str
     }
     loadColleges();
   }, []);
+
+  const loadMentorStudents = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${apiBase}`);
+      const data = await res.json();
+      setStudents(data.students || []);
+    } finally { setLoading(false); }
+  };
 
   const loadColleges = async () => {
     setLoading(true);
@@ -68,6 +83,7 @@ export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: str
 
   const refresh = () => {
     if (selectedStudent) loadStudentDetail(selectedStudent);
+    else if (isMentor) loadMentorStudents();
     else if (selectedMentor) loadStudents(selectedMentor.id);
     else if (selectedCollege) loadMentors(selectedCollege.id);
     else if (isMainAdmin) loadColleges();
@@ -75,9 +91,16 @@ export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: str
   };
 
   // Breadcrumb
+  const goRoot = () => {
+    setSelectedCollege(null);
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+    if (isMentor) loadMentorStudents();
+  };
   const breadcrumb = (
     <div className="flex items-center gap-1 text-xs text-slate-500 mb-4 flex-wrap">
-      <button onClick={() => { setSelectedCollege(null); setSelectedMentor(null); setSelectedStudent(null); setStudentDetail(null); }} className="hover:text-purple-600 font-bold text-slate-700">
+      <button onClick={goRoot} className="hover:text-purple-600 font-bold text-slate-700">
         <TrendingUp className="w-3.5 h-3.5 inline mr-1" />Results
       </button>
       {selectedCollege && <>
@@ -139,23 +162,59 @@ export function ResultsView({ user, apiBase, onExit }: { user: any; apiBase: str
         </div>
       )}
 
-      {/* LEVEL 1: Mentor List (sub-admin - auto loads their college) */}
-      {!loading && !selectedCollege && !isMainAdmin && (
+      {/* LEVEL 1: Mentor List (sub-admin - auto loads their college; mentors skip this) */}
+      {!loading && !selectedCollege && !isMainAdmin && !isMentor && (
         <div className="space-y-2">
           <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5"><Folder className="w-4 h-4" /> Mentors in {user.college?.name}</div>
-          {mentors.map(m => (
-            <button key={m.id} onClick={() => { setSelectedMentor(m); loadStudents(m.id); }}
-              className="w-full text-left rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-300 hover:shadow-sm transition flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shrink-0">
-                <GraduationCap className="w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <div className="font-bold text-base">{m.name}</div>
-                <div className="text-xs text-slate-500">{m.department?.name || "No dept"} • {m._count?.students || 0} students</div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-slate-300" />
-            </button>
-          ))}
+          {mentors.length === 0 ? <div className="text-center py-8 text-slate-400">No mentors in this college</div> :
+            mentors.map(m => (
+              <button key={m.id} onClick={() => { setSelectedMentor(m); loadStudents(m.id); }}
+                className="w-full text-left rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-300 hover:shadow-sm transition flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shrink-0">
+                  <GraduationCap className="w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-base">{m.name}</div>
+                  <div className="text-xs text-slate-500">{m.department?.name || "No dept"} • {m._count?.students || 0} students</div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-slate-300" />
+              </button>
+            ))
+          }
+        </div>
+      )}
+
+      {/* LEVEL 1 (mentor): Student List - mentor sees their students directly */}
+      {!loading && !selectedStudent && isMentor && (
+        <div className="space-y-2">
+          <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5"><FolderOpen className="w-4 h-4" /> My Students <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold text-xs">{students.length}</span></div>
+          {students.length === 0 ? <div className="text-center py-8 text-slate-400">No students assigned to you</div> :
+            students.map((s) => (
+              <button key={s.id} onClick={() => { setSelectedStudent(s.id); loadStudentDetail(s.id); }}
+                className="w-full text-left rounded-xl bg-white border border-slate-200 p-3 hover:border-purple-300 hover:shadow-sm transition">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-black text-sm shrink-0">
+                      {s.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm flex items-center gap-2">{s.name}
+                        {s.rollNumber && <span className="text-xs text-slate-500">{s.rollNumber}</span>}
+                      </div>
+                      <div className="text-xs text-slate-500">{s.department?.code} • {s.email}</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 text-xs shrink-0">
+                    <div className="text-center"><div className="font-black text-amber-600">{s.xp}</div><div className="text-[9px] text-slate-400">XP</div></div>
+                    <div className="text-center"><div className="font-black text-purple-600">L{s.level}</div><div className="text-[9px] text-slate-400">LVL</div></div>
+                    <div className="text-center"><div className="font-black text-cyan-600">{s.accuracy}%</div><div className="text-[9px] text-slate-400">ACC</div></div>
+                    <div className="text-center"><div className="font-black text-emerald-600">{s.mockCount}</div><div className="text-[9px] text-slate-400">MOCK</div></div>
+                    <ChevronRight className="w-4 h-4 text-slate-300 self-center" />
+                  </div>
+                </div>
+              </button>
+            ))
+          }
         </div>
       )}
 
