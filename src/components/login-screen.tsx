@@ -127,7 +127,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     })();
   }, [mode, role]);
 
-  // Load departments & mentors when college changes
+  // Load departments when college changes
   useEffect(() => {
     if (!signupForm.collegeId) {
       setDepartments([]);
@@ -136,19 +136,31 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     }
     (async () => {
       try {
-        const [dRes, mRes] = await Promise.all([
-          fetch(`/api/public/departments?collegeId=${signupForm.collegeId}`),
-          fetch(`/api/public/mentors?collegeId=${signupForm.collegeId}`),
-        ]);
+        const dRes = await fetch(`/api/public/departments?collegeId=${signupForm.collegeId}`);
         const dData = await dRes.json();
-        const mData = await mRes.json();
         setDepartments(dData.departments || []);
-        setMentors(mData.mentors || []);
       } catch (e) {
-        console.error("Failed to load departments/mentors", e);
+        console.error("Failed to load departments", e);
       }
     })();
   }, [signupForm.collegeId]);
+
+  // Load mentors when department changes (department-specific)
+  useEffect(() => {
+    if (!signupForm.collegeId || !signupForm.departmentId) {
+      setMentors([]);
+      return;
+    }
+    (async () => {
+      try {
+        const mRes = await fetch(`/api/public/mentors?collegeId=${signupForm.collegeId}&departmentId=${signupForm.departmentId}`);
+        const mData = await mRes.json();
+        setMentors(mData.mentors || []);
+      } catch (e) {
+        console.error("Failed to load mentors", e);
+      }
+    })();
+  }, [signupForm.collegeId, signupForm.departmentId]);
 
   const config = ROLE_CONFIG[role];
   const Icon = config.icon;
@@ -345,6 +357,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           name: signupForm.name,
           collegeId: signupForm.collegeId,
           departmentId: signupForm.departmentId,
+          mentorId: signupForm.mentorId || undefined,
           rollNumber: role === "STUDENT" ? signupForm.rollNumber : undefined,
           phone: signupForm.phone || undefined,
         }),
@@ -539,6 +552,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           name: signupForm.name,
           collegeId: signupForm.collegeId,
           departmentId: signupForm.departmentId,
+          mentorId: signupForm.mentorId || undefined,
           rollNumber: role === "STUDENT" ? signupForm.rollNumber : undefined,
           phone: signupForm.phone || undefined,
         }),
@@ -947,6 +961,27 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       <option value="">{signupForm.collegeId ? "— Select department —" : "Select college first"}</option>
                       {departments.map(d => <option key={d.id} value={d.id} className="bg-slate-800">{d.name} ({d.code})</option>)}
                     </select>
+                  </div>
+                  {/* Mentor (filtered by department) */}
+                  <div>
+                    <label className="block text-xs font-medium text-white/70 mb-1.5">Mentor *</label>
+                    <select
+                      value={signupForm.mentorId}
+                      onChange={(e) => setSignupForm(f => ({ ...f, mentorId: e.target.value }))}
+                      disabled={!signupForm.departmentId}
+                      className="w-full px-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      required
+                    >
+                      <option value="">{signupForm.departmentId ? "— Select your mentor —" : "Select department first"}</option>
+                      {mentors.map(m => (
+                        <option key={m.id} value={m.id} className="bg-slate-800">{m.name}</option>
+                      ))}
+                    </select>
+                    {signupForm.departmentId && mentors.length === 0 && (
+                      <p className="text-[10px] text-amber-300 mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> No mentors assigned to this department yet. Please contact your admin.
+                      </p>
+                    )}
                   </div>
                   {/* KTU Register Number (students only) */}
                   {role === "STUDENT" && (
