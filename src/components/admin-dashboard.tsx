@@ -1999,7 +1999,11 @@ function SubAdminsTab() {
   async function del(id: string) {
     if (!confirm("Delete this sub-admin? They will lose access immediately.")) return;
     const res = await fetch(`/api/admin/sub-admins?id=${id}`, { method: "DELETE" });
-    if (res.ok) { toast.success("Deleted"); load(); }
+    if (res.ok) {
+      // Clear the sub-admin's Firestore data (leaderboard, activityFeed, notes).
+      try { await cleanupUserFirestore(id); } catch (e) { console.warn("Firestore cleanup:", e); }
+      toast.success("Deleted"); load();
+    }
   }
 
   return (
