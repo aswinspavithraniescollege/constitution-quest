@@ -20,3 +20,8 @@
 ✓ Compiled in 206ms
 ✓ Compiled in 148ms
 ✓ Compiled in 156ms
+ GET / 200 in 151ms (compile: 22ms, render: 129ms)
+✓ Compiled in 167ms
+ GET /api/public/colleges 200 in 343ms (compile: 3ms, render: 340ms)
+✓ Compiled in 185ms
+ GET /api/public/colleges 200 in 47ms (compile: 3ms, render: 45ms)

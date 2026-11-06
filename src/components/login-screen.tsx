@@ -225,12 +225,14 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         if (!res.ok) {
           // Sign out from Firebase since backend rejected
           if (auth) await auth.signOut();
-          // If profile is incomplete, switch to signup mode
+          // If profile is incomplete, switch to signup mode with email pre-filled
           if (data.error && data.error.includes("incomplete")) {
-            toast.error("Profile incomplete", {
-              description: "Please complete your registration by filling the Sign Up form.",
+            toast.info("Complete your registration", {
+              description: "Your email is registered but profile is incomplete. Please fill in the Sign Up form to complete your account.",
             });
             setMode("signup");
+            setRole("STUDENT");
+            // Email is already set from the login form — it stays in the email state
             return;
           }
           toast.error(data.error || "Login failed");
@@ -502,10 +504,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         if (auth) await auth.signOut();
         // If profile is incomplete, switch to signup mode
         if (data.error && data.error.includes("incomplete")) {
-          toast.error("Profile incomplete", {
-            description: "Please complete your registration by filling the Sign Up form.",
+          toast.info("Complete your registration", {
+            description: "Your Google account is registered but profile is incomplete. Please fill in the Sign Up form to complete your account.",
           });
           setMode("signup");
+          setRole("STUDENT");
+          // Set email from Google account
+          if (result.user.email) setEmail(result.user.email);
           return;
         }
         toast.error(data.error || "Google login failed");
