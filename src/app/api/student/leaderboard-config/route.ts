@@ -35,12 +35,23 @@ export async function GET() {
   // Read visibility settings. Default to visible if no setting row exists.
   // Wrapped in try/catch so the feature degrades gracefully if the Setting
   // table hasn't been created yet (e.g., prisma db push not yet run).
+  //
+  // Three keys are relevant:
+  //   lbvis:college:{collegeId}               — college-wide toggle (admin)
+  //   lbvis:dept:{departmentId}               — department leaderboard toggle (admin/mentor)
+  //   lbvis:college-for-dept:{departmentId}   — per-department override: can students in
+  //                                             THIS department see the COLLEGE leaderboard?
+  //                                             (admin + that department's mentor)
   let collegeVisible = true;
   let departmentVisible = true;
+  let collegeVisibleForMyDept = true; // per-dept override for the college leaderboard
   try {
     const keys = [
       `lbvis:college:${user.collegeId}`,
-      ...(user.departmentId ? [`lbvis:dept:${user.departmentId}`] : []),
+      ...(user.departmentId ? [
+        `lbvis:dept:${user.departmentId}`,
+        `lbvis:college-for-dept:${user.departmentId}`,
+      ] : []),
     ];
     const rows = await db.setting.findMany({ where: { key: { in: keys } } });
     const map = new Map(rows.map(r => [r.key, r.value]));
@@ -49,6 +60,8 @@ export async function GET() {
     if (user.departmentId) {
       const dv = map.get(`lbvis:dept:${user.departmentId}`);
       if (dv !== undefined) departmentVisible = dv === "true";
+      const cfd = map.get(`lbvis:college-for-dept:${user.departmentId}`);
+      if (cfd !== undefined) collegeVisibleForMyDept = cfd === "true";
     }
   } catch (e) {
     // Setting table missing or unreachable — default to visible (safe fallback).
@@ -77,8 +90,12 @@ export async function GET() {
     console.error("leaderboard-config: could not fetch student ids:", e);
   }
 
+  // The college leaderboard tab is shown only if the college-wide toggle is ON
+  // AND the student's own department hasn't opted out of the college leaderboard.
+  const collegeLbVisibleToStudent = collegeVisible && collegeVisibleForMyDept;
+
   return NextResponse.json({
-    collegeLeaderboardVisible: collegeVisible,
+    collegeLeaderboardVisible: collegeLbVisibleToStudent,
     departmentLeaderboardVisible: departmentVisible && !!user.departmentId,
     collegeUserIds,
     departmentUserIds,

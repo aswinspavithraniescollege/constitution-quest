@@ -90,7 +90,7 @@ export async function PATCH(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
-    const { id, name, code, leaderboardVisible } = await req.json();
+    const { id, name, code, leaderboardVisible, collegeLeaderboardVisibleForDept } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
     const dept = await db.department.findUnique({ where: { id } });
     if (!dept) return NextResponse.json({ error: "Department not found" }, { status: 404 });
@@ -127,6 +127,21 @@ export async function PATCH(req: NextRequest) {
         });
       } catch (e) {
         console.error("Failed to update department leaderboard visibility setting:", e);
+      }
+    }
+
+    // Toggle whether students in THIS department can see the COLLEGE leaderboard.
+    // Stored as: key = "lbvis:college-for-dept:{departmentId}", value = "true"/"false".
+    // This is a per-department override on top of the college-wide toggle.
+    if (collegeLeaderboardVisibleForDept !== undefined) {
+      try {
+        await db.setting.upsert({
+          where: { key: `lbvis:college-for-dept:${id}` },
+          update: { value: collegeLeaderboardVisibleForDept ? "true" : "false" },
+          create: { key: `lbvis:college-for-dept:${id}`, value: collegeLeaderboardVisibleForDept ? "true" : "false" },
+        });
+      } catch (e) {
+        console.error("Failed to update college-leaderboard-for-department visibility setting:", e);
       }
     }
 

@@ -254,6 +254,9 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
   const [deptLbVisible, setDeptLbVisible] = useState<boolean | null>(null);
   const [deptLbHasDept, setDeptLbHasDept] = useState(true);
   const [deptLbToggling, setDeptLbToggling] = useState(false);
+  // College leaderboard visibility for this mentor's department (per-dept override)
+  const [collegeLbForDeptVisible, setCollegeLbForDeptVisible] = useState<boolean | null>(null);
+  const [collegeLbForDeptToggling, setCollegeLbForDeptToggling] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -269,12 +272,13 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
           currentPassword: "",
         });
       }
-      // Fetch department leaderboard visibility setting
+      // Fetch department leaderboard visibility settings (both toggles)
       try {
         const lbRes = await fetch("/api/mentor/department-leaderboard");
         if (lbRes.ok) {
           const lbData = await lbRes.json();
           setDeptLbVisible(lbData.departmentLeaderboardVisible);
+          setCollegeLbForDeptVisible(lbData.collegeLeaderboardVisibleForDept);
           setDeptLbHasDept(!!lbData.hasDepartment);
         }
       } catch (e) { console.warn("Failed to load dept leaderboard setting:", e); }
@@ -307,6 +311,36 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
     } catch (e) {
       toast.error("Network error while toggling");
     } finally { setDeptLbToggling(false); }
+  }
+
+  // Toggle whether students in this mentor's department can see the COLLEGE
+  // leaderboard. This is a per-department override — the mentor can cut off
+  // their own students from the college-wide leaderboard without affecting
+  // other departments.
+  async function toggleCollegeLbForDept() {
+    if (collegeLbForDeptVisible === null) return;
+    const next = !collegeLbForDeptVisible;
+    setCollegeLbForDeptToggling(true);
+    try {
+      const res = await fetch("/api/mentor/department-leaderboard", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ collegeLeaderboardVisibleForDept: next }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        toast.error(data.error || "Failed to toggle", {
+          description: data.error && data.error.includes("Setting")
+            ? "Run `npm run db:push` to create the settings table."
+            : undefined,
+        });
+        return;
+      }
+      setCollegeLbForDeptVisible(next);
+      toast.success(`College leaderboard for your department ${next ? "ENABLED" : "DISABLED"}.`);
+    } catch (e) {
+      toast.error("Network error while toggling");
+    } finally { setCollegeLbForDeptToggling(false); }
   }
 
   async function save(e: React.FormEvent) {
@@ -416,33 +450,59 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
             <div className="pt-3 border-t border-slate-200">
               <div className="rounded-xl bg-amber-50 border border-amber-200 p-3">
                 <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-amber-800">
-                  <Crown className="w-4 h-4 text-amber-500" /> Department Leaderboard Visibility
+                  <Crown className="w-4 h-4 text-amber-500" /> Leaderboard Visibility for Your Department
                 </h4>
                 {deptLbHasDept ? (
-                  <label className="flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 cursor-pointer hover:bg-amber-50/50">
-                    <div>
-                      <div className="text-sm font-bold text-slate-700">
-                        {deptLbVisible === null ? "Loading…" : deptLbVisible ? "Visible to students" : "Hidden from students"}
+                  <div className="space-y-2">
+                    {/* Toggle 1: Department leaderboard */}
+                    <label className="flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 cursor-pointer hover:bg-amber-50/50">
+                      <div>
+                        <div className="text-sm font-bold text-slate-700">
+                          {deptLbVisible === null ? "Loading…" : deptLbVisible ? "Department leaderboard: Visible" : "Department leaderboard: Hidden"}
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          The &ldquo;My Department&rdquo; tab for students in your department.
+                        </div>
                       </div>
-                      <div className="text-[11px] text-slate-500">
-                        Lock or unlock the &ldquo;My Department&rdquo; leaderboard tab for students in your department.
+                      <button
+                        type="button"
+                        onClick={toggleDeptLb}
+                        disabled={deptLbToggling || deptLbVisible === null}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${deptLbVisible ? "bg-emerald-500" : "bg-slate-300"}`}
+                      >
+                        {deptLbToggling ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
+                        ) : (
+                          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${deptLbVisible ? "translate-x-6" : "translate-x-1"}`} />
+                        )}
+                      </button>
+                    </label>
+                    {/* Toggle 2: College leaderboard for this department */}
+                    <label className="flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 cursor-pointer hover:bg-amber-50/50">
+                      <div>
+                        <div className="text-sm font-bold text-slate-700">
+                          {collegeLbForDeptVisible === null ? "Loading…" : collegeLbForDeptVisible ? "College leaderboard: Visible to your students" : "College leaderboard: Hidden from your students"}
+                        </div>
+                        <div className="text-[11px] text-slate-500">
+                          Cut off the &ldquo;My College&rdquo; tab for students in YOUR department only. Other departments are unaffected.
+                        </div>
                       </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={toggleDeptLb}
-                      disabled={deptLbToggling || deptLbVisible === null}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${deptLbVisible ? "bg-emerald-500" : "bg-slate-300"}`}
-                    >
-                      {deptLbToggling ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
-                      ) : (
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${deptLbVisible ? "translate-x-6" : "translate-x-1"}`} />
-                      )}
-                    </button>
-                  </label>
+                      <button
+                        type="button"
+                        onClick={toggleCollegeLbForDept}
+                        disabled={collegeLbForDeptToggling || collegeLbForDeptVisible === null}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${collegeLbForDeptVisible ? "bg-emerald-500" : "bg-slate-300"}`}
+                      >
+                        {collegeLbForDeptToggling ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
+                        ) : (
+                          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${collegeLbForDeptVisible ? "translate-x-6" : "translate-x-1"}`} />
+                        )}
+                      </button>
+                    </label>
+                  </div>
                 ) : (
-                  <p className="text-xs text-slate-400 p-2">You are not assigned to a department, so this setting is unavailable.</p>
+                  <p className="text-xs text-slate-400 p-2">You are not assigned to a department, so these settings are unavailable.</p>
                 )}
               </div>
             </div>
