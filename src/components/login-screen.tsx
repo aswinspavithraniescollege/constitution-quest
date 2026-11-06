@@ -331,7 +331,24 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         const code = err?.code || "";
         let msg = "Sign up failed";
         if (code === "auth/email-already-in-use") {
-          msg = "This email is already registered. Try signing in instead.";
+          // Email exists in Firebase but may not have a DB record.
+          // Try signing in with the provided credentials, then continue with signup.
+          try {
+            const userCred = await signInWithEmailAndPassword(auth, email, password);
+            cred = userCred.user;
+            // Continue to DB signup below with the existing Firebase account
+          } catch (signInErr: any) {
+            const signInCode = signInErr?.code || "";
+            if (signInCode === "auth/invalid-credential" || signInCode === "auth/wrong-password") {
+              msg = "This email is already registered with a different password. Please sign in with your existing password, or use 'Forgot Password' to reset it.";
+            } else if (signInCode === "auth/too-many-requests") {
+              msg = "Too many attempts. Please try again later or use 'Forgot Password'.";
+            } else {
+              msg = "This email is already registered. Please try signing in instead.";
+            }
+            toast.error(msg);
+            return;
+          }
         } else if (code === "auth/invalid-email") {
           msg = "Invalid email format";
         } else if (code === "auth/weak-password") {
@@ -341,8 +358,10 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         } else {
           msg = err?.message || "Sign up failed";
         }
-        toast.error(msg);
-        return;
+        if (!cred) {
+          toast.error(msg);
+          return;
+        }
       }
       // 2. Get ID token
       const idToken = await cred.getIdToken();
