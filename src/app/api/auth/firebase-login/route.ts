@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json({
-        error: "No account found for this email. Your email is registered but your profile is incomplete. Please sign up to complete your registration, or contact your admin.",
+        error: "Your email is registered but your profile is incomplete. Please go to Sign Up to complete your registration.",
       }, { status: 404 });
     }
 

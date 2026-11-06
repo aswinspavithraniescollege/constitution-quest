@@ -198,7 +198,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           const code = err?.code || "";
           let msg = "Login failed";
           if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
-            msg = "Invalid email or password";
+            // Could be a Google-only account — check if the email exists with Google provider
+            msg = "Invalid email or password. If you signed up with Google, please use 'Continue with Google' below.";
           } else if (code === "auth/too-many-requests") {
             msg = "Too many failed attempts. Try again later.";
           } else if (code === "auth/invalid-email") {
@@ -208,7 +209,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           } else {
             msg = err?.message || "Login failed";
           }
-          toast.error(msg);
+          toast.error(msg, {
+            description: "Try 'Continue with Google' if you signed up with Google.",
+          });
           return;
         }
         // 2. Get ID token and send to backend
@@ -222,6 +225,14 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         if (!res.ok) {
           // Sign out from Firebase since backend rejected
           if (auth) await auth.signOut();
+          // If profile is incomplete, switch to signup mode
+          if (data.error && data.error.includes("incomplete")) {
+            toast.error("Profile incomplete", {
+              description: "Please complete your registration by filling the Sign Up form.",
+            });
+            setMode("signup");
+            return;
+          }
           toast.error(data.error || "Login failed");
           return;
         }
@@ -489,6 +500,14 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       if (!res.ok) {
         // Sign out from Firebase since backend rejected
         if (auth) await auth.signOut();
+        // If profile is incomplete, switch to signup mode
+        if (data.error && data.error.includes("incomplete")) {
+          toast.error("Profile incomplete", {
+            description: "Please complete your registration by filling the Sign Up form.",
+          });
+          setMode("signup");
+          return;
+        }
         toast.error(data.error || "Google login failed");
         return;
       }
