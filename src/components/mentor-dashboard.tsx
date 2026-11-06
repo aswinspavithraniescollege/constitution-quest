@@ -224,13 +224,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
         </div>
       )}
 
-      {/* Chat (full screen overlay) */}
+      {/* Chat (full screen overlay) — dark background to match chat panel theme */}
       {showChat && (
-        <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
+        <div className="fixed inset-0 z-50 overflow-y-auto" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-black flex items-center gap-2"><MessageCircle className="w-6 h-6 text-cyan-500" /> Chat</h1>
-              <button onClick={() => setShowChat(false)} className="px-4 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm">Close</button>
+              <h1 className="text-2xl font-black flex items-center gap-2 text-white"><MessageCircle className="w-6 h-6 text-cyan-400" /> Chat</h1>
+              <button onClick={() => setShowChat(false)} className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-sm">Close</button>
             </div>
             <ChatView user={user} />
           </div>

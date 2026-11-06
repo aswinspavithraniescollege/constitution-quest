@@ -8,10 +8,10 @@ import { subscribeToChat, sendChatMessage, deleteChatMessage, type ChatMessage }
 import { timeAgo } from "@/lib/firestore";
 
 const ROLE_COLORS: Record<string, string> = {
-  ADMIN: "bg-purple-100 text-purple-700",
-  SUB_ADMIN: "bg-purple-100 text-purple-700",
-  MENTOR: "bg-emerald-100 text-emerald-700",
-  STUDENT: "bg-amber-100 text-amber-700",
+  ADMIN: "bg-purple-500/20 text-purple-300 border border-purple-400/30",
+  SUB_ADMIN: "bg-purple-500/20 text-purple-300 border border-purple-400/30",
+  MENTOR: "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30",
+  STUDENT: "bg-amber-500/20 text-amber-300 border border-amber-400/30",
 };
 
 const CHAT_TYPE_ICONS: Record<string, any> = {
@@ -131,7 +131,7 @@ export function ChatPanel({ chatId, chatType, label, user }: {
                   <div className={`max-w-[85%] rounded-2xl p-3 ${isOwn ? "bg-cyan-500/20 border border-cyan-400/30" : "bg-white/5 border border-white/10"}`}>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold text-white/80">{msg.userName}</span>
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${ROLE_COLORS[msg.userRole] || "bg-slate-100 text-slate-700"}`}>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${ROLE_COLORS[msg.userRole] || "bg-slate-500/20 text-slate-300 border border-slate-400/30"}`}>
                         {msg.userRole}
                       </span>
                       {msg.collegeCode && (

@@ -843,9 +843,9 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         </div>
       </div>
 
-      {/* The chat view itself (admin can participate in all chats they have access to) */}
-      <div className="rounded-2xl bg-white border border-slate-200 p-5">
-        <h3 className="font-bold mb-3 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-cyan-500" /> Chat</h3>
+      {/* The chat view itself — dark background to match chat panel theme */}
+      <div className="rounded-2xl p-5" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
+        <h3 className="font-bold mb-3 flex items-center gap-2 text-white"><MessageCircle className="w-4 h-4 text-cyan-400" /> Chat</h3>
         <ChatView user={user} />
       </div>
     </div>
