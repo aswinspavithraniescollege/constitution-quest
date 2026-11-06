@@ -48,10 +48,11 @@ const ROLE_CONFIG: Record<Role, {
     label: "Mentor",
     icon: GraduationCap,
     tagline: "Guide Students",
-    description: "Sign up with your college email & password. Monitor your students' progress, activity and test scores.",
+    description: "Sign up with your college email & password, OR log in with the username & password your admin issued to you.",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     accent: "text-emerald-300",
     firebaseEnabled: true,
+    dualMode: true,
   },
   STUDENT: {
     label: "Student",
@@ -798,28 +799,41 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             {mode === "login" ? (
               <>
                 <p className="text-xs text-white/60 mb-4 leading-relaxed">{config.description}</p>
-                {/* Admin dual-mode toggle: Email (Firebase) vs Username (Local) */}
+                {/* Dual-mode toggle: Email (Firebase) vs Username (Local) */}
+                {/* Shown for ADMIN (Main Admin email vs Sub-Admin username) and MENTOR (self-signup email vs admin-issued username) */}
                 {config.dualMode && (
                   <div className="grid grid-cols-2 gap-1 mb-4 p-1 rounded-xl bg-white/5 border border-white/10">
                     <button
                       type="button"
                       onClick={() => setAdminLoginMethod("email")}
                       className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                        adminLoginMethod === "email" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "text-white/60 hover:text-white"
+                        adminLoginMethod === "email" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
                       }`}
                     >
-                      <AtSign className="w-3.5 h-3.5" /> Email (Main Admin)
+                      <AtSign className="w-3.5 h-3.5" /> Email
                     </button>
                     <button
                       type="button"
                       onClick={() => setAdminLoginMethod("username")}
                       className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                        adminLoginMethod === "username" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "text-white/60 hover:text-white"
+                        adminLoginMethod === "username" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
                       }`}
                     >
-                      <User className="w-3.5 h-3.5" /> Username (Sub-Admin)
+                      <User className="w-3.5 h-3.5" /> Username
                     </button>
                   </div>
+                )}
+                {/* Helper hint explaining which method to use */}
+                {config.dualMode && (
+                  <p className="text-[10px] text-white/40 mb-3 leading-relaxed">
+                    {role === "MENTOR"
+                      ? (adminLoginMethod === "email"
+                          ? "Use this if you signed up yourself with your college email."
+                          : "Use the username & password your admin issued to you.")
+                      : (adminLoginMethod === "email"
+                          ? "Main admin only — sign in with your registered email."
+                          : "Sub-admins use the username & password issued by the main admin.")}
+                  </p>
                 )}
                 <form onSubmit={handleLogin} className="space-y-3">
                   {(config.dualMode ? adminLoginMethod === "email" : config.firebaseEnabled) ? (
