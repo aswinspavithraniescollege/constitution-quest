@@ -96,7 +96,9 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-xl shadow-lg shrink-0">⚖️</div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shrink-0 overflow-hidden">
+              <img src="/logo-48.png" alt="Constitution Quest" className="w-full h-full object-cover" />
+            </div>
             <div className="min-w-0">
               <div className="font-black text-lg leading-tight bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Constitution Quest</div>
               <div className="text-xs text-slate-500 leading-tight truncate">Mentor: {user.name} • {user.college?.name}</div>

@@ -95,7 +95,9 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-slate-950/70 border-b border-purple-500/20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 flex items-center justify-center text-xl cq-glow shrink-0">⚖️</div>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 flex items-center justify-center cq-glow shrink-0 overflow-hidden">
+              <img src="/logo-48.png" alt="Constitution Quest" className="w-full h-full object-cover" />
+            </div>
             <div className="min-w-0">
               <div className="font-black text-base sm:text-lg leading-tight bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">Constitution Quest</div>
               <div className="text-[10px] sm:text-xs text-white/50 leading-tight truncate">{user.college?.name}</div>

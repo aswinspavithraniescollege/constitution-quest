@@ -712,9 +712,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", duration: 0.8 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 mb-3 cq-glow"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 mb-3 cq-glow overflow-hidden"
           >
-            <span className="text-3xl">⚖️</span>
+            <img src="/logo-200.png" alt="Constitution Quest" className="w-full h-full object-cover" />
           </motion.div>
           <h1 className="text-2xl font-black tracking-tight bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 bg-clip-text text-transparent">
             Constitution Quest

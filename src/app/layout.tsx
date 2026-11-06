@@ -13,6 +13,18 @@ export const metadata: Metadata = {
   title: "Constitution Quest — Gamified NPTEL Learning Platform",
   description: "Master the Indian Constitution through gamified mock tests, practice questions, and XP-based progression. Exclusive learning platform for IES College of Engineering.",
   keywords: ["Indian Constitution", "NPTEL", "mock test", "gamified learning", "IES College", "Constitution Quest"],
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  appleWebApp: {
+    title: "Constitution Quest",
+    statusBarStyle: "black-translucent",
+    capable: true,
+  },
 };
 
 export const viewport: Viewport = {
