@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { Send, Loader2, MessageCircle, Trash2, Users, Building2, Globe, GraduationCap } from "lucide-react";
 import { subscribeToChat, sendChatMessage, deleteChatMessage, type ChatMessage } from "@/lib/chat";
 import { timeAgo } from "@/lib/firestore";
@@ -70,6 +71,16 @@ export function ChatPanel({ chatId, chatType, label, user }: {
       setText("");
     } catch (err: any) {
       console.error("Send failed:", err);
+      const code = err?.code || "";
+      let msg = "Could not send message.";
+      if (code === "permission-denied") {
+        msg = "Permission denied. Please log out and log back in, then try again. If it persists, ask the admin to deploy the Firestore rules.";
+      } else if (code === "unavailable") {
+        msg = "Service unavailable. Please try again.";
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      toast.error(msg, { duration: 6000 });
     } finally {
       setSending(false);
     }

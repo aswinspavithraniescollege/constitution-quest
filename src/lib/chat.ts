@@ -106,7 +106,7 @@ export function subscribeToChat(
       messages.reverse();
       callback(messages);
     }, (err) => {
-      console.error("Chat subscription error:", err);
+      console.error("Chat subscription error for chatId:", chatId, err);
       callback([]);
     });
   } catch (e) {

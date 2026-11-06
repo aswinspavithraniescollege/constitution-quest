@@ -42,19 +42,20 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
         // only called after a practice answer or login).
         if (data.user) {
           // Sync the user's Firestore profile (includes departmentId, which
-          // the chat security rules require). This ensures the profile is
-          // up-to-date even if the user was created before this field existed.
+          // the chat security rules require). Uses the `user` prop (from the
+          // page-level login state) for firebaseUid, collegeId, departmentId,
+          // email — these aren't all returned by the dashboard endpoint.
           syncUserProfile({
             id: data.user.id,
             name: data.user.name,
-            role: data.user.role || "STUDENT",
-            collegeId: data.user.collegeId,
+            role: user.role || "STUDENT",
+            collegeId: user.collegeId,
             collegeCode: data.user.college?.code,
             collegeName: data.user.college?.name,
-            departmentId: data.user.departmentId,
+            departmentId: user.departmentId,
             deptCode: data.user.department?.code,
             username: data.user.username,
-            email: data.user.email,
+            email: user.email,
             firebaseUid: user.firebaseUid || "",
           }).catch(() => {});
           // Proactively ensure this student has a Firestore leaderboard entry.
