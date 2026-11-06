@@ -793,7 +793,6 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
                       <div className="font-bold flex items-center gap-2 flex-wrap">
                         {m.name}
                         <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">{m.username}</span>
-                        {m.mentorCode && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold font-mono">📋 {m.mentorCode}</span>}
                         {!m.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">
