@@ -283,6 +283,8 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
   const [collegeLbForDeptToggling, setCollegeLbForDeptToggling] = useState(false);
   // Chat visibility toggles (mentor controls dept/college/mentor chat, NOT global)
   const [deptChatOn, setDeptChatOn] = useState<boolean | null>(null);
+  const [deptStudentsChatOn, setDeptStudentsChatOn] = useState<boolean | null>(null);
+  const [dmChatOn, setDmChatOn] = useState<boolean | null>(null);
   const [collegeChatOn, setCollegeChatOn] = useState<boolean | null>(null);
   const [mentorChatOn, setMentorChatOn] = useState<boolean | null>(null);
   const [chatToggling, setChatToggling] = useState<string | null>(null);
@@ -317,6 +319,8 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
         if (chatRes.ok) {
           const chatData = await chatRes.json();
           setDeptChatOn(chatData.deptChatVisible);
+          setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
+          setDmChatOn(chatData.dmChatVisible);
           setCollegeChatOn(chatData.collegeChatVisible);
           setMentorChatOn(chatData.mentorChatVisible);
         }
@@ -399,9 +403,15 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
         return;
       }
       if (scope === "dept") setDeptChatOn(next);
+      if (scope === "dept-students") setDeptStudentsChatOn(next);
+      if (scope === "dm") setDmChatOn(next);
       if (scope === "college") setCollegeChatOn(next);
       if (scope === "mentor") setMentorChatOn(next);
-      toast.success(`${scope === "dept" ? "Department" : scope === "college" ? "College" : "Mentor"} chat ${next ? "ENABLED" : "DISABLED"}.`);
+      const labelMap: Record<string, string> = {
+        "dept": "Department", "dept-students": "Students-only", "dm": "DM",
+        "college": "College", "mentor": "Mentor",
+      };
+      toast.success(`${labelMap[scope] || scope} chat ${next ? "ENABLED" : "DISABLED"}.`);
     } catch (e) {
       toast.error("Network error while toggling");
     } finally { setChatToggling(null); }
@@ -584,6 +594,8 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                 <div className="space-y-2">
                   {([
                     { scope: "dept", label: "Department Chat", state: deptChatOn, desc: "Students + mentor in your department" },
+                    { scope: "dept-students", label: "Students-Only Chat", state: deptStudentsChatOn, desc: "Students only (no mentor/admin can see it)" },
+                    { scope: "dm", label: "Direct Messages", state: dmChatOn, desc: "Private 1:1 chat between students in your department" },
                     { scope: "college", label: "College Chat", state: collegeChatOn, desc: "Everyone in your college" },
                     { scope: "mentor", label: "Mentor Chat", state: mentorChatOn, desc: "Mentors only (your college)" },
                   ] as const).map(({ scope, label, state, desc }) => (

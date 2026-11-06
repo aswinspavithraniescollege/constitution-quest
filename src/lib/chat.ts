@@ -46,12 +46,20 @@ export type ChatMessage = {
 const CHAT_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 // Build the chatId for a given scope.
-export function chatIdFor(scope: "global" | "college" | "dept" | "mentor", id?: string | null): string {
+export function chatIdFor(scope: "global" | "college" | "dept" | "dept-students" | "mentor" | "dm", id?: string | null, id2?: string | null): string {
   switch (scope) {
     case "global": return "global";
     case "college": return `college:${id}`;
     case "dept": return `dept:${id}`;
+    case "dept-students": return `dept-students:${id}`;
     case "mentor": return `mentor:${id}`;
+    case "dm": {
+      // For DMs, sort the two userIds alphabetically so the chatId is the same
+      // regardless of who initiated. Format: "dm:{userIdA}_{userIdB}"
+      if (!id || !id2) return "";
+      const [a, b] = [id, id2].sort();
+      return `dm:${a}_${b}`;
+    }
   }
 }
 

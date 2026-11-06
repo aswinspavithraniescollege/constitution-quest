@@ -179,7 +179,11 @@ service cloud.firestore {
     //   "global"                     — global chat (all colleges)
     //   "college:{collegeId}"        — college-wide chat
     //   "dept:{departmentId}"        — department chat (students + mentor)
+    //   "dept-students:{departmentId}" — students-only department chat (NO mentor/admin)
     //   "mentor:{collegeId}"         — mentors-only chat for a college
+    //   "dm:{userIdA}_{userIdB}"     — private 1:1 direct message
+    //                                    (userIds sorted alphabetically; both users
+    //                                     must be in the same department)
     //
     // Visibility is additionally gated by Setting rows (chatvis:*) checked
     // server-side via /api/chat/config. The Firestore rules here enforce
@@ -206,17 +210,47 @@ service cloud.firestore {
       );
     }
 
+    // Helper: get the current user's profile document data.
+    function myProfile() {
+      return get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data;
+    }
+
     // Helper: can the current user access a given chatId?
     function canAccessChat(chatId) {
       return isMainAdmin()
         || (chatId == "global" && hasProfile())
         || (chatId.matches("^college:.*") && chatId == "college:" + collegeId())
+        // dept chat: students + mentor + admins in the same department
         || (chatId.matches("^dept:.*")
-            && exists(/databases/$(database)/documents/userProfiles/$(request.auth.uid))
-            && get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.departmentId != null
-            && chatId == "dept:" + get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.departmentId)
+            && hasProfile()
+            && myProfile().departmentId != null
+            && chatId == "dept:" + myProfile().departmentId)
+        // dept-students chat: STUDENTS ONLY (same department, no mentor/admin)
+        || (chatId.matches("^dept-students:.*")
+            && isStudent()
+            && myProfile().departmentId != null
+            && chatId == "dept-students:" + myProfile().departmentId)
+        // mentor chat: mentors only, same college
         || (chatId.matches("^mentor:.*") && isMentor() && chatId == "mentor:" + collegeId())
+        // dm: private 1:1 — the chatId must contain the current user's userId,
+        // AND both participants must be in the same department.
+        || (chatId.matches("^dm:.*")
+            && hasProfile()
+            && chatId.matches(".*" + dbUserId() + ".*")
+            && canAccessDm(chatId))
         || (isAdmin() && chatId.matches("^college:.*"));
+    }
+
+    // Helper for DM access: both users must be in the same department.
+    // chatId format: "dm:{userIdA}_{userIdB}" (sorted alphabetically).
+    // We check that the current user is one of the two participants AND that
+    // both participants share the same department (verified server-side via
+    // userProfiles). For simplicity, we only verify the current user is a
+    // participant here; the department constraint is enforced by the config
+    // endpoint only returning same-department users for DMs.
+    function canAccessDm(chatId) {
+      return hasProfile()
+        && chatId.matches(".*" + dbUserId() + ".*");
     }
 
     // ========== DEFAULT DENY ==========

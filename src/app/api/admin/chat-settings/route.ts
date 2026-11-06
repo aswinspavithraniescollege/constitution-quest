@@ -16,22 +16,28 @@ export async function GET() {
     const global: Record<string, boolean> = {};
     const college: Record<string, boolean> = {};
     const dept: Record<string, boolean> = {};
+    const deptStudents: Record<string, boolean> = {};
+    const dm: Record<string, boolean> = {};
     const mentor: Record<string, boolean> = {};
     for (const [key, value] of map.entries()) {
       if (key === "chatvis:global") {
         global["global"] = value === "true";
       } else if (key.startsWith("chatvis:college:")) {
         college[key.slice("chatvis:college:".length)] = value === "true";
+      } else if (key.startsWith("chatvis:dept-students:")) {
+        deptStudents[key.slice("chatvis:dept-students:".length)] = value === "true";
+      } else if (key.startsWith("chatvis:dm:")) {
+        dm[key.slice("chatvis:dm:".length)] = value === "true";
       } else if (key.startsWith("chatvis:dept:")) {
         dept[key.slice("chatvis:dept:".length)] = value === "true";
       } else if (key.startsWith("chatvis:mentor:")) {
         mentor[key.slice("chatvis:mentor:".length)] = value === "true";
       }
     }
-    return NextResponse.json({ global, college, dept, mentor });
+    return NextResponse.json({ global, college, dept, deptStudents, dm, mentor });
   } catch (e) {
     console.warn("chat-settings: could not read settings:", e);
-    return NextResponse.json({ global: {}, college: {}, dept: {}, mentor: {} });
+    return NextResponse.json({ global: {}, college: {}, dept: {}, deptStudents: {}, dm: {}, mentor: {} });
   }
 }
 
@@ -66,7 +72,9 @@ export async function PATCH(req: NextRequest) {
         key = `chatvis:college:${id}`;
         break;
       case "dept":
-        if (!id) return NextResponse.json({ error: "id (departmentId) required for dept scope" }, { status: 400 });
+      case "dept-students":
+      case "dm":
+        if (!id) return NextResponse.json({ error: `id (departmentId) required for ${scope} scope` }, { status: 400 });
         // Sub-admins: dept must be in their college.
         if (user.role === "SUB_ADMIN") {
           const dept = await db.department.findUnique({ where: { id } });
@@ -74,7 +82,7 @@ export async function PATCH(req: NextRequest) {
             return NextResponse.json({ error: "Department not in your college" }, { status: 403 });
           }
         }
-        key = `chatvis:dept:${id}`;
+        key = `chatvis:${scope}:${id}`;
         break;
       case "mentor":
         if (!id) return NextResponse.json({ error: "id (collegeId) required for mentor scope" }, { status: 400 });
@@ -84,7 +92,7 @@ export async function PATCH(req: NextRequest) {
         key = `chatvis:mentor:${id}`;
         break;
       default:
-        return NextResponse.json({ error: "Invalid scope. Use global/college/dept/mentor." }, { status: 400 });
+        return NextResponse.json({ error: "Invalid scope. Use global/college/dept/dept-students/dm/mentor." }, { status: 400 });
     }
 
     try {

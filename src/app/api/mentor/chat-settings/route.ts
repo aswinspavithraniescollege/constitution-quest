@@ -4,9 +4,11 @@ import { getSettings, setSetting, resetSettingsTableCache } from "@/lib/settings
 
 // GET /api/mentor/chat-settings
 // Returns the chat visibility settings the mentor can control:
-//   - departmentLeaderboardVisible:       dept chat for their own department
-//   - collegeChatVisible:                 college chat (for the mentor's college)
-//   - mentorChatVisible:                  mentor chat for their college
+//   - deptChatVisible:        dept chat (students + mentor) for their department
+//   - deptStudentsChatVisible: students-only dept chat (NO mentor) for their dept
+//   - dmChatVisible:           private 1:1 DMs within their department
+//   - collegeChatVisible:      college chat (for the mentor's college)
+//   - mentorChatVisible:       mentor chat for their college
 // (Mentors cannot control the global chat — that's admin-only.)
 export async function GET() {
   const user = await getCurrentUser();
@@ -16,6 +18,8 @@ export async function GET() {
   if (!user.departmentId) {
     return NextResponse.json({
       deptChatVisible: true,
+      deptStudentsChatVisible: true,
+      dmChatVisible: true,
       collegeChatVisible: true,
       mentorChatVisible: true,
       hasDepartment: false,
@@ -24,6 +28,8 @@ export async function GET() {
   }
   const keys = [
     `chatvis:dept:${user.departmentId}`,
+    `chatvis:dept-students:${user.departmentId}`,
+    `chatvis:dm:${user.departmentId}`,
     ...(user.collegeId ? [
       `chatvis:college:${user.collegeId}`,
       `chatvis:mentor:${user.collegeId}`,
@@ -33,6 +39,8 @@ export async function GET() {
   const chatvis = (key: string): boolean => map.get(key) !== "false";
   return NextResponse.json({
     deptChatVisible: chatvis(`chatvis:dept:${user.departmentId}`),
+    deptStudentsChatVisible: chatvis(`chatvis:dept-students:${user.departmentId}`),
+    dmChatVisible: chatvis(`chatvis:dm:${user.departmentId}`),
     collegeChatVisible: user.collegeId ? chatvis(`chatvis:college:${user.collegeId}`) : true,
     mentorChatVisible: user.collegeId ? chatvis(`chatvis:mentor:${user.collegeId}`) : true,
     hasDepartment: true,
@@ -44,9 +52,11 @@ export async function GET() {
 }
 
 // PATCH /api/mentor/chat-settings
-// Body: { scope: "dept"|"college"|"mentor", visible: bool }
+// Body: { scope: "dept"|"dept-students"|"dm"|"college"|"mentor", visible: bool }
 // Mentors can toggle:
 //   - dept chat for THEIR OWN department
+//   - dept-students chat for THEIR OWN department (students-only, no mentor)
+//   - dm chat for THEIR OWN department (private 1:1)
 //   - college chat for THEIR college
 //   - mentor chat for THEIR college
 // (Not global — admin only.)
@@ -72,6 +82,12 @@ export async function PATCH(req: NextRequest) {
       case "dept":
         key = `chatvis:dept:${user.departmentId}`;
         break;
+      case "dept-students":
+        key = `chatvis:dept-students:${user.departmentId}`;
+        break;
+      case "dm":
+        key = `chatvis:dm:${user.departmentId}`;
+        break;
       case "college":
         if (!user.collegeId) return NextResponse.json({ error: "No college assigned" }, { status: 400 });
         key = `chatvis:college:${user.collegeId}`;
@@ -81,7 +97,7 @@ export async function PATCH(req: NextRequest) {
         key = `chatvis:mentor:${user.collegeId}`;
         break;
       default:
-        return NextResponse.json({ error: "Invalid scope. Use dept/college/mentor." }, { status: 400 });
+        return NextResponse.json({ error: "Invalid scope. Use dept/dept-students/dm/college/mentor." }, { status: 400 });
     }
 
     try {
