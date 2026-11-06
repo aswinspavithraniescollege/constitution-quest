@@ -16,6 +16,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/graduation-cap.js [app-client] (ecmascript) <export default as GraduationCap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layers$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Layers$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layers.js [app-client] (ecmascript) <export default as Layers>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/download.js [app-client] (ecmascript) <export default as Download>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-client] (ecmascript) <export default as TrendingUp>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$award$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Award$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/award.js [app-client] (ecmascript) <export default as Award>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chart$2d$column$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BarChart3$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chart-column.js [app-client] (ecmascript) <export default as BarChart3>");
@@ -36,9 +37,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$realtime$2d$activity$2d$feed$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/realtime-activity-feed.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$announcements$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/realtime/announcements.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$mock$2d$test$2d$player$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/mock-test-player.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$results$2d$view$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/results-view.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -124,6 +127,11 @@ function AdminDashboard({ user, onLogout }) {
             key: "mock-tests",
             label: "Test Mock Tests",
             icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$target$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Target$3e$__["Target"]
+        },
+        {
+            key: "results",
+            label: "Results",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__["TrendingUp"]
         }
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -142,7 +150,7 @@ function AdminDashboard({ user, onLogout }) {
                                     children: "⚖️"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 61,
+                                    lineNumber: 63,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -153,7 +161,7 @@ function AdminDashboard({ user, onLogout }) {
                                             children: "Constitution Quest"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 63,
+                                            lineNumber: 65,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -161,19 +169,19 @@ function AdminDashboard({ user, onLogout }) {
                                             children: isMainAdmin ? "Main Admin Control Panel" : `Sub-Admin Panel • ${user.college?.name || ""}`
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 64,
+                                            lineNumber: 66,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 62,
+                                    lineNumber: 64,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 60,
+                            lineNumber: 62,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -186,7 +194,7 @@ function AdminDashboard({ user, onLogout }) {
                                             className: `w-4 h-4 ${isMainAdmin ? "text-purple-600" : "text-emerald-600"}`
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 71,
+                                            lineNumber: 73,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -194,7 +202,7 @@ function AdminDashboard({ user, onLogout }) {
                                             children: user.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 72,
+                                            lineNumber: 74,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -202,13 +210,13 @@ function AdminDashboard({ user, onLogout }) {
                                             children: isMainAdmin ? "MAIN" : "SUB"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 73,
+                                            lineNumber: 75,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 70,
+                                    lineNumber: 72,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -219,29 +227,29 @@ function AdminDashboard({ user, onLogout }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 78,
+                                        lineNumber: 80,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 79,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 69,
+                            lineNumber: 71,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 59,
+                    lineNumber: 61,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 58,
+                lineNumber: 60,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -261,7 +269,7 @@ function AdminDashboard({ user, onLogout }) {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 99,
+                                        lineNumber: 101,
                                         columnNumber: 19
                                     }, this),
                                     " ",
@@ -269,23 +277,23 @@ function AdminDashboard({ user, onLogout }) {
                                 ]
                             }, t.key, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 92,
+                                lineNumber: 94,
                                 columnNumber: 17
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 87,
+                        lineNumber: 89,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 86,
+                    lineNumber: 88,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 85,
+                lineNumber: 87,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -298,7 +306,7 @@ function AdminDashboard({ user, onLogout }) {
                                 className: "w-4 h-4 text-slate-400"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 111,
+                                lineNumber: 113,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -306,7 +314,7 @@ function AdminDashboard({ user, onLogout }) {
                                 children: "Filter by college:"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 112,
+                                lineNumber: 114,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -319,7 +327,7 @@ function AdminDashboard({ user, onLogout }) {
                                         children: "All Colleges"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 118,
+                                        lineNumber: 120,
                                         columnNumber: 15
                                     }, this),
                                     colleges.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -327,19 +335,19 @@ function AdminDashboard({ user, onLogout }) {
                                             children: c.name
                                         }, c.id, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 119,
+                                            lineNumber: 121,
                                             columnNumber: 34
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 113,
+                                lineNumber: 115,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 110,
+                        lineNumber: 112,
                         columnNumber: 11
                     }, this),
                     isSubAdmin && (tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -349,7 +357,7 @@ function AdminDashboard({ user, onLogout }) {
                                 className: "w-4 h-4 inline mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 125,
+                                lineNumber: 127,
                                 columnNumber: 13
                             }, this),
                             "You are scoped to ",
@@ -357,14 +365,14 @@ function AdminDashboard({ user, onLogout }) {
                                 children: user.college?.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 126,
+                                lineNumber: 128,
                                 columnNumber: 31
                             }, this),
                             ". All data shown is for your assigned college only."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 124,
+                        lineNumber: 126,
                         columnNumber: 11
                     }, this),
                     tab === "overview" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(OverviewTab, {
@@ -372,7 +380,7 @@ function AdminDashboard({ user, onLogout }) {
                         user: user
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 130,
+                        lineNumber: 132,
                         columnNumber: 32
                     }, this),
                     tab === "colleges" && isMainAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CollegesTab, {
@@ -380,12 +388,12 @@ function AdminDashboard({ user, onLogout }) {
                         onRefresh: loadColleges
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 131,
+                        lineNumber: 133,
                         columnNumber: 47
                     }, this),
                     tab === "sub-admins" && isMainAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SubAdminsTab, {}, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 132,
+                        lineNumber: 134,
                         columnNumber: 49
                     }, this),
                     tab === "departments" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(DepartmentsTab, {
@@ -394,7 +402,7 @@ function AdminDashboard({ user, onLogout }) {
                         isSubAdmin: isSubAdmin
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 133,
+                        lineNumber: 135,
                         columnNumber: 35
                     }, this),
                     tab === "mentors" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MentorsTab, {
@@ -403,7 +411,7 @@ function AdminDashboard({ user, onLogout }) {
                         isSubAdmin: isSubAdmin
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 134,
+                        lineNumber: 136,
                         columnNumber: 31
                     }, this),
                     tab === "students" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StudentsTab, {
@@ -412,14 +420,14 @@ function AdminDashboard({ user, onLogout }) {
                         isSubAdmin: isSubAdmin
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 135,
+                        lineNumber: 137,
                         columnNumber: 32
                     }, this),
                     tab === "exports" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ExportsTab, {
                         collegeId: selectedCollegeId
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 136,
+                        lineNumber: 138,
                         columnNumber: 31
                     }, this),
                     tab === "mock-tests" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$mock$2d$test$2d$player$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MockTestPlayer"], {
@@ -427,19 +435,28 @@ function AdminDashboard({ user, onLogout }) {
                         onExit: ()=>setTab("overview")
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 137,
+                        lineNumber: 139,
                         columnNumber: 34
+                    }, this),
+                    tab === "results" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$results$2d$view$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ResultsView"], {
+                        user: user,
+                        apiBase: "/api/admin/results",
+                        onExit: ()=>setTab("overview")
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/admin-dashboard.tsx",
+                        lineNumber: 140,
+                        columnNumber: 31
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 107,
+                lineNumber: 109,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 56,
+        lineNumber: 58,
         columnNumber: 5
     }, this);
 }
@@ -517,12 +534,12 @@ function OverviewTab({ isMainAdmin, user }) {
             className: "w-8 h-8 animate-spin text-purple-500"
         }, void 0, false, {
             fileName: "[project]/src/components/admin-dashboard.tsx",
-            lineNumber: 185,
+            lineNumber: 188,
             columnNumber: 66
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 185,
+        lineNumber: 188,
         columnNumber: 23
     }, this);
     // Defensive: handle missing or malformed stats
@@ -535,7 +552,7 @@ function OverviewTab({ isMainAdmin, user }) {
                     children: "Failed to load stats. Please try again."
                 }, void 0, false, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 191,
+                    lineNumber: 194,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -544,13 +561,13 @@ function OverviewTab({ isMainAdmin, user }) {
                     children: "Retry"
                 }, void 0, false, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 192,
+                    lineNumber: 195,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/admin-dashboard.tsx",
-            lineNumber: 190,
+            lineNumber: 193,
             columnNumber: 7
         }, this);
     }
@@ -573,7 +590,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                 children: isMainAdmin ? "Platform Overview" : "College Overview"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 206,
+                                lineNumber: 209,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -583,7 +600,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                         className: "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 211,
                                         columnNumber: 13
                                     }, this),
                                     "Updated ",
@@ -591,13 +608,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 207,
+                                lineNumber: 210,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 205,
+                        lineNumber: 208,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -613,7 +630,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                         children: "All Colleges"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 215,
+                                        lineNumber: 218,
                                         columnNumber: 15
                                     }, this),
                                     collegeStats.map((cs)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -621,13 +638,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                             children: cs.name
                                         }, cs.id, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 216,
+                                            lineNumber: 219,
                                             columnNumber: 46
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 214,
+                                lineNumber: 217,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -638,24 +655,24 @@ function OverviewTab({ isMainAdmin, user }) {
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 219,
+                                    lineNumber: 222,
                                     columnNumber: 131
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 219,
+                                lineNumber: 222,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 212,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 204,
+                lineNumber: 207,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -668,7 +685,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-purple-50 text-purple-600 border-purple-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 225,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -678,7 +695,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-blue-50 text-blue-600 border-blue-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 226,
+                        lineNumber: 229,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -688,7 +705,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-emerald-50 text-emerald-600 border-emerald-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 227,
+                        lineNumber: 230,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -698,7 +715,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-amber-50 text-amber-600 border-amber-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 228,
+                        lineNumber: 231,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -708,13 +725,13 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-pink-50 text-pink-600 border-pink-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 229,
+                        lineNumber: 232,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 224,
+                lineNumber: 227,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -727,7 +744,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-violet-50 text-violet-600 border-violet-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 234,
+                        lineNumber: 237,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -737,7 +754,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-cyan-50 text-cyan-600 border-cyan-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 235,
+                        lineNumber: 238,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatBox, {
@@ -747,13 +764,13 @@ function OverviewTab({ isMainAdmin, user }) {
                         color: "bg-orange-50 text-orange-600 border-orange-200"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 236,
+                        lineNumber: 239,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 233,
+                lineNumber: 236,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -769,14 +786,14 @@ function OverviewTab({ isMainAdmin, user }) {
                                         className: "w-4 h-4 text-amber-500"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 242,
+                                        lineNumber: 245,
                                         columnNumber: 66
                                     }, this),
                                     " Top 10 Students (by XP)"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 242,
+                                lineNumber: 245,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -786,7 +803,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                     children: "No students yet"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 244,
+                                    lineNumber: 247,
                                     columnNumber: 41
                                 }, this) : topStudents.map((s, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center gap-3 py-2 border-b border-slate-100 last:border-0",
@@ -796,7 +813,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: i + 1
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 247,
+                                                lineNumber: 250,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -807,7 +824,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         children: s.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 249,
+                                                        lineNumber: 252,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -819,13 +836,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 250,
+                                                        lineNumber: 253,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 248,
+                                                lineNumber: 251,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -838,14 +855,14 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 className: "w-3 h-3"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 253,
+                                                                lineNumber: 256,
                                                                 columnNumber: 107
                                                             }, this),
                                                             s.xp
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 253,
+                                                        lineNumber: 256,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -858,30 +875,30 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 254,
+                                                        lineNumber: 257,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 252,
+                                                lineNumber: 255,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, s.id, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 249,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 243,
+                                lineNumber: 246,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 241,
+                        lineNumber: 244,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -894,7 +911,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                         className: "w-4 h-4 text-purple-500"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 264,
+                                        lineNumber: 267,
                                         columnNumber: 66
                                     }, this),
                                     " ",
@@ -902,7 +919,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 264,
+                                lineNumber: 267,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -912,7 +929,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                     children: "No data"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 266,
+                                    lineNumber: 269,
                                     columnNumber: 42
                                 }, this) : collegeStats.map((cs)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "p-3 rounded-xl bg-slate-50 border border-slate-200",
@@ -927,7 +944,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 271,
+                                                                lineNumber: 274,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -935,13 +952,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.location
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 272,
+                                                                lineNumber: 275,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 270,
+                                                        lineNumber: 273,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -949,13 +966,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         children: cs.code
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 274,
+                                                        lineNumber: 277,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 269,
+                                                lineNumber: 272,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -968,7 +985,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.students
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 277,
+                                                                lineNumber: 280,
                                                                 columnNumber: 26
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -976,13 +993,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: "Students"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 277,
+                                                                lineNumber: 280,
                                                                 columnNumber: 99
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 277,
+                                                        lineNumber: 280,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -992,7 +1009,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.mentors
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 278,
+                                                                lineNumber: 281,
                                                                 columnNumber: 26
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1000,13 +1017,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: "Mentors"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 278,
+                                                                lineNumber: 281,
                                                                 columnNumber: 99
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 278,
+                                                        lineNumber: 281,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1016,7 +1033,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.practiceAttempts
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 279,
+                                                                lineNumber: 282,
                                                                 columnNumber: 26
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1024,13 +1041,13 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: "Practice"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 279,
+                                                                lineNumber: 282,
                                                                 columnNumber: 105
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 279,
+                                                        lineNumber: 282,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1040,7 +1057,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: cs.mockAttempts
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 280,
+                                                                lineNumber: 283,
                                                                 columnNumber: 26
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1048,42 +1065,42 @@ function OverviewTab({ isMainAdmin, user }) {
                                                                 children: "Mocks"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                                lineNumber: 280,
+                                                                lineNumber: 283,
                                                                 columnNumber: 102
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 280,
+                                                        lineNumber: 283,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 276,
+                                                lineNumber: 279,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, cs.id, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 268,
+                                        lineNumber: 271,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 265,
+                                lineNumber: 268,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 263,
+                        lineNumber: 266,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 239,
+                lineNumber: 242,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1096,14 +1113,14 @@ function OverviewTab({ isMainAdmin, user }) {
                                 className: "w-4 h-4 text-cyan-500"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 291,
+                                lineNumber: 294,
                                 columnNumber: 64
                             }, this),
                             " Recent Activity (Last 50)"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 291,
+                        lineNumber: 294,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1121,7 +1138,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "Time"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 296,
+                                                lineNumber: 299,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1129,7 +1146,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "User"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 297,
+                                                lineNumber: 300,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1137,7 +1154,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "Role"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 298,
+                                                lineNumber: 301,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1145,7 +1162,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "College"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 299,
+                                                lineNumber: 302,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1153,7 +1170,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "Action"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 300,
+                                                lineNumber: 303,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1161,18 +1178,18 @@ function OverviewTab({ isMainAdmin, user }) {
                                                 children: "Details"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 301,
+                                                lineNumber: 304,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 295,
+                                        lineNumber: 298,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 294,
+                                    lineNumber: 297,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1183,12 +1200,12 @@ function OverviewTab({ isMainAdmin, user }) {
                                             children: "No recent activity"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 306,
+                                            lineNumber: 309,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 306,
+                                        lineNumber: 309,
                                         columnNumber: 17
                                     }, this) : recentActivity.map((a, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                             className: "border-b border-slate-50",
@@ -1198,7 +1215,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                     children: new Date(a.createdAt).toLocaleString()
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 309,
+                                                    lineNumber: 312,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1206,7 +1223,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                     children: a.user?.name || "—"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 310,
+                                                    lineNumber: 313,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1216,12 +1233,12 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         children: a.user?.role || "—"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 311,
+                                                        lineNumber: 314,
                                                         columnNumber: 45
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 311,
+                                                    lineNumber: 314,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1229,7 +1246,7 @@ function OverviewTab({ isMainAdmin, user }) {
                                                     children: a.user?.college?.code || "—"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 312,
+                                                    lineNumber: 315,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1239,12 +1256,12 @@ function OverviewTab({ isMainAdmin, user }) {
                                                         children: a.action
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 313,
+                                                        lineNumber: 316,
                                                         columnNumber: 45
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 313,
+                                                    lineNumber: 316,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1252,35 +1269,35 @@ function OverviewTab({ isMainAdmin, user }) {
                                                     children: a.details || "—"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 314,
+                                                    lineNumber: 317,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, i, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 308,
+                                            lineNumber: 311,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 304,
+                                    lineNumber: 307,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 293,
+                            lineNumber: 296,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 292,
+                        lineNumber: 295,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 290,
+                lineNumber: 293,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1291,7 +1308,7 @@ function OverviewTab({ isMainAdmin, user }) {
                         collegeCode: isMainAdmin ? null : user?.college?.code || null
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 324,
+                        lineNumber: 327,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$realtime$2f$announcements$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnnouncementsManager"], {
@@ -1299,19 +1316,19 @@ function OverviewTab({ isMainAdmin, user }) {
                         collegeId: user?.collegeId || null
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 325,
+                        lineNumber: 328,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 323,
+                lineNumber: 326,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 203,
+        lineNumber: 206,
         columnNumber: 5
     }, this);
 }
@@ -1325,7 +1342,7 @@ function StatBox({ icon: Icon, label, value, color }) {
                 className: "w-5 h-5 mb-2"
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 334,
+                lineNumber: 337,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1333,7 +1350,7 @@ function StatBox({ icon: Icon, label, value, color }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 335,
+                lineNumber: 338,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1341,13 +1358,13 @@ function StatBox({ icon: Icon, label, value, color }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 336,
+                lineNumber: 339,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 333,
+        lineNumber: 336,
         columnNumber: 5
     }, this);
 }
@@ -1453,14 +1470,14 @@ function CollegesTab({ colleges, onRefresh }) {
                                     className: "w-4 h-4 text-purple-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 407,
+                                    lineNumber: 410,
                                     columnNumber: 66
                                 }, this),
                                 " Add New College"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 407,
+                            lineNumber: 410,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1474,7 +1491,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                             children: "College Name"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 410,
+                                            lineNumber: 413,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1485,13 +1502,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 411,
+                                            lineNumber: 414,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 409,
+                                    lineNumber: 412,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1501,7 +1518,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                             children: "Code (unique)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 414,
+                                            lineNumber: 417,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1512,13 +1529,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 415,
+                                            lineNumber: 418,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 413,
+                                    lineNumber: 416,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1528,7 +1545,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                             children: "Location (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 418,
+                                            lineNumber: 421,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1538,13 +1555,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                             placeholder: "City, State"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 419,
+                                            lineNumber: 422,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 417,
+                                    lineNumber: 420,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1555,7 +1572,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 422,
+                                        lineNumber: 425,
                                         columnNumber: 26
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -1563,7 +1580,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 422,
+                                                lineNumber: 425,
                                                 columnNumber: 75
                                             }, this),
                                             " Add College"
@@ -1571,13 +1588,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 421,
+                                    lineNumber: 424,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 408,
+                            lineNumber: 411,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1585,18 +1602,18 @@ function CollegesTab({ colleges, onRefresh }) {
                             children: "Each college has its own departments, mentors and students. As the main admin, you can add and manage all colleges."
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 425,
+                            lineNumber: 428,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 406,
+                    lineNumber: 409,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 405,
+                lineNumber: 408,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1611,7 +1628,7 @@ function CollegesTab({ colleges, onRefresh }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 430,
+                        lineNumber: 433,
                         columnNumber: 9
                     }, this),
                     colleges.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1619,7 +1636,7 @@ function CollegesTab({ colleges, onRefresh }) {
                         children: "No colleges yet"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 431,
+                        lineNumber: 434,
                         columnNumber: 34
                     }, this) : colleges.map((c)=>{
                         const hasUsers = c._count.users > 0;
@@ -1640,13 +1657,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                                     children: c.code
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 441,
+                                                    lineNumber: 444,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 439,
+                                            lineNumber: 442,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1654,7 +1671,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                             children: c.location || "No location"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 443,
+                                            lineNumber: 446,
                                             columnNumber: 19
                                         }, this),
                                         (hasUsers || hasDepts) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1664,7 +1681,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                                     className: "w-3 h-3"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 446,
+                                                    lineNumber: 449,
                                                     columnNumber: 23
                                                 }, this),
                                                 "Cannot delete: ",
@@ -1675,13 +1692,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 445,
+                                            lineNumber: 448,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 438,
+                                    lineNumber: 441,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1697,7 +1714,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                                             children: c._count.departments
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 453,
+                                                            lineNumber: 456,
                                                             columnNumber: 26
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1705,13 +1722,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                                             children: "Depts"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 453,
+                                                            lineNumber: 456,
                                                             columnNumber: 98
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 453,
+                                                    lineNumber: 456,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1721,7 +1738,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                                             children: c._count.users
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 454,
+                                                            lineNumber: 457,
                                                             columnNumber: 26
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1729,19 +1746,19 @@ function CollegesTab({ colleges, onRefresh }) {
                                                             children: "Users"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 454,
+                                                            lineNumber: 457,
                                                             columnNumber: 91
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 454,
+                                                    lineNumber: 457,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 452,
+                                            lineNumber: 455,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1754,12 +1771,12 @@ function CollegesTab({ colleges, onRefresh }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 461,
+                                                lineNumber: 464,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 456,
+                                            lineNumber: 459,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1771,37 +1788,37 @@ function CollegesTab({ colleges, onRefresh }) {
                                                 className: "w-4 h-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 469,
+                                                lineNumber: 472,
                                                 columnNumber: 44
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 469,
+                                                lineNumber: 472,
                                                 columnNumber: 91
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 463,
+                                            lineNumber: 466,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 451,
+                                    lineNumber: 454,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, c.id, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 437,
+                            lineNumber: 440,
                             columnNumber: 15
                         }, this);
                     })
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 429,
+                lineNumber: 432,
                 columnNumber: 7
             }, this),
             editing && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EditModal, {
@@ -1817,7 +1834,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                 children: "College Name"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 482,
+                                lineNumber: 485,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1830,13 +1847,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 483,
+                                lineNumber: 486,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 481,
+                        lineNumber: 484,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1846,7 +1863,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                 children: "Code (unique)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 486,
+                                lineNumber: 489,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1859,13 +1876,13 @@ function CollegesTab({ colleges, onRefresh }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 487,
+                                lineNumber: 490,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 485,
+                        lineNumber: 488,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1875,7 +1892,7 @@ function CollegesTab({ colleges, onRefresh }) {
                                 children: "Location"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 490,
+                                lineNumber: 493,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1888,25 +1905,25 @@ function CollegesTab({ colleges, onRefresh }) {
                                 placeholder: "City, State"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 491,
+                                lineNumber: 494,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 489,
+                        lineNumber: 492,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 480,
+                lineNumber: 483,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 404,
+        lineNumber: 407,
         columnNumber: 5
     }, this);
 }
@@ -2040,14 +2057,14 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                     className: "w-4 h-4 text-blue-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 572,
+                                    lineNumber: 575,
                                     columnNumber: 66
                                 }, this),
                                 " Add Department"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 572,
+                            lineNumber: 575,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -2061,7 +2078,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "College"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 575,
+                                            lineNumber: 578,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2074,18 +2091,18 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: c.name
                                                 }, c.id, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 577,
+                                                    lineNumber: 580,
                                                     columnNumber: 36
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 576,
+                                            lineNumber: 579,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 574,
+                                    lineNumber: 577,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2095,7 +2112,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Department Name"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 581,
+                                            lineNumber: 584,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2106,13 +2123,13 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 582,
+                                            lineNumber: 585,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 580,
+                                    lineNumber: 583,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2122,7 +2139,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Code"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 585,
+                                            lineNumber: 588,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2133,13 +2150,13 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 586,
+                                            lineNumber: 589,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 584,
+                                    lineNumber: 587,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2147,7 +2164,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                     children: "Pre-seeded for IES: EEE, ME, R&AI, CE, DS, CSE, ECE"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 588,
+                                    lineNumber: 591,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2158,7 +2175,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 590,
+                                        lineNumber: 593,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -2166,7 +2183,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 590,
+                                                lineNumber: 593,
                                                 columnNumber: 78
                                             }, this),
                                             " Add Department"
@@ -2174,24 +2191,24 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 589,
+                                    lineNumber: 592,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 573,
+                            lineNumber: 576,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 571,
+                    lineNumber: 574,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 570,
+                lineNumber: 573,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2205,7 +2222,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 597,
+                        lineNumber: 600,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2214,12 +2231,12 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                             className: "w-6 h-6 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 598,
+                            lineNumber: 601,
                             columnNumber: 63
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 598,
+                        lineNumber: 601,
                         columnNumber: 20
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-2",
@@ -2228,7 +2245,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                             children: "No departments"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 600,
+                            lineNumber: 603,
                             columnNumber: 41
                         }, this) : departments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "rounded-xl bg-white border border-slate-200 p-3 flex items-center justify-between",
@@ -2244,13 +2261,13 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         children: d.code
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 606,
+                                                        lineNumber: 609,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 604,
+                                                lineNumber: 607,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2258,13 +2275,13 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                 children: d.college?.name
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 608,
+                                                lineNumber: 611,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 603,
+                                        lineNumber: 606,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2278,7 +2295,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 611,
+                                                lineNumber: 614,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2291,12 +2308,12 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 613,
+                                                    lineNumber: 616,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 612,
+                                                lineNumber: 615,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2307,35 +2324,35 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 616,
+                                                    lineNumber: 619,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 615,
+                                                lineNumber: 618,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 610,
+                                        lineNumber: 613,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, d.id, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 602,
+                                lineNumber: 605,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 599,
+                        lineNumber: 602,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 596,
+                lineNumber: 599,
                 columnNumber: 7
             }, this),
             editing && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EditModal, {
@@ -2351,7 +2368,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Department Name"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 629,
+                                lineNumber: 632,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2364,13 +2381,13 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 630,
+                                lineNumber: 633,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 628,
+                        lineNumber: 631,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2380,7 +2397,7 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Code"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 633,
+                                lineNumber: 636,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2393,25 +2410,25 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 634,
+                                lineNumber: 637,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 632,
+                        lineNumber: 635,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 627,
+                lineNumber: 630,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 569,
+        lineNumber: 572,
         columnNumber: 5
     }, this);
 }
@@ -2598,14 +2615,14 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                     className: "w-4 h-4 text-emerald-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 742,
+                                    lineNumber: 745,
                                     columnNumber: 66
                                 }, this),
                                 " Add Mentor"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 742,
+                            lineNumber: 745,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -2619,7 +2636,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "College"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 745,
+                                            lineNumber: 748,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2635,18 +2652,18 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: c.name
                                                 }, c.id, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 747,
+                                                    lineNumber: 750,
                                                     columnNumber: 36
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 746,
+                                            lineNumber: 749,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 744,
+                                    lineNumber: 747,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2656,7 +2673,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Full Name"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 751,
+                                            lineNumber: 754,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2669,13 +2686,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 752,
+                                            lineNumber: 755,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 750,
+                                    lineNumber: 753,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2685,7 +2702,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Username"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 755,
+                                            lineNumber: 758,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2698,13 +2715,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 756,
+                                            lineNumber: 759,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 754,
+                                    lineNumber: 757,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2714,7 +2731,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Password"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 759,
+                                            lineNumber: 762,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2727,13 +2744,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 760,
+                                            lineNumber: 763,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 758,
+                                    lineNumber: 761,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2743,7 +2760,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Department (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 763,
+                                            lineNumber: 766,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2759,7 +2776,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: "— None —"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 765,
+                                                    lineNumber: 768,
                                                     columnNumber: 17
                                                 }, this),
                                                 departments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2772,19 +2789,19 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                         ]
                                                     }, d.id, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 766,
+                                                        lineNumber: 769,
                                                         columnNumber: 39
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 764,
+                                            lineNumber: 767,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 762,
+                                    lineNumber: 765,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2794,7 +2811,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Email (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 770,
+                                            lineNumber: 773,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2807,13 +2824,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             type: "email"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 771,
+                                            lineNumber: 774,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 769,
+                                    lineNumber: 772,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2823,7 +2840,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Phone (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 774,
+                                            lineNumber: 777,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2835,13 +2852,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 775,
+                                            lineNumber: 778,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 773,
+                                    lineNumber: 776,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2852,7 +2869,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 778,
+                                        lineNumber: 781,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -2860,7 +2877,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 778,
+                                                lineNumber: 781,
                                                 columnNumber: 78
                                             }, this),
                                             " Create Mentor"
@@ -2868,24 +2885,24 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 777,
+                                    lineNumber: 780,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 743,
+                            lineNumber: 746,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 741,
+                    lineNumber: 744,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 740,
+                lineNumber: 743,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2896,7 +2913,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                         children: "Mentors"
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 785,
+                        lineNumber: 788,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2905,12 +2922,12 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                             className: "w-6 h-6 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 786,
+                            lineNumber: 789,
                             columnNumber: 63
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 786,
+                        lineNumber: 789,
                         columnNumber: 20
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-2",
@@ -2919,7 +2936,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                             children: "No mentors yet"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 788,
+                            lineNumber: 791,
                             columnNumber: 37
                         }, this) : mentors.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: `rounded-xl bg-white border p-4 ${m.active ? "border-slate-200" : "border-red-200 bg-red-50"}`,
@@ -2938,7 +2955,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: m.username
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 795,
+                                                            lineNumber: 798,
                                                             columnNumber: 25
                                                         }, this),
                                                         !m.active && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2946,13 +2963,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: "INACTIVE"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 796,
+                                                            lineNumber: 799,
                                                             columnNumber: 39
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 793,
+                                                    lineNumber: 796,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2965,13 +2982,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 798,
+                                                    lineNumber: 801,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 792,
+                                            lineNumber: 795,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2985,7 +3002,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: m._count.students
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 805,
+                                                            lineNumber: 808,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2993,13 +3010,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: "Students"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 806,
+                                                            lineNumber: 809,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 804,
+                                                    lineNumber: 807,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3013,12 +3030,12 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 809,
+                                                        lineNumber: 812,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 808,
+                                                    lineNumber: 811,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3029,40 +3046,40 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 812,
+                                                        lineNumber: 815,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 811,
+                                                    lineNumber: 814,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 803,
+                                            lineNumber: 806,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 791,
+                                    lineNumber: 794,
                                     columnNumber: 19
                                 }, this)
                             }, m.id, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 790,
+                                lineNumber: 793,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 787,
+                        lineNumber: 790,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 784,
+                lineNumber: 787,
                 columnNumber: 7
             }, this),
             editing && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EditModal, {
@@ -3078,7 +3095,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Full Name"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 826,
+                                lineNumber: 829,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3091,13 +3108,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 827,
+                                lineNumber: 830,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 825,
+                        lineNumber: 828,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3107,7 +3124,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Username (cannot be changed)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 830,
+                                lineNumber: 833,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3116,13 +3133,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 831,
+                                lineNumber: 834,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 829,
+                        lineNumber: 832,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3132,7 +3149,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Department"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 834,
+                                lineNumber: 837,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3148,7 +3165,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                         children: "— None —"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 836,
+                                        lineNumber: 839,
                                         columnNumber: 15
                                     }, this),
                                     editDepartments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3161,19 +3178,19 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                             ]
                                         }, d.id, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 837,
+                                            lineNumber: 840,
                                             columnNumber: 41
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 835,
+                                lineNumber: 838,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 833,
+                        lineNumber: 836,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3183,7 +3200,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Email"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 841,
+                                lineNumber: 844,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3196,13 +3213,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 type: "email"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 842,
+                                lineNumber: 845,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 840,
+                        lineNumber: 843,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3212,7 +3229,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Phone"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 845,
+                                lineNumber: 848,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3224,13 +3241,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 846,
+                                lineNumber: 849,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 844,
+                        lineNumber: 847,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3240,7 +3257,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "New Password (leave blank to keep current)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 849,
+                                lineNumber: 852,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3253,13 +3270,13 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 placeholder: "Enter new password (optional)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 850,
+                                lineNumber: 853,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 848,
+                        lineNumber: 851,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3276,7 +3293,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "rounded"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 853,
+                                lineNumber: 856,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -3285,25 +3302,25 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Active (uncheck to deactivate)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 854,
+                                lineNumber: 857,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 852,
+                        lineNumber: 855,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 824,
+                lineNumber: 827,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 739,
+        lineNumber: 742,
         columnNumber: 5
     }, this);
 }
@@ -3522,14 +3539,14 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                     className: "w-4 h-4 text-amber-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 984,
+                                    lineNumber: 987,
                                     columnNumber: 66
                                 }, this),
                                 " Add Student"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 984,
+                            lineNumber: 987,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -3543,7 +3560,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "College"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 987,
+                                            lineNumber: 990,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3559,18 +3576,18 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: c.name
                                                 }, c.id, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 989,
+                                                    lineNumber: 992,
                                                     columnNumber: 36
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 988,
+                                            lineNumber: 991,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 986,
+                                    lineNumber: 989,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3580,7 +3597,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Full Name"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 993,
+                                            lineNumber: 996,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3593,13 +3610,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 994,
+                                            lineNumber: 997,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 992,
+                                    lineNumber: 995,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3609,7 +3626,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Roll Number"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 997,
+                                            lineNumber: 1000,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3622,13 +3639,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             placeholder: "e.g., IES21CSE001"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 998,
+                                            lineNumber: 1001,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 996,
+                                    lineNumber: 999,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3638,7 +3655,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Username"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1001,
+                                            lineNumber: 1004,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3651,13 +3668,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1002,
+                                            lineNumber: 1005,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1000,
+                                    lineNumber: 1003,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3667,7 +3684,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Password"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1005,
+                                            lineNumber: 1008,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3680,13 +3697,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1006,
+                                            lineNumber: 1009,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1004,
+                                    lineNumber: 1007,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3696,7 +3713,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Department"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1009,
+                                            lineNumber: 1012,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3713,7 +3730,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: "— Select —"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1011,
+                                                    lineNumber: 1014,
                                                     columnNumber: 17
                                                 }, this),
                                                 departments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3726,19 +3743,19 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         ]
                                                     }, d.id, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1012,
+                                                        lineNumber: 1015,
                                                         columnNumber: 39
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1010,
+                                            lineNumber: 1013,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1008,
+                                    lineNumber: 1011,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3748,7 +3765,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Mentor (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1016,
+                                            lineNumber: 1019,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3764,7 +3781,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     children: "— None —"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1018,
+                                                    lineNumber: 1021,
                                                     columnNumber: 17
                                                 }, this),
                                                 mentors.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3777,19 +3794,19 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         ]
                                                     }, m.id, true, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1019,
+                                                        lineNumber: 1022,
                                                         columnNumber: 35
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1017,
+                                            lineNumber: 1020,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1015,
+                                    lineNumber: 1018,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3799,7 +3816,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Email (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1023,
+                                            lineNumber: 1026,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3812,13 +3829,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             type: "email"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1024,
+                                            lineNumber: 1027,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1022,
+                                    lineNumber: 1025,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3828,7 +3845,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: "Phone (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1027,
+                                            lineNumber: 1030,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3840,13 +3857,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1028,
+                                            lineNumber: 1031,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1026,
+                                    lineNumber: 1029,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3857,7 +3874,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1031,
+                                        lineNumber: 1034,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -3865,7 +3882,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 1031,
+                                                lineNumber: 1034,
                                                 columnNumber: 78
                                             }, this),
                                             " Create Student"
@@ -3873,24 +3890,24 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1030,
+                                    lineNumber: 1033,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 985,
+                            lineNumber: 988,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 983,
+                    lineNumber: 986,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 982,
+                lineNumber: 985,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3905,7 +3922,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1038,
+                        lineNumber: 1041,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3914,12 +3931,12 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                             className: "w-6 h-6 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1039,
+                            lineNumber: 1042,
                             columnNumber: 63
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1039,
+                        lineNumber: 1042,
                         columnNumber: 20
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto cq-scroll pr-1",
@@ -3928,7 +3945,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                             children: "No students yet"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1041,
+                            lineNumber: 1044,
                             columnNumber: 38
                         }, this) : students.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: `rounded-xl bg-white border p-3 ${s.active ? "border-slate-200" : "border-red-200 bg-red-50"}`,
@@ -3947,7 +3964,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: s.username || s.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1048,
+                                                            lineNumber: 1051,
                                                             columnNumber: 25
                                                         }, this),
                                                         !s.active && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3955,13 +3972,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             children: "INACTIVE"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1049,
+                                                            lineNumber: 1052,
                                                             columnNumber: 39
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1046,
+                                                    lineNumber: 1049,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3976,7 +3993,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1052,
+                                                    lineNumber: 1055,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3991,7 +4008,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1057,
+                                                            lineNumber: 1060,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4002,7 +4019,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1058,
+                                                            lineNumber: 1061,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4013,7 +4030,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1059,
+                                                            lineNumber: 1062,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4024,7 +4041,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1060,
+                                                            lineNumber: 1063,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4035,7 +4052,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1061,
+                                                            lineNumber: 1064,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4046,7 +4063,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1062,
+                                                            lineNumber: 1065,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4058,19 +4075,19 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                            lineNumber: 1063,
+                                                            lineNumber: 1066,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1056,
+                                                    lineNumber: 1059,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1045,
+                                            lineNumber: 1048,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4087,12 +4104,12 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1067,
+                                                        lineNumber: 1070,
                                                         columnNumber: 163
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1067,
+                                                    lineNumber: 1070,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4103,12 +4120,12 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1068,
+                                                        lineNumber: 1071,
                                                         columnNumber: 144
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1068,
+                                                    lineNumber: 1071,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4119,40 +4136,40 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1069,
+                                                        lineNumber: 1072,
                                                         columnNumber: 127
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1069,
+                                                    lineNumber: 1072,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1066,
+                                            lineNumber: 1069,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1044,
+                                    lineNumber: 1047,
                                     columnNumber: 19
                                 }, this)
                             }, s.id, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1043,
+                                lineNumber: 1046,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1040,
+                        lineNumber: 1043,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1037,
+                lineNumber: 1040,
                 columnNumber: 7
             }, this),
             editing && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EditModal, {
@@ -4168,7 +4185,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Full Name"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1082,
+                                lineNumber: 1085,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4181,13 +4198,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1083,
+                                lineNumber: 1086,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1081,
+                        lineNumber: 1084,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4197,7 +4214,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Username / Email (cannot be changed)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1086,
+                                lineNumber: 1089,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4206,13 +4223,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm bg-slate-100 cursor-not-allowed"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1087,
+                                lineNumber: 1090,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1085,
+                        lineNumber: 1088,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4222,7 +4239,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Roll Number (KTU Reg)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1090,
+                                lineNumber: 1093,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4235,13 +4252,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 placeholder: "e.g., IES21CSE001"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1091,
+                                lineNumber: 1094,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1089,
+                        lineNumber: 1092,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4251,7 +4268,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Department"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1094,
+                                lineNumber: 1097,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4267,7 +4284,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                         children: "— None —"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1096,
+                                        lineNumber: 1099,
                                         columnNumber: 15
                                     }, this),
                                     editDepartments.map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4280,19 +4297,19 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             ]
                                         }, d.id, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1097,
+                                            lineNumber: 1100,
                                             columnNumber: 41
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1095,
+                                lineNumber: 1098,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1093,
+                        lineNumber: 1096,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4302,7 +4319,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Mentor"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1101,
+                                lineNumber: 1104,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4318,7 +4335,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                         children: "— None —"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1103,
+                                        lineNumber: 1106,
                                         columnNumber: 15
                                     }, this),
                                     editMentors.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4326,19 +4343,19 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                             children: m.name
                                         }, m.id, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1104,
+                                            lineNumber: 1107,
                                             columnNumber: 37
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1102,
+                                lineNumber: 1105,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1100,
+                        lineNumber: 1103,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4348,7 +4365,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Email"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1108,
+                                lineNumber: 1111,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4361,13 +4378,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 type: "email"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1109,
+                                lineNumber: 1112,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1107,
+                        lineNumber: 1110,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4377,7 +4394,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Phone"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1112,
+                                lineNumber: 1115,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4389,13 +4406,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1113,
+                                lineNumber: 1116,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1111,
+                        lineNumber: 1114,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4405,7 +4422,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "New Password (leave blank to keep current)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1116,
+                                lineNumber: 1119,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4418,13 +4435,13 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 placeholder: "Enter new password (optional)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1117,
+                                lineNumber: 1120,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1115,
+                        lineNumber: 1118,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4441,7 +4458,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 className: "rounded"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1120,
+                                lineNumber: 1123,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -4450,25 +4467,25 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }) {
                                 children: "Active (uncheck to deactivate)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1121,
+                                lineNumber: 1124,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1119,
+                        lineNumber: 1122,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1080,
+                lineNumber: 1083,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 981,
+        lineNumber: 984,
         columnNumber: 5
     }, this);
 }
@@ -4581,14 +4598,14 @@ function SubAdminsTab() {
                                     className: "w-4 h-4 text-emerald-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1182,
+                                    lineNumber: 1185,
                                     columnNumber: 66
                                 }, this),
                                 " Add Sub-Admin"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1182,
+                            lineNumber: 1185,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4599,14 +4616,14 @@ function SubAdminsTab() {
                                     children: "one college"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1184,
+                                    lineNumber: 1187,
                                     columnNumber: 41
                                 }, this),
                                 " (departments, mentors, students) and view only that college's analytics."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1183,
+                            lineNumber: 1186,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -4620,7 +4637,7 @@ function SubAdminsTab() {
                                             children: "College (will be locked to this college)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1188,
+                                            lineNumber: 1191,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4637,7 +4654,7 @@ function SubAdminsTab() {
                                                     children: "— Select College —"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                    lineNumber: 1190,
+                                                    lineNumber: 1193,
                                                     columnNumber: 17
                                                 }, this),
                                                 colleges.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4645,19 +4662,19 @@ function SubAdminsTab() {
                                                         children: c.name
                                                     }, c.id, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1191,
+                                                        lineNumber: 1194,
                                                         columnNumber: 36
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1189,
+                                            lineNumber: 1192,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1187,
+                                    lineNumber: 1190,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4667,7 +4684,7 @@ function SubAdminsTab() {
                                             children: "Full Name"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1195,
+                                            lineNumber: 1198,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4680,13 +4697,13 @@ function SubAdminsTab() {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1196,
+                                            lineNumber: 1199,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1194,
+                                    lineNumber: 1197,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4696,7 +4713,7 @@ function SubAdminsTab() {
                                             children: "Username (for login)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1199,
+                                            lineNumber: 1202,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4709,13 +4726,13 @@ function SubAdminsTab() {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1200,
+                                            lineNumber: 1203,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1198,
+                                    lineNumber: 1201,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4725,7 +4742,7 @@ function SubAdminsTab() {
                                             children: "Password"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1203,
+                                            lineNumber: 1206,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4738,13 +4755,13 @@ function SubAdminsTab() {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1204,
+                                            lineNumber: 1207,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1202,
+                                    lineNumber: 1205,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4754,7 +4771,7 @@ function SubAdminsTab() {
                                             children: "Email (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1207,
+                                            lineNumber: 1210,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4767,13 +4784,13 @@ function SubAdminsTab() {
                                             type: "email"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1208,
+                                            lineNumber: 1211,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1206,
+                                    lineNumber: 1209,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4783,7 +4800,7 @@ function SubAdminsTab() {
                                             children: "Phone (optional)"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1211,
+                                            lineNumber: 1214,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4795,13 +4812,13 @@ function SubAdminsTab() {
                                             className: "w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1212,
+                                            lineNumber: 1215,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1210,
+                                    lineNumber: 1213,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4812,7 +4829,7 @@ function SubAdminsTab() {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1215,
+                                        lineNumber: 1218,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -4820,7 +4837,7 @@ function SubAdminsTab() {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 1215,
+                                                lineNumber: 1218,
                                                 columnNumber: 78
                                             }, this),
                                             " Create Sub-Admin"
@@ -4828,13 +4845,13 @@ function SubAdminsTab() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1214,
+                                    lineNumber: 1217,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1186,
+                            lineNumber: 1189,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4845,25 +4862,25 @@ function SubAdminsTab() {
                                     children: "Admin Portal"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1218,
+                                    lineNumber: 1221,
                                     columnNumber: 80
                                 }, this),
                                 " with the username and password you set here. They cannot create colleges or see other colleges' data."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1218,
+                            lineNumber: 1221,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 1181,
+                    lineNumber: 1184,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1180,
+                lineNumber: 1183,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4878,7 +4895,7 @@ function SubAdminsTab() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1223,
+                        lineNumber: 1226,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4887,12 +4904,12 @@ function SubAdminsTab() {
                             className: "w-6 h-6 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1224,
+                            lineNumber: 1227,
                             columnNumber: 63
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1224,
+                        lineNumber: 1227,
                         columnNumber: 20
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-2",
@@ -4901,7 +4918,7 @@ function SubAdminsTab() {
                             children: "No sub-admins yet. Add one to delegate college management."
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1226,
+                            lineNumber: 1229,
                             columnNumber: 39
                         }, this) : subAdmins.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "rounded-xl bg-white border border-slate-200 p-4 flex items-center justify-between",
@@ -4917,7 +4934,7 @@ function SubAdminsTab() {
                                                         children: s.username
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1232,
+                                                        lineNumber: 1235,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4925,13 +4942,13 @@ function SubAdminsTab() {
                                                         children: "Sub-Admin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1233,
+                                                        lineNumber: 1236,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 1230,
+                                                lineNumber: 1233,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4942,20 +4959,20 @@ function SubAdminsTab() {
                                                         children: s.college?.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                        lineNumber: 1236,
+                                                        lineNumber: 1239,
                                                         columnNumber: 32
                                                     }, this),
                                                     s.email && ` • ${s.email}`
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 1235,
+                                                lineNumber: 1238,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1229,
+                                        lineNumber: 1232,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4965,35 +4982,35 @@ function SubAdminsTab() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                                            lineNumber: 1240,
+                                            lineNumber: 1243,
                                             columnNumber: 108
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1240,
+                                        lineNumber: 1243,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, s.id, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1228,
+                                lineNumber: 1231,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1225,
+                        lineNumber: 1228,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1222,
+                lineNumber: 1225,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 1179,
+        lineNumber: 1182,
         columnNumber: 5
     }, this);
 }
@@ -5018,7 +5035,7 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                     className: "w-4 h-4 text-purple-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1263,
+                                    lineNumber: 1266,
                                     columnNumber: 71
                                 }, this),
                                 " ",
@@ -5026,7 +5043,7 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1263,
+                            lineNumber: 1266,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5036,18 +5053,18 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1265,
+                                lineNumber: 1268,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1264,
+                            lineNumber: 1267,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 1262,
+                    lineNumber: 1265,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -5065,7 +5082,7 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1271,
+                                    lineNumber: 1274,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5076,7 +5093,7 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                         className: "w-4 h-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1275,
+                                        lineNumber: 1278,
                                         columnNumber: 26
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -5084,7 +5101,7 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                                lineNumber: 1275,
+                                                lineNumber: 1278,
                                                 columnNumber: 75
                                             }, this),
                                             " Save Changes"
@@ -5092,30 +5109,30 @@ function EditModal({ title, onClose, onSave, loading, children }) {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1274,
+                                    lineNumber: 1277,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/admin-dashboard.tsx",
-                            lineNumber: 1270,
+                            lineNumber: 1273,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                    lineNumber: 1268,
+                    lineNumber: 1271,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/admin-dashboard.tsx",
-            lineNumber: 1261,
+            lineNumber: 1264,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 1260,
+        lineNumber: 1263,
         columnNumber: 5
     }, this);
 }
@@ -5163,7 +5180,7 @@ function ExportsTab({ collegeId }) {
                 children: "Export Data (CSV)"
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1300,
+                lineNumber: 1303,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5174,7 +5191,7 @@ function ExportsTab({ collegeId }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1301,
+                lineNumber: 1304,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5191,12 +5208,12 @@ function ExportsTab({ collegeId }) {
                                     className: "w-6 h-6 text-white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/admin-dashboard.tsx",
-                                    lineNumber: 1312,
+                                    lineNumber: 1315,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1311,
+                                lineNumber: 1314,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5208,13 +5225,13 @@ function ExportsTab({ collegeId }) {
                                         className: "w-4 h-4 text-slate-400"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                                        lineNumber: 1315,
+                                        lineNumber: 1318,
                                         columnNumber: 27
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1314,
+                                lineNumber: 1317,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5222,25 +5239,25 @@ function ExportsTab({ collegeId }) {
                                 children: u.desc
                             }, void 0, false, {
                                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                                lineNumber: 1317,
+                                lineNumber: 1320,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, u.type, true, {
                         fileName: "[project]/src/components/admin-dashboard.tsx",
-                        lineNumber: 1306,
+                        lineNumber: 1309,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/admin-dashboard.tsx",
-                lineNumber: 1302,
+                lineNumber: 1305,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/admin-dashboard.tsx",
-        lineNumber: 1299,
+        lineNumber: 1302,
         columnNumber: 5
     }, this);
 }

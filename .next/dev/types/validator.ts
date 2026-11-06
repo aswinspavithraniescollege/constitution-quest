@@ -92,6 +92,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../src/app/api/admin/results/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/admin/results">> = Specific
+  const handler = {} as typeof import("../../../src/app/api/admin/results/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../src/app/api/admin/stats/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/admin/stats">> = Specific
@@ -177,6 +186,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mentor/profile">> = Specific
   const handler = {} as typeof import("../../../src/app/api/mentor/profile/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../src/app/api/mentor/results/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mentor/results">> = Specific
+  const handler = {} as typeof import("../../../src/app/api/mentor/results/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

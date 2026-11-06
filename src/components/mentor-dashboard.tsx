@@ -10,6 +10,7 @@ import {
   Trash2, AlertCircle
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
+import { ResultsView } from "@/components/results-view";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
@@ -17,6 +18,7 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showProfile, setShowProfile] = useState(false);
   const [showMockTests, setShowMockTests] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -55,6 +57,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setShowResults(true)}
+              className="px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-bold flex items-center gap-2"
+              title="Student Results"
+            >
+              <TrendingUp className="w-4 h-4" /> <span className="hidden sm:inline">Results</span>
+            </button>
             <button
               onClick={() => setShowMockTests(true)}
               className="px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 text-sm font-bold flex items-center gap-2"
@@ -124,6 +133,15 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
         <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
             <MockTestPlayer user={user} onExit={() => setShowMockTests(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Results View (full screen overlay) */}
+      {showResults && (
+        <div className="fixed inset-0 z-50 bg-slate-50 overflow-y-auto">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+            <ResultsView user={user} apiBase="/api/mentor/results" onExit={() => setShowResults(false)} />
           </div>
         </div>
       )}

@@ -12,8 +12,9 @@ import {
 import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
 import { AnnouncementsManager } from "@/components/realtime/announcements";
 import { MockTestPlayer } from "@/components/mock-test-player";
+import { ResultsView } from "@/components/results-view";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -50,6 +51,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     { key: "students", label: "Students", icon: Users },
     { key: "exports", label: "Export Data", icon: Download },
     { key: "mock-tests", label: "Test Mock Tests", icon: Target },
+    { key: "results", label: "Results", icon: TrendingUp },
   ];
 
   return (
@@ -135,6 +137,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
         {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
+        {tab === "results" && <ResultsView user={user} apiBase="/api/admin/results" onExit={() => setTab("overview")} />}
       </main>
     </div>
   );
