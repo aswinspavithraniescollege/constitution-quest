@@ -76,16 +76,42 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
   }, [config?.collegeCode]);
 
   // 3. Filter entries for the active tab AND drop deleted users.
+  //    Also: ALWAYS ensure the current student appears in their own view, even
+  //    if their Firestore entry hasn't been written yet (e.g. brand-new student
+  //    who hasn't answered a question). We inject a synthetic entry from the
+  //    user prop so they see themselves with 0 XP.
   const visibleEntries = useMemo(() => {
     if (!config) return [];
     const validSet = tab === "department"
       ? new Set(config.departmentUserIds)
       : new Set(config.collegeUserIds);
     // Filter to valid (non-deleted, in-scope) users, then sort by XP desc.
-    return entries
+    const filtered = entries
       .filter(e => validSet.has(e.userId))
       .sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
-  }, [entries, tab, config]);
+
+    // Ensure the current student is represented in their own view.
+    const isInScope = validSet.has(user.id);
+    const alreadyPresent = filtered.some(e => e.userId === user.id);
+    if (isInScope && !alreadyPresent) {
+      // Inject a fallback entry for the current student (0 XP if unknown).
+      filtered.push({
+        userId: user.id,
+        name: user.name || "You",
+        username: user.username || "",
+        xp: user.xp || 0,
+        level: user.level || 1,
+        streak: user.streak || 0,
+        collegeCode: config.collegeCode || "",
+        deptCode: config.deptCode || "",
+        collegeName: "",
+        updatedAt: null,
+      } as LeaderboardEntry);
+      // Re-sort so the injected entry lands in the right position.
+      filtered.sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
+    }
+    return filtered;
+  }, [entries, tab, config, user.id, user.name, user.xp, user.level, user.streak]);
 
   // ---- Render states ----
   if (configLoading) {

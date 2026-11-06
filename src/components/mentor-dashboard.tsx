@@ -293,10 +293,19 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ leaderboardVisible: next }),
       });
-      const data = await res.json();
-      if (!res.ok) { toast.error(data.error || "Failed to toggle"); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        toast.error(data.error || "Failed to toggle", {
+          description: data.error && data.error.includes("Setting")
+            ? "Run `npm run db:push` to create the settings table."
+            : undefined,
+        });
+        return;
+      }
       setDeptLbVisible(next);
-      toast.success(`Department leaderboard ${next ? "enabled" : "disabled"} for students.`);
+      toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"} for students.`);
+    } catch (e) {
+      toast.error("Network error while toggling");
     } finally { setDeptLbToggling(false); }
   }
 
@@ -405,35 +414,37 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
 
             {/* Department leaderboard visibility toggle */}
             <div className="pt-3 border-t border-slate-200">
-              <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
-                <Crown className="w-4 h-4 text-amber-500" /> Department Leaderboard Visibility
-              </h4>
-              {deptLbHasDept ? (
-                <label className="flex items-center justify-between p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50">
-                  <div>
-                    <div className="text-sm font-bold text-slate-700">
-                      {deptLbVisible === null ? "Loading…" : deptLbVisible ? "Visible to students" : "Hidden from students"}
+              <div className="rounded-xl bg-amber-50 border border-amber-200 p-3">
+                <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-amber-800">
+                  <Crown className="w-4 h-4 text-amber-500" /> Department Leaderboard Visibility
+                </h4>
+                {deptLbHasDept ? (
+                  <label className="flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 cursor-pointer hover:bg-amber-50/50">
+                    <div>
+                      <div className="text-sm font-bold text-slate-700">
+                        {deptLbVisible === null ? "Loading…" : deptLbVisible ? "Visible to students" : "Hidden from students"}
+                      </div>
+                      <div className="text-[11px] text-slate-500">
+                        Lock or unlock the &ldquo;My Department&rdquo; leaderboard tab for students in your department.
+                      </div>
                     </div>
-                    <div className="text-[11px] text-slate-500">
-                      Controls whether students in your department can see the &ldquo;My Department&rdquo; leaderboard tab.
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={toggleDeptLb}
-                    disabled={deptLbToggling || deptLbVisible === null}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${deptLbVisible ? "bg-emerald-500" : "bg-slate-300"}`}
-                  >
-                    {deptLbToggling ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
-                    ) : (
-                      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${deptLbVisible ? "translate-x-6" : "translate-x-1"}`} />
-                    )}
-                  </button>
-                </label>
-              ) : (
-                <p className="text-xs text-slate-400 p-2">You are not assigned to a department, so this setting is unavailable.</p>
-              )}
+                    <button
+                      type="button"
+                      onClick={toggleDeptLb}
+                      disabled={deptLbToggling || deptLbVisible === null}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${deptLbVisible ? "bg-emerald-500" : "bg-slate-300"}`}
+                    >
+                      {deptLbToggling ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-white absolute left-1/2 -translate-x-1/2" />
+                      ) : (
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${deptLbVisible ? "translate-x-6" : "translate-x-1"}`} />
+                      )}
+                    </button>
+                  </label>
+                ) : (
+                  <p className="text-xs text-slate-400 p-2">You are not assigned to a department, so this setting is unavailable.</p>
+                )}
+              </div>
             </div>
 
             <div className="flex gap-2 pt-2">

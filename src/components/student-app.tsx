@@ -33,7 +33,26 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
     try {
       const res = await fetch("/api/student/dashboard");
       const data = await res.json();
-      if (res.ok) setDash(data);
+      if (res.ok) {
+        setDash(data);
+        // Proactively ensure this student has a Firestore leaderboard entry.
+        // Without this, a student who hasn't answered any question yet won't
+        // appear in the live leaderboard (syncLeaderboardClient is otherwise
+        // only called after a practice answer or login).
+        if (data.user) {
+          syncLeaderboardClient({
+            id: data.user.id,
+            name: data.user.name,
+            username: data.user.username,
+            xp: data.user.xp,
+            level: data.user.level,
+            streak: data.user.streak,
+            collegeCode: data.user.college?.code,
+            collegeName: data.user.college?.name,
+            deptCode: data.user.department?.code,
+          }).catch(() => {});
+        }
+      }
     } finally {
       setLoadingDash(false);
     }

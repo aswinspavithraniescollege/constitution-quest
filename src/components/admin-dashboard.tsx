@@ -379,11 +379,17 @@ function CollegesTab({ colleges, onRefresh }: any) {
       });
       if (res.ok) {
         setLbVis(prev => ({ ...prev, [collegeId]: next }));
-        toast.success(`College leaderboard ${next ? "enabled" : "disabled"} for students.`);
+        toast.success(`College leaderboard ${next ? "ENABLED" : "DISABLED"} for students.`);
       } else {
-        const d = await res.json();
-        toast.error(d.error || "Failed to toggle visibility");
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error || "Failed to toggle visibility", {
+          description: d.error && d.error.includes("Setting")
+            ? "Run `npm run db:push` to create the settings table."
+            : undefined,
+        });
       }
+    } catch (e) {
+      toast.error("Network error while toggling visibility");
     } finally { setTogglingId(null); }
   }
 
@@ -442,6 +448,19 @@ function CollegesTab({ colleges, onRefresh }: any) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Leaderboard visibility explainer banner (full width) */}
+      <div className="lg:col-span-3 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 p-4 flex items-start gap-3">
+        <Crown className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+        <div className="flex-1">
+          <div className="font-bold text-amber-800 text-sm">Leaderboard Visibility Controls</div>
+          <div className="text-xs text-amber-700 mt-0.5">
+            Each college row has an <span className="font-bold">"LB Visible / LB Hidden"</span> button.
+            Click it to lock or unlock the college leaderboard for students.
+            When hidden, students in that college will see a "Leaderboard is currently disabled" message
+            instead of the rankings. Department-level controls are on the Departments tab.
+          </div>
+        </div>
+      </div>
       <div className="lg:col-span-1">
         <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-purple-500" /> Add New College</h3>
@@ -496,11 +515,11 @@ function CollegesTab({ colleges, onRefresh }: any) {
                   <button
                     onClick={() => toggleLbVisible(c.id)}
                     disabled={togglingId === c.id}
-                    title={lbVis[c.id] !== false ? "Leaderboard visible to students — click to hide" : "Leaderboard hidden from students — click to show"}
-                    className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 border transition disabled:opacity-50 ${lbVis[c.id] !== false ? "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200"}`}
+                    title={lbVis[c.id] !== false ? "Leaderboard visible to students — click to HIDE" : "Leaderboard hidden from students — click to SHOW"}
+                    className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[c.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
                   >
                     {togglingId === c.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
-                    {lbVis[c.id] !== false ? "LB On" : "LB Off"}
+                    {lbVis[c.id] !== false ? "LB Visible" : "LB Hidden"}
                   </button>
                   <button
                     onClick={() => setEditing({ ...c })}
@@ -584,11 +603,17 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
       });
       if (res.ok) {
         setLbVis(prev => ({ ...prev, [deptId]: next }));
-        toast.success(`Department leaderboard ${next ? "enabled" : "disabled"} for students.`);
+        toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"} for students.`);
       } else {
-        const d = await res.json();
-        toast.error(d.error || "Failed to toggle visibility");
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error || "Failed to toggle visibility", {
+          description: d.error && d.error.includes("Setting")
+            ? "Run `npm run db:push` to create the settings table."
+            : undefined,
+        });
       }
+    } catch (e) {
+      toast.error("Network error while toggling visibility");
     } finally { setTogglingId(null); }
   }
 
@@ -651,6 +676,19 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Leaderboard visibility explainer banner (full width) */}
+      <div className="lg:col-span-3 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 p-4 flex items-start gap-3">
+        <Crown className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+        <div className="flex-1">
+          <div className="font-bold text-amber-800 text-sm">Department Leaderboard Visibility</div>
+          <div className="text-xs text-amber-700 mt-0.5">
+            Each department row has an <span className="font-bold">"LB Visible / LB Hidden"</span> button.
+            Admins/sub-admins can lock or unlock the department leaderboard for students here.
+            Mentors can also toggle their OWN department&apos;s leaderboard from their profile modal.
+            When hidden, students lose the &ldquo;My Department&rdquo; tab on their leaderboard.
+          </div>
+        </div>
+      </div>
       <div>
         <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-blue-500" /> Add Department</h3>
@@ -696,11 +734,11 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
                     <button
                       onClick={() => toggleLbVisible(d.id)}
                       disabled={togglingId === d.id}
-                      title={lbVis[d.id] !== false ? "Department leaderboard visible to students — click to hide" : "Department leaderboard hidden from students — click to show"}
-                      className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 border transition disabled:opacity-50 ${lbVis[d.id] !== false ? "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200"}`}
+                      title={lbVis[d.id] !== false ? "Department leaderboard visible to students — click to HIDE" : "Department leaderboard hidden from students — click to SHOW"}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[d.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
                     >
                       {togglingId === d.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
-                      {lbVis[d.id] !== false ? "LB On" : "LB Off"}
+                      {lbVis[d.id] !== false ? "LB Visible" : "LB Hidden"}
                     </button>
                     <button onClick={() => setEditing({ ...d })} title="Edit department" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
                       <Pencil className="w-4 h-4" />
