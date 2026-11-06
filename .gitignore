@@ -1,2 +1,26 @@
 skills/
 node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Logs
+*.log
+dev.log
+server.log
+
+# Tool results / scratch
+tool-results/
+
+# Local DB
+db/*.db
+db/*.db-journal
+
+# Environment
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db

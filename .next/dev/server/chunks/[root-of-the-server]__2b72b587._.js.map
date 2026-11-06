@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":["file:///home/z/my-project/src/lib/db.ts"],"sourcesContent":["import { PrismaClient } from '@prisma/client'\n\nconst globalForPrisma = globalThis as unknown as {\n  prisma: PrismaClient | undefined\n}\n\nexport const db =\n  globalForPrisma.prisma ??\n  new PrismaClient({})\n\nif (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db"],"names":[],"mappings":";;;;AAAA;;AAEA,MAAM,kBAAkB;AAIjB,MAAM,KACX,gBAAgB,MAAM,IACtB,IAAI,sMAAY,CAAC,CAAC;AAEpB,wCAA2C,gBAAgB,MAAM,GAAG"}},
-    {"offset": {"line": 53, "column": 0}, "map": {"version":3,"sources":["file:///home/z/my-project/src/app/api/public/colleges/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\nimport { db } from \"@/lib/db\";\n\n// GET /api/public/colleges — list all colleges for the signup form\n// Public endpoint (no auth) so prospective students can see the list during signup.\nexport async function GET() {\n  const colleges = await db.college.findMany({\n    orderBy: { name: \"asc\" },\n    select: {\n      id: true,\n      name: true,\n      code: true,\n      location: true,\n    },\n  });\n  return NextResponse.json({ colleges });\n}\n"],"names":[],"mappings":";;;;AAAA;AACA;;;AAIO,eAAe;IACpB,MAAM,WAAW,MAAM,wHAAE,CAAC,OAAO,CAAC,QAAQ,CAAC;QACzC,SAAS;YAAE,MAAM;QAAM;QACvB,QAAQ;YACN,IAAI;YACJ,MAAM;YACN,MAAM;YACN,UAAU;QACZ;IACF;IACA,OAAO,gJAAY,CAAC,IAAI,CAAC;QAAE;IAAS;AACtC"}}]
-}
