@@ -6,6 +6,7 @@ import { LoginScreen } from "@/components/login-screen";
 import { StudentApp } from "@/components/student-app";
 import { AdminDashboard } from "@/components/admin-dashboard";
 import { MentorDashboard } from "@/components/mentor-dashboard";
+import { MentorOnboarding } from "@/components/mentor-onboarding";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -57,6 +58,19 @@ export default function Home() {
 
   if (!user) {
     return <LoginScreen onLogin={handleLogin} />;
+  }
+
+  // Mentor first-time onboarding: admin-issued temp username/password is only
+  // a gateway to reach this setup screen, where the mentor sets their own
+  // email & password (authMethod upgrades LOCAL -> FIREBASE).
+  if (user.role === "MENTOR" && user.authMethod === "LOCAL") {
+    return (
+      <MentorOnboarding
+        user={user}
+        onDone={handleLogin}
+        onLogout={handleLogout}
+      />
+    );
   }
 
   if (user.role === "ADMIN" || user.role === "SUB_ADMIN") {

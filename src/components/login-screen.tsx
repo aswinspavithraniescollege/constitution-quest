@@ -48,7 +48,7 @@ const ROLE_CONFIG: Record<Role, {
     label: "Mentor",
     icon: GraduationCap,
     tagline: "Guide Students",
-    description: "Sign up with your college email & password, OR log in with the username & password your admin issued to you.",
+    description: "First time? Log in with the username your admin issued to set up your email & password. Returning? Use your email & password.",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     accent: "text-emerald-300",
     firebaseEnabled: true,
@@ -828,8 +828,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                   <p className="text-[10px] text-white/40 mb-3 leading-relaxed">
                     {role === "MENTOR"
                       ? (adminLoginMethod === "email"
-                          ? "Use this if you signed up yourself with your college email."
-                          : "Use the username & password your admin issued to you.")
+                          ? "Use the email & password you set up during your first login."
+                          : "First-time setup — use the temporary username & password your admin issued. You'll set up your email & password next.")
                       : (adminLoginMethod === "email"
                           ? "Main admin only — sign in with your registered email."
                           : "Sub-admins use the username & password issued by the main admin.")}

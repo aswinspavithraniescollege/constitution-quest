@@ -53,6 +53,20 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Mentor onboarding guard:
+    // Mentors created by an admin start as authMethod=LOCAL with temp username/password,
+    // used only to reach the onboarding screen where they set up their own email & password.
+    // Once a mentor has onboarded (authMethod=FIREBASE), username/password login is disabled
+    // and they must use the Email tab (Firebase email/password) instead.
+    if (user.role === "MENTOR" && user.authMethod === "FIREBASE") {
+      return NextResponse.json(
+        {
+          error: "Your account is already set up. Please use the Email tab to log in with your email & password.",
+        },
+        { status: 403 }
+      );
+    }
+
     await createSession(user.id);
     await logActivity(user.id, "login", "method=local");
     if (user.role === "STUDENT") {
