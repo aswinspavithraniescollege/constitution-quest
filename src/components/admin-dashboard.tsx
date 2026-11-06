@@ -6,8 +6,9 @@ import { toast } from "sonner";
 import {
   Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
-  Crown, Zap, Target, Brain, ChevronDown, Filter, RefreshCw, UserCog, KeyRound,
-  UserCheck, AlertCircle, Pencil, X
+  Crown, Zap, Target, Brain, ChevronDown, ChevronLeft, ChevronRight,
+  Filter, RefreshCw, UserCog, KeyRound,
+  UserCheck, AlertCircle, Pencil, X, Folder, FolderOpen, Flame
 } from "lucide-react";
 import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
 import { AnnouncementsManager } from "@/components/realtime/announcements";
@@ -108,7 +109,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-20">
         {/* College filter for relevant tabs — only main admin can filter; sub-admin is auto-scoped */}
-        {(tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && isMainAdmin && (
+        {(tab === "departments" || tab === "mentors" || tab === "exports") && isMainAdmin && (
           <div className="mb-5 flex items-center gap-3 flex-wrap">
             <Filter className="w-4 h-4 text-slate-400" />
             <span className="text-sm text-slate-500">Filter by college:</span>
@@ -122,7 +123,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
             </select>
           </div>
         )}
-        {isSubAdmin && (tab === "departments" || tab === "mentors" || tab === "students" || tab === "exports") && (
+        {isSubAdmin && (tab === "departments" || tab === "mentors" || tab === "exports") && (
           <div className="mb-5 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">
             <Shield className="w-4 h-4 inline mr-2" />
             You are scoped to <strong>{user.college?.name}</strong>. All data shown is for your assigned college only.
@@ -134,7 +135,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "sub-admins" && isMainAdmin && <SubAdminsTab />}
         {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
-        {tab === "students" && <StudentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
+        {tab === "students" && <StudentsTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
         {tab === "exports" && <ExportsTab collegeId={selectedCollegeId} />}
         {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
         {tab === "results" && <ResultsView user={user} apiBase="/api/admin/results" onExit={() => setTab("overview")} />}
@@ -862,49 +863,178 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
   );
 }
 
-// ============== STUDENTS ==============
-function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
-  const [students, setStudents] = useState<any[]>([]);
-  const [mentors, setMentors] = useState<any[]>([]);
+// ============== STUDENTS (folder-style drill-down) ==============
+function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
+  // Drill-down state
+  const [level, setLevel] = useState<"college" | "department" | "mentor" | "student" | "detail">(
+    isMainAdmin ? "college" : "department"
+  );
+  const [selectedCollege, setSelectedCollege] = useState<any>(isSubAdmin ? user.college : null);
+  const [selectedDepartment, setSelectedDepartment] = useState<any>(null);
+  const [selectedMentor, setSelectedMentor] = useState<any>(null);
+  const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [studentDetail, setStudentDetail] = useState<any>(null);
+
+  // List state for each level
+  const [collegesList, setCollegesList] = useState<any[]>(colleges);
   const [departments, setDepartments] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ username: "", password: "", name: "", collegeId: collegeId || colleges[0]?.id || "", departmentId: "", mentorId: "", email: "", phone: "", rollNumber: "" });
+  const [mentors, setMentors] = useState<any[]>([]);
+  const [students, setStudents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // Add student modal (only available at student level inside a mentor folder)
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [form, setForm] = useState({ username: "", password: "", name: "", email: "", phone: "", rollNumber: "" });
   const [submitting, setSubmitting] = useState(false);
+
+  // Edit student modal (preserved)
   const [editing, setEditing] = useState<any>(null);
   const [editLoading, setEditLoading] = useState(false);
   const [editDepartments, setEditDepartments] = useState<any[]>([]);
   const [editMentors, setEditMentors] = useState<any[]>([]);
 
-  const load = useCallback(async () => {
+  // Keep colleges list in sync with prop (main admin)
+  useEffect(() => { if (isMainAdmin) setCollegesList(colleges); }, [colleges, isMainAdmin]);
+
+  // Initial load: sub-admin starts at department level (auto-scoped to their college)
+  useEffect(() => {
+    if (isSubAdmin && user.collegeId) {
+      loadDepartments(user.collegeId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // === Loaders ===
+  async function loadDepartments(collegeId: string) {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (collegeId) params.set("collegeId", collegeId);
-      const res = await fetch(`/api/admin/students?${params}`);
+      const res = await fetch(`/api/admin/departments?collegeId=${collegeId}`);
+      const data = await res.json();
+      setDepartments(data.departments || []);
+    } finally { setLoading(false); }
+  }
+
+  async function loadMentors(collegeId: string) {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/mentors?collegeId=${collegeId}`);
+      const data = await res.json();
+      setMentors(data.mentors || []);
+    } finally { setLoading(false); }
+  }
+
+  async function loadStudents(mentorId: string) {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/students?mentorId=${mentorId}`);
       const data = await res.json();
       setStudents(data.students || []);
     } finally { setLoading(false); }
-  }, [collegeId]);
+  }
 
-  useEffect(() => { load(); }, [load]);
-  useEffect(() => { if (colleges.length > 0 && !form.collegeId) setForm(f => ({ ...f, collegeId: colleges[0].id })); }, [colleges, form.collegeId]);
+  async function loadStudentDetail(studentId: string) {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/results?studentId=${studentId}`);
+      const data = await res.json();
+      if (res.ok) setStudentDetail(data);
+    } finally { setLoading(false); }
+  }
 
-  useEffect(() => {
-    if (!form.collegeId) return;
-    (async () => {
-      const [dr, mr] = await Promise.all([
-        fetch(`/api/admin/departments?collegeId=${form.collegeId}`),
-        fetch(`/api/admin/mentors?collegeId=${form.collegeId}`),
-      ]);
-      const dd = await dr.json();
-      const md = await mr.json();
-      setDepartments(dd.departments || []);
-      setMentors(md.mentors || []);
-      setForm(f => ({ ...f, departmentId: "", mentorId: "" }));
-    })();
-  }, [form.collegeId]);
+  // === Navigation handlers ===
+  function selectCollege(c: any) {
+    setSelectedCollege(c);
+    setSelectedDepartment(null);
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+    setLevel("department");
+    loadDepartments(c.id);
+  }
 
-  // Load departments & mentors for edit modal when editing.collegeId changes
+  function selectDepartment(d: any) {
+    setSelectedDepartment(d);
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+    setLevel("mentor");
+    if (selectedCollege?.id) loadMentors(selectedCollege.id);
+  }
+
+  function selectMentor(m: any) {
+    setSelectedMentor(m);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+    setLevel("student");
+    loadStudents(m.id);
+  }
+
+  function selectStudent(s: any) {
+    setSelectedStudent(s);
+    setStudentDetail(null);
+    setLevel("detail");
+    loadStudentDetail(s.id);
+  }
+
+  function goToCollegeLevel() {
+    setLevel("college");
+    setSelectedDepartment(null);
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+  }
+
+  function goToDepartmentLevel() {
+    setLevel("department");
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+  }
+
+  function goToMentorLevel() {
+    setLevel("student");
+    setSelectedStudent(null);
+    setStudentDetail(null);
+  }
+
+  // === Refresh current level ===
+  function refresh() {
+    if (level === "detail" && selectedStudent) loadStudentDetail(selectedStudent.id);
+    else if (level === "student" && selectedMentor) loadStudents(selectedMentor.id);
+    else if (level === "mentor" && selectedCollege) loadMentors(selectedCollege.id);
+    else if (level === "department" && selectedCollege) loadDepartments(selectedCollege.id);
+  }
+
+  // === Add student (only available inside a mentor folder) ===
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.username || !form.password || !form.name) return;
+    if (!selectedCollege?.id || !selectedDepartment?.id) {
+      toast.error("College and department must be selected");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          collegeId: selectedCollege.id,
+          departmentId: selectedDepartment.id,
+          mentorId: selectedMentor?.id || "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Student created!");
+      setForm({ username: "", password: "", name: "", email: "", phone: "", rollNumber: "" });
+      setShowAddForm(false);
+      if (selectedMentor) loadStudents(selectedMentor.id);
+    } finally { setSubmitting(false); }
+  }
+
+  // === Edit student (preserved) ===
   useEffect(() => {
     if (!editing?.collegeId) return;
     (async () => {
@@ -918,24 +1048,6 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
       setEditMentors(md.mentors || []);
     })();
   }, [editing?.collegeId]);
-
-  async function add(e: React.FormEvent) {
-    e.preventDefault();
-    if (!form.username || !form.password || !form.name || !form.collegeId || !form.departmentId) return;
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/admin/students", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) { toast.error(data.error); return; }
-      toast.success("Student created!");
-      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, departmentId: "", mentorId: "", email: "", phone: "", rollNumber: "" });
-      load();
-    } finally { setSubmitting(false); }
-  }
 
   async function saveEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -961,7 +1073,7 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
       if (!res.ok) { toast.error(data.error); return; }
       toast.success("Student updated!");
       setEditing(null);
-      load();
+      if (selectedMentor) loadStudents(selectedMentor.id);
     } finally { setEditLoading(false); }
   }
 
@@ -971,114 +1083,280 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: s.id, active: !s.active }),
     });
-    if (res.ok) { toast.success(s.active ? "Deactivated" : "Activated"); load(); }
+    if (res.ok) {
+      toast.success(s.active ? "Deactivated" : "Activated");
+      if (selectedMentor) loadStudents(selectedMentor.id);
+    }
   }
 
   async function del(id: string) {
     if (!confirm("Delete this student and all their data?")) return;
     const res = await fetch(`/api/admin/students?id=${id}`, { method: "DELETE" });
-    if (res.ok) { toast.success("Deleted"); load(); }
+    if (res.ok) {
+      toast.success("Deleted");
+      if (selectedMentor) loadStudents(selectedMentor.id);
+    }
   }
 
+  // Filter mentors by selected department (mentors API only filters by collegeId)
+  const filteredMentors = selectedDepartment
+    ? mentors.filter(m => m.departmentId === selectedDepartment.id)
+    : mentors;
+
+  // === Breadcrumb ===
+  const breadcrumb = (
+    <div className="flex items-center gap-1 text-xs text-slate-500 mb-4 flex-wrap">
+      <button
+        onClick={() => (isMainAdmin ? goToCollegeLevel() : goToDepartmentLevel())}
+        className="hover:text-amber-600 font-bold text-slate-700"
+      >
+        <Users className="w-3.5 h-3.5 inline mr-1" />Students
+      </button>
+      {selectedCollege && level !== "college" && (
+        <>
+          <ChevronRight className="w-3 h-3" />
+          <button
+            onClick={isMainAdmin ? goToCollegeLevel : undefined}
+            className={`font-bold ${isMainAdmin ? "hover:text-amber-600 text-slate-700" : "text-slate-400 cursor-default"}`}
+          >
+            <Building2 className="w-3.5 h-3.5 inline mr-1" />
+            {selectedCollege.name}
+          </button>
+        </>
+      )}
+      {selectedDepartment && (level === "mentor" || level === "student" || level === "detail") && (
+        <>
+          <ChevronRight className="w-3 h-3" />
+          <button onClick={goToDepartmentLevel} className="hover:text-amber-600 font-bold text-slate-700">
+            <Layers className="w-3.5 h-3.5 inline mr-1" />
+            {selectedDepartment.name}
+          </button>
+        </>
+      )}
+      {selectedMentor && (level === "student" || level === "detail") && (
+        <>
+          <ChevronRight className="w-3 h-3" />
+          <button onClick={goToMentorLevel} className="hover:text-amber-600 font-bold text-slate-700">
+            <GraduationCap className="w-3.5 h-3.5 inline mr-1" />
+            {selectedMentor.name}
+          </button>
+        </>
+      )}
+      {selectedStudent && level === "detail" && studentDetail && (
+        <>
+          <ChevronRight className="w-3 h-3" />
+          <span className="font-bold text-amber-600">
+            <Users className="w-3.5 h-3.5 inline mr-1" />
+            {studentDetail.student.name}
+          </span>
+        </>
+      )}
+    </div>
+  );
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div>
-        <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32 max-h-[calc(100vh-160px)] overflow-y-auto cq-scroll">
-          <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-amber-500" /> Add Student</h3>
-          <form onSubmit={add} className="space-y-3">
-            <div>
-              <label className="text-xs font-bold text-slate-600">College</label>
-              <select value={form.collegeId} onChange={e => setForm(f => ({ ...f, collegeId: e.target.value }))} disabled={isSubAdmin} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm disabled:bg-slate-100 disabled:cursor-not-allowed">
-                {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Full Name</label>
-              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Roll Number</label>
-              <input value={form.rollNumber} onChange={e => setForm(f => ({ ...f, rollNumber: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES21CSE001" />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Username</label>
-              <input value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Password</label>
-              <input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Department</label>
-              <select value={form.departmentId} onChange={e => setForm(f => ({ ...f, departmentId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required>
-                <option value="">— Select —</option>
-                {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Mentor (optional)</label>
-              <select value={form.mentorId} onChange={e => setForm(f => ({ ...f, mentorId: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm">
-                <option value="">— None —</option>
-                {mentors.map(m => <option key={m.id} value={m.id}>{m.name} ({m.username})</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Email (optional)</label>
-              <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
-              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
-            </div>
-            <button type="submit" disabled={submitting} className="w-full py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
-              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Student</>}
-            </button>
-          </form>
+    <div>
+      {/* Top toolbar */}
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <h2 className="text-xl font-black flex items-center gap-2 text-slate-800">
+          <Users className="w-5 h-5 text-amber-500" /> Students
+        </h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={refresh}
+            className="px-3 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 transition"
+            title="Refresh current list"
+          >
+            <RefreshCw className="w-3.5 h-3.5" /> Refresh
+          </button>
         </div>
       </div>
 
-      <div className="lg:col-span-2">
-        <h3 className="font-bold mb-3">Students ({students.length})</h3>
-        {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
-          <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto cq-scroll pr-1">
-            {students.length === 0 ? <div className="text-center py-12 text-slate-400">No students yet</div> :
-              students.map(s => (
-                <div key={s.id} className={`rounded-xl bg-white border p-3 ${s.active ? "border-slate-200" : "border-red-200 bg-red-50"}`}>
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="font-bold flex items-center gap-2 flex-wrap">
-                        {s.name}
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username || s.email}</span>
-                        {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
-                        
-                      </div>
-                      <div className="text-xs text-slate-500 mt-0.5">
-                        {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
-                        {s.mentor && ` • Mentor: ${s.mentor.name}`}
-                      </div>
-                      <div className="flex gap-3 mt-2 text-xs flex-wrap">
-                        <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
-                        <span className="text-purple-600 font-bold">Lvl {s.level}</span>
-                        <span className="text-orange-600 font-bold">🔥{s.streak}</span>
-                        <span className="text-cyan-600 font-bold">📝{s._count.practiceAttempts}</span>
-                        <span className="text-emerald-600 font-bold">🎯{s._count.mockAttempts}</span>
-                        <span className="text-pink-600 font-bold">🏅{s._count.studentBadges}</span>
-                        <span className="text-slate-500 font-bold">🔑{s._count.activityLogs} logs</span>
-                      </div>
+      {breadcrumb}
+
+      {loading && (
+        <div className="flex justify-center py-12">
+          <Loader2 className="w-6 h-6 animate-spin text-amber-500" />
+        </div>
+      )}
+
+      {/* LEVEL 1A: College list (main admin root) */}
+      {!loading && level === "college" && isMainAdmin && (
+        <div className="space-y-2">
+          <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5">
+            <Folder className="w-4 h-4" /> Select a college to browse its students
+          </div>
+          {collegesList.length === 0 ? (
+            <div className="text-center py-12 text-slate-400">
+              <Building2 className="w-10 h-10 mx-auto mb-2 opacity-50" />
+              <p>No colleges yet. Add colleges in the Colleges tab first.</p>
+            </div>
+          ) : (
+            collegesList.map(c => (
+              <button
+                key={c.id}
+                onClick={() => selectCollege(c)}
+                className="w-full text-left rounded-xl bg-white border border-slate-200 p-4 hover:border-amber-300 hover:shadow-sm transition flex items-center gap-3"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white shrink-0">
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-base">{c.name}</div>
+                  <div className="text-xs text-slate-500">{c.location || "—"} • Code: {c.code}</div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-slate-300" />
+              </button>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* LEVEL 1B/2: Department list (main admin inside college, OR sub-admin root) */}
+      {!loading && level === "department" && (
+        <div className="space-y-2">
+          <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5">
+            <FolderOpen className="w-4 h-4" />
+            {isMainAdmin ? `Departments in ${selectedCollege?.name}` : `Departments in ${user.college?.name}`}
+          </div>
+          {departments.length === 0 ? (
+            <div className="text-center py-12 text-slate-400">
+              <Layers className="w-10 h-10 mx-auto mb-2 opacity-50" />
+              <p>No departments yet.</p>
+              <p className="text-xs mt-1">Add departments in the Departments tab first.</p>
+            </div>
+          ) : (
+            departments.map(d => (
+              <button
+                key={d.id}
+                onClick={() => selectDepartment(d)}
+                className="w-full text-left rounded-xl bg-white border border-slate-200 p-4 hover:border-blue-300 hover:shadow-sm transition flex items-center gap-3"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white shrink-0">
+                  <Layers className="w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-base flex items-center gap-2">
+                    {d.name}
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">{d.code}</span>
+                  </div>
+                  <div className="text-xs text-slate-500">{d._count?.users || 0} users</div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-slate-300" />
+              </button>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* LEVEL 2/3: Mentor list (filtered by selected department) */}
+      {!loading && level === "mentor" && (
+        <div className="space-y-2">
+          <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5">
+            <FolderOpen className="w-4 h-4" /> Mentors in {selectedDepartment?.name}
+          </div>
+          {filteredMentors.length === 0 ? (
+            <div className="text-center py-12 text-slate-400">
+              <GraduationCap className="w-10 h-10 mx-auto mb-2 opacity-50" />
+              <p>No mentors in this department.</p>
+              <p className="text-xs mt-1">Add mentors in the Mentors tab first.</p>
+            </div>
+          ) : (
+            filteredMentors.map(m => (
+              <button
+                key={m.id}
+                onClick={() => selectMentor(m)}
+                className="w-full text-left rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-300 hover:shadow-sm transition flex items-center gap-3"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shrink-0">
+                  <GraduationCap className="w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-base">{m.name}</div>
+                  <div className="text-xs text-slate-500">{m.department?.name || "No dept"} • {m._count?.students || 0} students</div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-slate-300" />
+              </button>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* LEVEL 3/4: Student list (inside mentor folder) — Add Student option here */}
+      {!loading && level === "student" && selectedMentor && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+            <div className="text-sm text-slate-500 flex items-center gap-1.5">
+              <FolderOpen className="w-4 h-4" /> Students under {selectedMentor.name}
+              <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold text-xs">{students.length}</span>
+            </div>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="px-3 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold flex items-center gap-1.5 hover:opacity-90 transition"
+            >
+              <Plus className="w-4 h-4" /> Add Student
+            </button>
+          </div>
+          {students.length === 0 ? (
+            <div className="text-center py-12 text-slate-400">
+              <Users className="w-10 h-10 mx-auto mb-2 opacity-50" />
+              <p>No students assigned to this mentor yet.</p>
+              <p className="text-xs mt-1">Click "Add Student" to create one.</p>
+            </div>
+          ) : (
+            students.map(s => (
+              <div key={s.id} className={`rounded-xl bg-white border p-3 ${s.active ? "border-slate-200" : "border-red-200 bg-red-50"}`}>
+                <div className="flex items-start justify-between gap-2">
+                  <button onClick={() => selectStudent(s)} className="min-w-0 flex-1 text-left">
+                    <div className="font-bold flex items-center gap-2 flex-wrap">
+                      {s.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username || s.email}</span>
+                      {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
                     </div>
-                    <div className="flex gap-1 shrink-0">
-                      <button onClick={() => setEditing({ ...s, newPassword: "" })} title="Edit student" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><Pencil className="w-4 h-4" /></button>
-                      <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
-                      <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
                     </div>
+                    <div className="flex gap-3 mt-2 text-xs flex-wrap">
+                      <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
+                      <span className="text-purple-600 font-bold">Lvl {s.level}</span>
+                      <span className="text-orange-600 font-bold">🔥{s.streak}</span>
+                      <span className="text-cyan-600 font-bold">📝{s._count.practiceAttempts}</span>
+                      <span className="text-emerald-600 font-bold">🎯{s._count.mockAttempts}</span>
+                      <span className="text-pink-600 font-bold">🏅{s._count.studentBadges}</span>
+                    </div>
+                  </button>
+                  <div className="flex gap-1 shrink-0">
+                    <button onClick={() => setEditing({ ...s, newPassword: "" })} title="Edit student" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
+                    <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
-              ))
-            }
-          </div>
-        }
-      </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
 
+      {/* LEVEL 4/5: Student detail results */}
+      {!loading && level === "detail" && studentDetail && (
+        <StudentDetailResults studentDetail={studentDetail} />
+      )}
+
+      {/* ADD STUDENT MODAL — only accessible from student list level inside a mentor folder */}
+      {showAddForm && selectedMentor && (
+        <AddStudentModal
+          form={form}
+          setForm={setForm}
+          submitting={submitting}
+          onClose={() => setShowAddForm(false)}
+          onSubmit={add}
+          collegeName={selectedCollege?.name}
+          departmentName={selectedDepartment?.name}
+          mentorName={selectedMentor?.name}
+        />
+      )}
+
+      {/* EDIT STUDENT MODAL (preserved) */}
       {editing && (
         <EditModal title="Edit Student" onClose={() => setEditing(null)} onSave={saveEdit} loading={editLoading}>
           <div>
@@ -1125,6 +1403,157 @@ function StudentsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         </EditModal>
       )}
+    </div>
+  );
+}
+
+// ============== STUDENT DETAIL RESULTS (deepest drill-down level) ==============
+function StudentDetailResults({ studentDetail }: { studentDetail: any }) {
+  return (
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+      {/* Student header */}
+      <div className="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-5 mb-4">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-xl">
+            {studentDetail.student.name.charAt(0)}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg">{studentDetail.student.name}</h3>
+            <div className="text-sm text-slate-600">{studentDetail.student.email} • {studentDetail.student.rollNumber}</div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              {studentDetail.student.college} • {studentDetail.student.department}
+              {studentDetail.student.mentor && ` • Mentor: ${studentDetail.student.mentor}`}
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-3 mt-4">
+          <div className="text-center p-2 rounded-lg bg-white/60"><Zap className="w-4 h-4 mx-auto text-amber-500 mb-1" /><div className="font-black">{studentDetail.student.xp}</div><div className="text-[10px] text-slate-500">XP</div></div>
+          <div className="text-center p-2 rounded-lg bg-white/60"><Crown className="w-4 h-4 mx-auto text-purple-500 mb-1" /><div className="font-black">Lvl {studentDetail.student.level}</div><div className="text-[10px] text-slate-500">Level</div></div>
+          <div className="text-center p-2 rounded-lg bg-white/60"><Flame className="w-4 h-4 mx-auto text-orange-500 mb-1" /><div className="font-black">{studentDetail.student.streak}</div><div className="text-[10px] text-slate-500">Streak</div></div>
+          <div className="text-center p-2 rounded-lg bg-white/60"><Target className="w-4 h-4 mx-auto text-cyan-500 mb-1" /><div className="font-black">{studentDetail.accuracy}%</div><div className="text-[10px] text-slate-500">Accuracy</div></div>
+        </div>
+      </div>
+
+      {/* Week-wise practice results */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-4 mb-4">
+        <h4 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Brain className="w-4 h-4 text-blue-500" /> Week-wise Practice Results</h4>
+        {studentDetail.weekStats.length === 0 ? <div className="text-sm text-slate-400 py-4 text-center">No practice attempts yet</div> :
+          <div className="space-y-2">
+            {studentDetail.weekStats.map((ws: any) => {
+              const pct = ws.attempted > 0 ? Math.round((ws.correct / ws.attempted) * 100) : 0;
+              return (
+                <div key={ws.weekNumber} className="flex items-center gap-3">
+                  <div className="w-20 text-xs font-bold shrink-0">Week {ws.weekNumber}</div>
+                  <div className="flex-1 h-6 rounded-full bg-slate-100 overflow-hidden relative">
+                    <div className={`h-full ${pct >= 75 ? "bg-emerald-500" : pct >= 50 ? "bg-amber-500" : "bg-red-400"}`} style={{ width: `${pct}%` }} />
+                    <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-700">{ws.correct}/{ws.attempted} ({pct}%)</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        }
+      </div>
+
+      {/* Mock test results */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-4 mb-4">
+        <h4 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Target className="w-4 h-4 text-amber-500" /> Mock Test Results</h4>
+        {studentDetail.mockAttempts.length === 0 ? <div className="text-sm text-slate-400 py-4 text-center">No mock tests attempted</div> :
+          <div className="space-y-2">
+            {studentDetail.mockAttempts.map((m: any) => (
+              <div key={m.id} className="flex items-center justify-between p-2 rounded-lg bg-slate-50">
+                <div>
+                  <div className="text-sm font-medium">{m.title}</div>
+                  {m.weekNumber && <div className="text-[10px] text-slate-500">Week {m.weekNumber}</div>}
+                  <div className="text-[10px] text-slate-400">{new Date(m.completedAt).toLocaleString()}</div>
+                </div>
+                <div className="text-right">
+                  <div className={`font-black ${m.percent >= 75 ? "text-emerald-600" : m.percent >= 50 ? "text-amber-600" : "text-red-500"}`}>{m.score}/{m.total}</div>
+                  <div className="text-xs text-slate-500">{m.percent}%</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        }
+      </div>
+
+      {/* Badges */}
+      <div className="rounded-2xl bg-white border border-slate-200 p-4">
+        <h4 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Award className="w-4 h-4 text-pink-500" /> Badges Earned ({studentDetail.badges.length})</h4>
+        {studentDetail.badges.length === 0 ? <div className="text-sm text-slate-400 py-4 text-center">No badges yet</div> :
+          <div className="flex flex-wrap gap-2">
+            {studentDetail.badges.map((b: any, i: number) => (
+              <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-50 border border-pink-200">
+                <span className="text-lg">{b.icon}</span>
+                <span className="text-xs font-bold">{b.name}</span>
+              </div>
+            ))}
+          </div>
+        }
+      </div>
+    </motion.div>
+  );
+}
+
+// ============== ADD STUDENT MODAL (inside mentor folder) ==============
+function AddStudentModal({ form, setForm, submitting, onClose, onSubmit, collegeName, departmentName, mentorName }: any) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl">
+          <h3 className="font-bold text-base flex items-center gap-2"><Plus className="w-4 h-4 text-amber-500" /> Add Student</h3>
+          <button onClick={onClose} className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <form onSubmit={onSubmit} className="p-4 space-y-3">
+          {/* Context summary - pre-selected from drill-down */}
+          <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs">
+            <div className="text-slate-500 mb-1 font-bold">Adding student to:</div>
+            <div className="flex items-center gap-1 flex-wrap text-slate-700">
+              <Building2 className="w-3 h-3" />{collegeName}
+              <ChevronRight className="w-3 h-3 text-slate-400" />
+              <Layers className="w-3 h-3" />{departmentName}
+              <ChevronRight className="w-3 h-3 text-slate-400" />
+              <GraduationCap className="w-3 h-3" />{mentorName}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-slate-600">Full Name</label>
+            <input value={form.name} onChange={e => setForm((f: any) => ({ ...f, name: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Roll Number</label>
+            <input value={form.rollNumber} onChange={e => setForm((f: any) => ({ ...f, rollNumber: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="e.g., IES21CSE001" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Username</label>
+            <input value={form.username} onChange={e => setForm((f: any) => ({ ...f, username: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Password</label>
+            <input value={form.password} onChange={e => setForm((f: any) => ({ ...f, password: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" required />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Email (optional)</label>
+            <input value={form.email} onChange={e => setForm((f: any) => ({ ...f, email: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" type="email" />
+          </div>
+          <div>
+            <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
+            <input value={form.phone} onChange={e => setForm((f: any) => ({ ...f, phone: e.target.value }))} className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50">
+              Cancel
+            </button>
+            <button type="submit" disabled={submitting} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Student</>}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
