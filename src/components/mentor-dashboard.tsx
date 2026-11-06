@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
-  TrendingUp, Activity, ChevronDown, ChevronUp, Eye, Crown,
+  TrendingUp, Activity, ChevronDown, ChevronUp, Eye, EyeOff, Crown,
   User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen,
   Trash2, AlertCircle, RefreshCw
 } from "lucide-react";
@@ -19,6 +19,9 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
   const [showProfile, setShowProfile] = useState(false);
   const [showMockTests, setShowMockTests] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  // Student management state
+  const [editingStudent, setEditingStudent] = useState<any | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -34,6 +37,36 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
   async function handleLogout() {
     await fetch("/api/auth", { method: "DELETE" });
     onLogout();
+  }
+
+  // Delete a student (only allowed if the student is in the mentor's department;
+  // the server enforces this, so we just pass the id).
+  async function handleDeleteStudent(student: any) {
+    if (!confirm(
+      `Delete ${student.name}?\n\nThis permanently removes the student and ALL their practice/mock history, XP, badges, and leaderboard entry. This cannot be undone.`
+    )) return;
+    setDeletingId(student.id);
+    try {
+      const res = await fetch(`/api/mentor/students?id=${student.id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to delete student");
+        return;
+      }
+      toast.success(`${student.name} has been removed.`);
+      // Collapse the row if it was expanded
+      if (expanded === student.id) setExpanded(null);
+      await load();
+    } catch (e) {
+      toast.error("Network error while deleting student");
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
+  async function handleStudentSaved() {
+    setEditingStudent(null);
+    await load();
   }
 
   // Compute aggregate stats
@@ -139,6 +172,10 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
                 student={s}
                 expanded={expanded === s.id}
                 onToggle={() => setExpanded(expanded === s.id ? null : s.id)}
+                mentorDepartmentId={user.departmentId}
+                onEdit={() => setEditingStudent(s)}
+                onDelete={() => handleDeleteStudent(s)}
+                deleting={deletingId === s.id}
               />
             ))}
           </div>
@@ -167,6 +204,17 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
       <AnimatePresence>
         {showProfile && (
           <MentorProfileModal user={user} onClose={() => setShowProfile(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Student Edit Modal */}
+      <AnimatePresence>
+        {editingStudent && (
+          <StudentEditModal
+            student={editingStudent}
+            onClose={() => setEditingStudent(null)}
+            onSaved={handleStudentSaved}
+          />
         )}
       </AnimatePresence>
     </div>
@@ -406,50 +454,80 @@ function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => 
   );
 }
 
-function StudentRow({ student: s, expanded, onToggle }: any) {
+function StudentRow({ student: s, expanded, onToggle, mentorDepartmentId, onEdit, onDelete, deleting }: any) {
+  // A mentor can only manage students in their own department. If the mentor has
+  // no department assigned, they can't manage anyone.
+  const canManage = !!mentorDepartmentId && s.departmentId === mentorDepartmentId;
   return (
     <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden">
-      <button
-        onClick={onToggle}
-        className="w-full p-4 flex items-center justify-between gap-3 hover:bg-slate-50 transition"
-      >
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-black shrink-0">
-            {s.name.charAt(0).toUpperCase()}
-          </div>
-          <div className="min-w-0 flex-1 text-left">
-            <div className="font-bold flex items-center gap-2 flex-wrap">
-              {s.name}
-              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username}</span>
-              {s.rollNumber && <span className="text-xs text-slate-500">{s.rollNumber}</span>}
+      <div className="flex items-stretch">
+        <button
+          onClick={onToggle}
+          className="flex-1 p-4 flex items-center justify-between gap-3 hover:bg-slate-50 transition text-left min-w-0"
+        >
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-black shrink-0">
+              {s.name.charAt(0).toUpperCase()}
             </div>
-            <div className="text-xs text-slate-500">{s.department?.name}</div>
+            <div className="min-w-0 flex-1">
+              <div className="font-bold flex items-center gap-2 flex-wrap">
+                {s.name}
+                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username}</span>
+                {s.rollNumber && <span className="text-xs text-slate-500">{s.rollNumber}</span>}
+                {!s.active && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-bold">Inactive</span>
+                )}
+              </div>
+              <div className="text-xs text-slate-500">{s.department?.name}</div>
+            </div>
           </div>
-        </div>
-        <div className="hidden sm:flex items-center gap-4 text-xs">
-          <div className="text-center">
-            <div className="font-black text-amber-600 flex items-center gap-1"><Zap className="w-3 h-3" />{s.xp}</div>
-            <div className="text-[10px] text-slate-500 uppercase">XP</div>
+          <div className="hidden sm:flex items-center gap-4 text-xs">
+            <div className="text-center">
+              <div className="font-black text-amber-600 flex items-center gap-1"><Zap className="w-3 h-3" />{s.xp}</div>
+              <div className="text-[10px] text-slate-500 uppercase">XP</div>
+            </div>
+            <div className="text-center">
+              <div className="font-black text-purple-600">Lvl {s.level}</div>
+              <div className="text-[10px] text-slate-500 uppercase">Level</div>
+            </div>
+            <div className="text-center">
+              <div className="font-black text-orange-600 flex items-center gap-1"><Flame className="w-3 h-3" />{s.streak}</div>
+              <div className="text-[10px] text-slate-500 uppercase">Streak</div>
+            </div>
+            <div className="text-center">
+              <div className="font-black text-cyan-600">{s._count.practiceAttempts}</div>
+              <div className="text-[10px] text-slate-500 uppercase">Practice</div>
+            </div>
+            <div className="text-center">
+              <div className="font-black text-emerald-600">{s._count.mockAttempts}</div>
+              <div className="text-[10px] text-slate-500 uppercase">Mocks</div>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="font-black text-purple-600">Lvl {s.level}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Level</div>
+          {expanded ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
+        </button>
+
+        {/* Manage buttons — only shown for students in the mentor's department */}
+        {canManage && (
+          <div className="flex items-center gap-1 pr-3 border-l border-slate-100">
+            <button
+              onClick={onEdit}
+              disabled={deleting}
+              title="Edit student"
+              className="p-2 rounded-lg text-slate-500 hover:bg-emerald-50 hover:text-emerald-700 transition disabled:opacity-50"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onDelete}
+              disabled={deleting}
+              title="Delete student"
+              className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600 transition disabled:opacity-50"
+            >
+              {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+            </button>
           </div>
-          <div className="text-center">
-            <div className="font-black text-orange-600 flex items-center gap-1"><Flame className="w-3 h-3" />{s.streak}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Streak</div>
-          </div>
-          <div className="text-center">
-            <div className="font-black text-cyan-600">{s._count.practiceAttempts}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Practice</div>
-          </div>
-          <div className="text-center">
-            <div className="font-black text-emerald-600">{s._count.mockAttempts}</div>
-            <div className="text-[10px] text-slate-500 uppercase">Mocks</div>
-          </div>
-        </div>
-        {expanded ? <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" /> : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
-      </button>
+        )}
+      </div>
 
       {expanded && (
         <motion.div
@@ -538,5 +616,199 @@ function StudentRow({ student: s, expanded, onToggle }: any) {
         </motion.div>
       )}
     </div>
+  );
+}
+
+// ============== STUDENT EDIT MODAL ==============
+// Lets a mentor edit a student in their own department. Limited fields only:
+// name, phone, roll number, active toggle, and password reset. Department /
+// mentor / email changes stay with the admin.
+function StudentEditModal({ student, onClose, onSaved }: { student: any; onClose: () => void; onSaved: () => void }) {
+  const [form, setForm] = useState({
+    name: student.name || "",
+    phone: student.phone || "",
+    rollNumber: student.rollNumber || "",
+    active: student.active !== false,
+    newPassword: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name.trim()) { toast.error("Name cannot be empty"); return; }
+    if (form.newPassword && form.newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters");
+      return;
+    }
+    setSaving(true);
+    try {
+      const body: any = {
+        id: student.id,
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        rollNumber: form.rollNumber.trim(),
+        active: form.active,
+      };
+      if (form.newPassword) body.password = form.newPassword;
+      const res = await fetch("/api/mentor/students", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to update student");
+        return;
+      }
+      toast.success(`${form.name} updated.`);
+      onSaved();
+    } catch (err) {
+      toast.error("Network error while saving");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl z-10">
+          <h3 className="font-bold text-base flex items-center gap-2">
+            <Pencil className="w-4 h-4 text-emerald-500" /> Edit Student
+          </h3>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <form onSubmit={save} className="p-4 space-y-4">
+          {/* Read-only identity */}
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1 text-xs">
+            <div className="flex items-center gap-2 text-slate-600">
+              <span className="text-slate-400">Username:</span>
+              <span className="font-mono font-medium text-slate-800">{student.username || "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <span className="text-slate-400">Department:</span>
+              <span className="font-medium text-slate-800">{student.department?.name || "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <span className="text-slate-400">Email:</span>
+              <span className="font-medium text-slate-800">{student.email || "—"}</span>
+            </div>
+            <p className="text-[10px] text-slate-400 pt-1">
+              Username, department, and email can only be changed by an admin.
+            </p>
+          </div>
+
+          {/* Editable fields */}
+          <div>
+            <label className="block text-xs font-bold text-slate-600 mb-1">Full Name</label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-600 mb-1">Roll Number</label>
+            <input
+              type="text"
+              value={form.rollNumber}
+              onChange={e => setForm(f => ({ ...f, rollNumber: e.target.value }))}
+              placeholder="KTU register number"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-600 mb-1">Phone</label>
+            <input
+              type="tel"
+              value={form.phone}
+              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+              placeholder="Optional"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+            />
+          </div>
+
+          {/* Active toggle */}
+          <label className="flex items-center justify-between p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50">
+            <div>
+              <div className="text-sm font-bold text-slate-700">Account Active</div>
+              <div className="text-[11px] text-slate-500">Inactive students cannot log in.</div>
+            </div>
+            <input
+              type="checkbox"
+              checked={form.active}
+              onChange={e => setForm(f => ({ ...f, active: e.target.checked }))}
+              className="w-5 h-5 accent-emerald-500"
+            />
+          </label>
+
+          {/* Password reset */}
+          <div>
+            <label className="block text-xs font-bold text-slate-600 mb-1">Reset Password <span className="text-slate-400 font-normal">(leave blank to keep current)</span></label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={form.newPassword}
+                onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))}
+                placeholder="Min 6 characters"
+                className="w-full px-3 py-2 pr-10 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(s => !s)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {form.newPassword && (
+              <p className="text-[10px] text-amber-600 mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                Only students who log in with a username/password will use this. Students who log in via email use Firebase.
+              </p>
+            )}
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="flex-1 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" /> Save</>}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
   );
 }
