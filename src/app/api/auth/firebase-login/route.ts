@@ -51,13 +51,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!user) {
-      return NextResponse.json(
-        {
-          error:
-            "No account found for this email. Please sign up first, or contact your college admin if you believe this is an error.",
-        },
-        { status: 404 }
-      );
+      return NextResponse.json({
+        error: "No account found for this email. Your email is registered but your profile is incomplete. Please sign up to complete your registration, or contact your admin.",
+      }, { status: 404 });
     }
 
     if (!user.active) {

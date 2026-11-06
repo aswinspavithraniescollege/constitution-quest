@@ -5,87 +5,36 @@ import { verifyIdToken } from "@/lib/firebase-admin";
 import { logActivity, updateStreak, awardXp, XP_REWARDS } from "@/lib/gamify";
 
 // POST /api/auth/signup
-// Body: {
-//   idToken,            // Firebase ID token from client
-//   email,              // email used for Firebase signup
-//   role,               // STUDENT | MENTOR
-//   name,
-//   collegeId,
-//   departmentId,
-//   mentorId?,          // required for STUDENT
-//   rollNumber?,        // KTU register number, required for STUDENT
-//   phone?,
-// }
-//
-// Verifies the Firebase ID token, then creates a User record in our DB linked to the Firebase UID.
+// Body: { idToken, email, role, name, collegeId, departmentId, mentorId?, rollNumber?, phone? }
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const {
-      idToken,
-      email,
-      role,
-      name,
-      collegeId,
-      departmentId,
-      mentorCode,  // Changed from mentorId to mentorCode
-      rollNumber,
-      phone,
-    } = body;
+    const { idToken, email, role, name, collegeId, departmentId, mentorId, rollNumber, phone } = body;
 
     // Validate required fields
     if (!idToken || !email || !role || !name || !collegeId || !departmentId) {
-      return NextResponse.json(
-        { error: "Missing required fields. Please fill in all required fields." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required fields. Please fill in all required fields." }, { status: 400 });
     }
-    // Only students can self-register (mentors are created by admin only)
     if (role !== "STUDENT") {
-      return NextResponse.json(
-        { error: "Only students can self-register. Mentors are created by the admin." },
-        { status: 400 }
-      );
-    }
-    if (!mentorCode || !mentorCode.trim()) {
-      return NextResponse.json(
-        { error: "Mentor Code is required. Please enter the code given by your mentor or admin." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Only students can self-register. Mentors are created by the admin." }, { status: 400 });
     }
     if (!rollNumber) {
-      return NextResponse.json(
-        { error: "KTU register number is required for students." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "KTU register number is required for students." }, { status: 400 });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: "Please enter a valid email address." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
 
-    // Verify the Firebase ID token (this confirms the user actually signed up in Firebase)
+    // Verify the Firebase ID token
     const fbUser = await verifyIdToken(idToken);
     if (!fbUser) {
-      return NextResponse.json(
-        { error: "Firebase authentication failed. Please try signing up again." },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Authentication failed. Please try signing up again." }, { status: 401 });
     }
     if (fbUser.email.toLowerCase() !== email.toLowerCase()) {
-      return NextResponse.json(
-        { error: "Email mismatch. The Firebase account email does not match the submitted email." },
-        { status: 400 }
-      );
-    }
-    if (!fbUser.emailVerified) {
-      // We allow non-verified emails for now — Firebase has already created the account.
-      // In production, you'd want to enforce email verification before allowing signups.
+      return NextResponse.json({ error: "Email mismatch. Please try signing up again." }, { status: 400 });
     }
 
     // Verify the college exists
@@ -95,37 +44,23 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify department belongs to the college
-    const dept = await db.department.findUnique({
-      where: { id: departmentId },
-    });
+    const dept = await db.department.findUnique({ where: { id: departmentId } });
     if (!dept || dept.collegeId !== collegeId) {
-      return NextResponse.json(
-        { error: "Selected department is not part of the chosen college." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Selected department is not part of the chosen college." }, { status: 400 });
     }
 
-    // Verify mentor by mentorCode — must be in same college
+    // Verify mentor by mentorId (from dropdown) — must be in same college
     let mentor = null;
-    if (mentorCode) {
-      mentor = await db.user.findUnique({ where: { mentorCode: mentorCode.trim().toUpperCase() } });
+    if (mentorId) {
+      mentor = await db.user.findUnique({ where: { id: mentorId } });
       if (!mentor || mentor.role !== "MENTOR") {
-        return NextResponse.json(
-          { error: "Invalid Mentor Code. Please check the code and try again." },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Selected mentor does not exist." }, { status: 400 });
       }
       if (mentor.collegeId !== collegeId) {
-        return NextResponse.json(
-          { error: "This Mentor Code does not belong to your selected college. Please check your college selection." },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Selected mentor does not belong to your college." }, { status: 400 });
       }
       if (!mentor.active) {
-        return NextResponse.json(
-          { error: "This mentor account is inactive. Please contact your admin." },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "This mentor account is inactive. Please contact your admin." }, { status: 400 });
       }
     }
 
@@ -138,16 +73,28 @@ export async function POST(req: NextRequest) {
         ],
       },
     });
+
     if (existing) {
-      return NextResponse.json(
-        {
-          error:
-            existing.firebaseUid === fbUser.localId
-              ? "An account with this Firebase login already exists. Please sign in instead."
-              : "An account with this email already exists. Please sign in instead.",
-        },
-        { status: 409 }
-      );
+      // If the Firebase account exists but DB record is incomplete, update it instead of failing
+      if (existing.firebaseUid === fbUser.localId) {
+        // Update the existing record with any missing info
+        const updated = await db.user.update({
+          where: { id: existing.id },
+          data: {
+            name: name || existing.name,
+            collegeId: collegeId,
+            departmentId,
+            mentorId: mentor?.id || existing.mentorId,
+            rollNumber: rollNumber || existing.rollNumber,
+            phone: phone || existing.phone,
+          },
+          include: { college: true, department: true, mentor: true },
+        });
+        await createSession(updated.id);
+        const { password: _, ...safeUser } = updated;
+        return NextResponse.json({ user: safeUser });
+      }
+      return NextResponse.json({ error: "An account with this email already exists. Please sign in instead." }, { status: 409 });
     }
 
     // Create the User record
@@ -167,7 +114,7 @@ export async function POST(req: NextRequest) {
       include: { college: true, department: true, mentor: true },
     });
 
-    // Create session (cookie-based) so subsequent requests authenticate
+    // Create session
     await createSession(user.id);
     await logActivity(user.id, "signup", `role=${role};college=${college.code};dept=${dept.code}`);
     if (user.role === "STUDENT") {
@@ -179,9 +126,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ user: safeUser });
   } catch (e) {
     console.error("Signup error:", e);
-    return NextResponse.json(
-      { error: "Sign up failed due to a server error. Please try again." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Sign up failed due to a server error. Please try again." }, { status: 500 });
   }
 }
