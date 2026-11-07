@@ -1,18 +1,16 @@
 // ============================================================
-// Chat library — real-time chat via Firestore with 24h auto-deletion.
+// Chat library — real-time chat via Firestore with MIDNIGHT reset.
+//
+// Messages are deleted/reset at midnight every day. All messages
+// from before today's midnight are filtered out and cleaned up.
 //
 // Chat scopes (chatId encodes the scope):
-//   "global"              — global chat (all colleges)
-//   "college:{collegeId}" — college-wide chat
-//   "dept:{departmentId}" — department chat (students + mentor)
-//   "mentor:{collegeId}"  — mentors-only chat for a college
-//
-// Messages auto-delete after 24 hours (CHAT_TTL_MS). The cleanup runs:
-//   1. Client-side: messages older than 24h are filtered out of display.
-//   2. On subscribe: a best-effort cleanup deletes old messages from Firestore.
-//
-// Visibility is controlled by Setting rows (chatvis:*) — see the API endpoints
-// /api/chat/config, /api/admin/chat-settings, /api/mentor/chat-settings.
+//   "global"                       — global chat
+//   "college:{collegeId}"          — college-wide chat
+//   "dept:{departmentId}"          — department chat (students + mentor)
+//   "dept-students:{departmentId}" — students-only (no mentor)
+//   "mentor:{collegeId}"           — mentors-only chat
+//   "dm:{userIdA}_{userIdB}"       — private 1:1 (userIds sorted)
 // ============================================================
 
 import {
@@ -25,7 +23,6 @@ import {
   limit,
   onSnapshot,
   serverTimestamp,
-  Timestamp,
   getDocs,
   where,
 } from "firebase/firestore";
@@ -42,8 +39,12 @@ export type ChatMessage = {
   createdAt: any; // Firestore timestamp
 };
 
-// Messages auto-delete after 24 hours.
-const CHAT_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+// Get today's midnight (00:00:00 of the current day in local time).
+// All messages from before this time are considered "old" and deleted.
+function getTodayMidnight(): Date {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+}
 
 // Build the chatId for a given scope.
 export function chatIdFor(scope: "global" | "college" | "dept" | "dept-students" | "mentor" | "dm", id?: string | null, id2?: string | null): string {
@@ -54,8 +55,6 @@ export function chatIdFor(scope: "global" | "college" | "dept" | "dept-students"
     case "dept-students": return `dept-students:${id}`;
     case "mentor": return `mentor:${id}`;
     case "dm": {
-      // For DMs, sort the two userIds alphabetically so the chatId is the same
-      // regardless of who initiated. Format: "dm:{userIdA}_{userIdB}"
       if (!id || !id2) return "";
       const [a, b] = [id, id2].sort();
       return `dm:${a}_${b}`;
@@ -64,7 +63,7 @@ export function chatIdFor(scope: "global" | "college" | "dept" | "dept-students"
 }
 
 // Subscribe to a chat (real-time). Returns an unsubscribe function.
-// Also runs a best-effort cleanup of messages older than 24h.
+// Also runs a best-effort cleanup of messages from before today's midnight.
 export function subscribeToChat(
   chatId: string,
   callback: (messages: ChatMessage[]) => void,
@@ -72,25 +71,24 @@ export function subscribeToChat(
 ): () => void {
   if (!db) { callback([]); return () => {}; }
   try {
-    const cutoff = new Date(Date.now() - CHAT_TTL_MS);
+    const midnight = getTodayMidnight();
     const q = query(
       collection(db, "chats", chatId, "messages"),
       orderBy("createdAt", "desc"),
       limit(maxMessages)
     );
 
-    // Best-effort cleanup: delete messages older than 24h.
-    // Runs once on subscribe (not on every snapshot).
+    // Best-effort cleanup: delete messages from before today's midnight.
     cleanupOldMessages(chatId).catch(() => {});
 
     return onSnapshot(q, (snapshot) => {
       const messages: ChatMessage[] = [];
-      const now = Date.now();
+      const midnightMs = midnight.getTime();
       snapshot.forEach((doc) => {
         const d = doc.data() as any;
-        // Client-side TTL filter: skip messages older than 24h.
+        // Client-side filter: only show messages from today (after midnight).
         const created = d.createdAt?.toMillis?.() || d.createdAt?.seconds * 1000 || 0;
-        if (created > 0 && now - created > CHAT_TTL_MS) return; // skip old
+        if (created > 0 && created < midnightMs) return; // skip messages from before midnight
         messages.push({
           id: doc.id,
           userId: d.userId,
@@ -128,7 +126,7 @@ export async function sendChatMessage(
       userId: msg.userId,
       userName: msg.userName,
       userRole: msg.userRole,
-      text: msg.text.trim().slice(0, 1000), // cap at 1000 chars
+      text: msg.text.trim().slice(0, 1000),
       collegeCode: msg.collegeCode || "",
       deptCode: msg.deptCode || "",
       createdAt: serverTimestamp(),
@@ -150,24 +148,68 @@ export async function deleteChatMessage(chatId: string, messageId: string): Prom
   }
 }
 
-// Best-effort cleanup: delete messages older than 24h from a chat.
+// Best-effort cleanup: delete messages from before today's midnight.
 // Called on subscribe. Non-blocking — errors are swallowed.
 async function cleanupOldMessages(chatId: string): Promise<void> {
   if (!db) return;
   try {
-    const cutoff = new Date(Date.now() - CHAT_TTL_MS);
-    // Query for old messages. Note: Firestore requires a composite index for
-    // this query, but orderBy("createdAt") + where("createdAt", "<", cutoff)
-    // should work without one if we use just the where clause.
+    const midnight = getTodayMidnight();
     const q = query(
       collection(db, "chats", chatId, "messages"),
-      where("createdAt", "<", cutoff)
+      where("createdAt", "<", midnight)
     );
     const snap = await getDocs(q);
     const deletes = snap.docs.map(d => deleteDoc(d.ref).catch(() => {}));
     await Promise.all(deletes);
   } catch (e) {
-    // Non-fatal — old messages just won't be cleaned up this round.
-    // They're filtered client-side anyway.
+    // Non-fatal — old messages are filtered client-side anyway.
+  }
+}
+
+// ============================================================
+// UNREAD MESSAGE COUNTS — for notification badges
+// ============================================================
+
+// Get the last-read timestamp for a chat from localStorage.
+// Returns 0 if never read (all today's messages are "unread").
+export function getLastReadAt(chatId: string): number {
+  if (typeof window === "undefined") return 0;
+  const val = localStorage.getItem(`chatRead:${chatId}`);
+  return val ? parseInt(val, 10) : 0;
+}
+
+// Mark a chat as read (store current timestamp in localStorage).
+export function markChatAsRead(chatId: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(`chatRead:${chatId}`, String(Date.now()));
+}
+
+// Count unread messages in a chat (messages from other users, sent after
+// lastReadAt and after today's midnight). One-time query (not real-time).
+export async function getUnreadCount(
+  chatId: string,
+  currentUserId: string
+): Promise<number> {
+  if (!db) return 0;
+  try {
+    const lastRead = getLastReadAt(chatId);
+    const midnight = getTodayMidnight();
+    // The cutoff is the later of: lastReadAt and today's midnight
+    const cutoff = new Date(Math.max(lastRead, midnight.getTime()));
+    const q = query(
+      collection(db, "chats", chatId, "messages"),
+      where("createdAt", ">", cutoff)
+    );
+    const snap = await getDocs(q);
+    let count = 0;
+    snap.forEach((doc) => {
+      const d = doc.data() as any;
+      // Only count messages from OTHER users (not our own)
+      if (d.userId !== currentUserId) count++;
+    });
+    return count;
+  } catch (e) {
+    console.error("getUnreadCount error:", e);
+    return 0;
   }
 }

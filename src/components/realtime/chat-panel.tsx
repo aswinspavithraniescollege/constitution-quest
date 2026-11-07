@@ -38,17 +38,33 @@ export function ChatPanel({ chatId, chatType, label, user }: {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const prevMessageCountRef = useRef(0);
   const Icon = CHAT_TYPE_ICONS[chatType] || MessageCircle;
 
   // Subscribe to real-time messages.
   useEffect(() => {
     setLoading(true);
+    prevMessageCountRef.current = 0; // reset on chat change
     const unsub = subscribeToChat(chatId, (data) => {
+      // Detect new messages from OTHER users → show a toast notification
+      if (prevMessageCountRef.current > 0 && data.length > prevMessageCountRef.current) {
+        const newMessages = data.slice(prevMessageCountRef.current);
+        for (const msg of newMessages) {
+          if (msg.userId !== user.id) {
+            toast(`💬 New message from ${msg.userName}`, {
+              description: msg.text.slice(0, 80) + (msg.text.length > 80 ? "..." : ""),
+              duration: 4000,
+            });
+            break; // only show one toast per batch
+          }
+        }
+      }
+      prevMessageCountRef.current = data.length;
       setMessages(data);
       setLoading(false);
     });
     return () => { unsub(); };
-  }, [chatId]);
+  }, [chatId, user.id]);
 
   // Auto-scroll to bottom when new messages arrive.
   useEffect(() => {
@@ -115,7 +131,7 @@ export function ChatPanel({ chatId, chatType, label, user }: {
           <div className="text-center py-12 text-white/40">
             <MessageCircle className="w-10 h-10 mx-auto mb-2 opacity-30" />
             <p className="text-sm">No messages yet. Start the conversation!</p>
-            <p className="text-[10px] mt-1 opacity-60">Messages auto-delete after 24 hours.</p>
+            <p className="text-[10px] mt-1 opacity-60">Messages reset at midnight daily.</p>
           </div>
         ) : (
           <AnimatePresence initial={false}>
@@ -179,7 +195,7 @@ export function ChatPanel({ chatId, chatType, label, user }: {
         </button>
       </form>
       <p className="text-[10px] text-white/30 mt-2 text-center">
-        Messages auto-delete after 24 hours · Be respectful · Your name and role are visible to others
+        Messages reset at midnight daily · Be respectful · Your name and role are visible to others
       </p>
     </div>
   );
