@@ -698,13 +698,12 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         )}
       </div>
 
-      {/* Department-level toggles */}
+      {/* Department-level toggles — Dept LB only (College LB is college-wide, controlled above) */}
       <div className="rounded-2xl bg-white border border-slate-200 p-5">
         <h3 className="font-bold mb-1 flex items-center gap-2"><Layers className="w-4 h-4 text-blue-500" /> Department Leaderboards</h3>
         <p className="text-xs text-slate-500 mb-4">
-          Each department has TWO toggles:
-          <span className="font-bold text-blue-600"> Dept LB</span> = the &ldquo;My Department&rdquo; tab for that department&apos;s students;
-          <span className="font-bold text-purple-600"> College LB</span> = whether that department&apos;s students can see the &ldquo;My College&rdquo; tab.
+          Each department has a <span className="font-bold text-blue-600">Dept LB</span> toggle that controls the &ldquo;My Department&rdquo; tab for that department&apos;s students.
+          The <span className="font-bold text-purple-600">College LB</span> is a college-wide toggle controlled in the section above (shared with mentors).
           Mentors can also toggle their OWN department from their profile modal.
         </p>
         {departments.length === 0 ? (
@@ -713,7 +712,6 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
           <div className="space-y-2">
             {departments.map((d: any) => {
               const deptLbOn = deptVis[d.id] !== false;
-              const collegeLbForDeptOn = collegeForDeptVis[d.id] !== false;
               return (
                 <div key={d.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 gap-3">
                   <div className="min-w-0 flex-1">
@@ -726,7 +724,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    {/* Department LB toggle */}
+                    {/* Department LB toggle only — College LB is college-wide */}
                     <button
                       onClick={() => toggleDept(d.id)}
                       disabled={togglingId === `dept-${d.id}`}
@@ -734,17 +732,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                       className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${deptLbOn ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
                     >
                       {togglingId === `dept-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Layers className="w-3 h-3" />}
-                      Dept LB
-                    </button>
-                    {/* College LB for this dept toggle */}
-                    <button
-                      onClick={() => toggleCollegeForDept(d.id)}
-                      disabled={togglingId === `cfd-${d.id}`}
-                      title={collegeLbForDeptOn ? "College leaderboard visible to this dept's students — click to HIDE" : "College leaderboard hidden from this dept's students — click to SHOW"}
-                      className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${collegeLbForDeptOn ? "bg-purple-50 border-purple-300 text-purple-700 hover:bg-purple-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
-                    >
-                      {togglingId === `cfd-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Building2 className="w-3 h-3" />}
-                      College LB
+                      Dept LB {deptLbOn ? "ON" : "OFF"}
                     </button>
                   </div>
                 </div>
