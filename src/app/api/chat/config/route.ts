@@ -3,6 +3,10 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 
+// Force dynamic — never cache this response. The Student Preview polls
+// this endpoint every 5 seconds and must always get fresh settings.
+export const dynamic = 'force-dynamic';
+
 // GET /api/chat/config
 // Returns which chat channels the current user can see, along with their
 // visibility flags. The student/mentor/admin dashboard uses this to render

@@ -3,6 +3,10 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 
+// Force dynamic — never cache this response. The Student Preview polls
+// this endpoint every 5 seconds and must always get fresh settings.
+export const dynamic = 'force-dynamic';
+
 // GET /api/student/leaderboard-config
 // Returns everything the student leaderboard UI needs to render correctly:
 //   - collegeLeaderboardVisible: bool   (controlled by main/sub admin)
