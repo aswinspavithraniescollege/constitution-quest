@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
@@ -103,6 +103,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   // would fail with "email-already-in-use").
   const [pendingGoogleEmail, setPendingGoogleEmail] = useState<string | null>(null);
 
+  // Ref flag: when true, the next [role, mode] reset effect is skipped.
+  // Used to preserve the Google email + pendingGoogleEmail when switching to
+  // signup mode after an incomplete Google login. Without this, the reset
+  // effect would immediately clear the email we just set, and the user would
+  // see an empty form (and hit the "email already in use" error again).
+  const skipNextReset = useRef(false);
+
   // Signup form state
   const [colleges, setColleges] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
@@ -118,6 +125,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
 
   // Reset state when role or mode changes
   useEffect(() => {
+    // Skip the reset if we just switched to signup mode due to a Google login.
+    // This preserves the email + pendingGoogleEmail so the signup form can
+    // reuse the existing Firebase session.
+    if (skipNextReset.current) {
+      skipNextReset.current = false;
+      return;
+    }
     setUsername("");
     setEmail("");
     setPassword("");
@@ -556,6 +570,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
           toast.info("Complete your registration", {
             description: "Your Google account is registered but profile is incomplete. Please fill in the form below to complete your account.",
           });
+          // Set the skip flag so the [role, mode] reset effect doesn't wipe
+          // out the email + pendingGoogleEmail we're about to set.
+          skipNextReset.current = true;
           setMode("signup");
           setRole("STUDENT");
           // Remember the Google email so handleSignup can reuse the session
