@@ -847,6 +847,71 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               </div>
             </div>
 
+            {/* DUPLICATE MINI PREVIEW — near chat toggles so it's visible while scrolling */}
+            <div className="pt-3 border-t border-slate-200">
+              <div className="rounded-xl overflow-hidden border-2 border-slate-300">
+                <div className="bg-slate-200 px-3 py-1.5 flex items-center gap-1.5">
+                  <Eye className="w-3.5 h-3.5 text-slate-500" />
+                  <span className="font-bold text-slate-600 text-xs">Student Preview</span>
+                  <span className="text-[9px] text-slate-400 ml-auto">↑ Updates as you toggle ↑</span>
+                </div>
+                <div className="p-3" style={{ backgroundColor: "#0f172a" }}>
+                  {/* Mini nav buttons */}
+                  <div className="grid grid-cols-4 gap-1.5">
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-purple-500/20 border border-purple-400/30"><Home className="w-3 h-3 text-purple-300" /><span className="text-[7px] text-white/70 font-bold">Home</span></div>
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-blue-500/20 border border-blue-400/30"><Brain className="w-3 h-3 text-blue-300" /><span className="text-[7px] text-white/70 font-bold">Practice</span></div>
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-amber-500/20 border border-amber-400/30"><Target className="w-3 h-3 text-amber-300" /><span className="text-[7px] text-white/70 font-bold">Mock</span></div>
+                    <div className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg border transition ${(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? "bg-yellow-500/20 border-yellow-400/30" : "bg-white/5 border-white/10 opacity-30"}`}><Crown className={`w-3 h-3 ${(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? "text-yellow-300" : "text-white/30"}`} /><span className={`text-[7px] font-bold ${(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? "text-white/70" : "text-white/30"}`}>Leaderboard</span></div>
+                  </div>
+                  <div className="grid grid-cols-4 gap-1.5 mt-1.5">
+                    <div className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg border transition ${(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || globalChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? "bg-cyan-500/20 border-cyan-400/30" : "bg-white/5 border-white/10 opacity-30"}`}><MessageCircle className={`w-3 h-3 ${(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || globalChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? "text-cyan-300" : "text-white/30"}`} /><span className={`text-[7px] font-bold ${(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || globalChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? "text-white/70" : "text-white/30"}`}>Chat</span></div>
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400/30"><MessageCircle className="w-3 h-3 text-cyan-300" /><span className="text-[7px] text-white/70 font-bold">Forum</span></div>
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-amber-500/20 border border-amber-400/30"><Bookmark className="w-3 h-3 text-amber-300" /><span className="text-[7px] text-white/70 font-bold">Notes</span></div>
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-green-500/20 border border-green-400/30"><Award className="w-3 h-3 text-green-300" /><span className="text-[7px] text-white/70 font-bold">Badges</span></div>
+                  </div>
+                  {/* Dummy LB preview */}
+                  <div className="mt-2 pt-2 border-t border-white/10">
+                    <div className="text-[8px] text-white/40 font-bold mb-1 flex items-center gap-1"><Crown className="w-2.5 h-2.5" /> Leaderboard</div>
+                    {(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? (
+                      <div className="space-y-1">
+                        {[{ name: "Aswin", xp: 850, lvl: 5 }, { name: "Angela", xp: 720, lvl: 4 }, { name: "You", xp: 450, lvl: 3, you: true }, { name: "Rahul", xp: 300, lvl: 2 }].map((e, i) => (
+                          <div key={i} className={`flex items-center gap-1.5 p-1 rounded ${e.you ? "bg-purple-500/20 border border-purple-400/30" : "bg-white/5"}`}>
+                            <span className={`text-[7px] font-black w-3 text-center ${i === 0 ? "text-amber-400" : "text-white/50"}`}>{i + 1}</span>
+                            <span className="text-[7px] text-white/80 truncate flex-1">{e.name}{e.you && " (YOU)"}</span>
+                            <span className="text-[7px] text-amber-300 font-bold">{e.xp} XP</span>
+                            <span className="text-[7px] text-white/40">L{e.lvl}</span>
+                          </div>
+                        ))}
+                        <div className="flex gap-1 mt-1">
+                          {deptLbVisible !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/20">My Dept</span>}
+                          {collegeLbForDeptVisible !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-400/20">My College</span>}
+                        </div>
+                      </div>
+                    ) : (<div className="text-center py-1"><span className="text-[7px] text-white/30">Leaderboard is disabled</span></div>)}
+                  </div>
+                  {/* Dummy Chat preview */}
+                  <div className="mt-2 pt-2 border-t border-white/10">
+                    <div className="text-[8px] text-white/40 font-bold mb-1 flex items-center gap-1"><MessageCircle className="w-2.5 h-2.5" /> Chat</div>
+                    {(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || globalChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? (
+                      <div className="space-y-1">
+                        <div className="p-1 rounded bg-white/5"><div className="flex items-center gap-1"><span className="text-[7px] font-bold text-white/80">Aswin (Mentor)</span><span className="text-[5px] px-1 rounded bg-emerald-500/20 text-emerald-300">MENTOR</span></div><p className="text-[7px] text-white/70">Welcome! 👋</p></div>
+                        <div className="p-1 rounded bg-white/5"><div className="flex items-center gap-1"><span className="text-[7px] font-bold text-white/80">Angela</span><span className="text-[5px] px-1 rounded bg-amber-500/20 text-amber-300">STUDENT</span></div><p className="text-[7px] text-white/70">Hi sir! 😊</p></div>
+                        <div className="flex gap-1 flex-wrap mt-1">
+                          {deptChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/20">Dept</span>}
+                          {deptStudentsChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/20">Students</span>}
+                          {dmChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-400/20">DM</span>}
+                          {globalChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/20">Global</span>}
+                          {collegeChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-400/20">College</span>}
+                          {mentorChatOn !== false && <span className="text-[6px] px-1 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/20">Mentor</span>}
+                        </div>
+                        <div className="flex gap-1 mt-1"><div className="flex-1 px-2 py-1 rounded bg-white/5 border border-white/10 text-[7px] text-white/30">Type a message...</div><div className="px-2 py-1 rounded bg-cyan-500 text-white flex items-center"><Send className="w-2 h-2" /></div></div>
+                      </div>
+                    ) : (<div className="text-center py-1"><span className="text-[7px] text-white/30">All chats are disabled</span></div>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="flex gap-2 pt-2">
               <button type="button" onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50">
                 Close
