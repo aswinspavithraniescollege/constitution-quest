@@ -22,27 +22,33 @@ export async function GET() {
     });
   }
   let deptVisible = true;
-  let collegeForDeptVisible = true;
+  let collegeVisible = true;
   let collegeLocked = false;
   try {
+    // The college LB toggle is SHARED — both admin and mentor write to
+    // lbvis:college:{collegeId}. The admin's lock is a separate key.
     const map = await getSettings([
       `lbvis:dept:${user.departmentId}`,
-      `lbvis:college-for-dept:${user.departmentId}`,
-      ...(user.collegeId ? [`lbvis:college-locked:${user.collegeId}`] : []),
+      ...(user.collegeId ? [
+        `lbvis:college:${user.collegeId}`,
+        `lbvis:college-locked:${user.collegeId}`,
+      ] : []),
     ]);
     const dv = map.get(`lbvis:dept:${user.departmentId}`);
     if (dv !== undefined) deptVisible = dv === "true";
-    const cfd = map.get(`lbvis:college-for-dept:${user.departmentId}`);
-    if (cfd !== undefined) collegeForDeptVisible = cfd === "true";
-    const cl = user.collegeId ? map.get(`lbvis:college-locked:${user.collegeId}`) : undefined;
-    if (cl !== undefined) collegeLocked = cl === "true";
+    if (user.collegeId) {
+      const cv = map.get(`lbvis:college:${user.collegeId}`);
+      if (cv !== undefined) collegeVisible = cv === "true";
+      const cl = map.get(`lbvis:college-locked:${user.collegeId}`);
+      if (cl !== undefined) collegeLocked = cl === "true";
+    }
   } catch (e) {
     // Setting table may not exist yet — default to visible.
     console.warn("department-leaderboard GET: could not read settings:", e);
   }
   return NextResponse.json({
     departmentLeaderboardVisible: deptVisible,
-    collegeLeaderboardVisibleForDept: collegeForDeptVisible,
+    collegeLeaderboardVisibleForDept: collegeVisible,
     collegeLocked,
     hasDepartment: true,
     departmentId: user.departmentId,
@@ -78,7 +84,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Check if admin has locked the college LB — if so, reject mentor's
-    // attempt to toggle the college LB for their department.
+    // attempt to toggle the college LB.
     if (typeof collegeLeaderboardVisibleForDept === "boolean" && user.collegeId) {
       const lockMap = await getSettings([`lbvis:college-locked:${user.collegeId}`]);
       const locked = lockMap.get(`lbvis:college-locked:${user.collegeId}`) === "true";
@@ -96,8 +102,9 @@ export async function PATCH(req: NextRequest) {
       if (typeof leaderboardVisible === "boolean") {
         await setSetting(`lbvis:dept:${user.departmentId}`, leaderboardVisible ? "true" : "false");
       }
-      if (typeof collegeLeaderboardVisibleForDept === "boolean") {
-        await setSetting(`lbvis:college-for-dept:${user.departmentId}`, collegeLeaderboardVisibleForDept ? "true" : "false");
+      // College LB toggle is SHARED with admin — both write to the same key.
+      if (typeof collegeLeaderboardVisibleForDept === "boolean" && user.collegeId) {
+        await setSetting(`lbvis:college:${user.collegeId}`, collegeLeaderboardVisibleForDept ? "true" : "false");
       }
     } catch (e) {
       console.error("Failed to persist department leaderboard setting:", e);
