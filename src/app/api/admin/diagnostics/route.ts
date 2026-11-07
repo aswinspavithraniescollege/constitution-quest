@@ -4,27 +4,55 @@ import { getCurrentUser } from "@/lib/auth";
 
 // GET /api/admin/diagnostics
 // Diagnoses why Firebase Auth users might not be appearing in the admin dashboard.
-// Only accessible to main admin.
+// Returns different info based on the caller's auth state so we can debug
+// "Unauthorized" responses too.
 //
-// This endpoint checks:
-//   1. Total users in DB by role
-//   2. Users with firebaseUid but missing other fields (orphaned signups)
-//   3. Recent signups (last 7 days)
-//   4. DB connectivity test
-//   5. Environment variable presence (without exposing values)
+// - Not logged in          → returns authState="not_logged_in"
+// - Logged in as non-admin → returns authState + role (no sensitive data)
+// - Logged in as admin     → returns full diagnostics
 export async function GET() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+
+  // If not logged in at all, tell the caller (helps debug "Unauthorized")
+  if (!user) {
+    return NextResponse.json({
+      authState: "not_logged_in",
+      message: "You are not logged in. Please log in as the main admin at the login page first, then open this URL in the SAME browser tab.",
+      hint: "The diagnostics endpoint reads your session cookie. Open it in the same browser window where you're logged in as admin.",
+    });
   }
+
+  // If logged in but not an admin, tell us what role they are (no sensitive data)
+  if (user.role !== "ADMIN" && user.role !== "SUB_ADMIN") {
+    return NextResponse.json({
+      authState: "wrong_role",
+      message: `You are logged in as a ${user.role}, not an admin. Please log out and log back in as the main admin.`,
+      yourRole: user.role,
+      yourName: user.name,
+      hint: "Use the Admin tab on the login page with the main admin's username & password.",
+    });
+  }
+
+  const isMainAdmin = user.role === "ADMIN";
 
   const result: any = {
     timestamp: new Date().toISOString(),
+    authState: "ok",
+    caller: {
+      role: user.role,
+      name: user.name,
+      college: user.college?.name || null,
+    },
     db: {},
     users: {},
     environment: {},
     issues: [],
   };
+
+  // Sub-admins only get a limited view (their own college's students)
+  if (!isMainAdmin) {
+    result.message = "You are logged in as a sub-admin. Showing limited diagnostics for your college only. Log in as the main admin for full diagnostics.";
+  }
 
   // 1. Test DB connectivity
   try {
@@ -39,11 +67,12 @@ export async function GET() {
     return NextResponse.json(result);
   }
 
-  // 2. Count users by role
+  // 2. Count users by role (sub-admins only see their college's counts)
   try {
     const roleCounts = await db.user.groupBy({
       by: ["role"],
       _count: { _all: true },
+      where: isMainAdmin ? undefined : { collegeId: user.collegeId },
     });
     result.users.byRole = roleCounts.map((r: any) => ({ role: r.role, count: r._count._all }));
     result.users.total = roleCounts.reduce((sum: number, r: any) => sum + r._count._all, 0);
@@ -54,9 +83,13 @@ export async function GET() {
   }
 
   // 3. List all students (the ones that SHOULD appear in admin dashboard)
+  // Sub-admins only see students in their college.
   try {
     const students = await db.user.findMany({
-      where: { role: "STUDENT" },
+      where: {
+        role: "STUDENT",
+        ...(isMainAdmin ? {} : { collegeId: user.collegeId }),
+      },
       select: {
         id: true,
         name: true,
@@ -97,10 +130,14 @@ export async function GET() {
   }
 
   // 4. Recent signups (last 7 days) — to see if signups are working at all
+  // Sub-admins only see their college's recent signups.
   try {
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const recentUsers = await db.user.findMany({
-      where: { createdAt: { gte: sevenDaysAgo } },
+      where: {
+        createdAt: { gte: sevenDaysAgo },
+        ...(isMainAdmin ? {} : { collegeId: user.collegeId }),
+      },
       select: {
         id: true,
         name: true,
@@ -126,6 +163,7 @@ export async function GET() {
 
   // 5. Check for orphaned Firebase users — users with firebaseUid but no college/department
   // (these users authenticated via Firebase but never completed the signup form)
+  // Sub-admins only see orphans in their college.
   try {
     const orphaned = await db.user.findMany({
       where: {
@@ -134,6 +172,7 @@ export async function GET() {
           { collegeId: null },
           { departmentId: null },
         ],
+        ...(isMainAdmin ? {} : { collegeId: user.collegeId }),
       },
       select: {
         id: true,
@@ -164,21 +203,26 @@ export async function GET() {
   }
 
   // 6. Environment variable checks (presence only, never expose values)
-  result.environment = {
-    hasDatabaseUrl: !!process.env.DATABASE_URL,
-    hasFirebaseProjectId: !!process.env.FIREBASE_PROJECT_ID || !!process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-    hasFirebaseClientEmail: !!process.env.FIREBASE_CLIENT_EMAIL,
-    hasFirebasePrivateKey: !!process.env.FIREBASE_PRIVATE_KEY,
-    hasNextPublicFirebaseApiKey: !!process.env.NEXT_PUBLIC_FB_KEY || !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    hasNextPublicFirebaseAuthDomain: !!process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    nodeEnv: process.env.NODE_ENV,
-  };
+  // Only main admin can see this — sub-admins shouldn't see server config.
+  if (isMainAdmin) {
+    result.environment = {
+      hasDatabaseUrl: !!process.env.DATABASE_URL,
+      hasFirebaseProjectId: !!process.env.FIREBASE_PROJECT_ID || !!process.env.NEXT_PUBLIC_FB_PROJECT_ID,
+      hasFirebaseClientEmail: !!process.env.FIREBASE_CLIENT_EMAIL,
+      hasFirebasePrivateKey: !!process.env.FIREBASE_PRIVATE_KEY,
+      hasNextPublicFirebaseApiKey: !!process.env.NEXT_PUBLIC_FB_KEY || !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      hasNextPublicFirebaseAuthDomain: !!process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      nodeEnv: process.env.NODE_ENV,
+    };
 
-  if (!result.environment.hasDatabaseUrl) {
-    result.issues.push("DATABASE_URL is not set — the app cannot connect to PostgreSQL. This is why no users appear in the admin dashboard!");
-  }
-  if (!result.environment.hasFirebaseClientEmail || !result.environment.hasFirebasePrivateKey) {
-    result.issues.push("Firebase Admin SDK credentials (FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY) are missing — ID token verification will fail, so signups can't create DB records.");
+    if (!result.environment.hasDatabaseUrl) {
+      result.issues.push("DATABASE_URL is not set — the app cannot connect to PostgreSQL. This is why no users appear in the admin dashboard!");
+    }
+    if (!result.environment.hasFirebaseClientEmail || !result.environment.hasFirebasePrivateKey) {
+      result.issues.push("Firebase Admin SDK credentials (FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY) are missing — ID token verification will fail, so signups can't create DB records.");
+    }
+  } else {
+    result.environment = "hidden (sub-admin — log in as main admin to see env vars)";
   }
 
   // 7. Colleges and departments count (to verify reference data exists)
