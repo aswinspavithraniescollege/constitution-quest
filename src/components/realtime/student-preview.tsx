@@ -23,8 +23,14 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
   const [showResult, setShowResult] = useState(false);
   const [loadingQs, setLoadingQs] = useState(false);
   const [mockTests, setMockTests] = useState<any[]>([]);
-  const [lbDisabled, setLbDisabled] = useState(false);
-  const [chatDisabled, setChatDisabled] = useState(false);
+  const [lbConfig, setLbConfig] = useState<{ collegeVisible: boolean; deptVisible: boolean } | null>(null);
+  const [chatTabs, setChatTabs] = useState<{ type: string; label: string; visible: boolean }[]>([]);
+  const [dmVisible, setDmVisible] = useState(true);
+
+  // Derived: is the entire leaderboard disabled?
+  const lbDisabled = lbConfig ? !lbConfig.collegeVisible && !lbConfig.deptVisible : false;
+  // Derived: is the entire chat disabled?
+  const chatDisabled = chatTabs.length > 0 ? chatTabs.every(c => !c.visible) && !dmVisible : false;
 
   // Fetch weeks + check settings on mount
   useEffect(() => {
@@ -34,20 +40,24 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
         const data = await res.json();
         setWeeks(data.weeks || []);
       } catch {}
-      // Check leaderboard + chat settings
+      // Check leaderboard settings
       try {
         const cfgRes = await fetch("/api/student/leaderboard-config");
         if (cfgRes.ok) {
           const cfg = await cfgRes.json();
-          setLbDisabled(!cfg.collegeLeaderboardVisible && !cfg.departmentLeaderboardVisible);
+          setLbConfig({
+            collegeVisible: !!cfg.collegeLeaderboardVisible,
+            deptVisible: !!cfg.departmentLeaderboardVisible,
+          });
         }
       } catch {}
+      // Check chat settings
       try {
         const chatRes = await fetch("/api/chat/config?preview=student");
         if (chatRes.ok) {
           const chatCfg = await chatRes.json();
-          const visibleChats = (chatCfg.chats || []).filter((c: any) => c.visible);
-          setChatDisabled(visibleChats.length === 0 && !(chatCfg.dm?.visible));
+          setChatTabs((chatCfg.chats || []).map((c: any) => ({ type: c.type, label: c.label, visible: c.visible })));
+          setDmVisible(!!(chatCfg.dm?.visible));
         }
       } catch {}
     })();
@@ -287,7 +297,7 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
                   <p className="text-sm mt-1">Your administrator can re-enable it.</p>
                 </div>
               ) : (
-                <DummyLeaderboard />
+                <DummyLeaderboard collegeVisible={lbConfig?.collegeVisible ?? true} deptVisible={lbConfig?.deptVisible ?? true} />
               )
             )}
 
@@ -300,7 +310,7 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
                   <p className="text-sm mt-1">Your administrator can re-enable them.</p>
                 </div>
               ) : (
-                <DummyChatPreview />
+                <DummyChatPreview chatTabs={chatTabs} dmVisible={dmVisible} />
               )
             )}
 
@@ -339,9 +349,9 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
 }
 
 // ============================================================
-// DUMMY LEADERBOARD
+// DUMMY LEADERBOARD — shows/hides tabs based on real settings
 // ============================================================
-function DummyLeaderboard() {
+function DummyLeaderboard({ collegeVisible, deptVisible }: { collegeVisible: boolean; deptVisible: boolean }) {
   const entries = [
     { name: "Aswin S Pavithran", xp: 850, level: 5, streak: 7 },
     { name: "Angela C Joy", xp: 720, level: 4, streak: 3 },
@@ -357,10 +367,29 @@ function DummyLeaderboard() {
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><Radio className="w-3 h-3" /> LIVE
         </span>
       </div>
+      {/* Tabs — only show visible ones */}
       <div className="flex gap-2 mb-4">
-        <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white/10 border border-cyan-400/30 text-white">My College</div>
-        <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-white/50">My Department</div>
+        {collegeVisible && (
+          <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white/10 border border-cyan-400/30 text-white">My College</div>
+        )}
+        {deptVisible && (
+          <div className={`px-3 py-1.5 rounded-lg text-xs font-bold border ${!collegeVisible ? "bg-white/10 border-cyan-400/30 text-white" : "bg-white/5 border-white/10 text-white/50"}`}>My Department</div>
+        )}
+        {!collegeVisible && !deptVisible && (
+          <div className="px-3 py-1.5 rounded-lg text-xs font-bold text-white/30">No tabs available</div>
+        )}
       </div>
+      {/* Show disabled notice for hidden tabs */}
+      {!collegeVisible && (
+        <div className="mb-3 p-2 rounded-lg bg-red-500/10 border border-red-400/20 text-center">
+          <span className="text-xs text-red-300">⛔ College leaderboard is hidden from your students</span>
+        </div>
+      )}
+      {!deptVisible && (
+        <div className="mb-3 p-2 rounded-lg bg-red-500/10 border border-red-400/20 text-center">
+          <span className="text-xs text-red-300">⛔ Department leaderboard is hidden from your students</span>
+        </div>
+      )}
       <div className="space-y-2">
         {entries.map((e, i) => (
           <div key={i} className={`rounded-2xl p-3 border flex items-center gap-3 ${e.isYou ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-400/50" : i === 0 ? "bg-amber-500/10 border-amber-400/30" : "bg-white/5 border-white/10"}`}>
@@ -382,9 +411,9 @@ function DummyLeaderboard() {
 }
 
 // ============================================================
-// DUMMY CHAT — shows "preview" message when sending
+// DUMMY CHAT — shows/hides tabs based on real settings, "preview" on send
 // ============================================================
-function DummyChatPreview() {
+function DummyChatPreview({ chatTabs, dmVisible }: { chatTabs: { type: string; label: string; visible: boolean }[]; dmVisible: boolean }) {
   const [text, setText] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
   const dummyMessages = [
@@ -393,6 +422,8 @@ function DummyChatPreview() {
     { name: "Rahul Sharma", role: "STUDENT", text: "Hello everyone! Ready to learn 🎓", time: "5m ago" },
   ];
   const EMOJIS = ["😀","😂","🥰","😎","🤔","👍","❤️","🔥","🎉","✅","❌","📚","🎓","⚖️","🇮🇳"];
+  const visibleTabs = chatTabs.filter(t => t.visible);
+  const hiddenTabs = chatTabs.filter(t => !t.visible);
 
   function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -413,14 +444,26 @@ function DummyChatPreview() {
       </div>
       <div className="flex gap-2 mb-3">
         <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-500 to-blue-500 text-white">Group Chats</div>
-        <div className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-white/60">Direct Messages <span className="text-[9px] bg-cyan-500/30 px-1 rounded-full ml-1">3</span></div>
+        <div className={`px-3 py-1.5 rounded-lg text-xs font-bold border flex items-center gap-1 ${dmVisible ? "bg-white/5 border-white/10 text-white/60" : "bg-white/5 border-white/10 text-white/20 opacity-40"}`}>
+          Direct Messages
+          {dmVisible ? <span className="text-[9px] bg-cyan-500/30 px-1 rounded-full">3</span> : <span className="text-[9px] text-red-300">⛔</span>}
+        </div>
       </div>
+      {/* Chat tabs — only show visible ones */}
       <div className="flex gap-2 mb-3 flex-wrap">
-        <div className="px-3 py-1 rounded-lg text-xs font-bold bg-white/10 border border-cyan-400/30 text-white">My Department</div>
-        <div className="px-3 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-white/50">Students Only</div>
-        <div className="px-3 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-white/50">My College</div>
-        <div className="px-3 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-white/50">Global</div>
+        {visibleTabs.map((tab) => (
+          <div key={tab.type} className="px-3 py-1 rounded-lg text-xs font-bold bg-white/10 border border-cyan-400/30 text-white">{tab.label}</div>
+        ))}
+        {visibleTabs.length === 0 && <div className="px-3 py-1 rounded-lg text-xs font-bold text-white/30">No chat tabs available</div>}
       </div>
+      {/* Show disabled notices for hidden tabs */}
+      {hiddenTabs.length > 0 && (
+        <div className="mb-3 p-2 rounded-lg bg-red-500/10 border border-red-400/20">
+          {hiddenTabs.map((tab) => (
+            <div key={tab.type} className="text-xs text-red-300 text-center">⛔ {tab.label} chat is hidden from your students</div>
+          ))}
+        </div>
+      )}
       <div className="flex-1 overflow-y-auto space-y-2 mb-3 p-2 rounded-xl bg-white/5 border border-white/10 min-h-[200px]">
         {dummyMessages.map((msg, i) => (
           <div key={i} className="flex flex-col items-start">
