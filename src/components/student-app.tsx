@@ -18,6 +18,7 @@ import { AnnouncementsDisplay } from "@/components/realtime/announcements";
 import { QuestionNotePanel, BookmarksView } from "@/components/realtime/notes-bookmarks";
 import { LiveMockRankings } from "@/components/realtime/live-mock-rankings";
 import { syncLeaderboardClient, addActivityClient, syncMockRankingClient, cleanupUserFirestore, syncUserProfile } from "@/lib/firestore";
+import { auth as firebaseAuth, updatePassword as firebaseUpdatePassword } from "@/lib/firebase";
 
 type View = "home" | "practice-list" | "practice-play" | "mock-list" | "mock-play" | "mock-result" | "leaderboard" | "badges" | "history" | "profile" | "forum" | "bookmarks" | "chat";
 
@@ -1340,7 +1341,31 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
       const body: any = { name: form.name, phone: form.phone, rollNumber: form.rollNumber };
       if (form.newPassword) {
         body.newPassword = form.newPassword;
-        body.currentPassword = form.currentPassword;
+        // Only send currentPassword if the user already has one
+        if (profile?.hasPassword) {
+          body.currentPassword = form.currentPassword;
+        }
+      }
+      // If setting a password for the first time (Google-only user), also
+      // update Firebase so the email/password login provider is added to
+      // their Firebase account. This must happen BEFORE the API call
+      // because Firebase may require recent sign-in.
+      if (form.newPassword && profile && !profile.hasPassword && firebaseAuth?.currentUser) {
+        try {
+          await firebaseUpdatePassword(firebaseAuth.currentUser, form.newPassword);
+        } catch (err: any) {
+          const code = err?.code || "";
+          if (code === "auth/requires-recent-login") {
+            toast.error("For security, please log out and log back in with Google, then try setting your password again.", {
+              description: "Firebase requires a recent sign-in to set a password.",
+              duration: 8000,
+            });
+            return;
+          }
+          // Non-fatal: the DB password will still be set, and the user can
+          // use Firebase's password reset flow later. Log and continue.
+          console.warn("Firebase updatePassword failed (non-fatal):", err);
+        }
       }
       const res = await fetch("/api/student/profile", {
         method: "PATCH",
@@ -1350,6 +1375,12 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
       toast.success("Profile updated!");
+      if (form.newPassword && profile && !profile.hasPassword) {
+        toast.success("Password set! You can now log in with email & password too.", {
+          description: "Next time, use the Email tab on the login page with your email and new password.",
+          duration: 6000,
+        });
+      }
       setEditing(false);
       setForm(f => ({ ...f, newPassword: "", currentPassword: "" }));
       load();
@@ -1423,16 +1454,24 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
               <input value={`${profile.college?.name || ""} • ${profile.department?.name || ""}`} disabled className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white/40 text-sm cursor-not-allowed" />
             </div>
 
-            {/* Password change section */}
+            {/* Password section — "Set Password" for Google users, "Change Password" for everyone else */}
             <div className="pt-3 border-t border-white/10">
               <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-amber-300" /> Change Password
+                <Shield className="w-4 h-4 text-amber-300" />
+                {profile.hasPassword ? "Change Password" : "Set Password"}
               </h4>
-              <div className="mb-2">
-                <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Current password (required to change)" />
-              </div>
+              {!profile.hasPassword && (
+                <p className="text-[11px] text-sky-300/70 mb-2 leading-relaxed">
+                  You signed in with Google, so you don&apos;t have a password yet. Set one here to also log in with your email &amp; password.
+                </p>
+              )}
+              {profile.hasPassword && (
+                <div className="mb-2">
+                  <input type="password" value={form.currentPassword} onChange={e => setForm(f => ({ ...f, currentPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="Current password (required to change)" />
+                </div>
+              )}
               <div>
-                <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder="New password (min 6 chars) — leave blank to keep" />
+                <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30" placeholder={profile.hasPassword ? "New password (min 6 chars) — leave blank to keep" : "New password (min 6 chars)"} />
               </div>
             </div>
 

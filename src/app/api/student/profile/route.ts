@@ -10,11 +10,20 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   const { password, ...safe } = user;
-  return NextResponse.json({ profile: safe });
+  // Tell the client whether the user already has a password set.
+  // Google-only users (authMethod=FIREBASE, password=null) don't have a
+  // password yet — they need a "Set Password" UI instead of "Change Password".
+  return NextResponse.json({
+    profile: { ...safe, hasPassword: !!user.password },
+  });
 }
 
 // PATCH /api/student/profile — update own profile
-// Students & guests can edit: name, phone, rollNumber, password (with currentPassword verification)
+// Students & guests can edit: name, phone, rollNumber, password
+// Password rules:
+//   - Has password already (LOCAL or previously set): must verify currentPassword
+//   - Google-only user (no password yet): can set a password without currentPassword
+//     (this lets them log in with email/password in addition to Google)
 // They CANNOT edit: username, email (Firebase-managed), college, department, mentor, role, xp, level, etc.
 export async function PATCH(req: NextRequest) {
   const user = await getCurrentUser();
@@ -31,17 +40,17 @@ export async function PATCH(req: NextRequest) {
     if (phone !== undefined) data.phone = phone || null;
     if (rollNumber !== undefined) data.rollNumber = rollNumber || null;
 
-    // Password change requires current password verification
+    // Password change/set
     if (newPassword) {
-      if (!currentPassword) {
-        return NextResponse.json({ error: "Current password is required to change password" }, { status: 400 });
-      }
       if (newPassword.length < 6) {
         return NextResponse.json({ error: "New password must be at least 6 characters" }, { status: 400 });
       }
-      // Password change — works for ALL users (LOCAL and email-signup)
-      if (user.authMethod === "LOCAL" && user.password) {
-        // LOCAL users: verify current password
+
+      if (user.password) {
+        // User already has a password — verify the current one before changing
+        if (!currentPassword) {
+          return NextResponse.json({ error: "Current password is required to change password" }, { status: 400 });
+        }
         const { verifyPassword } = await import("@/lib/auth");
         const ok = await verifyPassword(currentPassword, user.password);
         if (!ok) {
@@ -49,10 +58,11 @@ export async function PATCH(req: NextRequest) {
         }
         data.password = await hashPassword(newPassword);
       } else {
-        // Email-signup users: set password in DB (they can now use it for login too)
-        if (!currentPassword) {
-          return NextResponse.json({ error: "Current password is required" }, { status: 400 });
-        }
+        // User doesn't have a password yet (Google-only user).
+        // Let them SET a password without requiring currentPassword.
+        // The client should also call Firebase updatePassword() to add the
+        // password provider to their Firebase account, so email/password
+        // login works too.
         data.password = await hashPassword(newPassword);
       }
     }
@@ -64,7 +74,7 @@ export async function PATCH(req: NextRequest) {
     });
     await logActivity(user.id, "profile_update", `fields=${Object.keys(data).join(",")}`);
     const { password: _, ...safe } = updated;
-    return NextResponse.json({ profile: safe });
+    return NextResponse.json({ profile: { ...safe, hasPassword: !!updated.password } });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });
