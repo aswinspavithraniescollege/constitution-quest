@@ -346,32 +346,39 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
 
   useEffect(() => { load(); }, [load]);
 
-  // Auto-refresh leaderboard + chat settings every 5 seconds so the
-  // mentor profile stays in sync with admin changes in real-time.
+  // Live updates: listen for localStorage events from other tabs/windows
+  // instead of polling. When admin toggles in another tab, it writes a
+  // signal to localStorage which triggers a refresh here.
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const lbRes = await fetch("/api/mentor/department-leaderboard?_t=" + Date.now());
-        if (lbRes.ok) {
-          const lbData = await lbRes.json();
-          setDeptLbVisible(lbData.departmentLeaderboardVisible);
-          setCollegeLbForDeptVisible(lbData.collegeLeaderboardVisibleForDept);
-          setCollegeLbLocked(!!lbData.collegeLocked);
-        }
-      } catch {}
-      try {
-        const chatRes = await fetch("/api/mentor/chat-settings?_t=" + Date.now());
-        if (chatRes.ok) {
-          const chatData = await chatRes.json();
-          setDeptChatOn(chatData.deptChatVisible);
-          setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
-          setDmChatOn(chatData.dmChatVisible);
-          setCollegeChatOn(chatData.collegeChatVisible);
-          setMentorChatOn(chatData.mentorChatVisible);
-        }
-      } catch {}
-    }, 5000);
-    return () => clearInterval(interval);
+    const handler = (e: StorageEvent) => {
+      if (e.key === "lb-updated" || e.key === "chat-updated") {
+        // Re-fetch settings
+        (async () => {
+          try {
+            const lbRes = await fetch("/api/mentor/department-leaderboard?_t=" + Date.now());
+            if (lbRes.ok) {
+              const lbData = await lbRes.json();
+              setDeptLbVisible(lbData.departmentLeaderboardVisible);
+              setCollegeLbForDeptVisible(lbData.collegeLeaderboardVisibleForDept);
+              setCollegeLbLocked(!!lbData.collegeLocked);
+            }
+          } catch {}
+          try {
+            const chatRes = await fetch("/api/mentor/chat-settings?_t=" + Date.now());
+            if (chatRes.ok) {
+              const chatData = await chatRes.json();
+              setDeptChatOn(chatData.deptChatVisible);
+              setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
+              setDmChatOn(chatData.dmChatVisible);
+              setCollegeChatOn(chatData.collegeChatVisible);
+              setMentorChatOn(chatData.mentorChatVisible);
+            }
+          } catch {}
+        })();
+      }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
   }, []);
 
   async function toggleDeptLb() {
@@ -394,6 +401,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
         return;
       }
       setDeptLbVisible(next);
+      localStorage.setItem("lb-updated", String(Date.now())); // signal admin tab
       toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"} for students.`);
     } catch (e) {
       toast.error("Network error while toggling");
@@ -424,6 +432,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
         return;
       }
       setCollegeLbForDeptVisible(next);
+      localStorage.setItem("lb-updated", String(Date.now())); // signal admin tab
       toast.success(`College leaderboard for your department ${next ? "ENABLED" : "DISABLED"}.`);
     } catch (e) {
       toast.error("Network error while toggling");

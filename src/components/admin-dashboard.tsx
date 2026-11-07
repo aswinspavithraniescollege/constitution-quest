@@ -457,10 +457,17 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   useEffect(() => { load(); }, [load]);
 
-  // Auto-refresh every 5 seconds so admin sees mentor's toggle changes
+  // Live updates: listen for localStorage events from other tabs/windows
+  // instead of polling. When mentor toggles in another tab, it writes a
+  // signal to localStorage which triggers a refresh here.
   useEffect(() => {
-    const interval = setInterval(() => { load(); }, 5000);
-    return () => clearInterval(interval);
+    const handler = (e: StorageEvent) => {
+      if (e.key === "lb-updated" || e.key === "chat-updated") {
+        load();
+      }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
   }, [load]);
 
   // Detect whether the Setting table exists by attempting a no-op read.
@@ -519,6 +526,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setTableMissing(false);
         toast.success(`College leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
         setPreviewKey(k => k + 1); // refresh preview
+        localStorage.setItem("lb-updated", String(Date.now())); // signal other tabs
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -567,6 +575,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setTableMissing(false);
         toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
         setPreviewKey(k => k + 1); // refresh preview
+        localStorage.setItem("lb-updated", String(Date.now())); // signal other tabs
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -594,6 +603,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setTableMissing(false);
         toast.success(`College leaderboard for this department ${next ? "ENABLED" : "DISABLED"}.`);
         setPreviewKey(k => k + 1); // refresh preview
+        localStorage.setItem("lb-updated", String(Date.now())); // signal other tabs
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -805,6 +815,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         toast.success(`Chat ${next ? "ENABLED" : "DISABLED"}.`);
         await load();
         setPreviewKey(k => k + 1); // refresh preview
+        localStorage.setItem("chat-updated", String(Date.now())); // signal other tabs
       } else {
         const d = await res.json().catch(() => ({}));
         toast.error(d.error || "Failed");
