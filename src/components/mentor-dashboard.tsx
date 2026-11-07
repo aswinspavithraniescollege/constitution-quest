@@ -300,6 +300,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
   const [deptChatOn, setDeptChatOn] = useState<boolean | null>(null);
   const [deptStudentsChatOn, setDeptStudentsChatOn] = useState<boolean | null>(null);
   const [dmChatOn, setDmChatOn] = useState<boolean | null>(null);
+  const [globalChatOn, setGlobalChatOn] = useState<boolean | null>(null);
   const [collegeChatOn, setCollegeChatOn] = useState<boolean | null>(null);
   const [mentorChatOn, setMentorChatOn] = useState<boolean | null>(null);
   const [chatToggling, setChatToggling] = useState<string | null>(null);
@@ -337,6 +338,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
           setDeptChatOn(chatData.deptChatVisible);
           setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
           setDmChatOn(chatData.dmChatVisible);
+          setGlobalChatOn(chatData.globalChatVisible);
           setCollegeChatOn(chatData.collegeChatVisible);
           setMentorChatOn(chatData.mentorChatVisible);
         }
@@ -370,6 +372,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               setDeptChatOn(chatData.deptChatVisible);
               setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
               setDmChatOn(chatData.dmChatVisible);
+              setGlobalChatOn(chatData.globalChatVisible);
               setCollegeChatOn(chatData.collegeChatVisible);
               setMentorChatOn(chatData.mentorChatVisible);
             }
@@ -458,11 +461,12 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
       if (scope === "dept") setDeptChatOn(next);
       if (scope === "dept-students") setDeptStudentsChatOn(next);
       if (scope === "dm") setDmChatOn(next);
+      if (scope === "global") setGlobalChatOn(next);
       if (scope === "college") setCollegeChatOn(next);
       if (scope === "mentor") setMentorChatOn(next);
       const labelMap: Record<string, string> = {
         "dept": "Department", "dept-students": "Students-only", "dm": "DM",
-        "college": "College", "mentor": "Mentor",
+        "global": "Global", "college": "College", "mentor": "Mentor",
       };
       toast.success(`${labelMap[scope] || scope} chat ${next ? "ENABLED" : "DISABLED"}.`);
     } catch (e) {
@@ -727,14 +731,14 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                   <MessageCircle className="w-4 h-4 text-cyan-500" /> Chat Visibility
                 </h4>
                 <p className="text-[11px] text-cyan-700 mb-2">
-                  Control which chat channels your students can see. Messages auto-delete after 24 hours.
-                  (Global chat is admin-only.)
+                  Control which chat channels your students can see. Messages reset at midnight daily.
                 </p>
                 <div className="space-y-2">
                   {([
                     { scope: "dept", label: "Department Chat", state: deptChatOn, desc: "Students + mentor in your department" },
                     { scope: "dept-students", label: "Students-Only Chat", state: deptStudentsChatOn, desc: "Students only (no mentor/admin can see it)" },
                     { scope: "dm", label: "Direct Messages", state: dmChatOn, desc: "Private 1:1 chat between students in your department" },
+                    { scope: "global", label: "Global Chat", state: globalChatOn, desc: "All users across all colleges" },
                     { scope: "college", label: "College Chat", state: collegeChatOn, desc: "Everyone in your college" },
                     { scope: "mentor", label: "Mentor Chat", state: mentorChatOn, desc: "Mentors only (your college)" },
                   ] as const).map(({ scope, label, state, desc }) => (

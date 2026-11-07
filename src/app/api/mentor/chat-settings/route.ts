@@ -10,7 +10,9 @@ import { getSettings, setSetting, resetSettingsTableCache } from "@/lib/settings
 //   - dmChatVisible:           private 1:1 DMs within their department
 //   - collegeChatVisible:      college chat (for the mentor's college)
 //   - mentorChatVisible:       mentor chat for their college
-// (Mentors cannot control the global chat — that's admin-only.)
+//   - globalChatVisible:       global chat (all colleges) — mentor can toggle
+// (Mentors cannot control global chat — that's admin-only. Wait, user says
+//  mentor should also control global. Let me add it.)
 export async function GET() {
   const user = await getCurrentUser();
   if (!user || user.role !== "MENTOR") {
@@ -23,6 +25,7 @@ export async function GET() {
       dmChatVisible: true,
       collegeChatVisible: true,
       mentorChatVisible: true,
+      globalChatVisible: true,
       hasDepartment: false,
       message: "You are not assigned to a department.",
     });
@@ -31,6 +34,7 @@ export async function GET() {
     `chatvis:dept:${user.departmentId}`,
     `chatvis:dept-students:${user.departmentId}`,
     `chatvis:dm:${user.departmentId}`,
+    "chatvis:global",
     ...(user.collegeId ? [
       `chatvis:college:${user.collegeId}`,
       `chatvis:mentor:${user.collegeId}`,
@@ -42,6 +46,7 @@ export async function GET() {
     deptChatVisible: chatvis(`chatvis:dept:${user.departmentId}`),
     deptStudentsChatVisible: chatvis(`chatvis:dept-students:${user.departmentId}`),
     dmChatVisible: chatvis(`chatvis:dm:${user.departmentId}`),
+    globalChatVisible: chatvis("chatvis:global"),
     collegeChatVisible: user.collegeId ? chatvis(`chatvis:college:${user.collegeId}`) : true,
     mentorChatVisible: user.collegeId ? chatvis(`chatvis:mentor:${user.collegeId}`) : true,
     hasDepartment: true,
@@ -53,14 +58,14 @@ export async function GET() {
 }
 
 // PATCH /api/mentor/chat-settings
-// Body: { scope: "dept"|"dept-students"|"dm"|"college"|"mentor", visible: bool }
+// Body: { scope: "dept"|"dept-students"|"dm"|"global"|"college"|"mentor", visible: bool }
 // Mentors can toggle:
 //   - dept chat for THEIR OWN department
 //   - dept-students chat for THEIR OWN department (students-only, no mentor)
 //   - dm chat for THEIR OWN department (private 1:1)
+//   - global chat (all colleges)
 //   - college chat for THEIR college
 //   - mentor chat for THEIR college
-// (Not global — admin only.)
 export async function PATCH(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user || user.role !== "MENTOR") {
@@ -89,6 +94,9 @@ export async function PATCH(req: NextRequest) {
       case "dm":
         key = `chatvis:dm:${user.departmentId}`;
         break;
+      case "global":
+        key = "chatvis:global";
+        break;
       case "college":
         if (!user.collegeId) return NextResponse.json({ error: "No college assigned" }, { status: 400 });
         key = `chatvis:college:${user.collegeId}`;
@@ -98,7 +106,7 @@ export async function PATCH(req: NextRequest) {
         key = `chatvis:mentor:${user.collegeId}`;
         break;
       default:
-        return NextResponse.json({ error: "Invalid scope. Use dept/dept-students/dm/college/mentor." }, { status: 400 });
+        return NextResponse.json({ error: "Invalid scope. Use dept/dept-students/dm/global/college/mentor." }, { status: 400 });
     }
 
     try {
