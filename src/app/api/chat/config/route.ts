@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
@@ -25,16 +25,21 @@ import { getSettings } from "@/lib/settings";
 //   chatvis:dept-students:{departmentId}    — students-only dept chat on/off
 //   chatvis:mentor:{collegeId}              — mentor chat on/off
 //   chatvis:dm:{departmentId}               — DM chat on/off (per department)
-export async function GET() {
+export async function GET(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const isStudent = user.role === "STUDENT";
-  const isMentor = user.role === "MENTOR";
-  const isAdmin = user.role === "ADMIN";
-  const isSubAdmin = user.role === "SUB_ADMIN";
+  // Support preview mode: ?preview=student — admin/mentor can see what a
+  // student in their college/department would see. Used by StudentPreview.
+  const url = new URL(req.url);
+  const previewMode = url.searchParams.get("preview") === "student";
+
+  const isStudent = previewMode || user.role === "STUDENT";
+  const isMentor = !previewMode && user.role === "MENTOR";
+  const isAdmin = !previewMode && user.role === "ADMIN";
+  const isSubAdmin = !previewMode && user.role === "SUB_ADMIN";
 
   // Read all relevant visibility settings.
   const keys = [

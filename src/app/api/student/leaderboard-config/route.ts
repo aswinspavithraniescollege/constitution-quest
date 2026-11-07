@@ -20,9 +20,9 @@ export async function GET() {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (user.role !== "STUDENT") {
-    return NextResponse.json({ error: "Only students can view the leaderboard" }, { status: 403 });
-  }
+  // Allow admins and mentors to fetch this endpoint too — it's used by the
+  // Student Preview feature to show what students see. We treat the caller
+  // as if they were a student in their own college/department.
   if (!user.collegeId) {
     return NextResponse.json({
       collegeLeaderboardVisible: false,

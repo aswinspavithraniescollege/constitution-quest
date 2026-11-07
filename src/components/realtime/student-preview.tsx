@@ -43,7 +43,7 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
         }
       } catch {}
       try {
-        const chatRes = await fetch("/api/chat/config");
+        const chatRes = await fetch("/api/chat/config?preview=student");
         if (chatRes.ok) {
           const chatCfg = await chatRes.json();
           const visibleChats = (chatCfg.chats || []).filter((c: any) => c.visible);
