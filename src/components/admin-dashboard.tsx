@@ -1632,7 +1632,7 @@ function MentorsTab({ collegeId, colleges, isSubAdmin }: any) {
 // ============== STUDENTS (folder-style drill-down) ==============
 function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   // Drill-down state
-  const [level, setLevel] = useState<"college" | "department" | "mentor" | "student" | "detail">(
+  const [level, setLevel] = useState<"college" | "department" | "mentor" | "student" | "all-students" | "detail">(
     isMainAdmin ? "college" : "department"
   );
   const [selectedCollege, setSelectedCollege] = useState<any>(isSubAdmin ? user.college : null);
@@ -1698,6 +1698,21 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     } finally { setLoading(false); }
   }
 
+  // Load ALL students in a department (not filtered by mentor).
+  // This catches students who have no mentor assigned — they'd otherwise
+  // be invisible in the drill-down (which only shows students per-mentor).
+  async function loadAllStudentsInDepartment(departmentId: string) {
+    setLoading(true);
+    try {
+      const url = new URL("/api/admin/students", window.location.origin);
+      url.searchParams.set("departmentId", departmentId);
+      if (selectedCollege?.id) url.searchParams.set("collegeId", selectedCollege.id);
+      const res = await fetch(url.toString());
+      const data = await res.json();
+      setStudents(data.students || []);
+    } finally { setLoading(false); }
+  }
+
   async function loadStudentDetail(studentId: string) {
     setLoading(true);
     try {
@@ -1725,6 +1740,17 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     setStudentDetail(null);
     setLevel("mentor");
     if (selectedCollege?.id) loadMentors(selectedCollege.id);
+  }
+
+  // View ALL students in the selected department (not filtered by mentor).
+  // This is the easiest way to see every student — including those without
+  // a mentor assignment.
+  function viewAllStudentsInDepartment() {
+    setSelectedMentor(null);
+    setSelectedStudent(null);
+    setStudentDetail(null);
+    setLevel("all-students");
+    if (selectedDepartment?.id) loadAllStudentsInDepartment(selectedDepartment.id);
   }
 
   function selectMentor(m: any) {
@@ -1767,6 +1793,7 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   function refresh() {
     if (level === "detail" && selectedStudent) loadStudentDetail(selectedStudent.id);
     else if (level === "student" && selectedMentor) loadStudents(selectedMentor.id);
+    else if (level === "all-students" && selectedDepartment) loadAllStudentsInDepartment(selectedDepartment.id);
     else if (level === "mentor" && selectedCollege) loadMentors(selectedCollege.id);
     else if (level === "department" && selectedCollege) loadDepartments(selectedCollege.id);
   }
@@ -1851,7 +1878,7 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     });
     if (res.ok) {
       toast.success(s.active ? "Deactivated" : "Activated");
-      if (selectedMentor) loadStudents(selectedMentor.id);
+      refresh();
     }
   }
 
@@ -1864,7 +1891,7 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
       // is authenticated, so the security rules allow the admin to delete.
       try { await cleanupUserFirestore(id); } catch (e) { console.warn("Firestore cleanup:", e); }
       toast.success("Deleted");
-      if (selectedMentor) loadStudents(selectedMentor.id);
+      refresh();
     }
   }
 
@@ -1894,13 +1921,22 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
           </button>
         </>
       )}
-      {selectedDepartment && (level === "mentor" || level === "student" || level === "detail") && (
+      {selectedDepartment && (level === "mentor" || level === "student" || level === "all-students" || level === "detail") && (
         <>
           <ChevronRight className="w-3 h-3" />
           <button onClick={goToDepartmentLevel} className="hover:text-amber-600 font-bold text-slate-700">
             <Layers className="w-3.5 h-3.5 inline mr-1" />
             {selectedDepartment.name}
           </button>
+        </>
+      )}
+      {level === "all-students" && (
+        <>
+          <ChevronRight className="w-3 h-3" />
+          <span className="font-bold text-amber-600">
+            <Users className="w-3.5 h-3.5 inline mr-1" />
+            All Students
+          </span>
         </>
       )}
       {selectedMentor && (level === "student" || level === "detail") && (
@@ -2025,11 +2061,27 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
           <div className="text-sm text-slate-500 mb-3 flex items-center gap-1.5">
             <FolderOpen className="w-4 h-4" /> Mentors in {selectedDepartment?.name}
           </div>
+          {/* "All Students" card — shows EVERY student in this department,
+              including those without a mentor. This is the easiest way to
+              see all students without clicking each mentor one by one. */}
+          <button
+            onClick={viewAllStudentsInDepartment}
+            className="w-full text-left rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 p-4 hover:border-amber-400 hover:shadow-md transition flex items-center gap-3"
+          >
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shrink-0">
+              <Users className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <div className="font-bold text-base text-amber-800">All Students in {selectedDepartment?.name}</div>
+              <div className="text-xs text-amber-600">View every student in this department — including those without a mentor</div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-amber-400" />
+          </button>
           {filteredMentors.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
               <GraduationCap className="w-10 h-10 mx-auto mb-2 opacity-50" />
               <p>No mentors in this department.</p>
-              <p className="text-xs mt-1">Add mentors in the Mentors tab first.</p>
+              <p className="text-xs mt-1">Add mentors in the Mentors tab first. You can still click "All Students" above to see students without a mentor.</p>
             </div>
           ) : (
             filteredMentors.map(m => (
@@ -2085,6 +2137,63 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5">
                       {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
+                    </div>
+                    <div className="flex gap-3 mt-2 text-xs flex-wrap">
+                      <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
+                      <span className="text-purple-600 font-bold">Lvl {s.level}</span>
+                      <span className="text-orange-600 font-bold">🔥{s.streak}</span>
+                      <span className="text-cyan-600 font-bold">📝{s._count.practiceAttempts}</span>
+                      <span className="text-emerald-600 font-bold">🎯{s._count.mockAttempts}</span>
+                      <span className="text-pink-600 font-bold">🏅{s._count.studentBadges}</span>
+                    </div>
+                  </button>
+                  <div className="flex gap-1 shrink-0">
+                    <button onClick={() => setEditing({ ...s, newPassword: "" })} title="Edit student" className="p-1.5 rounded hover:bg-blue-50 text-blue-500"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
+                    <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* LEVEL 3b: ALL Students in department (flat list — not filtered by mentor) */}
+      {!loading && level === "all-students" && selectedDepartment && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+            <div className="text-sm text-slate-500 flex items-center gap-1.5">
+              <FolderOpen className="w-4 h-4" /> All Students in {selectedDepartment.name}
+              <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold text-xs">{students.length}</span>
+            </div>
+            <button
+              onClick={refresh}
+              className="px-3 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 transition"
+            >
+              <RefreshCw className="w-3.5 h-3.5" /> Refresh
+            </button>
+          </div>
+          {students.length === 0 ? (
+            <div className="text-center py-12 text-slate-400">
+              <Users className="w-10 h-10 mx-auto mb-2 opacity-50" />
+              <p>No students in this department yet.</p>
+              <p className="text-xs mt-1">Students will appear here once they sign up.</p>
+            </div>
+          ) : (
+            students.map(s => (
+              <div key={s.id} className={`rounded-xl bg-white border p-3 ${s.active ? "border-slate-200" : "border-red-200 bg-red-50"}`}>
+                <div className="flex items-start justify-between gap-2">
+                  <button onClick={() => selectStudent(s)} className="min-w-0 flex-1 text-left">
+                    <div className="font-bold flex items-center gap-2 flex-wrap">
+                      {s.name}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">{s.username || s.email}</span>
+                      {!s.mentor && <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-bold">NO MENTOR</span>}
+                      {!s.active && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-bold">INACTIVE</span>}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {s.college?.name} • {s.department?.code} {s.rollNumber && `• ${s.rollNumber}`}
+                      {s.mentor?.name && ` • Mentor: ${s.mentor.name}`}
                     </div>
                     <div className="flex gap-3 mt-2 text-xs flex-wrap">
                       <span className="text-amber-600 font-bold">⚡{s.xp} XP</span>
