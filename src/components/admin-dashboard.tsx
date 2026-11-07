@@ -457,6 +457,12 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   useEffect(() => { load(); }, [load]);
 
+  // Auto-refresh every 5 seconds so admin sees mentor's toggle changes
+  useEffect(() => {
+    const interval = setInterval(() => { load(); }, 5000);
+    return () => clearInterval(interval);
+  }, [load]);
+
   // Detect whether the Setting table exists by attempting a no-op read.
   // We probe via the leaderboard-settings endpoint: if it returns an empty
   // object without error, the table exists (or is correctly defaulted). The
