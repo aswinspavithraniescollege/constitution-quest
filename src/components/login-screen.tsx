@@ -15,6 +15,7 @@ import {
   sendPasswordResetEmail,
   GoogleAuthProvider,
   signInWithPopup,
+  updatePassword as firebaseUpdatePassword,
 } from "@/lib/firebase";
 import type { User as FirebaseUser } from "firebase/auth";
 import { syncUserProfile, syncLeaderboardClient, addActivityClient } from "@/lib/firestore";
@@ -368,17 +369,25 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     if (!emailRegex.test(email)) { toast.error("Please enter a valid email address"); return; }
 
     // Check if the user is already signed in via Google (from an incomplete
-    // Google login on the login page). If so, they don't need to enter a
-    // password — we'll reuse their existing Firebase Google session.
+    // Google login on the login page). If so, they don't NEED a password —
+    // but we'll let them set one so they can also log in with email/password.
     const hasGoogleSession = !!auth?.currentUser &&
       !!auth.currentUser.email &&
       auth.currentUser.email.toLowerCase() === email.trim().toLowerCase();
 
-    // Password validation: only required if the user is NOT already signed in
-    // via Google. Google users can set a password later from their profile.
+    // Password validation:
+    // - Google users: password is OPTIONAL (they can leave it blank to use
+    //   Google-only login, OR set one to enable email/password login too)
+    // - Non-Google users: password is required (min 6 chars, must match confirm)
     if (!hasGoogleSession) {
       if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
       if (password !== confirmPassword) { toast.error("Passwords do not match"); return; }
+    } else {
+      // Google user with optional password — only validate if they entered one
+      if (password.length > 0) {
+        if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+        if (password !== confirmPassword) { toast.error("Passwords do not match"); return; }
+      }
     }
 
     setLoading(true);
@@ -461,6 +470,46 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         toast.error(data.error || "Sign up failed");
         return;
       }
+
+      // 3a. If this is a Google user who entered a password, set the password
+      // on their Firebase account so they can ALSO log in with email/password
+      // (in addition to Google). This must happen AFTER the DB record is
+      // created — if it fails, the user still has their Google login.
+      if (hasGoogleSession && password.length > 0 && auth?.currentUser) {
+        try {
+          await firebaseUpdatePassword(auth.currentUser, password);
+          // Also store the hashed password in our DB so it can be verified
+          // for username/password login (admin-issued credentials flow).
+          try {
+            await fetch("/api/student/profile", {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ newPassword: password }),
+            });
+          } catch (e) {
+            console.warn("DB password set failed (non-fatal — Firebase password was set):", e);
+          }
+          toast.success("Password set! You can log in with email & password too.", {
+            description: "Use your Google email + this password, OR 'Continue with Google'.",
+            duration: 6000,
+          });
+        } catch (err: any) {
+          const code = err?.code || "";
+          if (code === "auth/requires-recent-login") {
+            toast.info("Couldn't set password right now", {
+              description: "You can set a password later from your Profile page. For now, use 'Continue with Google'.",
+              duration: 8000,
+            });
+          } else {
+            console.warn("Firebase updatePassword failed (non-fatal):", err);
+            toast.info("Account created with Google login", {
+              description: "You can set a password later from your Profile page.",
+              duration: 6000,
+            });
+          }
+        }
+      }
+
       toast.success(`Welcome, ${data.user.name}! 🎉`, {
         description: "Your account has been created successfully!",
       });
@@ -1051,14 +1100,14 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                 <p className="text-xs text-white/60 mb-4 leading-relaxed">{config.description}</p>
 
                 {/* Google session banner — shown when the user came from an
-                    incomplete Google login. Tells them their Google account
-                    will be reused (no password needed). */}
+                    incomplete Google login. Tells them they can set a password
+                    to enable email/password login too (optional). */}
                 {pendingGoogleEmail && (
                   <div className="mb-4 p-3 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-sky-300 mt-0.5 shrink-0" />
                     <div className="text-xs text-sky-100/90 leading-relaxed">
                       <strong className="text-sky-200">Google account detected:</strong> You&apos;re signed in as <strong>{pendingGoogleEmail}</strong>.
-                      Just fill in your details below and click <em>Create Account</em> — no password needed. We&apos;ll use your Google account.
+                      Fill in your details below. <strong>Optional:</strong> set a password to also log in with email &amp; password (otherwise you&apos;ll use Google).
                     </div>
                   </div>
                 )}
@@ -1186,19 +1235,22 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       <p className="text-[10px] text-sky-300/70 mt-1">🔒 Locked to your Google account email</p>
                     )}
                   </div>
-                  {/* Password — hidden when the user has a Google session (no password needed) */}
-                  {!pendingGoogleEmail && (
+                  {/* Password — for Google users, this is OPTIONAL (they can
+                      set it to enable email/password login too). For everyone
+                      else, it's required. */}
                   <div>
-                    <label className="block text-xs font-medium text-white/70 mb-1.5">Password * <span className="text-white/40">(min 6 characters)</span></label>
+                    <label className="block text-xs font-medium text-white/70 mb-1.5">
+                      Password {pendingGoogleEmail ? <span className="text-sky-300/70">(optional — set to enable email login)</span> : <><span className="text-white/40">*</span> <span className="text-white/40">(min 6 characters)</span></>}
+                    </label>
                     <div className="relative">
                       <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Create a password"
+                        placeholder={pendingGoogleEmail ? "Set a password for email login (optional)" : "Create a password"}
                         className="w-full pl-10 pr-10 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition"
-                        required
+                        required={!pendingGoogleEmail}
                         autoComplete="new-password"
                       />
                       <button
@@ -1211,11 +1263,12 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       </button>
                     </div>
                   </div>
-                  )}
-                  {/* Confirm Password — hidden when the user has a Google session */}
-                  {!pendingGoogleEmail && (
+                  {/* Confirm Password — shown whenever the password field is
+                      visible. For Google users, only show if they entered a
+                      password (otherwise it's irrelevant). */}
+                  {(!pendingGoogleEmail || password.length > 0) && (
                   <div>
-                    <label className="block text-xs font-medium text-white/70 mb-1.5">Confirm Password *</label>
+                    <label className="block text-xs font-medium text-white/70 mb-1.5">Confirm Password {pendingGoogleEmail && <span className="text-sky-300/70">(optional)</span>}</label>
                     <div className="relative">
                       <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
@@ -1228,7 +1281,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                             ? "border-red-400 focus:ring-red-400/30"
                             : "border-white/15 focus:border-pink-400 focus:ring-pink-400/30"
                         }`}
-                        required
+                        required={!pendingGoogleEmail || password.length > 0}
                         autoComplete="new-password"
                       />
                     </div>
