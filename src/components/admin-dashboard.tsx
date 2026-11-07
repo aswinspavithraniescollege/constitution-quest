@@ -419,6 +419,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const [deptVis, setDeptVis] = useState<Record<string, boolean>>({});
   // Per-department override: can students in THIS department see the COLLEGE leaderboard?
   const [collegeForDeptVis, setCollegeForDeptVis] = useState<Record<string, boolean>>({});
+  const [collegeLockedVis, setCollegeLockedVis] = useState<Record<string, boolean>>({});
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [togglingId, setTogglingId] = useState<string | null>(null);
@@ -445,6 +446,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setCollegeVis(sData.college || {});
         setDeptVis(sData.department || {});
         setCollegeForDeptVis(sData.collegeForDept || {});
+        setCollegeLockedVis(sData.collegeLocked || {});
       }
       if (dRes.ok) {
         const dData = await dRes.json();
@@ -523,7 +525,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   // Lock/unlock the college LB — when locked, mentors can't toggle it
   async function toggleCollegeLock(collegeId: string) {
-    const current = (settings.collegeLocked || {})[collegeId] === true;
+    const current = collegeLockedVis[collegeId] === true;
     const next = !current;
     setTogglingId(`collegeLock-${collegeId}`);
     try {
@@ -533,7 +535,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         body: JSON.stringify({ id: collegeId, leaderboardLocked: next }),
       });
       if (res.ok) {
-        setSettings((prev: any) => ({ ...prev, collegeLocked: { ...(prev?.collegeLocked || {}), [collegeId]: next } }));
+        setCollegeLockedVis(prev => ({ ...prev, [collegeId]: next }));
         setTableMissing(false);
         toast.success(`College leaderboard ${next ? "LOCKED 🔒" : "UNLOCKED 🔓"}. ${next ? "Mentors can no longer toggle it." : "Mentors can now toggle it."}`);
         setPreviewKey(k => k + 1);
@@ -656,7 +658,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
           <div className="space-y-2">
             {scopedColleges.map((c: any) => {
               const visible = collegeVis[c.id] !== false;
-              const locked = (settings.collegeLocked || {})[c.id] === true;
+              const locked = collegeLockedVis[c.id] === true;
               return (
                 <div key={c.id} className="p-3 rounded-xl border border-slate-200 hover:bg-slate-50 space-y-2">
                   <div className="flex items-center justify-between gap-3">
