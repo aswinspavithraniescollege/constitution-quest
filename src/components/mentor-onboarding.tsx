@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {
   Loader2, Shield, GraduationCap, AtSign, Key, Eye, EyeOff,
-  CheckCircle2, ArrowRight, Building2, User as UserIcon, LogOut,
+  CheckCircle2, ArrowRight, Building2, User as UserIcon, LogOut, Users as UsersIcon,
 } from "lucide-react";
 import {
   auth,
@@ -24,10 +24,58 @@ type OnboardUser = {
   department?: { name: string; code: string } | null;
 };
 
-// MentorOnboarding — shown when a mentor logs in for the first time using the
-// admin-issued temp username & password (authMethod=LOCAL). Here they set up
-// their own email & password, which creates a Firebase account and upgrades
-// their DB record so the temp credentials stop working.
+// Helper to pick role-specific styling
+function roleStyle(role: string) {
+  if (role === "SUB_ADMIN") {
+    return {
+      gradient: "from-purple-600 to-pink-600",
+      bgGradient: "from-purple-600 via-pink-600 to-fuchsia-600",
+      tint: "bg-purple-500/5 border-purple-500/20",
+      textTint: "text-purple-300/70",
+      iconTint: "text-purple-300/60",
+      accentText: "text-purple-300",
+      label: "Sub-Admin",
+      Icon: Shield,
+      glow1: "bg-purple-500/20",
+      glow2: "bg-pink-500/10",
+      bg: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)",
+    };
+  }
+  if (role === "GUEST") {
+    return {
+      gradient: "from-sky-500 to-blue-500",
+      bgGradient: "from-sky-500 via-blue-500 to-indigo-500",
+      tint: "bg-sky-500/5 border-sky-500/20",
+      textTint: "text-sky-300/70",
+      iconTint: "text-sky-300/60",
+      accentText: "text-sky-300",
+      label: "Guest",
+      Icon: UsersIcon,
+      glow1: "bg-sky-500/20",
+      glow2: "bg-blue-500/10",
+      bg: "linear-gradient(135deg, #0f172a 0%, #0c4a6e 50%, #0f172a 100%)",
+    };
+  }
+  // MENTOR (default)
+  return {
+    gradient: "from-emerald-500 to-teal-500",
+    bgGradient: "from-emerald-500 via-teal-500 to-cyan-500",
+    tint: "bg-emerald-500/5 border-emerald-500/20",
+    textTint: "text-emerald-300/70",
+    iconTint: "text-emerald-300/60",
+    accentText: "text-emerald-300",
+    label: "Mentor",
+    Icon: GraduationCap,
+    glow1: "bg-emerald-500/20",
+    glow2: "bg-teal-500/10",
+    bg: "linear-gradient(135deg, #0f172a 0%, #042f2e 50%, #0f172a 100%)",
+  };
+}
+
+// MentorOnboarding — shown when a mentor/sub-admin/guest logs in for the first
+// time using the admin-issued temp username & password (authMethod=LOCAL).
+// Here they set up their own email & password, which creates a Firebase account
+// and upgrades their DB record so the temp credentials stop working.
 export function MentorOnboarding({
   user,
   onDone,
@@ -42,6 +90,9 @@ export function MentorOnboarding({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const style = roleStyle(user.role);
+  const RoleIcon = style.Icon;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -70,7 +121,7 @@ export function MentorOnboarding({
 
     setLoading(true);
     try {
-      // 1. Create the Firebase account with the mentor's own email + password
+      // 1. Create the Firebase account with the user's own email + password
       let idToken: string;
       let firebaseUid: string;
       try {
@@ -95,7 +146,7 @@ export function MentorOnboarding({
         return;
       }
 
-      // 2. Tell the backend to upgrade this mentor's DB record
+      // 2. Tell the backend to upgrade this user's DB record
       const res = await fetch("/api/auth/mentor-onboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -104,7 +155,7 @@ export function MentorOnboarding({
       const data = await res.json();
       if (!res.ok) {
         // The Firebase account was created but the DB upgrade failed.
-        // Tell the mentor to log out and use the Email tab with their new
+        // Tell the user to log out and use the Email tab with their new
         // email & password — the existing firebase-login fallback will link
         // their firebaseUid to this DB record on the next email login.
         toast.error(data.error || "Setup failed on the server.", {
@@ -173,14 +224,13 @@ export function MentorOnboarding({
       className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
       style={{
         backgroundColor: "#0f172a",
-        backgroundImage:
-          "linear-gradient(135deg, #0f172a 0%, #042f2e 50%, #0f172a 100%)",
+        backgroundImage: style.bg,
         minHeight: "100vh",
       }}
     >
       {/* glow */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className={`absolute top-1/4 left-1/4 w-96 h-96 ${style.glow1} rounded-full blur-3xl pointer-events-none`} />
+      <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 ${style.glow2} rounded-full blur-3xl pointer-events-none`} />
 
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.97 }}
@@ -191,36 +241,36 @@ export function MentorOnboarding({
         <div className="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-3xl p-7 shadow-2xl">
           {/* Header */}
           <div className="flex items-center gap-3 mb-5">
-            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${user.role === "SUB_ADMIN" ? "from-purple-600 to-pink-600" : "from-emerald-500 to-teal-500"} flex items-center justify-center shadow-lg`}>
-              {user.role === "SUB_ADMIN" ? <Shield className="w-6 h-6 text-white" /> : <GraduationCap className="w-6 h-6 text-white" />}
+            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${style.gradient} flex items-center justify-center shadow-lg`}>
+              <RoleIcon className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">
-                Set Up Your {user.role === "SUB_ADMIN" ? "Sub-Admin" : "Mentor"} Account
+                Set Up Your {style.label} Account
               </h1>
-              <span className={`text-[10px] uppercase tracking-widest font-bold ${user.role === "SUB_ADMIN" ? "text-purple-300/70" : "text-emerald-300/70"}`}>
+              <span className={`text-[10px] uppercase tracking-widest font-bold ${style.textTint}`}>
                 One-time setup
               </span>
             </div>
           </div>
 
           {/* Read-only identity summary */}
-          <div className={`mb-5 p-3 rounded-xl ${user.role === "SUB_ADMIN" ? "bg-purple-500/5 border-purple-500/20" : "bg-emerald-500/5 border-emerald-500/20"} border space-y-1.5`}>
+          <div className={`mb-5 p-3 rounded-xl ${style.tint} border space-y-1.5`}>
             <div className="flex items-center gap-2 text-xs text-white/70">
-              <UserIcon className={`w-3.5 h-3.5 ${user.role === "SUB_ADMIN" ? "text-purple-300/60" : "text-emerald-300/60"}`} />
+              <UserIcon className={`w-3.5 h-3.5 ${style.iconTint}`} />
               <span className="text-white/40">Name:</span>
               <span className="font-medium text-white">{user.name}</span>
             </div>
             {user.username && (
               <div className="flex items-center gap-2 text-xs text-white/70">
-                <AtSign className="w-3.5 h-3.5 text-emerald-300/60" />
+                <AtSign className={`w-3.5 h-3.5 ${style.iconTint}`} />
                 <span className="text-white/40">Temp username:</span>
                 <span className="font-mono text-white/80">{user.username}</span>
               </div>
             )}
             {user.college && (
               <div className="flex items-center gap-2 text-xs text-white/70">
-                <Building2 className="w-3.5 h-3.5 text-emerald-300/60" />
+                <Building2 className={`w-3.5 h-3.5 ${style.iconTint}`} />
                 <span className="text-white/40">College:</span>
                 <span className="text-white/80">{user.college.name}</span>
               </div>
@@ -236,7 +286,7 @@ export function MentorOnboarding({
             {/* Email */}
             <div>
               <label className="block text-xs font-medium text-white/70 mb-1.5">
-                Your Email <span className="text-emerald-300">*</span>
+                Your Email <span className={style.accentText}>*</span>
               </label>
               <div className="relative">
                 <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -245,7 +295,7 @@ export function MentorOnboarding({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 transition"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition"
                   required
                   autoComplete="email"
                   autoFocus
@@ -256,7 +306,7 @@ export function MentorOnboarding({
             {/* Password */}
             <div>
               <label className="block text-xs font-medium text-white/70 mb-1.5">
-                Password <span className="text-emerald-300">*</span>
+                Password <span className={style.accentText}>*</span>
               </label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -265,7 +315,7 @@ export function MentorOnboarding({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 6 characters"
-                  className="w-full pl-10 pr-10 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 transition"
+                  className="w-full pl-10 pr-10 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition"
                   required
                   autoComplete="new-password"
                 />
@@ -283,7 +333,7 @@ export function MentorOnboarding({
             {/* Confirm Password */}
             <div>
               <label className="block text-xs font-medium text-white/70 mb-1.5">
-                Confirm Password <span className="text-emerald-300">*</span>
+                Confirm Password <span className={style.accentText}>*</span>
               </label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -292,7 +342,7 @@ export function MentorOnboarding({
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter your password"
-                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30 transition"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition"
                   required
                   autoComplete="new-password"
                 />
@@ -301,7 +351,7 @@ export function MentorOnboarding({
 
             {/* What happens next */}
             <div className="flex items-start gap-2 p-2.5 rounded-lg bg-white/[0.03] border border-white/5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
+              <CheckCircle2 className={`w-3.5 h-3.5 ${style.accentText} mt-0.5 shrink-0`} />
               <p className="text-[10px] text-white/50 leading-relaxed">
                 We&apos;ll create a secure account with your email & password. Your temporary
                 username will be disabled immediately after setup.
@@ -311,7 +361,7 @@ export function MentorOnboarding({
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${user.role === "SUB_ADMIN" ? "from-purple-600 via-pink-600 to-fuchsia-600" : "from-emerald-500 via-teal-500 to-cyan-500"} text-white font-bold text-base tracking-wide shadow-lg hover:scale-[1.02] active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+              className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${style.bgGradient} text-white font-bold text-base tracking-wide shadow-lg hover:scale-[1.02] active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Setting up...</>

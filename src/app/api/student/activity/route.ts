@@ -3,10 +3,10 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { logActivity } from "@/lib/gamify";
 
-// POST /api/student/activity - log arbitrary student activity (page views, time spent etc.)
+// POST /api/student/activity - log arbitrary student/guest activity (page views, time spent etc.)
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {

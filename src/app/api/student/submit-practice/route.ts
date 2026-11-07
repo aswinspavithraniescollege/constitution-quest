@@ -6,9 +6,10 @@ import { awardXp, checkAndAwardBadges, logActivity, XP_REWARDS } from "@/lib/gam
 // POST /api/student/submit-practice
 // Body: { questionId, selectedOption, timeTakenSec }
 // Returns: { correct, correctOption, explanation, whyWrong..., xpAwarded, newBadges }
+// Available to STUDENT and GUEST users (guests can also practice & earn XP).
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {

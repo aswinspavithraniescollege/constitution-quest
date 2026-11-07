@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import {
   Loader2, Sparkles, Shield, Trophy, BookOpen, Flame, GraduationCap, ChevronRight,
   UserPlus, LogIn, AlertCircle, AtSign, Key, User, Building2, Hash, Phone, Eye, EyeOff,
-  Mail, ArrowLeft, Send, CheckCircle2, HelpCircle
+  Mail, ArrowLeft, Send, CheckCircle2, HelpCircle, Users as UsersIcon
 } from "lucide-react";
 import {
   auth,
@@ -19,7 +19,7 @@ import {
 import type { User as FirebaseUser } from "firebase/auth";
 import { syncUserProfile, syncLeaderboardClient, addActivityClient } from "@/lib/firestore";
 
-type Role = "ADMIN" | "MENTOR" | "STUDENT";
+type Role = "ADMIN" | "MENTOR" | "STUDENT" | "GUEST";
 type Mode = "login" | "signup";
 
 const ROLE_CONFIG: Record<Role, {
@@ -51,6 +51,16 @@ const ROLE_CONFIG: Record<Role, {
     description: "First time? Log in with the username your admin issued to set up your email & password. Returning? Use your email & password.",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     accent: "text-emerald-300",
+    firebaseEnabled: true,
+    dualMode: true,
+  },
+  GUEST: {
+    label: "Guest",
+    icon: UsersIcon,
+    tagline: "Visitor Access",
+    description: "First time? Log in with the username & password your admin issued to set up your own email & password. Returning? Use your email & password.",
+    gradient: "from-sky-500 via-blue-500 to-indigo-500",
+    accent: "text-sky-300",
     firebaseEnabled: true,
     dualMode: true,
   },
@@ -751,13 +761,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
         </div>
 
         {/* Role selector tabs */}
-        <div className={`grid gap-2 mb-4 ${mode === "signup" ? "grid-cols-1" : "grid-cols-3"}`}>
+        <div className={`grid gap-2 mb-4 ${mode === "signup" ? "grid-cols-1" : "grid-cols-4"}`}>
           {(Object.keys(ROLE_CONFIG) as Role[]).map(r => {
             const cfg = ROLE_CONFIG[r];
             const RIcon = cfg.icon;
             const active = role === r;
-            // In signup mode, hide Admin and Mentor (created by admin only)
-            if (mode === "signup" && (r === "ADMIN" || r === "MENTOR")) return null;
+            // In signup mode, hide Admin, Mentor and Guest (created by admin only)
+            if (mode === "signup" && (r === "ADMIN" || r === "MENTOR" || r === "GUEST")) return null;
             return (
               <button
                 key={r}
@@ -813,7 +823,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       type="button"
                       onClick={() => setAdminLoginMethod("email")}
                       className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                        adminLoginMethod === "email" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
+                        adminLoginMethod === "email" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : role === "GUEST" ? "from-sky-500 to-blue-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
                       }`}
                     >
                       <AtSign className="w-3.5 h-3.5" /> Email
@@ -822,7 +832,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       type="button"
                       onClick={() => setAdminLoginMethod("username")}
                       className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                        adminLoginMethod === "username" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
+                        adminLoginMethod === "username" ? `bg-gradient-to-r ${role === "MENTOR" ? "from-emerald-500 to-teal-500" : role === "GUEST" ? "from-sky-500 to-blue-500" : "from-purple-500 to-pink-500"} text-white` : "text-white/60 hover:text-white"
                       }`}
                     >
                       <User className="w-3.5 h-3.5" /> Username
@@ -833,6 +843,10 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                 {config.dualMode && (
                   <p className="text-[10px] text-white/40 mb-3 leading-relaxed">
                     {role === "MENTOR"
+                      ? (adminLoginMethod === "email"
+                          ? "Use the email & password you set up during your first login."
+                          : "First-time setup — use the temporary username & password your admin issued. You'll set up your email & password next.")
+                      : role === "GUEST"
                       ? (adminLoginMethod === "email"
                           ? "Use the email & password you set up during your first login."
                           : "First-time setup — use the temporary username & password your admin issued. You'll set up your email & password next.")
@@ -1167,12 +1181,12 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
             <>
               {role === "STUDENT" && "📧 Students sign in with email & password. Admin-issued credentials also work — just use the username in the email field."}
               {role === "MENTOR" && "🎓 Mentors sign in with their college email & password."}
+              {role === "GUEST" && "👤 Guests sign in with the username & password issued by the admin (first time), then with their own email & password."}
               {role === "ADMIN" && "🛡️ Main admin & sub-admins use username + password issued by the main admin."}
             </>
           ) : (
             <>
               {role === "STUDENT" && "📋 Fill all required fields. Your KTU register number helps your mentor identify you."}
-              {role === "MENTOR" && "📋 Fill all required fields. Students will be able to select you as their mentor during signup."}
             </>
           )}
         </div>

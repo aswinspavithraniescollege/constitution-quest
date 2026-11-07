@@ -14,6 +14,9 @@ rules_version = '2';
 //   SUB_ADMIN — Access to their assigned college's data only
 //   MENTOR    — Read access to student data in their college
 //   STUDENT   — Read/write their own data only
+//   GUEST     — External users (visitors, observers, external learners).
+//              Same access as STUDENT (own data, college-wide reads) but they
+//              are filtered out of leaderboards server-side.
 // ============================================================================
 
 service cloud.firestore {
@@ -47,8 +50,12 @@ service cloud.firestore {
     function isSubAdmin()   { return hasProfile() && role() == 'SUB_ADMIN'; }
     function isMentor()     { return hasProfile() && role() == 'MENTOR'; }
     function isStudent()    { return hasProfile() && role() == 'STUDENT'; }
+    function isGuest()      { return hasProfile() && role() == 'GUEST'; }
     function isAdmin()      { return isMainAdmin() || isSubAdmin(); }
     function isAdminOrMentor() { return isAdmin() || isMentor(); }
+    // Students AND guests get the same learner-level access: own data, plus
+    // college-wide reads (leaderboard, activity feed for college, etc.).
+    function isLearner()    { return isStudent() || isGuest(); }
 
     // ========== 1. USER PROFILES ==========
     // This collection stores each user's role, collegeId, and internal userId.
@@ -87,7 +94,7 @@ service cloud.firestore {
     // Main admin: can read ALL activities.
     // Sub-admin: can read activities from their college only.
     // Mentor: can read activities from their college only.
-    // Student: can read their OWN activities only.
+    // Student/Guest: can read their OWN activities only.
     // Any authenticated user can CREATE an activity (their own).
     // Admins can UPDATE activities. Admins, mentors, and the entry owner
     // can DELETE (so a user's activity feed is cleaned up when their account
@@ -96,7 +103,7 @@ service cloud.firestore {
       allow read: if hasProfile() && (
         isMainAdmin() ||
         (isAdminOrMentor() && resource.data.collegeId == collegeId()) ||
-        (isStudent() && resource.data.userId == dbUserId())
+        (isLearner() && resource.data.userId == dbUserId())
       );
       allow create: if hasProfile();
       allow update: if isAdmin();
@@ -132,6 +139,7 @@ service cloud.firestore {
     // The owner can also DELETE their own notes (self-cleanup on account deletion).
     // The path is: notes/{userId}/items/{noteId}
     // userId here is the internal DB userId (not Firebase UID).
+    // Applies to both STUDENT and GUEST users.
     match /notes/{userId}/items/{noteId} {
       allow read, create, update: if hasProfile() && userId == dbUserId();
       allow delete: if hasProfile() && (
@@ -220,12 +228,12 @@ service cloud.firestore {
       return isMainAdmin()
         || (chatId == "global" && hasProfile())
         || (chatId.matches("^college:.*") && chatId == "college:" + collegeId())
-        // dept chat: students + mentor + admins in the same department
+        // dept chat: students + mentor + guests + admins in the same department
         || (chatId.matches("^dept:.*")
             && hasProfile()
             && myProfile().departmentId != null
             && chatId == "dept:" + myProfile().departmentId)
-        // dept-students chat: STUDENTS ONLY (same department, no mentor/admin)
+        // dept-students chat: STUDENTS ONLY (same department, no mentor/admin/guest)
         || (chatId.matches("^dept-students:.*")
             && isStudent()
             && myProfile().departmentId != null
@@ -234,6 +242,7 @@ service cloud.firestore {
         || (chatId.matches("^mentor:.*") && isMentor() && chatId == "mentor:" + collegeId())
         // dm: private 1:1 — the chatId must contain the current user's userId,
         // AND both participants must be in the same department.
+        // Guests can DM other users in their department (same as students).
         || (chatId.matches("^dm:.*")
             && hasProfile()
             && chatId.matches(".*" + dbUserId() + ".*")

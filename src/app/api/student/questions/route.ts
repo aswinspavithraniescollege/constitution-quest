@@ -25,8 +25,9 @@ export async function GET(req: NextRequest) {
   });
 
   // Get user's previous attempts for these questions
+  // (allowed for both STUDENT and GUEST — both can practice)
   let userAttempts = new Map<string, boolean>();
-  if (user.role === "STUDENT") {
+  if (user.role === "STUDENT" || user.role === "GUEST") {
     const attempts = await db.practiceAttempt.findMany({
       where: { userId: user.id, questionId: { in: questions.map(q => q.id) } },
       orderBy: { createdAt: "desc" },
@@ -54,8 +55,8 @@ export async function GET(req: NextRequest) {
     previouslyCorrect: userAttempts.get(q.id) || false,
   }));
 
-  // Log activity (only for students)
-  if (user.role === "STUDENT") {
+  // Log activity (only for real students & guests — not admins/mentors previewing)
+  if (user.role === "STUDENT" || user.role === "GUEST") {
     await logActivity(user.id, "practice_view", `weekId=${weekId}`);
   }
 

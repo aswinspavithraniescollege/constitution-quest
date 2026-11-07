@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     difficulty: q!.difficulty,
     topic: q!.topic?.name,
   }));
-  if (user.role === "STUDENT") {
+  if (user.role === "STUDENT" || user.role === "GUEST") {
     await logActivity(user.id, "mock_start", `mockTestId=${id}`);
   }
   return NextResponse.json({
@@ -47,9 +47,10 @@ export async function GET(req: NextRequest) {
 
 // POST /api/student/submit-mock - submit answers
 // Body: { mockTestId, answers: { questionId: option }, timeTakenSec }
+// Available to STUDENT and GUEST users.
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {

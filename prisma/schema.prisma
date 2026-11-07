@@ -39,7 +39,7 @@ model User {
   email        String?  @unique
   authMethod   String   @default("LOCAL") // LOCAL | FIREBASE
   name         String
-  role         String   // ADMIN | SUB_ADMIN | MENTOR | STUDENT
+  role         String   // ADMIN | SUB_ADMIN | MENTOR | STUDENT | GUEST
   collegeId    String?
   college      College? @relation(fields: [collegeId], references: [id])
   departmentId String?

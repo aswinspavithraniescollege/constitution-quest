@@ -60,10 +60,13 @@ export default function Home() {
     return <LoginScreen onLogin={handleLogin} />;
   }
 
-  // First-time onboarding for mentors AND sub-admins: the admin-issued temp
-  // username/password is only a gateway to reach this setup screen, where they
-  // set their own email & password (authMethod upgrades LOCAL -> FIREBASE).
-  if ((user.role === "MENTOR" || user.role === "SUB_ADMIN") && user.authMethod === "LOCAL") {
+  // First-time onboarding for mentors, sub-admins AND guests: the admin-issued
+  // temp username/password is only a gateway to reach this setup screen, where
+  // they set their own email & password (authMethod upgrades LOCAL -> FIREBASE).
+  if (
+    (user.role === "MENTOR" || user.role === "SUB_ADMIN" || user.role === "GUEST") &&
+    user.authMethod === "LOCAL"
+  ) {
     return (
       <MentorOnboarding
         user={user}
@@ -81,5 +84,7 @@ export default function Home() {
     return <MentorDashboard user={user} onLogout={handleLogout} />;
   }
 
+  // STUDENT and GUEST both use the StudentApp — guests get the same practice/
+  // mock-test interface but are excluded from leaderboards (filtered by role).
   return <StudentApp user={user} onLogout={handleLogout} />;
 }

@@ -40,7 +40,11 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const previewMode = url.searchParams.get("preview") === "student";
 
-  const isStudent = previewMode || user.role === "STUDENT";
+  // isLearner = students AND guests (both get the same chat access except for
+  // the dept-students chat, which is private to actual students only).
+  // isStudentStrict = real students only (used to gate the dept-students chat).
+  const isLearner = previewMode || user.role === "STUDENT" || user.role === "GUEST";
+  const isStudentStrict = previewMode || user.role === "STUDENT";
   const isMentor = !previewMode && user.role === "MENTOR";
   const isAdmin = !previewMode && user.role === "ADMIN";
   const isSubAdmin = !previewMode && user.role === "SUB_ADMIN";
@@ -65,8 +69,8 @@ export async function GET(req: NextRequest) {
   // Determine which chats this user can see.
   const chats: { type: string; chatId: string; label: string; visible: boolean }[] = [];
 
-  // Department chat — students + mentors + admins with a department.
-  if ((isStudent || isMentor || isAdmin || isSubAdmin) && user.departmentId) {
+  // Department chat — students + guests + mentors + admins with a department.
+  if ((isLearner || isMentor || isAdmin || isSubAdmin) && user.departmentId) {
     chats.push({
       type: "dept",
       chatId: `dept:${user.departmentId}`,
@@ -75,8 +79,8 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // Students-only department chat — STUDENTS ONLY (no mentor/admin can see it).
-  if (isStudent && user.departmentId) {
+  // Students-only department chat — STUDENTS ONLY (no mentor/admin/guest can see it).
+  if (isStudentStrict && user.departmentId) {
     chats.push({
       type: "dept-students",
       chatId: `dept-students:${user.departmentId}`,
@@ -113,8 +117,8 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // DM chat — students (and mentors) can DM others in the same department.
-  // We return a list of same-department users (students + the mentor) so the
+  // DM chat — students/guests (and mentors) can DM others in the same department.
+  // We return a list of same-department users (students + guests + the mentor) so the
   // UI can render a picker for private 1:1 DMs.
   let dmRecipients: { id: string; name: string; role: string }[] = [];
   let dmVisible = true;
@@ -123,10 +127,11 @@ export async function GET(req: NextRequest) {
     try {
       const peers = await db.user.findMany({
         where: {
-          // Include both students AND the mentor assigned to this department.
+          // Include students, guests, AND the mentor assigned to this department.
           // (Admins/sub-admins are excluded — they're not part of the dept chat.)
           OR: [
             { role: "STUDENT", active: true, departmentId: user.departmentId },
+            { role: "GUEST", active: true, departmentId: user.departmentId },
             { role: "MENTOR", active: true, departmentId: user.departmentId },
           ],
           id: { not: user.id }, // exclude self

@@ -4,11 +4,11 @@ import { getCurrentUser } from "@/lib/auth";
 import { logActivity } from "@/lib/gamify";
 
 // POST /api/student/delete-account
-// Students can delete their own account
+// Students and guests can delete their own account
 // This deletes: DB records, Firestore data, AND the Firebase account
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {

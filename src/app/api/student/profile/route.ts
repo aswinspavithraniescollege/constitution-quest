@@ -3,10 +3,10 @@ import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
 import { logActivity } from "@/lib/gamify";
 
-// GET /api/student/profile — get current student's profile
+// GET /api/student/profile — get current student/guest profile
 export async function GET() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   const { password, ...safe } = user;
@@ -14,11 +14,11 @@ export async function GET() {
 }
 
 // PATCH /api/student/profile — update own profile
-// Students can edit: name, phone, rollNumber, password (with currentPassword verification)
-// Students CANNOT edit: username, email (Firebase-managed), college, department, mentor, role, xp, level, etc.
+// Students & guests can edit: name, phone, rollNumber, password (with currentPassword verification)
+// They CANNOT edit: username, email (Firebase-managed), college, department, mentor, role, xp, level, etc.
 export async function PATCH(req: NextRequest) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {

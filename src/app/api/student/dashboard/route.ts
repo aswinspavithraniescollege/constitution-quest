@@ -4,9 +4,11 @@ import { getCurrentUser } from "@/lib/auth";
 import { logActivity, updateStreak } from "@/lib/gamify";
 
 // GET /api/student/dashboard
+// Available to STUDENT and GUEST users (guests are external learners who use
+// the same practice/mock-test interface).
 export async function GET() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "STUDENT") {
+  if (!user || (user.role !== "STUDENT" && user.role !== "GUEST")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   // Refresh streak

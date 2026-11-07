@@ -65,6 +65,7 @@ export async function POST(req: NextRequest) {
 
     // If a role was specified, verify the user has that role
     // For the ADMIN portal, both ADMIN and SUB_ADMIN roles are accepted
+    // For the GUEST portal, GUEST role is required
     if (role) {
       const roleMatches = user.role === role ||
         (role === "ADMIN" && (user.role === "ADMIN" || user.role === "SUB_ADMIN"));

@@ -21,7 +21,7 @@ import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard"
 import { StudentPreview } from "@/components/realtime/student-preview";
 import { DummyStudentPreview } from "@/components/realtime/dummy-student-preview";
 
-type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard" | "chat";
+type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "guests" | "exports" | "mock-tests" | "results" | "leaderboard" | "chat";
 
 export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -54,6 +54,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
     { key: "overview", label: "Overview", icon: BarChart3 },
     ...(isMainAdmin ? [{ key: "colleges" as Tab, label: "Colleges", icon: Building2 }] : []),
     ...(isMainAdmin ? [{ key: "sub-admins" as Tab, label: "Sub-Admins", icon: UserCheck }] : []),
+    { key: "guests", label: "Guests", icon: Users },
     { key: "departments", label: "Departments", icon: Layers },
     { key: "mentors", label: "Mentors", icon: GraduationCap },
     { key: "students", label: "Students", icon: Users },
@@ -151,6 +152,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "overview" && <OverviewTab isMainAdmin={isMainAdmin} user={user} />}
         {tab === "colleges" && isMainAdmin && <CollegesTab colleges={colleges} onRefresh={loadColleges} />}
         {tab === "sub-admins" && isMainAdmin && <SubAdminsTab />}
+        {tab === "guests" && <GuestsTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
         {tab === "departments" && <DepartmentsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "mentors" && <MentorsTab collegeId={selectedCollegeId} colleges={colleges} isSubAdmin={isSubAdmin} />}
         {tab === "students" && <StudentsTab user={user} colleges={colleges} isMainAdmin={isMainAdmin} isSubAdmin={isSubAdmin} />}
@@ -2447,6 +2449,289 @@ function SubAdminsTab() {
             }
           </div>
         }
+      </div>
+    </div>
+  );
+}
+
+// ============== GUESTS TAB ==============
+// Guests are external users (visitors, observers, external learners) who can
+// access the practice/mock-test interface but don't appear in leaderboards.
+// Admin creates guest credentials (username + password); the guest logs in via
+// the Guest tab on the login screen and sets up their own email + password.
+function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
+  const [guests, setGuests] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    name: "",
+    collegeId: "",
+    departmentId: "",
+    email: "",
+    phone: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = isSubAdmin ? `/api/admin/guests?collegeId=${user.collegeId}` : "/api/admin/guests";
+      const res = await fetch(url);
+      const data = await res.json();
+      setGuests(data.guests || []);
+    } finally { setLoading(false); }
+  }, [isSubAdmin, user.collegeId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  // Load departments when college changes (only for main admin — sub-admin is locked to their college)
+  useEffect(() => {
+    if (isSubAdmin) {
+      // Sub-admin: load their college's departments
+      if (user.collegeId) {
+        fetch(`/api/admin/departments?collegeId=${user.collegeId}`)
+          .then(r => r.json())
+          .then(d => setDepartments(d.departments || []))
+          .catch(() => setDepartments([]));
+      }
+      return;
+    }
+    // Main admin: load departments for selected college
+    if (!form.collegeId) {
+      setDepartments([]);
+      return;
+    }
+    fetch(`/api/admin/departments?collegeId=${form.collegeId}`)
+      .then(r => r.json())
+      .then(d => setDepartments(d.departments || []))
+      .catch(() => setDepartments([]));
+  }, [form.collegeId, user.collegeId, isSubAdmin]);
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.username || !form.password || !form.name) return;
+    setSubmitting(true);
+    try {
+      // For sub-admin, force collegeId to their own college
+      const payload = isSubAdmin
+        ? { ...form, collegeId: user.collegeId }
+        : form;
+      const res = await fetch("/api/admin/guests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error); return; }
+      toast.success("Guest created!");
+      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, departmentId: "", email: "", phone: "" });
+      load();
+    } finally { setSubmitting(false); }
+  }
+
+  async function del(id: string) {
+    if (!confirm("Delete this guest account? They will lose access immediately. Their practice/mock test history will also be removed.")) return;
+    const res = await fetch(`/api/admin/guests?id=${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Deleted");
+      load();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      toast.error(data.error || "Failed to delete");
+    }
+  }
+
+  async function toggleActive(g: any) {
+    const res = await fetch("/api/admin/guests", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: g.id, active: !g.active }),
+    });
+    if (res.ok) {
+      toast.success(g.active ? "Guest deactivated" : "Guest activated");
+      load();
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-5">
+        <h2 className="text-2xl font-black mb-1 flex items-center gap-2">
+          <Users className="w-6 h-6 text-sky-500" /> Guests
+        </h2>
+        <p className="text-slate-500 text-sm">
+          Guests are external users (visitors, observers, external learners) who can practice questions and take mock tests, but don&apos;t appear in student leaderboards. They log in via the Guest tab on the login screen.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Add Guest form */}
+        <div>
+          <div className="rounded-2xl bg-white border border-slate-200 p-5 sticky top-32">
+            <h3 className="font-bold mb-3 flex items-center gap-2"><Plus className="w-4 h-4 text-sky-500" /> Add Guest</h3>
+            <div className="text-xs text-slate-500 mb-3 p-2 rounded-lg bg-sky-50 border border-sky-200">
+              The guest will use this username &amp; password once to set up their own email &amp; password. After that, the temporary credentials stop working.
+            </div>
+            <form onSubmit={add} className="space-y-3">
+              <div>
+                <label className="text-xs font-bold text-slate-600">Full Name</label>
+                <input
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  placeholder="e.g., Dr. Visitor / John Doe"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-600">Username (for first login)</label>
+                <input
+                  value={form.username}
+                  onChange={e => setForm(f => ({ ...f, username: e.target.value }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  placeholder="e.g., guest-john-001"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-600">Password</label>
+                <input
+                  value={form.password}
+                  onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  type="text"
+                  placeholder="Temp password (share with guest)"
+                  required
+                />
+              </div>
+              {/* College — optional, but lets the guest see that college's leaderboards & chats */}
+              <div>
+                <label className="text-xs font-bold text-slate-600">College (optional — for leaderboard/chat scope)</label>
+                <select
+                  value={isSubAdmin ? (user.collegeId || "") : form.collegeId}
+                  onChange={e => setForm(f => ({ ...f, collegeId: e.target.value, departmentId: "" }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  disabled={isSubAdmin}
+                >
+                  <option value="">— No college (guest only) —</option>
+                  {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+                {isSubAdmin && (
+                  <p className="text-[10px] text-slate-400 mt-1">Sub-admins are locked to their assigned college.</p>
+                )}
+              </div>
+              {/* Department — optional, only if college is set */}
+              {((isSubAdmin && user.collegeId) || form.collegeId) && (
+                <div>
+                  <label className="text-xs font-bold text-slate-600">Department (optional)</label>
+                  <select
+                    value={form.departmentId}
+                    onChange={e => setForm(f => ({ ...f, departmentId: e.target.value }))}
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  >
+                    <option value="">— No specific department —</option>
+                    {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+                  </select>
+                </div>
+              )}
+              <div>
+                <label className="text-xs font-bold text-slate-600">Email (optional)</label>
+                <input
+                  value={form.email}
+                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  type="email"
+                  placeholder="Optional contact email"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-600">Phone (optional)</label>
+                <input
+                  value={form.phone}
+                  onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
+                  placeholder="Optional phone"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-2 rounded-lg bg-gradient-to-r from-sky-500 to-blue-500 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Plus className="w-4 h-4" /> Create Guest</>}
+              </button>
+            </form>
+            <p className="text-xs text-slate-400 mt-3">
+              After creation, share the username &amp; password with the guest. They log in via the <strong>Guest</strong> tab on the login screen and set up their own email &amp; password.
+            </p>
+          </div>
+        </div>
+
+        {/* Guests list */}
+        <div className="lg:col-span-2">
+          <h3 className="font-bold mb-3">Guests ({guests.length})</h3>
+          {loading ? (
+            <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div>
+          ) : (
+            <div className="space-y-2">
+              {guests.length === 0 ? (
+                <div className="text-center py-12 text-slate-400">
+                  No guests yet. Add one to give external users access to practice questions and mock tests.
+                </div>
+              ) : (
+                guests.map(g => (
+                  <div key={g.id} className="rounded-xl bg-white border border-slate-200 p-4">
+                    <div className="flex items-start justify-between gap-3 flex-wrap">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-bold flex items-center gap-2 flex-wrap">
+                          {g.name}
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 font-bold">{g.username}</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-bold uppercase">Guest</span>
+                          {g.authMethod === "LOCAL" ? (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">Pending setup</span>
+                          ) : (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">Active</span>
+                          )}
+                          {!g.active && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-bold">Deactivated</span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-1 flex items-center gap-3 flex-wrap">
+                          {g.college && <span>College: <strong>{g.college.name}</strong></span>}
+                          {g.department && <span>Dept: <strong>{g.department.code}</strong></span>}
+                          {g.email && <span>• {g.email}</span>}
+                          {g.phone && <span>• {g.phone}</span>}
+                        </div>
+                        <div className="text-[10px] text-slate-400 mt-1">
+                          Created {new Date(g.createdAt).toLocaleString()}
+                          {g.lastLoginAt && ` • Last login: ${new Date(g.lastLoginAt).toLocaleString()}`}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          onClick={() => toggleActive(g)}
+                          className={`p-1.5 rounded hover:bg-slate-100 ${g.active ? "text-emerald-600" : "text-slate-400"}`}
+                          title={g.active ? "Deactivate" : "Activate"}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => del(g.id)}
+                          className="p-1.5 rounded hover:bg-red-50 text-red-500"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
