@@ -96,6 +96,13 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
   // Google sign-in state
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  // Pending Google signup: when a user clicks "Continue with Google" on the
+  // LOGIN page but their profile is incomplete, we switch to signup mode.
+  // We remember their Google email so the signup form can reuse their
+  // existing Firebase account instead of trying to create a new one (which
+  // would fail with "email-already-in-use").
+  const [pendingGoogleEmail, setPendingGoogleEmail] = useState<string | null>(null);
+
   // Signup form state
   const [colleges, setColleges] = useState<any[]>([]);
   const [departments, setDepartments] = useState<any[]>([]);
@@ -122,6 +129,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     setShowForgotPassword(false);
     setResetEmail("");
     setResetSent(false);
+    // Clear pending Google signup when switching modes/roles
+    setPendingGoogleEmail(null);
   }, [role, mode]);
 
   // Load colleges for signup
@@ -343,50 +352,74 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
     if (!email.trim()) { toast.error("Please enter your email"); return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) { toast.error("Please enter a valid email address"); return; }
-    if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
-    if (password !== confirmPassword) { toast.error("Passwords do not match"); return; }
+
+    // Check if the user is already signed in via Google (from an incomplete
+    // Google login on the login page). If so, they don't need to enter a
+    // password — we'll reuse their existing Firebase Google session.
+    const hasGoogleSession = !!auth?.currentUser &&
+      !!auth.currentUser.email &&
+      auth.currentUser.email.toLowerCase() === email.trim().toLowerCase();
+
+    // Password validation: only required if the user is NOT already signed in
+    // via Google. Google users can set a password later from their profile.
+    if (!hasGoogleSession) {
+      if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+      if (password !== confirmPassword) { toast.error("Passwords do not match"); return; }
+    }
 
     setLoading(true);
     try {
-      // 1. Create Firebase account
+      // 1. Get a Firebase credential (either reuse existing Google session
+      //    or create a new email/password account)
       let cred: FirebaseUser | null = null;
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        cred = userCred.user;
-      } catch (err: any) {
-        const code = err?.code || "";
-        let msg = "Sign up failed";
-        if (code === "auth/email-already-in-use") {
-          // Email exists in Firebase but may not have a DB record.
-          // Try signing in with the provided credentials, then continue with signup.
-          try {
-            const userCred = await signInWithEmailAndPassword(auth, email, password);
-            cred = userCred.user;
-            // Continue to DB signup below with the existing Firebase account
-          } catch (signInErr: any) {
-            const signInCode = signInErr?.code || "";
-            if (signInCode === "auth/invalid-credential" || signInCode === "auth/wrong-password") {
-              msg = "This email is already registered with a different password. Please sign in with your existing password, or use 'Forgot Password' to reset it.";
-            } else if (signInCode === "auth/too-many-requests") {
-              msg = "Too many attempts. Please try again later or use 'Forgot Password'.";
+      let firebaseUid: string = "";
+
+      if (hasGoogleSession && auth?.currentUser) {
+        // User is already signed in via Google — reuse their session.
+        // No need to create a new account or sign in again.
+        cred = auth.currentUser;
+        firebaseUid = auth.currentUser.uid;
+      } else {
+        // Normal flow: create a new Firebase account with email & password
+        try {
+          const userCred = await createUserWithEmailAndPassword(auth, email, password);
+          cred = userCred.user;
+          firebaseUid = userCred.user.uid;
+        } catch (err: any) {
+          const code = err?.code || "";
+          let msg = "Sign up failed";
+          if (code === "auth/email-already-in-use") {
+            // The email exists in Firebase. Check if the current user is
+            // signed in with the same email (e.g., from a Google popup that
+            // happened just before switching to signup mode).
+            if (auth?.currentUser &&
+                auth.currentUser.email?.toLowerCase() === email.trim().toLowerCase()) {
+              // Reuse the existing Google session
+              cred = auth.currentUser;
+              firebaseUid = auth.currentUser.uid;
             } else {
-              msg = "This email is already registered. Please try signing in instead.";
+              // The email exists but the user isn't signed in with it.
+              // They likely signed up with Google previously. Tell them to
+              // use Google sign-in instead of email/password.
+              toast.error("This email is already registered with Google", {
+                description: "Please use 'Continue with Google' below to sign in and complete your registration.",
+                duration: 8000,
+              });
+              return;
             }
+          } else if (code === "auth/invalid-email") {
+            msg = "Invalid email format";
+          } else if (code === "auth/weak-password") {
+            msg = "Password is too weak (min 6 characters)";
+          } else if (code === "auth/network-request-failed") {
+            msg = "Network error. Check your connection.";
+          } else {
+            msg = err?.message || "Sign up failed";
+          }
+          if (!cred) {
             toast.error(msg);
             return;
           }
-        } else if (code === "auth/invalid-email") {
-          msg = "Invalid email format";
-        } else if (code === "auth/weak-password") {
-          msg = "Password is too weak (min 6 characters)";
-        } else if (code === "auth/network-request-failed") {
-          msg = "Network error. Check your connection.";
-        } else {
-          msg = err?.message || "Sign up failed";
-        }
-        if (!cred) {
-          toast.error(msg);
-          return;
         }
       }
       // 2. Get ID token
@@ -514,19 +547,26 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        // Sign out from Firebase since backend rejected
-        if (auth) await auth.signOut();
-        // If profile is incomplete, switch to signup mode
+        // If profile is incomplete, DON'T sign out from Firebase — the user
+        // needs their Google session to complete the signup. We switch to
+        // signup mode and remember their Google email so the signup form can
+        // reuse the existing Firebase account instead of trying to create a
+        // new one (which would fail with "email-already-in-use").
         if (data.error && data.error.includes("incomplete")) {
           toast.info("Complete your registration", {
-            description: "Your Google account is registered but profile is incomplete. Please fill in the Sign Up form to complete your account.",
+            description: "Your Google account is registered but profile is incomplete. Please fill in the form below to complete your account.",
           });
           setMode("signup");
           setRole("STUDENT");
-          // Set email from Google account
-          if (result.user.email) setEmail(result.user.email);
+          // Remember the Google email so handleSignup can reuse the session
+          if (result.user.email) {
+            setPendingGoogleEmail(result.user.email);
+            setEmail(result.user.email);
+          }
           return;
         }
+        // For other errors, sign out from Firebase
+        if (auth) await auth.signOut();
         toast.error(data.error || "Google login failed");
         return;
       }
@@ -992,6 +1032,20 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
               <>
                 {/* SIGN UP FORM */}
                 <p className="text-xs text-white/60 mb-4 leading-relaxed">{config.description}</p>
+
+                {/* Google session banner — shown when the user came from an
+                    incomplete Google login. Tells them their Google account
+                    will be reused (no password needed). */}
+                {pendingGoogleEmail && (
+                  <div className="mb-4 p-3 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-sky-300 mt-0.5 shrink-0" />
+                    <div className="text-xs text-sky-100/90 leading-relaxed">
+                      <strong className="text-sky-200">Google account detected:</strong> You&apos;re signed in as <strong>{pendingGoogleEmail}</strong>.
+                      Just fill in your details below and click <em>Create Account</em> — no password needed. We&apos;ll use your Google account.
+                    </div>
+                  </div>
+                )}
+
                 <form onSubmit={handleSignup} className="space-y-3">
                   {/* Name */}
                   <div>
@@ -1103,13 +1157,20 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition"
+                        className={`w-full pl-10 pr-3 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition ${
+                          pendingGoogleEmail ? "opacity-70 cursor-not-allowed" : ""
+                        }`}
                         required
                         autoComplete="email"
+                        readOnly={!!pendingGoogleEmail}
                       />
                     </div>
+                    {pendingGoogleEmail && (
+                      <p className="text-[10px] text-sky-300/70 mt-1">🔒 Locked to your Google account email</p>
+                    )}
                   </div>
-                  {/* Password */}
+                  {/* Password — hidden when the user has a Google session (no password needed) */}
+                  {!pendingGoogleEmail && (
                   <div>
                     <label className="block text-xs font-medium text-white/70 mb-1.5">Password * <span className="text-white/40">(min 6 characters)</span></label>
                     <div className="relative">
@@ -1133,7 +1194,9 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       </button>
                     </div>
                   </div>
-                  {/* Confirm Password */}
+                  )}
+                  {/* Confirm Password — hidden when the user has a Google session */}
+                  {!pendingGoogleEmail && (
                   <div>
                     <label className="block text-xs font-medium text-white/70 mb-1.5">Confirm Password *</label>
                     <div className="relative">
@@ -1158,6 +1221,7 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                       </p>
                     )}
                   </div>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}
@@ -1165,6 +1229,8 @@ export function LoginScreen({ onLogin }: { onLogin: (user: any) => void }) {
                   >
                     {loading ? (
                       <><Loader2 className="w-5 h-5 animate-spin" /> Creating your account...</>
+                    ) : pendingGoogleEmail ? (
+                      <><CheckCircle2 className="w-5 h-5" /> Complete Registration</>
                     ) : (
                       <><UserPlus className="w-5 h-5" /> Create {config.label} Account</>
                     )}
