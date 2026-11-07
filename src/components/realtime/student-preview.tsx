@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   X, Crown, Zap, Flame, MessageCircle, Send, Smile, Eye, Home, Brain, Target,
-  Award, Bookmark, Users, Loader2, CheckCircle2, XCircle, Radio, ChevronRight,
+  Award, Bookmark, Users, Loader2, CheckCircle2, XCircle, Radio, ChevronRight, RefreshCw,
 } from "lucide-react";
 
 // StudentFullPreview — a full-screen dummy student app preview.
@@ -32,7 +32,29 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
   // Derived: is the entire chat disabled?
   const chatDisabled = chatTabs.length > 0 ? chatTabs.every(c => !c.visible) && !dmVisible : false;
 
-  // Fetch weeks + check settings on mount
+  // Fetch settings — called on mount AND can be called manually to refresh
+  const refreshSettings = useCallback(async () => {
+    try {
+      const cfgRes = await fetch("/api/student/leaderboard-config?_t=" + Date.now());
+      if (cfgRes.ok) {
+        const cfg = await cfgRes.json();
+        setLbConfig({
+          collegeVisible: !!cfg.collegeLeaderboardVisible,
+          deptVisible: !!cfg.departmentLeaderboardVisible,
+        });
+      }
+    } catch {}
+    try {
+      const chatRes = await fetch("/api/chat/config?preview=student&_t=" + Date.now());
+      if (chatRes.ok) {
+        const chatCfg = await chatRes.json();
+        setChatTabs((chatCfg.chats || []).map((c: any) => ({ type: c.type, label: c.label, visible: c.visible })));
+        setDmVisible(!!(chatCfg.dm?.visible));
+      }
+    } catch {}
+  }, []);
+
+  // Fetch weeks + settings on mount
   useEffect(() => {
     (async () => {
       try {
@@ -40,28 +62,16 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
         const data = await res.json();
         setWeeks(data.weeks || []);
       } catch {}
-      // Check leaderboard settings
-      try {
-        const cfgRes = await fetch("/api/student/leaderboard-config");
-        if (cfgRes.ok) {
-          const cfg = await cfgRes.json();
-          setLbConfig({
-            collegeVisible: !!cfg.collegeLeaderboardVisible,
-            deptVisible: !!cfg.departmentLeaderboardVisible,
-          });
-        }
-      } catch {}
-      // Check chat settings
-      try {
-        const chatRes = await fetch("/api/chat/config?preview=student");
-        if (chatRes.ok) {
-          const chatCfg = await chatRes.json();
-          setChatTabs((chatCfg.chats || []).map((c: any) => ({ type: c.type, label: c.label, visible: c.visible })));
-          setDmVisible(!!(chatCfg.dm?.visible));
-        }
-      } catch {}
+      await refreshSettings();
     })();
-  }, []);
+  }, [refreshSettings]);
+
+  // Auto-refresh settings every 5 seconds so the preview stays in sync
+  // with any toggle changes made by the mentor/admin
+  useEffect(() => {
+    const interval = setInterval(() => { refreshSettings(); }, 5000);
+    return () => clearInterval(interval);
+  }, [refreshSettings]);
 
   // Fetch questions when a week is selected
   const fetchQuestions = useCallback(async (weekId: string) => {
@@ -109,11 +119,16 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
         <div className="flex items-center gap-2">
           <Eye className="w-4 h-4 text-amber-400" />
           <span className="font-bold text-amber-200 text-sm">STUDENT PREVIEW MODE</span>
-          <span className="text-[10px] text-amber-300/60 hidden sm:inline">· Practice & Mock Tests work · Chat is read-only</span>
+          <span className="text-[10px] text-amber-300/60 hidden sm:inline">· Practice & Mock Tests work · Chat is read-only · Auto-refreshes every 5s</span>
         </div>
-        <button onClick={onClose} className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-1">
-          <X className="w-4 h-4" /> Exit Preview
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={() => { refreshSettings(); toast.success("Preview refreshed"); }} className="px-2 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-1" title="Refresh preview settings">
+            <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+          <button onClick={onClose} className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-1">
+            <X className="w-4 h-4" /> Exit
+          </button>
+        </div>
       </div>
 
       {/* Student header */}
