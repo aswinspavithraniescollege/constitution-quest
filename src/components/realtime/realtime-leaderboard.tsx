@@ -30,6 +30,9 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
   const [tab, setTab] = useState<Tab>("college");
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [liveLoading, setLiveLoading] = useState(true);
+  // DB-backed student list — fetched from the server so students without
+  // a Firestore leaderboard entry still appear.
+  const [dbStudents, setDbStudents] = useState<any[]>([]);
 
   // 1. Fetch the visibility config + valid userIds from the server.
   useEffect(() => {
@@ -57,6 +60,22 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
     return () => { cancelled = true; };
   }, []);
 
+  // 1b. Fetch DB-backed student data (for students whose Firestore entry
+  //     doesn't exist yet). This ensures ALL active students appear.
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/student/leaderboard?scope=college");
+        if (res.ok) {
+          const data = await res.json();
+          setDbStudents(data.leaderboard || []);
+        }
+      } catch (e) {
+        console.warn("DB leaderboard fetch failed:", e);
+      }
+    })();
+  }, []);
+
   // 2. Subscribe to the Firestore leaderboard (college-scoped) for real-time
   //    XP/streak updates. We fetch the whole college's entries once and filter
   //    client-side into the two tabs — this avoids two Firestore subscriptions
@@ -75,26 +94,48 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
     return () => { unsub(); };
   }, [config?.collegeCode]);
 
-  // 3. Filter entries for the active tab AND drop deleted users.
-  //    Also: ALWAYS ensure the current student appears in their own view, even
-  //    if their Firestore entry hasn't been written yet (e.g. brand-new student
-  //    who hasn't answered a question). We inject a synthetic entry from the
-  //    user prop so they see themselves with 0 XP.
+  // 3. Merge Firestore entries (real-time XP) with DB students (fallback for
+  //    those without a Firestore entry). This ensures ALL active students appear
+  //    even if their syncLeaderboardClient failed.
   const visibleEntries = useMemo(() => {
     if (!config) return [];
     const validSet = tab === "department"
       ? new Set(config.departmentUserIds)
       : new Set(config.collegeUserIds);
-    // Filter to valid (non-deleted, in-scope) users, then sort by XP desc.
-    const filtered = entries
+
+    // Start with Firestore entries (real-time XP/streak)
+    const firestoreMap = new Map<string, LeaderboardEntry>();
+    entries
       .filter(e => validSet.has(e.userId))
+      .forEach(e => firestoreMap.set(e.userId, e));
+
+    // Merge DB students — add any that are NOT in Firestore yet
+    dbStudents.forEach((s: any) => {
+      if (validSet.has(s.id) && !firestoreMap.has(s.id)) {
+        firestoreMap.set(s.id, {
+          userId: s.id,
+          name: s.name,
+          username: s.username || "",
+          xp: s.xp || 0,
+          level: s.level || 1,
+          streak: s.streak || 0,
+          collegeCode: s.college?.code || "",
+          deptCode: s.department?.code || "",
+          collegeName: s.college?.name || "",
+          updatedAt: null,
+        } as LeaderboardEntry);
+      }
+    });
+
+    // Convert to array and sort by XP desc
+    const filtered = Array.from(firestoreMap.values())
       .sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
 
-    // Ensure the current student is represented in their own view.
+    // Ensure the current student is represented (fallback if neither Firestore
+    // nor DB has them — e.g. brand new student loading for the first time)
     const isInScope = validSet.has(user.id);
     const alreadyPresent = filtered.some(e => e.userId === user.id);
     if (isInScope && !alreadyPresent) {
-      // Inject a fallback entry for the current student (0 XP if unknown).
       filtered.push({
         userId: user.id,
         name: user.name || "You",
@@ -107,11 +148,10 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
         collegeName: "",
         updatedAt: null,
       } as LeaderboardEntry);
-      // Re-sort so the injected entry lands in the right position.
       filtered.sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
     }
     return filtered;
-  }, [entries, tab, config, user.id, user.name, user.xp, user.level, user.streak]);
+  }, [entries, dbStudents, tab, config, user.id, user.name, user.xp, user.level, user.streak]);
 
   // ---- Render states ----
   if (configLoading) {
