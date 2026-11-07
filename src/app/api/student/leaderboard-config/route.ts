@@ -100,10 +100,11 @@ export async function GET() {
 
   // College LB visibility logic:
   // - If LOCKED by admin: visible = admin toggle only (mentor toggle ignored)
-  // - If UNLOCKED: visible = admin ON OR mentor ON (either can enable)
+  // - If UNLOCKED: visible = mentor toggle only (mentor has full control,
+  //   admin's toggle is just the default the mentor starts with)
   const collegeLbVisibleToStudent = collegeLocked
     ? collegeVisible
-    : (collegeVisible || collegeVisibleForMyDept);
+    : collegeVisibleForMyDept;
 
   return NextResponse.json({
     collegeLeaderboardVisible: collegeLbVisibleToStudent,
