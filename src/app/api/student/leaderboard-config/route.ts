@@ -49,20 +49,22 @@ export async function GET() {
   //                                             (admin + that department's mentor)
   let collegeVisible = true;
   let departmentVisible = true;
-  let collegeVisibleForMyDept = true; // per-dept override for the college leaderboard
+  let collegeVisibleForMyDept = true; // mentor's per-dept toggle
+  let collegeLocked = false; // admin lock — when true, mentor toggle is ignored
   try {
     const keys = [
       `lbvis:college:${user.collegeId}`,
+      `lbvis:college-locked:${user.collegeId}`,
       ...(user.departmentId ? [
         `lbvis:dept:${user.departmentId}`,
         `lbvis:college-for-dept:${user.departmentId}`,
       ] : []),
     ];
-    // Use raw-SQL getSettings so this works even if the Prisma Client in
-    // production doesn't know about the Setting model.
     const map = await getSettings(keys);
     const cv = map.get(`lbvis:college:${user.collegeId}`);
     if (cv !== undefined) collegeVisible = cv === "true";
+    const cl = map.get(`lbvis:college-locked:${user.collegeId}`);
+    if (cl !== undefined) collegeLocked = cl === "true";
     if (user.departmentId) {
       const dv = map.get(`lbvis:dept:${user.departmentId}`);
       if (dv !== undefined) departmentVisible = dv === "true";
@@ -96,16 +98,20 @@ export async function GET() {
     console.error("leaderboard-config: could not fetch student ids:", e);
   }
 
-  // The college leaderboard tab is shown only if the college-wide toggle is ON
-  // AND the student's own department hasn't opted out of the college leaderboard.
-  const collegeLbVisibleToStudent = collegeVisible && collegeVisibleForMyDept;
+  // College LB visibility logic:
+  // - If LOCKED by admin: visible = admin toggle only (mentor toggle ignored)
+  // - If UNLOCKED: visible = admin ON OR mentor ON (either can enable)
+  const collegeLbVisibleToStudent = collegeLocked
+    ? collegeVisible
+    : (collegeVisible || collegeVisibleForMyDept);
 
   return NextResponse.json({
     collegeLeaderboardVisible: collegeLbVisibleToStudent,
     departmentLeaderboardVisible: departmentVisible && !!user.departmentId,
-    // Separate flags for the preview to show WHY the college LB is off
+    // Separate flags for the preview
     collegeWideVisible: collegeVisible,
     collegeForDeptVisible: collegeVisibleForMyDept,
+    collegeLocked,
     collegeUserIds,
     departmentUserIds,
     collegeCode: user.college?.code || null,

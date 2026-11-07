@@ -295,6 +295,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
   // College leaderboard visibility for this mentor's department (per-dept override)
   const [collegeLbForDeptVisible, setCollegeLbForDeptVisible] = useState<boolean | null>(null);
   const [collegeLbForDeptToggling, setCollegeLbForDeptToggling] = useState(false);
+  const [collegeLbLocked, setCollegeLbLocked] = useState(false);
   // Chat visibility toggles (mentor controls dept/college/mentor chat, NOT global)
   const [deptChatOn, setDeptChatOn] = useState<boolean | null>(null);
   const [deptStudentsChatOn, setDeptStudentsChatOn] = useState<boolean | null>(null);
@@ -325,6 +326,7 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
           setDeptLbVisible(lbData.departmentLeaderboardVisible);
           setCollegeLbForDeptVisible(lbData.collegeLeaderboardVisibleForDept);
           setDeptLbHasDept(!!lbData.hasDepartment);
+          setCollegeLbLocked(!!lbData.collegeLocked);
         }
       } catch (e) { console.warn("Failed to load dept leaderboard setting:", e); }
       // Fetch chat visibility settings
@@ -649,19 +651,22 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
                       </button>
                     </label>
                     {/* Toggle 2: College leaderboard for this department */}
-                    <label className="flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 cursor-pointer hover:bg-amber-50/50">
+                    <label className={`flex items-center justify-between p-3 rounded-lg bg-white border border-amber-200 ${collegeLbLocked ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-amber-50/50"}`}>
                       <div>
                         <div className="text-sm font-bold text-slate-700">
                           {collegeLbForDeptVisible === null ? "Loading…" : collegeLbForDeptVisible ? "College leaderboard: Visible to your students" : "College leaderboard: Hidden from your students"}
+                          {collegeLbLocked && <span className="ml-2 text-[10px] text-red-500 font-bold">🔒 LOCKED BY ADMIN</span>}
                         </div>
                         <div className="text-[11px] text-slate-500">
-                          Cut off the &ldquo;My College&rdquo; tab for students in YOUR department only. Other departments are unaffected.
+                          {collegeLbLocked
+                            ? "The admin has locked this setting. You cannot change it. Please contact the admin."
+                            : "Cut off the \u201cMy College\u201d tab for students in YOUR department only. Other departments are unaffected."}
                         </div>
                       </div>
                       <button
                         type="button"
-                        onClick={toggleCollegeLbForDept}
-                        disabled={collegeLbForDeptToggling || collegeLbForDeptVisible === null}
+                        onClick={collegeLbLocked ? undefined : toggleCollegeLbForDept}
+                        disabled={collegeLbLocked || collegeLbForDeptToggling || collegeLbForDeptVisible === null}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${collegeLbForDeptVisible ? "bg-emerald-500" : "bg-slate-300"}`}
                       >
                         {collegeLbForDeptToggling ? (

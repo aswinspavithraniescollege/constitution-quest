@@ -23,18 +23,21 @@ export async function GET() {
     const college: Record<string, boolean> = {};
     const department: Record<string, boolean> = {};
     const collegeForDept: Record<string, boolean> = {};
+    const collegeLocked: Record<string, boolean> = {};
     for (const [key, value] of map.entries()) {
       if (key.startsWith("lbvis:college-for-dept:")) {
         collegeForDept[key.slice("lbvis:college-for-dept:".length)] = value === "true";
+      } else if (key.startsWith("lbvis:college-locked:")) {
+        collegeLocked[key.slice("lbvis:college-locked:".length)] = value === "true";
       } else if (key.startsWith("lbvis:college:")) {
         college[key.slice("lbvis:college:".length)] = value === "true";
       } else if (key.startsWith("lbvis:dept:")) {
         department[key.slice("lbvis:dept:".length)] = value === "true";
       }
     }
-    return NextResponse.json({ college, department, collegeForDept });
+    return NextResponse.json({ college, department, collegeForDept, collegeLocked });
   } catch (e) {
     console.warn("leaderboard-settings: could not read settings:", e);
-    return NextResponse.json({ college: {}, department: {}, collegeForDept: {} });
+    return NextResponse.json({ college: {}, department: {}, collegeForDept: {}, collegeLocked: {} });
   }
 }

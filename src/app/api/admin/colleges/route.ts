@@ -99,7 +99,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Only the main admin can edit colleges" }, { status: 403 });
   }
   try {
-    const { id, name, code, location, leaderboardVisible } = await req.json();
+    const { id, name, code, location, leaderboardVisible, leaderboardLocked } = await req.json();
     if (!id) {
       return NextResponse.json({ error: "College id required" }, { status: 400 });
     }
@@ -133,12 +133,22 @@ export async function PATCH(req: NextRequest) {
     const updated = await db.college.update({ where: { id }, data });
 
     // Toggle college leaderboard visibility for students.
-    // Stored as a Setting row: key = "lbvis:college:{collegeId}", value = "true"/"false".
     if (leaderboardVisible !== undefined) {
       try {
         await setSetting(`lbvis:college:${id}`, leaderboardVisible ? "true" : "false");
       } catch (e) {
         console.error("Failed to update college leaderboard visibility setting:", e);
+        resetSettingsTableCache();
+      }
+    }
+
+    // Toggle college leaderboard LOCK — when locked, mentors cannot toggle
+    // the college LB for their department. Admin's setting is final.
+    if (leaderboardLocked !== undefined) {
+      try {
+        await setSetting(`lbvis:college-locked:${id}`, leaderboardLocked ? "true" : "false");
+      } catch (e) {
+        console.error("Failed to update college leaderboard lock setting:", e);
         resetSettingsTableCache();
       }
     }

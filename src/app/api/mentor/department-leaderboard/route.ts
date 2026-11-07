@@ -23,15 +23,19 @@ export async function GET() {
   }
   let deptVisible = true;
   let collegeForDeptVisible = true;
+  let collegeLocked = false;
   try {
     const map = await getSettings([
       `lbvis:dept:${user.departmentId}`,
       `lbvis:college-for-dept:${user.departmentId}`,
+      ...(user.collegeId ? [`lbvis:college-locked:${user.collegeId}`] : []),
     ]);
     const dv = map.get(`lbvis:dept:${user.departmentId}`);
     if (dv !== undefined) deptVisible = dv === "true";
     const cfd = map.get(`lbvis:college-for-dept:${user.departmentId}`);
     if (cfd !== undefined) collegeForDeptVisible = cfd === "true";
+    const cl = user.collegeId ? map.get(`lbvis:college-locked:${user.collegeId}`) : undefined;
+    if (cl !== undefined) collegeLocked = cl === "true";
   } catch (e) {
     // Setting table may not exist yet — default to visible.
     console.warn("department-leaderboard GET: could not read settings:", e);
@@ -39,6 +43,7 @@ export async function GET() {
   return NextResponse.json({
     departmentLeaderboardVisible: deptVisible,
     collegeLeaderboardVisibleForDept: collegeForDeptVisible,
+    collegeLocked,
     hasDepartment: true,
     departmentId: user.departmentId,
     departmentName: user.department?.name || null,
@@ -70,6 +75,19 @@ export async function PATCH(req: NextRequest) {
         { error: "Provide leaderboardVisible or collegeLeaderboardVisibleForDept (boolean)." },
         { status: 400 }
       );
+    }
+
+    // Check if admin has locked the college LB — if so, reject mentor's
+    // attempt to toggle the college LB for their department.
+    if (typeof collegeLeaderboardVisibleForDept === "boolean" && user.collegeId) {
+      const lockMap = await getSettings([`lbvis:college-locked:${user.collegeId}`]);
+      const locked = lockMap.get(`lbvis:college-locked:${user.collegeId}`) === "true";
+      if (locked) {
+        return NextResponse.json(
+          { error: "The admin has locked the college leaderboard. You cannot change this setting. Please contact the admin." },
+          { status: 403 }
+        );
+      }
     }
 
     try {
