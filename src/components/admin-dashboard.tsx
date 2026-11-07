@@ -17,6 +17,8 @@ import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
 import { cleanupUserFirestore } from "@/lib/firestore";
 import { ChatView } from "@/components/realtime/chat-view";
+import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
+import { StudentPreview } from "@/components/realtime/student-preview";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard" | "chat";
 
@@ -24,6 +26,7 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
   const [tab, setTab] = useState<Tab>("overview");
   const [colleges, setColleges] = useState<any[]>([]);
   const [selectedCollegeId, setSelectedCollegeId] = useState<string>("");
+  const [showStudentPreview, setShowStudentPreview] = useState(false);
 
   const isMainAdmin = user.role === "ADMIN";
   const isSubAdmin = user.role === "SUB_ADMIN";
@@ -77,6 +80,13 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowStudentPreview(true)}
+              className="px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 text-sm font-bold flex items-center gap-2 transition"
+              title="Preview what students see"
+            >
+              <Eye className="w-4 h-4" /> <span className="hidden sm:inline">Student Preview</span>
+            </button>
             <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border ${isMainAdmin ? "bg-purple-50 border-purple-200" : "bg-emerald-50 border-emerald-200"}`}>
               <Shield className={`w-4 h-4 ${isMainAdmin ? "text-purple-600" : "text-emerald-600"}`} />
               <span className={`text-sm font-bold ${isMainAdmin ? "text-purple-700" : "text-emerald-700"}`}>{user.name}</span>
@@ -149,6 +159,11 @@ export function AdminDashboard({ user, onLogout }: { user: any; onLogout: () => 
         {tab === "mock-tests" && <MockTestPlayer user={user} onExit={() => setTab("overview")} />}
         {tab === "results" && <ResultsView user={user} apiBase="/api/admin/results" onExit={() => setTab("overview")} />}
       </main>
+
+      {/* Student Preview overlay */}
+      {showStudentPreview && (
+        <StudentPreview user={user} onClose={() => setShowStudentPreview(false)} />
+      )}
     </div>
   );
 }

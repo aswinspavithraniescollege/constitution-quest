@@ -13,6 +13,7 @@ import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
 import { cleanupUserFirestore } from "@/lib/firestore";
 import { ChatView } from "@/components/realtime/chat-view";
+import { StudentPreview } from "@/components/realtime/student-preview";
 
 export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [students, setStudents] = useState<any[]>([]);
@@ -22,6 +23,7 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
   const [showMockTests, setShowMockTests] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showStudentPreview, setShowStudentPreview] = useState(false);
   // Student management state
   const [editingStudent, setEditingStudent] = useState<any | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -107,6 +109,13 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setShowStudentPreview(true)}
+              className="px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 text-sm font-bold flex items-center gap-2 transition"
+              title="Preview what students see"
+            >
+              <Eye className="w-4 h-4" /> <span className="hidden sm:inline">Student Preview</span>
+            </button>
             <button
               onClick={() => setShowChat(true)}
               className="px-3 py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 text-cyan-700 text-sm font-bold flex items-center gap-2"
@@ -243,6 +252,11 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
           <MentorProfileModal user={user} onClose={() => setShowProfile(false)} />
         )}
       </AnimatePresence>
+
+      {/* Student Preview overlay */}
+      {showStudentPreview && (
+        <StudentPreview user={user} onClose={() => setShowStudentPreview(false)} />
+      )}
 
       {/* Student Edit Modal */}
       <AnimatePresence>
