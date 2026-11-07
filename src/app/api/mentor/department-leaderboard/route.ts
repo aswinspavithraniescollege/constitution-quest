@@ -24,12 +24,13 @@ export async function GET() {
   }
   let deptVisible = true;
   let collegeVisible = true;
+  let collegeForDeptVisible = true;
   let collegeLocked = false;
   try {
-    // The college LB toggle is SHARED — both admin and mentor write to
-    // lbvis:college:{collegeId}. The admin's lock is a separate key.
+    // Read: dept LB, shared college LB, per-dept college override, admin lock
     const map = await getSettings([
       `lbvis:dept:${user.departmentId}`,
+      `lbvis:college-for-dept:${user.departmentId}`,
       ...(user.collegeId ? [
         `lbvis:college:${user.collegeId}`,
         `lbvis:college-locked:${user.collegeId}`,
@@ -37,6 +38,8 @@ export async function GET() {
     ]);
     const dv = map.get(`lbvis:dept:${user.departmentId}`);
     if (dv !== undefined) deptVisible = dv === "true";
+    const cfd = map.get(`lbvis:college-for-dept:${user.departmentId}`);
+    if (cfd !== undefined) collegeForDeptVisible = cfd === "true";
     if (user.collegeId) {
       const cv = map.get(`lbvis:college:${user.collegeId}`);
       if (cv !== undefined) collegeVisible = cv === "true";
@@ -50,6 +53,7 @@ export async function GET() {
   return NextResponse.json({
     departmentLeaderboardVisible: deptVisible,
     collegeLeaderboardVisibleForDept: collegeVisible,
+    collegeForDeptVisible,
     collegeLocked,
     hasDepartment: true,
     departmentId: user.departmentId,

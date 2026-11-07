@@ -99,16 +99,13 @@ export async function GET() {
   }
 
   // College LB visibility logic:
-  // - The college LB toggle is SHARED between admin and mentor (both write
-  //   to lbvis:college:{collegeId}).
-  // - The admin has an EXTRA 'Lock' button (lbvis:college-locked) that, when
-  //   ON, takes full control — mentor's toggle is disabled.
-  // - Unlocked: visible = shared toggle (lbvis:college)
-  // - Locked: visible = admin's toggle (same key, but mentor can't change it)
-  // Since both use the same key, the logic is simply:
-  //   visible = collegeVisible (the shared toggle)
-  //   When locked, mentor can't change it — enforced in the PATCH endpoint.
-  const collegeLbVisibleToStudent = collegeVisible;
+  // - College-wide toggle (lbvis:college:{collegeId}): shared between admin and mentor
+  // - Per-department override (lbvis:college-for-dept:{departmentId}): admin can
+  //   turn OFF the college LB for specific departments that don't need it
+  // - Admin lock (lbvis:college-locked:{collegeId}): when locked, mentor can't toggle
+  // - Student sees college LB = college-wide ON AND per-dept ON
+  // - When locked: mentor can't change college-wide toggle
+  const collegeLbVisibleToStudent = collegeVisible && collegeVisibleForMyDept;
 
   return NextResponse.json({
     collegeLeaderboardVisible: collegeLbVisibleToStudent,
