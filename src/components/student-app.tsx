@@ -56,6 +56,9 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
           // leaderboard sync — the Firestore rule 'hasProfile()' checks for
           // the userProfiles document, and syncLeaderboardClient will fail
           // silently if the profile doesn't exist yet).
+          // Guests still need a profile doc (for chat rules, notes, etc.) but
+          // they don't need a leaderboard entry (they're excluded from
+          // leaderboards server-side anyway).
           try {
             await syncUserProfile({
               id: data.user.id,
@@ -74,20 +77,23 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
             console.warn("syncUserProfile failed:", e);
           }
           // Now sync the leaderboard entry (profile should exist now).
-          try {
-            await syncLeaderboardClient({
-              id: data.user.id,
-              name: data.user.name,
-              username: data.user.username,
-              xp: data.user.xp,
-              level: data.user.level,
-              streak: data.user.streak,
-              collegeCode: data.user.college?.code,
-              collegeName: data.user.college?.name,
-              deptCode: data.user.department?.code,
-            });
-          } catch (e) {
-            console.warn("syncLeaderboardClient failed:", e);
+          // Skip for guests — they're filtered out of leaderboards anyway.
+          if (user.role !== "GUEST") {
+            try {
+              await syncLeaderboardClient({
+                id: data.user.id,
+                name: data.user.name,
+                username: data.user.username,
+                xp: data.user.xp,
+                level: data.user.level,
+                streak: data.user.streak,
+                collegeCode: data.user.college?.code,
+                collegeName: data.user.college?.name,
+                deptCode: data.user.department?.code,
+              });
+            } catch (e) {
+              console.warn("syncLeaderboardClient failed:", e);
+            }
           }
         }
       }
@@ -115,13 +121,17 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
     onLogout();
   }
 
+  const isGuest = user.role === "GUEST";
+  // Guests are external learners — they only get practice, mock tests, history,
+  // bookmarks (their own notes), badges, and profile. No leaderboard (they're
+  // excluded from it), no chat/forum (no college connection).
   const navItems: { key: View; label: string; icon: any; color: string }[] = [
     { key: "home", label: "Home", icon: Home, color: "from-purple-500 to-pink-500" },
     { key: "practice-list", label: "Practice", icon: Brain, color: "from-blue-500 to-cyan-500" },
     { key: "mock-list", label: "Mock Tests", icon: Target, color: "from-amber-500 to-orange-500" },
-    { key: "leaderboard", label: "Leaderboard", icon: Crown, color: "from-yellow-500 to-amber-500" },
-    { key: "chat", label: "Chat", icon: MessageCircle, color: "from-cyan-500 to-teal-500" },
-    { key: "forum", label: "Forum", icon: MessageCircle, color: "from-cyan-500 to-blue-500" },
+    ...(isGuest ? [] : [{ key: "leaderboard" as View, label: "Leaderboard", icon: Crown, color: "from-yellow-500 to-amber-500" }]),
+    ...(isGuest ? [] : [{ key: "chat" as View, label: "Chat", icon: MessageCircle, color: "from-cyan-500 to-teal-500" }]),
+    ...(isGuest ? [] : [{ key: "forum" as View, label: "Forum", icon: MessageCircle, color: "from-cyan-500 to-blue-500" }]),
     { key: "bookmarks", label: "Notes", icon: Bookmark, color: "from-amber-500 to-yellow-500" },
     { key: "badges", label: "Badges", icon: Award, color: "from-green-500 to-emerald-500" },
     { key: "history", label: "History", icon: Clock, color: "from-violet-500 to-purple-500" },
@@ -139,7 +149,9 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
             </div>
             <div className="min-w-0">
               <div className="font-black text-base sm:text-lg leading-tight bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">Constitution Quest</div>
-              <div className="text-[10px] sm:text-xs text-white/50 leading-tight truncate">{user.college?.name}</div>
+              <div className="text-[10px] sm:text-xs text-white/50 leading-tight truncate">
+                {isGuest ? "Guest Access • Practice & Mock Tests" : (user.college?.name || "")}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -153,7 +165,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
 
       {/* Nav (horizontal scroll on mobile, grid on desktop) */}
       <div className="max-w-7xl mx-auto px-2 sm:px-6 pt-3 pb-2">
-        <nav className="flex gap-1.5 sm:gap-2 overflow-x-auto cq-scroll pb-2 md:grid md:grid-cols-9 md:gap-2 md:overflow-visible" style={{ WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory" }}>
+        <nav className="flex gap-1.5 sm:gap-2 overflow-x-auto cq-scroll pb-2 md:grid md:gap-2 md:overflow-visible" style={{ WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory", gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}>
           {navItems.map(item => {
             const Icon = item.icon;
             const active = view === item.key || (item.key === "practice-list" && (view === "practice-play")) || (item.key === "mock-list" && (view === "mock-play" || view === "mock-result"));
@@ -189,7 +201,7 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
-              {view === "home" && dash && <HomeView dash={dash} onPractice={() => setView("practice-list")} onMock={() => setView("mock-list")} onLeaderboard={() => setView("leaderboard")} />}
+              {view === "home" && dash && <HomeView dash={dash} user={user} onPractice={() => setView("practice-list")} onMock={() => setView("mock-list")} onLeaderboard={() => setView("leaderboard")} />}
               {view === "practice-list" && (
                 <PracticeListView dash={dash} onSelectWeek={(w) => { setSelectedWeek(w); setView("practice-play"); }} />
               )}
@@ -247,31 +259,47 @@ function UserStatPills({ dash }: { dash: any }) {
 }
 
 // ============== HOME ==============
-function HomeView({ dash, onPractice, onMock, onLeaderboard }: any) {
+function HomeView({ dash, user, onPractice, onMock, onLeaderboard }: any) {
   const u = dash.user;
   const accuracy = dash.stats.accuracy;
   const xpPct = Math.min(100, ((u.xp - xpForLevel(u.level)) / Math.max(1, xpForLevel(u.level + 1) - xpForLevel(u.level))) * 100);
+  const isGuest = user?.role === "GUEST";
 
   return (
     <div className="space-y-6">
-      {/* Announcements (real-time from Firestore) */}
-      <AnnouncementsDisplay collegeId={u.collegeId || null} />
+      {/* Announcements (real-time from Firestore) — hidden for guests (no college) */}
+      {!isGuest && <AnnouncementsDisplay collegeId={u.collegeId || null} />}
 
       {/* Hero welcome */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600/30 via-pink-600/20 to-amber-600/20 border border-purple-400/30 p-6 sm:p-8"
+        className={`relative overflow-hidden rounded-3xl border p-6 sm:p-8 ${
+          isGuest
+            ? "bg-gradient-to-br from-sky-600/30 via-blue-600/20 to-indigo-600/20 border-sky-400/30"
+            : "bg-gradient-to-br from-purple-600/30 via-pink-600/20 to-amber-600/20 border-purple-400/30"
+        }`}
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-purple-500/20 blur-2xl" />
-        <div className="absolute -left-12 -bottom-12 w-40 h-40 rounded-full bg-pink-500/20 blur-2xl" />
+        <div className={`absolute -right-12 -top-12 w-48 h-48 rounded-full blur-2xl ${isGuest ? "bg-sky-500/20" : "bg-purple-500/20"}`} />
+        <div className={`absolute -left-12 -bottom-12 w-40 h-40 rounded-full blur-2xl ${isGuest ? "bg-blue-500/20" : "bg-pink-500/20"}`} />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="text-xs uppercase tracking-widest text-purple-300 font-bold mb-2">Welcome back, hero!</div>
+            <div className={`text-xs uppercase tracking-widest font-bold mb-2 ${isGuest ? "text-sky-300" : "text-purple-300"}`}>
+              {isGuest ? "Welcome, guest!" : "Welcome back, hero!"}
+            </div>
             <h2 className="text-3xl sm:text-4xl font-black mb-1 cq-text-glow">{u.name}</h2>
             <p className="text-white/60 text-sm mb-4">
-              {u.department?.name} • {u.college?.name}
-              {u.mentor && <span className="block mt-0.5">Mentor: {u.mentor}</span>}
+              {isGuest ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-sky-300" />
+                  Guest access — practice questions &amp; mock tests only
+                </span>
+              ) : (
+                <>
+                  {u.department?.name} • {u.college?.name}
+                  {u.mentor && <span className="block mt-0.5">Mentor: {u.mentor}</span>}
+                </>
+              )}
             </p>
             <div className="flex flex-wrap gap-2">
               <button onClick={onPractice} className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 font-bold text-sm flex items-center gap-2 hover:scale-105 transition">
@@ -280,9 +308,11 @@ function HomeView({ dash, onPractice, onMock, onLeaderboard }: any) {
               <button onClick={onMock} className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 font-bold text-sm flex items-center gap-2 hover:scale-105 transition">
                 <Target className="w-4 h-4" /> Take Mock Test
               </button>
-              <button onClick={onLeaderboard} className="px-4 py-2 rounded-xl bg-white/10 border border-white/15 font-bold text-sm flex items-center gap-2 hover:bg-white/20 transition">
-                <Crown className="w-4 h-4" /> Leaderboard
-              </button>
+              {!isGuest && (
+                <button onClick={onLeaderboard} className="px-4 py-2 rounded-xl bg-white/10 border border-white/15 font-bold text-sm flex items-center gap-2 hover:bg-white/20 transition">
+                  <Crown className="w-4 h-4" /> Leaderboard
+                </button>
+              )}
             </div>
           </div>
           {/* Level orb */}

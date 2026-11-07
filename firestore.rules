@@ -224,11 +224,17 @@ service cloud.firestore {
     }
 
     // Helper: can the current user access a given chatId?
+    // Guests have NO chat access — they're external visitors with no college
+    // connection. The chat-config API returns an empty chats array for them,
+    // and the StudentApp hides the Chat nav item for guests. This rule is
+    // defense-in-depth.
     function canAccessChat(chatId) {
-      return isMainAdmin()
+      return !isGuest()
+        && (isMainAdmin()
         || (chatId == "global" && hasProfile())
         || (chatId.matches("^college:.*") && chatId == "college:" + collegeId())
-        // dept chat: students + mentor + guests + admins in the same department
+        // dept chat: students + mentor + admins in the same department
+        // (guests excluded — they have no departmentId)
         || (chatId.matches("^dept:.*")
             && hasProfile()
             && myProfile().departmentId != null
@@ -242,12 +248,11 @@ service cloud.firestore {
         || (chatId.matches("^mentor:.*") && isMentor() && chatId == "mentor:" + collegeId())
         // dm: private 1:1 — the chatId must contain the current user's userId,
         // AND both participants must be in the same department.
-        // Guests can DM other users in their department (same as students).
         || (chatId.matches("^dm:.*")
             && hasProfile()
             && chatId.matches(".*" + dbUserId() + ".*")
             && canAccessDm(chatId))
-        || (isAdmin() && chatId.matches("^college:.*"));
+        || (isAdmin() && chatId.matches("^college:.*")));
     }
 
     // Helper for DM access: both users must be in the same department.

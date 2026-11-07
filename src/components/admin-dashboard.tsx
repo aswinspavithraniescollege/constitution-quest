@@ -2461,14 +2461,11 @@ function SubAdminsTab() {
 // the Guest tab on the login screen and sets up their own email + password.
 function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const [guests, setGuests] = useState<any[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     username: "",
     password: "",
     name: "",
-    collegeId: "",
-    departmentId: "",
     email: "",
     phone: "",
   });
@@ -2486,47 +2483,22 @@ function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   useEffect(() => { load(); }, [load]);
 
-  // Load departments when college changes (only for main admin — sub-admin is locked to their college)
-  useEffect(() => {
-    if (isSubAdmin) {
-      // Sub-admin: load their college's departments
-      if (user.collegeId) {
-        fetch(`/api/admin/departments?collegeId=${user.collegeId}`)
-          .then(r => r.json())
-          .then(d => setDepartments(d.departments || []))
-          .catch(() => setDepartments([]));
-      }
-      return;
-    }
-    // Main admin: load departments for selected college
-    if (!form.collegeId) {
-      setDepartments([]);
-      return;
-    }
-    fetch(`/api/admin/departments?collegeId=${form.collegeId}`)
-      .then(r => r.json())
-      .then(d => setDepartments(d.departments || []))
-      .catch(() => setDepartments([]));
-  }, [form.collegeId, user.collegeId, isSubAdmin]);
-
   async function add(e: React.FormEvent) {
     e.preventDefault();
     if (!form.username || !form.password || !form.name) return;
     setSubmitting(true);
     try {
-      // For sub-admin, force collegeId to their own college
-      const payload = isSubAdmin
-        ? { ...form, collegeId: user.collegeId }
-        : form;
+      // Guests have no college/department — they're external visitors who only
+      // get practice + mock test access. No leaderboard, no chat, no forum.
       const res = await fetch("/api/admin/guests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(form),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error); return; }
       toast.success("Guest created!");
-      setForm({ username: "", password: "", name: "", collegeId: form.collegeId, departmentId: "", email: "", phone: "" });
+      setForm({ username: "", password: "", name: "", email: "", phone: "" });
       load();
     } finally { setSubmitting(false); }
   }
@@ -2562,7 +2534,7 @@ function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
           <Users className="w-6 h-6 text-sky-500" /> Guests
         </h2>
         <p className="text-slate-500 text-sm">
-          Guests are external users (visitors, observers, external learners) who can practice questions and take mock tests, but don&apos;t appear in student leaderboards. They log in via the Guest tab on the login screen.
+          Guests are external users (visitors, observers, external learners) who can <strong>practice questions and take mock tests only</strong>. They have no college connection — no leaderboard, no chat, no forum. They log in via the Guest tab on the login screen.
         </p>
       </div>
 
@@ -2606,36 +2578,6 @@ function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                   required
                 />
               </div>
-              {/* College — optional, but lets the guest see that college's leaderboards & chats */}
-              <div>
-                <label className="text-xs font-bold text-slate-600">College (optional — for leaderboard/chat scope)</label>
-                <select
-                  value={isSubAdmin ? (user.collegeId || "") : form.collegeId}
-                  onChange={e => setForm(f => ({ ...f, collegeId: e.target.value, departmentId: "" }))}
-                  className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
-                  disabled={isSubAdmin}
-                >
-                  <option value="">— No college (guest only) —</option>
-                  {colleges.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-                {isSubAdmin && (
-                  <p className="text-[10px] text-slate-400 mt-1">Sub-admins are locked to their assigned college.</p>
-                )}
-              </div>
-              {/* Department — optional, only if college is set */}
-              {((isSubAdmin && user.collegeId) || form.collegeId) && (
-                <div>
-                  <label className="text-xs font-bold text-slate-600">Department (optional)</label>
-                  <select
-                    value={form.departmentId}
-                    onChange={e => setForm(f => ({ ...f, departmentId: e.target.value }))}
-                    className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-200 text-sm"
-                  >
-                    <option value="">— No specific department —</option>
-                    {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
-                  </select>
-                </div>
-              )}
               <div>
                 <label className="text-xs font-bold text-slate-600">Email (optional)</label>
                 <input
@@ -2699,10 +2641,8 @@ function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                           )}
                         </div>
                         <div className="text-xs text-slate-500 mt-1 flex items-center gap-3 flex-wrap">
-                          {g.college && <span>College: <strong>{g.college.name}</strong></span>}
-                          {g.department && <span>Dept: <strong>{g.department.code}</strong></span>}
-                          {g.email && <span>• {g.email}</span>}
-                          {g.phone && <span>• {g.phone}</span>}
+                          {g.email && <span>📧 {g.email}</span>}
+                          {g.phone && <span>📞 {g.phone}</span>}
                         </div>
                         <div className="text-[10px] text-slate-400 mt-1">
                           Created {new Date(g.createdAt).toLocaleString()}

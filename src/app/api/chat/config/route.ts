@@ -40,10 +40,29 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const previewMode = url.searchParams.get("preview") === "student";
 
-  // isLearner = students AND guests (both get the same chat access except for
-  // the dept-students chat, which is private to actual students only).
-  // isStudentStrict = real students only (used to gate the dept-students chat).
-  const isLearner = previewMode || user.role === "STUDENT" || user.role === "GUEST";
+  // Guests are NOT shown any chat — they have no college connection and chat
+  // is college/department scoped. The StudentApp also hides the Chat nav item
+  // for guests, but we enforce it here too so the API is consistent.
+  if (user.role === "GUEST") {
+    return NextResponse.json({
+      chats: [],
+      user: {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        collegeCode: user.college?.code || null,
+        deptCode: user.department?.code || null,
+        departmentId: user.departmentId,
+      },
+      dm: {
+        visible: false,
+        recipients: [],
+      },
+    });
+  }
+
+  // isLearner = students (used for chat scoping). Guests are handled above.
+  const isLearner = previewMode || user.role === "STUDENT";
   const isStudentStrict = previewMode || user.role === "STUDENT";
   const isMentor = !previewMode && user.role === "MENTOR";
   const isAdmin = !previewMode && user.role === "ADMIN";
@@ -117,9 +136,10 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // DM chat — students/guests (and mentors) can DM others in the same department.
-  // We return a list of same-department users (students + guests + the mentor) so the
+  // DM chat — students (and mentors) can DM others in the same department.
+  // We return a list of same-department users (students + the mentor) so the
   // UI can render a picker for private 1:1 DMs.
+  // Guests are intentionally excluded — they have no college/department.
   let dmRecipients: { id: string; name: string; role: string }[] = [];
   let dmVisible = true;
   if (user.departmentId) {
@@ -127,11 +147,11 @@ export async function GET(req: NextRequest) {
     try {
       const peers = await db.user.findMany({
         where: {
-          // Include students, guests, AND the mentor assigned to this department.
-          // (Admins/sub-admins are excluded — they're not part of the dept chat.)
+          // Include students AND the mentor assigned to this department.
+          // (Admins/sub-admins and guests are excluded — guests have no
+          // department, and admins aren't part of the dept chat.)
           OR: [
             { role: "STUDENT", active: true, departmentId: user.departmentId },
-            { role: "GUEST", active: true, departmentId: user.departmentId },
             { role: "MENTOR", active: true, departmentId: user.departmentId },
           ],
           id: { not: user.id }, // exclude self

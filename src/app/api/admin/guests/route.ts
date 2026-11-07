@@ -38,50 +38,28 @@ export async function GET(req: NextRequest) {
 }
 
 // POST /api/admin/guests — create a new guest account
-// Body: { username, password, name, collegeId?, departmentId?, email?, phone? }
-// Guests are external users (visitors, observers, external learners).
-// collegeId/departmentId are optional — when provided, the guest can see that
-// college's leaderboards and chats.
+// Body: { username, password, name, email?, phone? }
+// Guests are external users (visitors, observers, external learners) who only
+// get practice + mock test access — no college, no department, no chat, no
+// leaderboard. collegeId/departmentId are intentionally NOT accepted here;
+// guests are pure visitors with no college connection.
 export async function POST(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
-    const { username, password, name, collegeId, departmentId, email, phone } = await req.json();
+    const { username, password, name, email, phone } = await req.json();
     if (!username || !password || !name) {
       return NextResponse.json(
         { error: "Username, password and name are required" },
         { status: 400 }
       );
     }
-    // Sub-admins can only create guests in their own college
-    if (user.role === "SUB_ADMIN" && collegeId && collegeId !== user.collegeId) {
-      return NextResponse.json(
-        { error: "You can only create guests in your assigned college" },
-        { status: 403 }
-      );
-    }
     const existing = await db.user.findUnique({ where: { username: username.trim() } });
     if (existing) {
       return NextResponse.json({ error: "Username already exists" }, { status: 400 });
     }
-    // Validate college if provided
-    if (collegeId) {
-      const college = await db.college.findUnique({ where: { id: collegeId } });
-      if (!college) {
-        return NextResponse.json({ error: "College not found" }, { status: 400 });
-      }
-    }
-    // Validate department if provided
-    if (departmentId) {
-      const dept = await db.department.findUnique({ where: { id: departmentId } });
-      if (!dept || (collegeId && dept.collegeId !== collegeId)) {
-        return NextResponse.json(
-          { error: "Department is not part of the chosen college" },
-          { status: 400 }
-        );
-      }
-    }
     const hashed = await hashPassword(password);
+    // Guests are created with NO college/department — they're external visitors.
     const guest = await db.user.create({
       data: {
         username: username.trim(),
@@ -89,8 +67,8 @@ export async function POST(req: NextRequest) {
         authMethod: "LOCAL",
         name,
         role: "GUEST",
-        collegeId: collegeId || null,
-        departmentId: departmentId || null,
+        collegeId: null,
+        departmentId: null,
         email: email || null,
         phone: phone || null,
       },

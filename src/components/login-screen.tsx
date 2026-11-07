@@ -58,7 +58,7 @@ const ROLE_CONFIG: Record<Role, {
     label: "Guest",
     icon: UsersIcon,
     tagline: "Visitor Access",
-    description: "First time? Log in with the username & password your admin issued to set up your own email & password. Returning? Use your email & password.",
+    description: "First time? Log in with the username & password your admin issued to set up your email & password. Returning? Use your email & password. Guests get practice questions & mock tests only — no leaderboard, no chat.",
     gradient: "from-sky-500 via-blue-500 to-indigo-500",
     accent: "text-sky-300",
     firebaseEnabled: true,
