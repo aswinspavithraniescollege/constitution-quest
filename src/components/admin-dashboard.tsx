@@ -19,6 +19,7 @@ import { cleanupUserFirestore } from "@/lib/firestore";
 import { ChatView } from "@/components/realtime/chat-view";
 import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
 import { StudentPreview } from "@/components/realtime/student-preview";
+import { DummyStudentPreview } from "@/components/realtime/dummy-student-preview";
 
 type Tab = "overview" | "colleges" | "departments" | "mentors" | "students" | "sub-admins" | "exports" | "mock-tests" | "results" | "leaderboard" | "chat";
 
@@ -578,19 +579,8 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* LIVE STUDENT PREVIEW — updates immediately when toggles change */}
-      <div className="rounded-2xl overflow-hidden border-2 border-amber-300">
-        <div className="bg-amber-100 px-4 py-2 flex items-center gap-2">
-          <Eye className="w-4 h-4 text-amber-600" />
-          <span className="font-bold text-amber-800 text-sm">Live Student Preview — Leaderboard</span>
-          <span className="text-[10px] text-amber-600 ml-auto">Updates when you toggle settings below</span>
-        </div>
-        <div className="p-4" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
-          <div key={previewKey}>
-            <RealtimeLeaderboard user={{ ...user, role: "STUDENT" }} />
-          </div>
-        </div>
-      </div>
+      {/* DUMMY STUDENT PREVIEW — visual mockup of what students see */}
+      <DummyStudentPreview type="leaderboard" previewKey={previewKey} />
 
       {/* Header + warning if Setting table missing */}
       <div>
@@ -788,19 +778,8 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", padding: "1.5rem", borderRadius: "1rem", minHeight: "80vh" }}>
-      {/* LIVE STUDENT PREVIEW — updates immediately when toggles change */}
-      <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/40">
-        <div className="bg-cyan-500/20 px-4 py-2 flex items-center gap-2">
-          <Eye className="w-4 h-4 text-cyan-300" />
-          <span className="font-bold text-cyan-200 text-sm">Live Student Preview — Chat</span>
-          <span className="text-[10px] text-cyan-300/60 ml-auto">Updates when you toggle settings below</span>
-        </div>
-        <div className="p-4 bg-black/20">
-          <div key={previewKey}>
-            <ChatView user={{ ...user, role: "STUDENT" }} />
-          </div>
-        </div>
-      </div>
+      {/* DUMMY STUDENT PREVIEW — visual mockup of what students see */}
+      <DummyStudentPreview type="chat" previewKey={previewKey} />
 
       <div>
         <h2 className="text-2xl font-black flex items-center gap-2 text-white"><MessageCircle className="w-6 h-6 text-cyan-400" /> Chat Controls</h2>
