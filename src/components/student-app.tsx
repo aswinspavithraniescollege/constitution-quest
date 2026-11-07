@@ -41,6 +41,17 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
         // appear in the live leaderboard (syncLeaderboardClient is otherwise
         // only called after a practice answer or login).
         if (data.user) {
+          // Get firebaseUid from the user prop OR from the current Firebase
+          // auth session (more reliable — the prop might be stale).
+          let firebaseUid = user.firebaseUid || "";
+          if (!firebaseUid) {
+            try {
+              const { auth } = await import("@/lib/firebase");
+              if (auth?.currentUser) {
+                firebaseUid = auth.currentUser.uid;
+              }
+            } catch {}
+          }
           // Sync the user's Firestore profile FIRST (must complete before
           // leaderboard sync — the Firestore rule 'hasProfile()' checks for
           // the userProfiles document, and syncLeaderboardClient will fail
@@ -50,14 +61,14 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
               id: data.user.id,
               name: data.user.name,
               role: user.role || "STUDENT",
-              collegeId: user.collegeId,
+              collegeId: user.collegeId || data.user.collegeId,
               collegeCode: data.user.college?.code,
               collegeName: data.user.college?.name,
-              departmentId: user.departmentId,
+              departmentId: user.departmentId || data.user.departmentId,
               deptCode: data.user.department?.code,
               username: data.user.username,
-              email: user.email,
-              firebaseUid: user.firebaseUid || "",
+              email: user.email || data.user.email,
+              firebaseUid,
             });
           } catch (e) {
             console.warn("syncUserProfile failed:", e);
