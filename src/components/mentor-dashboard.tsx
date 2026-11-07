@@ -346,6 +346,34 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
 
   useEffect(() => { load(); }, [load]);
 
+  // Auto-refresh leaderboard + chat settings every 5 seconds so the
+  // mentor profile stays in sync with admin changes in real-time.
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const lbRes = await fetch("/api/mentor/department-leaderboard?_t=" + Date.now());
+        if (lbRes.ok) {
+          const lbData = await lbRes.json();
+          setDeptLbVisible(lbData.departmentLeaderboardVisible);
+          setCollegeLbForDeptVisible(lbData.collegeLeaderboardVisibleForDept);
+          setCollegeLbLocked(!!lbData.collegeLocked);
+        }
+      } catch {}
+      try {
+        const chatRes = await fetch("/api/mentor/chat-settings?_t=" + Date.now());
+        if (chatRes.ok) {
+          const chatData = await chatRes.json();
+          setDeptChatOn(chatData.deptChatVisible);
+          setDeptStudentsChatOn(chatData.deptStudentsChatVisible);
+          setDmChatOn(chatData.dmChatVisible);
+          setCollegeChatOn(chatData.collegeChatVisible);
+          setMentorChatOn(chatData.mentorChatVisible);
+        }
+      } catch {}
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   async function toggleDeptLb() {
     if (deptLbVisible === null) return;
     const next = !deptLbVisible;
