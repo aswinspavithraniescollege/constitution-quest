@@ -7,7 +7,7 @@ import {
   Loader2, LogOut, Users, Download, Zap, Flame, Target, Brain, Award,
   TrendingUp, Activity, ChevronDown, ChevronUp, Eye, EyeOff, Crown,
   User as UserIcon, Pencil, X, Mail, Phone, Shield, Save, BookOpen,
-  Trash2, AlertCircle, RefreshCw, MessageCircle
+  Trash2, AlertCircle, RefreshCw, MessageCircle, Home, Bookmark
 } from "lucide-react";
 import { MockTestPlayer } from "@/components/mock-test-player";
 import { ResultsView } from "@/components/results-view";
@@ -531,6 +531,89 @@ function MentorProfileModal({ user, onClose }: { user: any; onClose: () => void 
               </div>
               <div>
                 <input type="password" value={form.newPassword} onChange={e => setForm(f => ({ ...f, newPassword: e.target.value }))} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" placeholder="New password (min 6 chars) — leave blank to keep" />
+              </div>
+            </div>
+
+            {/* MINI STUDENT APP PREVIEW — shows what students see, greys out toggled-off features */}
+            <div className="pt-3 border-t border-slate-200">
+              <div className="rounded-xl overflow-hidden border-2 border-slate-300">
+                <div className="bg-slate-200 px-3 py-1.5 flex items-center gap-1.5">
+                  <Eye className="w-3.5 h-3.5 text-slate-500" />
+                  <span className="font-bold text-slate-600 text-xs">Student Preview</span>
+                  <span className="text-[9px] text-slate-400 ml-auto">Buttons grey out as you toggle features off ↓</span>
+                </div>
+                <div className="p-3" style={{ backgroundColor: "#0f172a" }}>
+                  {/* Mini student header */}
+                  <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/10">
+                    <div className="w-6 h-6 rounded-lg overflow-hidden bg-gradient-to-br from-purple-500 via-pink-500 to-amber-500 shrink-0">
+                      <img src="/logo-48.png" alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <span className="text-[10px] font-black text-white/80 truncate">Constitution Quest</span>
+                    <span className="text-[8px] text-white/40">IES</span>
+                  </div>
+                  {/* Mini nav buttons — 2 rows, greyed out when toggled off */}
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {/* Home — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-purple-500/20 border border-purple-400/30">
+                      <Home className="w-3 h-3 text-purple-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Home</span>
+                    </div>
+                    {/* Practice — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-blue-500/20 border border-blue-400/30">
+                      <Brain className="w-3 h-3 text-blue-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Practice</span>
+                    </div>
+                    {/* Mock Tests — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-amber-500/20 border border-amber-400/30">
+                      <Target className="w-3 h-3 text-amber-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Mock</span>
+                    </div>
+                    {/* Leaderboard — greyed out if deptLbVisible is false AND collegeLbForDeptVisible is false */}
+                    <div className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg border transition ${
+                      (deptLbVisible !== false || collegeLbForDeptVisible !== false)
+                        ? "bg-yellow-500/20 border-yellow-400/30"
+                        : "bg-white/5 border-white/10 opacity-30"
+                    }`}>
+                      <Crown className={`w-3 h-3 ${(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? "text-yellow-300" : "text-white/30"}`} />
+                      <span className={`text-[7px] font-bold ${(deptLbVisible !== false || collegeLbForDeptVisible !== false) ? "text-white/70" : "text-white/30"}`}>Leaderboard</span>
+                    </div>
+                  </div>
+                  {/* Row 2 */}
+                  <div className="grid grid-cols-4 gap-1.5 mt-1.5">
+                    {/* Chat — greyed out if ALL chats are off */}
+                    <div className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg border transition ${
+                      (deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || collegeChatOn !== false || mentorChatOn !== false)
+                        ? "bg-cyan-500/20 border-cyan-400/30"
+                        : "bg-white/5 border-white/10 opacity-30"
+                    }`}>
+                      <MessageCircle className={`w-3 h-3 ${(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? "text-cyan-300" : "text-white/30"}`} />
+                      <span className={`text-[7px] font-bold ${(deptChatOn !== false || deptStudentsChatOn !== false || dmChatOn !== false || collegeChatOn !== false || mentorChatOn !== false) ? "text-white/70" : "text-white/30"}`}>Chat</span>
+                    </div>
+                    {/* Forum — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400/30">
+                      <MessageCircle className="w-3 h-3 text-cyan-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Forum</span>
+                    </div>
+                    {/* Notes — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-amber-500/20 border border-amber-400/30">
+                      <Bookmark className="w-3 h-3 text-amber-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Notes</span>
+                    </div>
+                    {/* Badges — always on */}
+                    <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-green-500/20 border border-green-400/30">
+                      <Award className="w-3 h-3 text-green-300" />
+                      <span className="text-[7px] text-white/70 font-bold">Badges</span>
+                    </div>
+                  </div>
+                  {/* Status note */}
+                  <div className="mt-2 text-center">
+                    <span className="text-[8px] text-white/30">
+                      {(deptLbVisible === false && collegeLbForDeptVisible === false) ? "⛔ Leaderboard hidden from students" : "✅ Leaderboard visible to students"}
+                      {" · "}
+                      {(deptChatOn === false && deptStudentsChatOn === false && dmChatOn === false && collegeChatOn === false && mentorChatOn === false) ? "⛔ Chat hidden from students" : "✅ Chat visible to students"}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
