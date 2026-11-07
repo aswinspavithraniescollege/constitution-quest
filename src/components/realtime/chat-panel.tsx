@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Send, Loader2, MessageCircle, Trash2, Users, Building2, Globe, GraduationCap } from "lucide-react";
+import { Send, Loader2, MessageCircle, Trash2, Users, Building2, Globe, GraduationCap, Smile } from "lucide-react";
 import { subscribeToChat, sendChatMessage, deleteChatMessage, type ChatMessage } from "@/lib/chat";
 import { timeAgo } from "@/lib/firestore";
 
@@ -37,9 +37,24 @@ export function ChatPanel({ chatId, chatType, label, user }: {
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
+  const [showEmojis, setShowEmojis] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevMessageCountRef = useRef(0);
   const Icon = CHAT_TYPE_ICONS[chatType] || MessageCircle;
+
+  // Common emoji set for the picker — no external library needed.
+  const EMOJIS = [
+    "😀","😃","😄","😁","😆","😅","😂","🤣","😊","😇","🙂","🙃","😉","😌","😍","🥰",
+    "😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳",
+    "😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤",
+    "😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫",
+    "🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵",
+    "🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","👍","👎","👌","🤌","✌️","🤞",
+    "🤟","🤘","🤙","👈","👉","👆","👇","☝️","✋","🤚","🖐️","🖖","👋","🤝","👏","🙌",
+    "👐","🤲","🙏","✍️","💪","🦾","❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔",
+    "❣️","💕","💞","💓","💗","💖","💘","💝","🔥","⭐","✨","🌟","💫","🎉","🎊","🏆",
+    "✅","❌","❓","❗","💡","📚","✏️","📝","⚖️","🇮🇳","🏛️","📖","🎓","🎯","🔔","💬",
+  ];
 
   // Subscribe to real-time messages.
   useEffect(() => {
@@ -178,14 +193,49 @@ export function ChatPanel({ chatId, chatType, label, user }: {
 
       {/* Input */}
       <form onSubmit={handleSend} className="flex gap-2">
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder={`Message ${label} chat...`}
-          maxLength={1000}
-          className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition text-sm"
-        />
+        <div className="flex-1 relative flex gap-2">
+          {/* Emoji button */}
+          <button
+            type="button"
+            onClick={() => setShowEmojis(s => !s)}
+            className="px-3 rounded-xl bg-white/5 border border-white/15 text-white/60 hover:text-white hover:bg-white/10 transition flex items-center shrink-0"
+            title="Add emoji"
+          >
+            <Smile className="w-5 h-5" />
+          </button>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder={`Message ${label} chat...`}
+            maxLength={1000}
+            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition text-sm"
+          />
+          {/* Emoji picker panel */}
+          <AnimatePresence>
+            {showEmojis && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute bottom-full mb-2 left-0 right-0 max-w-md bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-2xl p-3 shadow-2xl z-50 max-h-48 overflow-y-auto cq-scroll"
+              >
+                <div className="grid grid-cols-8 sm:grid-cols-10 gap-1">
+                  {EMOJIS.map((emoji, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => { setText(t => t + emoji); }}
+                      className="text-xl hover:bg-white/10 rounded-lg p-1 transition"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         <button
           type="submit"
           disabled={sending || !text.trim()}
