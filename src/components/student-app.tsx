@@ -41,35 +41,43 @@ export function StudentApp({ user, onLogout }: { user: any; onLogout: () => void
         // appear in the live leaderboard (syncLeaderboardClient is otherwise
         // only called after a practice answer or login).
         if (data.user) {
-          // Sync the user's Firestore profile (includes departmentId, which
-          // the chat security rules require). Uses the `user` prop (from the
-          // page-level login state) for firebaseUid, collegeId, departmentId,
-          // email — these aren't all returned by the dashboard endpoint.
-          syncUserProfile({
-            id: data.user.id,
-            name: data.user.name,
-            role: user.role || "STUDENT",
-            collegeId: user.collegeId,
-            collegeCode: data.user.college?.code,
-            collegeName: data.user.college?.name,
-            departmentId: user.departmentId,
-            deptCode: data.user.department?.code,
-            username: data.user.username,
-            email: user.email,
-            firebaseUid: user.firebaseUid || "",
-          }).catch(() => {});
-          // Proactively ensure this student has a Firestore leaderboard entry.
-          syncLeaderboardClient({
-            id: data.user.id,
-            name: data.user.name,
-            username: data.user.username,
-            xp: data.user.xp,
-            level: data.user.level,
-            streak: data.user.streak,
-            collegeCode: data.user.college?.code,
-            collegeName: data.user.college?.name,
-            deptCode: data.user.department?.code,
-          }).catch(() => {});
+          // Sync the user's Firestore profile FIRST (must complete before
+          // leaderboard sync — the Firestore rule 'hasProfile()' checks for
+          // the userProfiles document, and syncLeaderboardClient will fail
+          // silently if the profile doesn't exist yet).
+          try {
+            await syncUserProfile({
+              id: data.user.id,
+              name: data.user.name,
+              role: user.role || "STUDENT",
+              collegeId: user.collegeId,
+              collegeCode: data.user.college?.code,
+              collegeName: data.user.college?.name,
+              departmentId: user.departmentId,
+              deptCode: data.user.department?.code,
+              username: data.user.username,
+              email: user.email,
+              firebaseUid: user.firebaseUid || "",
+            });
+          } catch (e) {
+            console.warn("syncUserProfile failed:", e);
+          }
+          // Now sync the leaderboard entry (profile should exist now).
+          try {
+            await syncLeaderboardClient({
+              id: data.user.id,
+              name: data.user.name,
+              username: data.user.username,
+              xp: data.user.xp,
+              level: data.user.level,
+              streak: data.user.streak,
+              collegeCode: data.user.college?.code,
+              collegeName: data.user.college?.name,
+              deptCode: data.user.department?.code,
+            });
+          } catch (e) {
+            console.warn("syncLeaderboardClient failed:", e);
+          }
         }
       }
     } finally {
