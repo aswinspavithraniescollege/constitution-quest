@@ -99,6 +99,9 @@ export async function GET() {
   return NextResponse.json({
     collegeLeaderboardVisible: collegeLbVisibleToStudent,
     departmentLeaderboardVisible: departmentVisible && !!user.departmentId,
+    // Separate flags for the preview to show WHY the college LB is off
+    collegeWideVisible: collegeVisible,
+    collegeForDeptVisible: collegeVisibleForMyDept,
     collegeUserIds,
     departmentUserIds,
     collegeCode: user.college?.code || null,

@@ -23,7 +23,10 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
   const [showResult, setShowResult] = useState(false);
   const [loadingQs, setLoadingQs] = useState(false);
   const [mockTests, setMockTests] = useState<any[]>([]);
-  const [lbConfig, setLbConfig] = useState<{ collegeVisible: boolean; deptVisible: boolean } | null>(null);
+  const [lbConfig, setLbConfig] = useState<{
+    collegeVisible: boolean; deptVisible: boolean;
+    collegeWideVisible: boolean; collegeForDeptVisible: boolean;
+  } | null>(null);
   const [chatTabs, setChatTabs] = useState<{ type: string; label: string; visible: boolean }[]>([]);
   const [dmVisible, setDmVisible] = useState(true);
 
@@ -41,6 +44,8 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
         setLbConfig({
           collegeVisible: !!cfg.collegeLeaderboardVisible,
           deptVisible: !!cfg.departmentLeaderboardVisible,
+          collegeWideVisible: cfg.collegeWideVisible !== false,
+          collegeForDeptVisible: cfg.collegeForDeptVisible !== false,
         });
       }
     } catch {}
@@ -312,7 +317,12 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
                   <p className="text-sm mt-1">Your administrator can re-enable it.</p>
                 </div>
               ) : (
-                <DummyLeaderboard collegeVisible={lbConfig?.collegeVisible ?? true} deptVisible={lbConfig?.deptVisible ?? true} />
+                <DummyLeaderboard
+                  collegeVisible={lbConfig?.collegeVisible ?? true}
+                  deptVisible={lbConfig?.deptVisible ?? true}
+                  collegeWideVisible={lbConfig?.collegeWideVisible ?? true}
+                  collegeForDeptVisible={lbConfig?.collegeForDeptVisible ?? true}
+                />
               )
             )}
 
@@ -366,7 +376,10 @@ export function StudentPreview({ user, onClose }: { user: any; onClose: () => vo
 // ============================================================
 // DUMMY LEADERBOARD — shows/hides tabs based on real settings
 // ============================================================
-function DummyLeaderboard({ collegeVisible, deptVisible }: { collegeVisible: boolean; deptVisible: boolean }) {
+function DummyLeaderboard({ collegeVisible, deptVisible, collegeWideVisible, collegeForDeptVisible }: {
+  collegeVisible: boolean; deptVisible: boolean;
+  collegeWideVisible: boolean; collegeForDeptVisible: boolean;
+}) {
   const entries = [
     { name: "Aswin S Pavithran", xp: 850, level: 5, streak: 7 },
     { name: "Angela C Joy", xp: 720, level: 4, streak: 3 },
@@ -394,10 +407,16 @@ function DummyLeaderboard({ collegeVisible, deptVisible }: { collegeVisible: boo
           <div className="px-3 py-1.5 rounded-lg text-xs font-bold text-white/30">No tabs available</div>
         )}
       </div>
-      {/* Show disabled notice for hidden tabs */}
+      {/* Show disabled notice for hidden tabs — with specific reasons */}
       {!collegeVisible && (
         <div className="mb-3 p-2 rounded-lg bg-red-500/10 border border-red-400/20 text-center">
-          <span className="text-xs text-red-300">⛔ College leaderboard is hidden from your students</span>
+          {!collegeWideVisible ? (
+            <span className="text-xs text-red-300">⛔ College leaderboard is disabled by the ADMIN (college-wide toggle is OFF). Ask the admin to enable it.</span>
+          ) : !collegeForDeptVisible ? (
+            <span className="text-xs text-red-300">⛔ College leaderboard is hidden — your department opted out (mentor toggle is OFF)</span>
+          ) : (
+            <span className="text-xs text-red-300">⛔ College leaderboard is hidden from your students</span>
+          )}
         </div>
       )}
       {!deptVisible && (
