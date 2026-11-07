@@ -423,6 +423,8 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [tableMissing, setTableMissing] = useState(false);
   const [creatingTable, setCreatingTable] = useState(false);
+  // Refresh key — incremented after each toggle to force the preview to re-fetch
+  const [previewKey, setPreviewKey] = useState(0);
 
   // Colleges in scope: all for main admin, just the sub-admin's college.
   const scopedColleges = isSubAdmin
@@ -507,6 +509,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setCollegeVis(prev => ({ ...prev, [collegeId]: next }));
         setTableMissing(false);
         toast.success(`College leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
+        setPreviewKey(k => k + 1); // refresh preview
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -531,6 +534,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setDeptVis(prev => ({ ...prev, [deptId]: next }));
         setTableMissing(false);
         toast.success(`Department leaderboard ${next ? "ENABLED" : "DISABLED"}.`);
+        setPreviewKey(k => k + 1); // refresh preview
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -557,6 +561,7 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         setCollegeForDeptVis(prev => ({ ...prev, [deptId]: next }));
         setTableMissing(false);
         toast.success(`College leaderboard for this department ${next ? "ENABLED" : "DISABLED"}.`);
+        setPreviewKey(k => k + 1); // refresh preview
       } else {
         const d = await res.json().catch(() => ({}));
         if (d.error && d.error.includes("Setting")) setTableMissing(true);
@@ -573,6 +578,20 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* LIVE STUDENT PREVIEW — updates immediately when toggles change */}
+      <div className="rounded-2xl overflow-hidden border-2 border-amber-300">
+        <div className="bg-amber-100 px-4 py-2 flex items-center gap-2">
+          <Eye className="w-4 h-4 text-amber-600" />
+          <span className="font-bold text-amber-800 text-sm">Live Student Preview — Leaderboard</span>
+          <span className="text-[10px] text-amber-600 ml-auto">Updates when you toggle settings below</span>
+        </div>
+        <div className="p-4" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
+          <div key={previewKey}>
+            <RealtimeLeaderboard user={{ ...user, role: "STUDENT" }} />
+          </div>
+        </div>
+      </div>
+
       {/* Header + warning if Setting table missing */}
       <div>
         <h2 className="text-2xl font-black flex items-center gap-2"><Crown className="w-6 h-6 text-amber-500" /> Leaderboard Visibility</h2>
@@ -716,6 +735,8 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const [departments, setDepartments] = useState<any[]>([]);
   const [togglingKey, setTogglingKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  // Refresh key — incremented after each toggle to force the preview to re-fetch
+  const [previewKey, setPreviewKey] = useState(0);
 
   const scopedColleges = isSubAdmin
     ? colleges.filter((c: any) => c.id === user.collegeId)
@@ -748,6 +769,7 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
       if (res.ok) {
         toast.success(`Chat ${next ? "ENABLED" : "DISABLED"}.`);
         await load();
+        setPreviewKey(k => k + 1); // refresh preview
       } else {
         const d = await res.json().catch(() => ({}));
         toast.error(d.error || "Failed");
@@ -766,6 +788,20 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", padding: "1.5rem", borderRadius: "1rem", minHeight: "80vh" }}>
+      {/* LIVE STUDENT PREVIEW — updates immediately when toggles change */}
+      <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/40">
+        <div className="bg-cyan-500/20 px-4 py-2 flex items-center gap-2">
+          <Eye className="w-4 h-4 text-cyan-300" />
+          <span className="font-bold text-cyan-200 text-sm">Live Student Preview — Chat</span>
+          <span className="text-[10px] text-cyan-300/60 ml-auto">Updates when you toggle settings below</span>
+        </div>
+        <div className="p-4 bg-black/20">
+          <div key={previewKey}>
+            <ChatView user={{ ...user, role: "STUDENT" }} />
+          </div>
+        </div>
+      </div>
+
       <div>
         <h2 className="text-2xl font-black flex items-center gap-2 text-white"><MessageCircle className="w-6 h-6 text-cyan-400" /> Chat Controls</h2>
         <p className="text-white/50 text-sm mt-1">
