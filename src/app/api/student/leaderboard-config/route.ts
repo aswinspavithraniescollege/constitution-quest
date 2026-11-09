@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
@@ -17,13 +17,19 @@ export const dynamic = 'force-dynamic';
 //   - departmentLeaderboardVisible: bool (controlled by admin or the dept's mentor)
 //   - collegeUserIds: string[]          (valid, active students in the student's college)
 //   - departmentUserIds: string[]       (valid, active students in the student's department)
+//   - hiddenFromDeptUserIds: string[]   (students who hid from dept LB — student viewers only)
+//   - hiddenFromCollegeUserIds: string[] (students who hid from college LB — student viewers only)
 //
 // The Firestore `leaderboard` collection is real-time but can contain stale
 // entries for deleted users. The client uses collegeUserIds/departmentUserIds
 // to filter those out. These lists also scope the leaderboard to the
 // student's own college/department (privacy: students only see their own
 // college/department peers, never a global list).
-export async function GET() {
+//
+// Query param: ?preview=student — used by the Student Preview feature so
+// admins/mentors can see what a student would see. In preview mode, hidden
+// students ARE filtered (to show the student's view).
+export async function GET(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -37,9 +43,16 @@ export async function GET() {
       departmentLeaderboardVisible: false,
       collegeUserIds: [],
       departmentUserIds: [],
+      hiddenFromDeptUserIds: [],
+      hiddenFromCollegeUserIds: [],
       reason: "You are not assigned to a college.",
     });
   }
+
+  // Check if this is a preview request (?preview=student). Admins/mentors
+  // use this to see what a student would see.
+  const url = new URL(req.url);
+  const previewMode = url.searchParams.get("preview") === "student";
 
   // Read visibility settings. Default to visible if no setting row exists.
   // Wrapped in try/catch so the feature degrades gracefully if the Setting
@@ -121,17 +134,20 @@ export async function GET() {
   // mentors and admins ALWAYS see everyone (they need to monitor all students).
   // The client (realtime-leaderboard.tsx) uses these sets to filter.
   // For mentors/admins, we return empty sets (no filtering — they see all).
+  // Wrapped in try/catch so this feature can NEVER crash the whole endpoint.
   const isPrivilegedViewer = user.role === "ADMIN" || user.role === "SUB_ADMIN" || user.role === "MENTOR";
   let hiddenFromDeptUserIds: string[] = [];
   let hiddenFromCollegeUserIds: string[] = [];
-  if (!isPrivilegedViewer && !previewMode) {
-    // Only students get the filtered view (also skip for preview mode, which
-    // is used by admins/mentors to see what a student sees — but we want them
-    // to see the full leaderboard in their own admin/mentor view).
-    const deptHidden = await getHiddenFromDeptLeaderboardUserIds();
-    const collegeHidden = await getHiddenFromCollegeLeaderboardUserIds();
-    hiddenFromDeptUserIds = Array.from(deptHidden);
-    hiddenFromCollegeUserIds = Array.from(collegeHidden);
+  if (!isPrivilegedViewer || previewMode) {
+    try {
+      const deptHidden = await getHiddenFromDeptLeaderboardUserIds();
+      const collegeHidden = await getHiddenFromCollegeLeaderboardUserIds();
+      hiddenFromDeptUserIds = Array.from(deptHidden);
+      hiddenFromCollegeUserIds = Array.from(collegeHidden);
+    } catch (e) {
+      // Non-fatal — if we can't read hidden users, just show everyone.
+      console.warn("leaderboard-config: could not fetch hidden user ids:", e);
+    }
   }
 
   return NextResponse.json({
