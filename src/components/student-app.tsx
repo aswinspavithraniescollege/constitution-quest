@@ -9,7 +9,7 @@ import {
   CheckCircle2, XCircle, ChevronRight, Home, Brain, Crown, Medal,
   Calendar, TrendingUp, Clock, Sparkles, RefreshCw, AlertTriangle, Lightbulb,
   User as UserIcon, Pencil, X, Mail, Phone, Hash, Shield, Save, MessageCircle, Bookmark,
-  Trash2
+  Trash2, EyeOff
 } from "lucide-react";
 import { RealtimeLeaderboard } from "@/components/realtime/realtime-leaderboard";
 import { DiscussionForum } from "@/components/realtime/discussion-forum";
