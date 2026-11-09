@@ -1002,6 +1002,8 @@ function CollegesTab({ colleges, onRefresh }: any) {
   // Leaderboard visibility settings: { [collegeId]: boolean }
   const [lbVis, setLbVis] = useState<Record<string, boolean>>({});
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  // Expanded college — when set, shows the inline college leaderboard
+  const [expandedCollegeId, setExpandedCollegeId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -1134,57 +1136,82 @@ function CollegesTab({ colleges, onRefresh }: any) {
       </div>
 
       <div className="lg:col-span-2 space-y-3">
-        <h3 className="font-bold">Colleges ({colleges.length})</h3>
+        <h3 className="font-bold">Colleges ({colleges.length}) — click a college to view its leaderboard</h3>
         {colleges.length === 0 ? <div className="text-center py-12 text-slate-400">No colleges yet</div> :
           colleges.map(c => {
             const hasUsers = c._count.users > 0;
             const hasDepts = c._count.departments > 0;
             const canDelete = !hasUsers && !hasDepts;
+            const isExpanded = expandedCollegeId === c.id;
             return (
-              <div key={c.id} className="rounded-2xl bg-white border border-slate-200 p-4 flex items-center justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="font-bold flex items-center gap-2 flex-wrap">
-                    {c.name}
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
-                  </div>
-                  <div className="text-xs text-slate-500 mt-0.5">{c.location || "No location"}</div>
-                  {(hasUsers || hasDepts) && (
-                    <div className="text-[10px] text-amber-600 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      Cannot delete: {hasDepts && `${c._count.departments} dept(s)`}{hasDepts && hasUsers && ", "}{hasUsers && `${c._count.users} user(s)`} assigned
+              <div key={c.id} className={`rounded-2xl bg-white border ${isExpanded ? "border-amber-300 shadow-md" : "border-slate-200"} overflow-hidden`}>
+                <div className="p-4 flex items-center justify-between gap-3">
+                  <button
+                    onClick={() => setExpandedCollegeId(isExpanded ? null : c.id)}
+                    className="min-w-0 flex-1 text-left flex items-center gap-3"
+                    title="Click to view college leaderboard"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold flex items-center gap-2 flex-wrap">
+                        {c.name}
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">{c.code}</span>
+                        {isExpanded && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">Leaderboard ↓</span>}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-0.5">{c.location || "No location"}</div>
+                      {(hasUsers || hasDepts) && (
+                        <div className="text-[10px] text-amber-600 mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          Cannot delete: {hasDepts && `${c._count.departments} dept(s)`}{hasDepts && hasUsers && ", "}{hasUsers && `${c._count.users} user(s)`} assigned
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="flex gap-1 items-center">
-                  <div className="flex gap-4 text-center mr-2">
-                    <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
-                    <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
+                    <div className="flex gap-4 text-center shrink-0">
+                      <div><div className="font-black text-purple-600">{c._count.departments}</div><div className="text-[10px] text-slate-500 uppercase">Depts</div></div>
+                      <div><div className="font-black text-amber-600">{c._count.users}</div><div className="text-[10px] text-slate-500 uppercase">Users</div></div>
+                    </div>
+                    {isExpanded
+                      ? <ChevronUp className="w-5 h-5 text-amber-500 shrink-0" />
+                      : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
+                  </button>
+                  <div className="flex gap-1 items-center shrink-0">
+                    <button
+                      onClick={() => toggleLbVisible(c.id)}
+                      disabled={togglingId === c.id}
+                      title={lbVis[c.id] !== false ? "Leaderboard visible to students — click to HIDE" : "Leaderboard hidden from students — click to SHOW"}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[c.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
+                    >
+                      {togglingId === c.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
+                      {lbVis[c.id] !== false ? "LB Visible" : "LB Hidden"}
+                    </button>
+                    <button
+                      onClick={() => setEditing({ ...c })}
+                      title="Edit college"
+                      className="p-1.5 rounded hover:bg-blue-50 text-blue-500"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => del(c.id, c.name)}
+                      disabled={!canDelete || deletingId === c.id}
+                      title={canDelete ? "Delete college" : "Delete all departments and users first"}
+                      className="p-1.5 rounded hover:bg-red-50 text-red-500 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    >
+                      {deletingId === c.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => toggleLbVisible(c.id)}
-                    disabled={togglingId === c.id}
-                    title={lbVis[c.id] !== false ? "Leaderboard visible to students — click to HIDE" : "Leaderboard hidden from students — click to SHOW"}
-                    className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[c.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
-                  >
-                    {togglingId === c.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
-                    {lbVis[c.id] !== false ? "LB Visible" : "LB Hidden"}
-                  </button>
-                  <button
-                    onClick={() => setEditing({ ...c })}
-                    title="Edit college"
-                    className="p-1.5 rounded hover:bg-blue-50 text-blue-500"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => del(c.id, c.name)}
-                    disabled={!canDelete || deletingId === c.id}
-                    title={canDelete ? "Delete college" : "Delete all departments and users first"}
-                    className="p-1.5 rounded hover:bg-red-50 text-red-500 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
-                  >
-                    {deletingId === c.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                  </button>
                 </div>
+                {/* Inline college leaderboard — shown when this college is expanded */}
+                {isExpanded && (
+                  <div className="border-t border-amber-200 bg-amber-50/30 p-3">
+                    <AdminLeaderboardTable
+                      scope="college"
+                      collegeId={c.id}
+                      title={`🏫 ${c.name} (${c.code}) — College Leaderboard`}
+                      limit={20}
+                      showCollegeColumn={false}
+                    />
+                  </div>
+                )}
               </div>
             );
           })
@@ -1208,29 +1235,6 @@ function CollegesTab({ colleges, onRefresh }: any) {
           </div>
         </EditModal>
       )}
-
-      {/* College Leaderboards — one per college */}
-      <div className="lg:col-span-3 space-y-4">
-        <h3 className="font-bold text-lg flex items-center gap-2">
-          <Crown className="w-5 h-5 text-amber-500" /> College Leaderboards
-        </h3>
-        {colleges.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-sm">No colleges yet.</div>
-        ) : (
-          <div className="space-y-4">
-            {colleges.map(c => (
-              <AdminLeaderboardTable
-                key={c.id}
-                scope="college"
-                collegeId={c.id}
-                title={`🏫 ${c.name} (${c.code}) — College Leaderboard`}
-                limit={20}
-                showCollegeColumn={false}
-              />
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
@@ -1249,6 +1253,8 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
   // Department leaderboard visibility: { [departmentId]: boolean }
   const [lbVis, setLbVis] = useState<Record<string, boolean>>({});
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  // Expanded department — when set, shows the inline department leaderboard
+  const [expandedDeptId, setExpandedDeptId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -1387,39 +1393,65 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
       </div>
 
       <div className="lg:col-span-2">
-        <h3 className="font-bold mb-3">Departments {collegeId ? "(filtered)" : "(all)"}</h3>
+        <h3 className="font-bold mb-3">Departments {collegeId ? "(filtered)" : "(all)"} — click a department to view its leaderboard</h3>
         {loading ? <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div> :
           <div className="space-y-2">
             {departments.length === 0 ? <div className="text-center py-12 text-slate-400">No departments</div> :
-              departments.map(d => (
-                <div key={d.id} className="rounded-xl bg-white border border-slate-200 p-3 flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold flex items-center gap-2">
-                      {d.name}
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">{d.code}</span>
+              departments.map(d => {
+                const isExpanded = expandedDeptId === d.id;
+                return (
+                  <div key={d.id} className={`rounded-xl bg-white border ${isExpanded ? "border-amber-300 shadow-md" : "border-slate-200"} overflow-hidden`}>
+                    <div className="p-3 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => setExpandedDeptId(isExpanded ? null : d.id)}
+                        className="min-w-0 flex-1 text-left flex items-center gap-3"
+                        title="Click to view department leaderboard"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="font-semibold flex items-center gap-2 flex-wrap">
+                            {d.name}
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">{d.code}</span>
+                            {isExpanded && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">Leaderboard ↓</span>}
+                          </div>
+                          <div className="text-xs text-slate-500">{d.college?.name} • {d._count.users} users</div>
+                        </div>
+                        {isExpanded
+                          ? <ChevronUp className="w-5 h-5 text-amber-500 shrink-0" />
+                          : <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />}
+                      </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          onClick={() => toggleLbVisible(d.id)}
+                          disabled={togglingId === d.id}
+                          title={lbVis[d.id] !== false ? "Department leaderboard visible to students — click to HIDE" : "Department leaderboard hidden from students — click to SHOW"}
+                          className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[d.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
+                        >
+                          {togglingId === d.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
+                          {lbVis[d.id] !== false ? "LB Visible" : "LB Hidden"}
+                        </button>
+                        <button onClick={() => setEditing({ ...d })} title="Edit department" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => del(d.id)} title="Delete department" className="p-1.5 rounded hover:bg-red-50 text-red-500">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="text-xs text-slate-500">{d.college?.name}</div>
+                    {/* Inline department leaderboard — shown when this department is expanded */}
+                    {isExpanded && (
+                      <div className="border-t border-amber-200 bg-amber-50/30 p-3">
+                        <AdminLeaderboardTable
+                          scope="department"
+                          departmentId={d.id}
+                          title={`🎓 ${d.name} (${d.code}) — ${d.college?.name || ""} — Department Leaderboard`}
+                          limit={20}
+                          showCollegeColumn={false}
+                        />
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-500 mr-2">{d._count.users} users</span>
-                    <button
-                      onClick={() => toggleLbVisible(d.id)}
-                      disabled={togglingId === d.id}
-                      title={lbVis[d.id] !== false ? "Department leaderboard visible to students — click to HIDE" : "Department leaderboard hidden from students — click to SHOW"}
-                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 transition disabled:opacity-50 ${lbVis[d.id] !== false ? "bg-emerald-50 border-emerald-300 text-emerald-700 hover:bg-emerald-100" : "bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200"}`}
-                    >
-                      {togglingId === d.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Crown className="w-3 h-3" />}
-                      {lbVis[d.id] !== false ? "LB Visible" : "LB Hidden"}
-                    </button>
-                    <button onClick={() => setEditing({ ...d })} title="Edit department" className="p-1.5 rounded hover:bg-blue-50 text-blue-500">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => del(d.id)} title="Delete department" className="p-1.5 rounded hover:bg-red-50 text-red-500">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))
+                );
+              })
             }
           </div>
         }
@@ -1437,31 +1469,6 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         </EditModal>
       )}
-
-      {/* Department Leaderboards — one per department */}
-      <div className="lg:col-span-3 space-y-4">
-        <h3 className="font-bold text-lg flex items-center gap-2">
-          <Crown className="w-5 h-5 text-amber-500" /> Department Leaderboards
-        </h3>
-        {loading ? (
-          <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-amber-500" /></div>
-        ) : departments.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-sm">No departments yet.</div>
-        ) : (
-          <div className="space-y-4">
-            {departments.map(d => (
-              <AdminLeaderboardTable
-                key={d.id}
-                scope="department"
-                departmentId={d.id}
-                title={`🎓 ${d.name} (${d.code}) — ${d.college?.name || ""} — Department Leaderboard`}
-                limit={20}
-                showCollegeColumn={false}
-              />
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
