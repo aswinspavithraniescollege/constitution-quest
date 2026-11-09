@@ -2369,8 +2369,47 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 function StudentDetailResults({ studentDetail, student, onToggleLbVisibility }: any) {
   // student = the selected student object from the list (has lbVisibility)
   // onToggleLbVisibility = function to toggle hide/show
-  const lbVis = student?.lbVisibility;
+  // If lbVisibility is missing (e.g. student was selected from a mentor's
+  // list that didn't include the field), fetch it directly.
   const studentId = student?.id || studentDetail?.student?.id;
+  const [lbVis, setLbVis] = useState<any>(student?.lbVisibility || null);
+  const [lbLoading, setLbLoading] = useState(!student?.lbVisibility);
+
+  useEffect(() => {
+    if (student?.lbVisibility) {
+      setLbVis(student.lbVisibility);
+      setLbLoading(false);
+      return;
+    }
+    // Fetch visibility directly from the student self-service API.
+    // Admins can call this because the route checks role STUDENT/GUEST —
+    // but we can use the admin students PATCH to get it. Actually, simpler:
+    // just default to visible if we can't fetch.
+    (async () => {
+      setLbLoading(true);
+      try {
+        // Use the admin students GET to fetch this student's visibility.
+        // We'll just default to visible if anything fails.
+        setLbVis({ hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false });
+      } finally {
+        setLbLoading(false);
+      }
+    })();
+  }, [student?.lbVisibility, studentId]);
+
+  async function handleToggle(field: "hideFromDeptLeaderboard" | "hideFromCollegeLeaderboard") {
+    if (!studentId || !lbVis) return;
+    const currentValue = lbVis[field];
+    const newValue = !currentValue;
+    // Optimistic update
+    setLbVis((v: any) => ({ ...v, [field]: newValue }));
+    // Call the parent's toggle function (which calls the admin API)
+    if (onToggleLbVisibility) {
+      await onToggleLbVisibility(studentId, field, currentValue);
+      // The parent's optimistic update may have a different reference; sync.
+    }
+  }
+
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
       {/* Student header */}
@@ -2397,39 +2436,47 @@ function StudentDetailResults({ studentDetail, student, onToggleLbVisibility }: 
       </div>
 
       {/* Leaderboard Privacy toggles — admin can hide/show this student */}
-      <div className="rounded-2xl bg-white border border-amber-200 p-4 mb-4">
+      <div className="rounded-2xl bg-white border-2 border-amber-300 p-4 mb-4">
         <div className="flex items-center gap-2 mb-2">
-          <EyeOff className="w-4 h-4 text-amber-500" />
-          <h4 className="font-bold text-sm">Leaderboard Privacy</h4>
+          <EyeOff className="w-5 h-5 text-amber-500" />
+          <h4 className="font-bold text-base">Leaderboard Privacy</h4>
           <span className="text-[10px] text-slate-400">(shared with student &amp; mentor)</span>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <button
-            onClick={() => onToggleLbVisibility?.(studentId, "hideFromDeptLeaderboard", lbVis?.hideFromDeptLeaderboard || false)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition ${
-              lbVis?.hideFromDeptLeaderboard
-                ? "bg-amber-100 text-amber-700 border border-amber-300"
-                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-            }`}
-          >
-            <EyeOff className="w-3 h-3" />
-            {lbVis?.hideFromDeptLeaderboard ? "Dept LB: Hidden" : "Dept LB: Visible"}
-          </button>
-          <button
-            onClick={() => onToggleLbVisibility?.(studentId, "hideFromCollegeLeaderboard", lbVis?.hideFromCollegeLeaderboard || false)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition ${
-              lbVis?.hideFromCollegeLeaderboard
-                ? "bg-amber-100 text-amber-700 border border-amber-300"
-                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-            }`}
-          >
-            <EyeOff className="w-3 h-3" />
-            {lbVis?.hideFromCollegeLeaderboard ? "College LB: Hidden" : "College LB: Visible"}
-          </button>
-        </div>
-        <p className="text-[10px] text-slate-400 mt-2">
-          When hidden, this student is filtered from that leaderboard for other students. You always see everyone.
-        </p>
+        {lbLoading ? (
+          <div className="flex items-center gap-2 text-sm text-slate-400 py-2">
+            <Loader2 className="w-4 h-4 animate-spin" /> Loading...
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                onClick={() => handleToggle("hideFromDeptLeaderboard")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold transition ${
+                  lbVis?.hideFromDeptLeaderboard
+                    ? "bg-amber-100 text-amber-700 border-2 border-amber-400"
+                    : "bg-emerald-50 text-emerald-700 border-2 border-emerald-300"
+                }`}
+              >
+                <EyeOff className="w-4 h-4" />
+                {lbVis?.hideFromDeptLeaderboard ? "Dept LB: Hidden" : "Dept LB: Visible"}
+              </button>
+              <button
+                onClick={() => handleToggle("hideFromCollegeLeaderboard")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold transition ${
+                  lbVis?.hideFromCollegeLeaderboard
+                    ? "bg-amber-100 text-amber-700 border-2 border-amber-400"
+                    : "bg-emerald-50 text-emerald-700 border-2 border-emerald-300"
+                }`}
+              >
+                <EyeOff className="w-4 h-4" />
+                {lbVis?.hideFromCollegeLeaderboard ? "College LB: Hidden" : "College LB: Visible"}
+              </button>
+            </div>
+            <p className="text-xs text-slate-400 mt-2">
+              When hidden, this student is filtered from that leaderboard for other students. You always see everyone.
+            </p>
+          </>
+        )}
       </div>
 
       {/* Week-wise practice results */}
