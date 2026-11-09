@@ -86,6 +86,56 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
     await load();
   }
 
+  // Toggle a student's leaderboard visibility (dept or college).
+  // Shared switch — same setting the student and admin can also change.
+  const [lbTogglingId, setLbTogglingId] = useState<string | null>(null);
+
+  async function handleToggleLbVisibility(studentId: string, field: "hideFromDeptLeaderboard" | "hideFromCollegeLeaderboard", currentValue: boolean) {
+    const newValue = !currentValue;
+    // Optimistic update
+    setStudents(prev => prev.map(s => s.id === studentId ? {
+      ...s,
+      lbVisibility: {
+        ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+        [field]: newValue,
+      },
+    } : s));
+    setLbTogglingId(studentId);
+    try {
+      const res = await fetch("/api/mentor/students", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: studentId, [field]: newValue }),
+      });
+      if (!res.ok) {
+        // Revert
+        setStudents(prev => prev.map(s => s.id === studentId ? {
+          ...s,
+          lbVisibility: {
+            ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+            [field]: currentValue,
+          },
+        } : s));
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || "Failed to update");
+      } else {
+        toast.success(newValue ? "Student hidden from leaderboard" : "Student visible on leaderboard");
+      }
+    } catch (e) {
+      // Revert
+      setStudents(prev => prev.map(s => s.id === studentId ? {
+        ...s,
+        lbVisibility: {
+          ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+          [field]: currentValue,
+        },
+      } : s));
+      toast.error("Network error");
+    } finally {
+      setLbTogglingId(null);
+    }
+  }
+
   // Compute aggregate stats
   const totals = students.reduce((acc, s) => ({
     xp: acc.xp + s.xp,
@@ -209,6 +259,8 @@ export function MentorDashboard({ user, onLogout }: { user: any; onLogout: () =>
                 onEdit={() => setEditingStudent(s)}
                 onDelete={() => handleDeleteStudent(s)}
                 deleting={deletingId === s.id}
+                onToggleLbVisibility={handleToggleLbVisibility}
+                lbToggling={lbTogglingId === s.id}
               />
             ))}
           </div>
@@ -873,7 +925,7 @@ function MentorDeleteAccount({ user, onDeleted }: { user: any; onDeleted: () => 
   );
 }
 
-function StudentRow({ student: s, expanded, onToggle, mentorDepartmentId, onEdit, onDelete, deleting }: any) {
+function StudentRow({ student: s, expanded, onToggle, mentorDepartmentId, onEdit, onDelete, deleting, onToggleLbVisibility, lbToggling }: any) {
   // A mentor can only manage students in their own department. If the mentor has
   // no department assigned, they can't manage anyone.
   const canManage = !!mentorDepartmentId && s.departmentId === mentorDepartmentId;
@@ -895,6 +947,12 @@ function StudentRow({ student: s, expanded, onToggle, mentorDepartmentId, onEdit
                 {s.rollNumber && <span className="text-xs text-slate-500">{s.rollNumber}</span>}
                 {!s.active && (
                   <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-bold">Inactive</span>
+                )}
+                {s.lbVisibility?.hideFromDeptLeaderboard && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold" title="Hidden from dept leaderboard">Dept LB: Hidden</span>
+                )}
+                {s.lbVisibility?.hideFromCollegeLeaderboard && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold" title="Hidden from college leaderboard">College LB: Hidden</span>
                 )}
               </div>
               <div className="text-xs text-slate-500">{s.department?.name}</div>
@@ -1032,6 +1090,46 @@ function StudentRow({ student: s, expanded, onToggle, mentorDepartmentId, onEdit
               </div>
             </div>
           </div>
+
+          {/* Leaderboard visibility toggles — shared switch (student/mentor/admin) */}
+          {canManage && (
+            <div className="mt-4 pt-3 border-t border-slate-200">
+              <div className="flex items-center gap-2 mb-2">
+                <EyeOff className="w-4 h-4 text-amber-500" />
+                <h4 className="font-bold text-sm">Leaderboard Privacy</h4>
+                <span className="text-[10px] text-slate-400">(shared with student &amp; admin)</span>
+              </div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <button
+                  onClick={() => onToggleLbVisibility?.(s.id, "hideFromDeptLeaderboard", s.lbVisibility?.hideFromDeptLeaderboard || false)}
+                  disabled={lbToggling}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition disabled:opacity-50 ${
+                    s.lbVisibility?.hideFromDeptLeaderboard
+                      ? "bg-amber-100 text-amber-700 border border-amber-300"
+                      : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  }`}
+                >
+                  <EyeOff className="w-3 h-3" />
+                  {s.lbVisibility?.hideFromDeptLeaderboard ? "Dept LB: Hidden" : "Dept LB: Visible"}
+                </button>
+                <button
+                  onClick={() => onToggleLbVisibility?.(s.id, "hideFromCollegeLeaderboard", s.lbVisibility?.hideFromCollegeLeaderboard || false)}
+                  disabled={lbToggling}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition disabled:opacity-50 ${
+                    s.lbVisibility?.hideFromCollegeLeaderboard
+                      ? "bg-amber-100 text-amber-700 border border-amber-300"
+                      : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  }`}
+                >
+                  <EyeOff className="w-3 h-3" />
+                  {s.lbVisibility?.hideFromCollegeLeaderboard ? "College LB: Hidden" : "College LB: Visible"}
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-400 mt-1.5">
+                When hidden, the student is filtered from that leaderboard for other students. You always see everyone.
+              </p>
+            </div>
+          )}
         </motion.div>
       )}
     </div>

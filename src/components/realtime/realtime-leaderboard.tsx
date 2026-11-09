@@ -12,6 +12,8 @@ type Config = {
   departmentLeaderboardVisible: boolean;
   collegeUserIds: string[];
   departmentUserIds: string[];
+  hiddenFromDeptUserIds: string[];
+  hiddenFromCollegeUserIds: string[];
   collegeCode: string | null;
   deptCode: string | null;
 };
@@ -97,21 +99,31 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
   // 3. Merge Firestore entries (real-time XP) with DB students (fallback for
   //    those without a Firestore entry). This ensures ALL active students appear
   //    even if their syncLeaderboardClient failed.
+  //    Also filters out students who hid themselves from this leaderboard scope.
+  //    (Mentors/admins get empty hidden arrays from the API, so they see everyone.)
   const visibleEntries = useMemo(() => {
     if (!config) return [];
     const validSet = tab === "department"
       ? new Set(config.departmentUserIds)
       : new Set(config.collegeUserIds);
 
+    // Build the hidden set for the current tab. Students who hid themselves
+    // are excluded from the view. (For mentors/admins, these arrays are empty,
+    // so no one is filtered out — they always see the full leaderboard.)
+    const hiddenSet = tab === "department"
+      ? new Set(config.hiddenFromDeptUserIds || [])
+      : new Set(config.hiddenFromCollegeUserIds || []);
+
     // Start with Firestore entries (real-time XP/streak)
     const firestoreMap = new Map<string, LeaderboardEntry>();
     entries
       .filter(e => validSet.has(e.userId))
+      .filter(e => !hiddenSet.has(e.userId))
       .forEach(e => firestoreMap.set(e.userId, e));
 
     // Merge DB students — add any that are NOT in Firestore yet
     dbStudents.forEach((s: any) => {
-      if (validSet.has(s.id) && !firestoreMap.has(s.id)) {
+      if (validSet.has(s.id) && !hiddenSet.has(s.id) && !firestoreMap.has(s.id)) {
         firestoreMap.set(s.id, {
           userId: s.id,
           name: s.name,
@@ -132,7 +144,9 @@ export function RealtimeLeaderboard({ user }: { user: any }) {
       .sort((a, b) => (b.xp || 0) - (a.xp || 0) || (b.level || 0) - (a.level || 0));
 
     // Ensure the current student is represented (fallback if neither Firestore
-    // nor DB has them — e.g. brand new student loading for the first time)
+    // nor DB has them — e.g. brand new student loading for the first time).
+    // The current student ALWAYS sees their own entry, even if they hid
+    // themselves from others.
     const isInScope = validSet.has(user.id);
     const alreadyPresent = filtered.some(e => e.userId === user.id);
     if (isInScope && !alreadyPresent) {

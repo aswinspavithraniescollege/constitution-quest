@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
+import {
+  getBulkUserLeaderboardVisibility,
+  setUserDeptLeaderboardVisibility,
+  setUserCollegeLeaderboardVisibility,
+} from "@/lib/leaderboard-visibility";
 
 // Authorization helper for mentor student-management endpoints.
 // A mentor may only manage students whose departmentId matches the mentor's
@@ -67,6 +72,9 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
   });
 
+  // Fetch leaderboard visibility for all the mentor's students (batch).
+  const visibilityMap = await getBulkUserLeaderboardVisibility(students.map(s => s.id));
+
   // For each student, also compute week-wise progress
   const enriched = await Promise.all(students.map(async s => {
     const practiceAttempts = await db.practiceAttempt.findMany({
@@ -94,6 +102,10 @@ export async function GET() {
     const { password, ...safe } = s;
     return {
       ...safe,
+      lbVisibility: visibilityMap.get(s.id) || {
+        hideFromDeptLeaderboard: false,
+        hideFromCollegeLeaderboard: false,
+      },
       weekStats: Array.from(weekStats.entries()).map(([weekId, stats]) => ({ weekId, ...stats })),
       mockAttempts: mockAttempts.map(m => ({
         id: m.id,
@@ -138,13 +150,16 @@ export async function DELETE(req: NextRequest) {
 }
 
 // PATCH /api/mentor/students
-// Body: { id, name?, phone?, rollNumber?, active?, password? }
+// Body: { id, name?, phone?, rollNumber?, active?, password?,
+//         hideFromDeptLeaderboard?, hideFromCollegeLeaderboard? }
 // Mentors can edit only their own department's students, and only a limited
 // set of fields (no email/department/mentor reassignment — those stay with admin).
+// Mentors can also toggle leaderboard visibility (shared switch with student/admin).
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, name, phone, rollNumber, active, password } = body;
+    const { id, name, phone, rollNumber, active, password,
+            hideFromDeptLeaderboard, hideFromCollegeLeaderboard } = body;
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
     const auth = await authorizeStudentForMentor(id);
@@ -165,16 +180,24 @@ export async function PATCH(req: NextRequest) {
       data.password = await hashPassword(String(password));
     }
 
-    if (Object.keys(data).length === 0) {
-      return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+    // Handle leaderboard visibility toggles (shared switch — same as student/admin)
+    if (typeof hideFromDeptLeaderboard === "boolean") {
+      await setUserDeptLeaderboardVisibility(id, hideFromDeptLeaderboard);
+    }
+    if (typeof hideFromCollegeLeaderboard === "boolean") {
+      await setUserCollegeLeaderboardVisibility(id, hideFromCollegeLeaderboard);
     }
 
-    const updated = await db.user.update({
-      where: { id },
-      data,
-      select: { id: true, name: true, phone: true, rollNumber: true, active: true },
-    });
-    return NextResponse.json({ ok: true, student: updated });
+    // Only update DB if there are DB fields to update (visibility is stored
+    // separately in the Setting table, so an empty `data` is OK here).
+    if (Object.keys(data).length > 0) {
+      await db.user.update({
+        where: { id },
+        data,
+        select: { id: true, name: true, phone: true, rollNumber: true, active: true },
+      });
+    }
+    return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("Mentor update student error:", e);
     return NextResponse.json({ error: "Failed to update student" }, { status: 500 });

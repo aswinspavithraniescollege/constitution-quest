@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser, hashPassword } from "@/lib/auth";
+import {
+  getUserLeaderboardVisibility,
+  setUserDeptLeaderboardVisibility,
+  setUserCollegeLeaderboardVisibility,
+  getBulkUserLeaderboardVisibility,
+} from "@/lib/leaderboard-visibility";
 
 async function requireAdminLike() {
   const user = await getCurrentUser();
@@ -46,7 +52,16 @@ export async function GET(req: NextRequest) {
     orderBy: { createdAt: "desc" },
   });
 
-  const safe = students.map(({ password, ...rest }: any) => rest);
+  // Fetch leaderboard visibility for all students in one batch (avoids N+1).
+  const visibilityMap = await getBulkUserLeaderboardVisibility(students.map(s => s.id));
+
+  const safe = students.map(({ password, ...rest }: any) => ({
+    ...rest,
+    lbVisibility: visibilityMap.get(rest.id) || {
+      hideFromDeptLeaderboard: false,
+      hideFromCollegeLeaderboard: false,
+    },
+  }));
   return NextResponse.json({ students: safe });
 }
 
@@ -124,7 +139,8 @@ export async function PATCH(req: NextRequest) {
   const user = await requireAdminLike();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   try {
-    const { id, mentorId, active, password, name, departmentId, rollNumber, email, phone } = await req.json();
+    const { id, mentorId, active, password, name, departmentId, rollNumber, email, phone,
+            hideFromDeptLeaderboard, hideFromCollegeLeaderboard } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
     // Sub-admins can only update students in their college
     if (user.role === "SUB_ADMIN") {
@@ -143,6 +159,15 @@ export async function PATCH(req: NextRequest) {
     if (phone !== undefined) data.phone = phone || null;
     if (password) data.password = await hashPassword(password);
     const updated = await db.user.update({ where: { id }, data });
+
+    // Handle leaderboard visibility toggles (admin can control per-student)
+    if (typeof hideFromDeptLeaderboard === "boolean") {
+      await setUserDeptLeaderboardVisibility(id, hideFromDeptLeaderboard);
+    }
+    if (typeof hideFromCollegeLeaderboard === "boolean") {
+      await setUserCollegeLeaderboardVisibility(id, hideFromCollegeLeaderboard);
+    }
+
     return NextResponse.json({ ok: true, user: { id: updated.id, name: updated.name } });
   } catch (e) {
     console.error(e);

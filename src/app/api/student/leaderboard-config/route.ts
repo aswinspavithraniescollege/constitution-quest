@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
+import {
+  getHiddenFromDeptLeaderboardUserIds,
+  getHiddenFromCollegeLeaderboardUserIds,
+} from "@/lib/leaderboard-visibility";
 
 // Force dynamic — never cache this response. The Student Preview polls
 // this endpoint every 5 seconds and must always get fresh settings.
@@ -112,6 +116,24 @@ export async function GET() {
     ? collegeVisible
     : collegeVisibleForMyDept;
 
+  // Per-student hide toggles: students who hid themselves from the dept or
+  // college leaderboard. These are filtered out for STUDENT viewers, but
+  // mentors and admins ALWAYS see everyone (they need to monitor all students).
+  // The client (realtime-leaderboard.tsx) uses these sets to filter.
+  // For mentors/admins, we return empty sets (no filtering — they see all).
+  const isPrivilegedViewer = user.role === "ADMIN" || user.role === "SUB_ADMIN" || user.role === "MENTOR";
+  let hiddenFromDeptUserIds: string[] = [];
+  let hiddenFromCollegeUserIds: string[] = [];
+  if (!isPrivilegedViewer && !previewMode) {
+    // Only students get the filtered view (also skip for preview mode, which
+    // is used by admins/mentors to see what a student sees — but we want them
+    // to see the full leaderboard in their own admin/mentor view).
+    const deptHidden = await getHiddenFromDeptLeaderboardUserIds();
+    const collegeHidden = await getHiddenFromCollegeLeaderboardUserIds();
+    hiddenFromDeptUserIds = Array.from(deptHidden);
+    hiddenFromCollegeUserIds = Array.from(collegeHidden);
+  }
+
   return NextResponse.json({
     collegeLeaderboardVisible: collegeLbVisibleToStudent,
     departmentLeaderboardVisible: departmentVisible && !!user.departmentId,
@@ -121,6 +143,10 @@ export async function GET() {
     collegeLocked,
     collegeUserIds,
     departmentUserIds,
+    // Per-student hide toggles — only populated for student viewers.
+    // Mentors/admins get empty arrays (they see everyone).
+    hiddenFromDeptUserIds,
+    hiddenFromCollegeUserIds,
     collegeCode: user.college?.code || null,
     deptCode: user.department?.code || null,
   });

@@ -1895,6 +1895,50 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     }
   }
 
+  // Toggle a student's leaderboard visibility (dept or college).
+  // Shared switch — same setting the student and mentor can also change.
+  async function toggleLbVisibility(studentId: string, field: "hideFromDeptLeaderboard" | "hideFromCollegeLeaderboard", currentValue: boolean) {
+    const newValue = !currentValue;
+    // Optimistic update — update the local students array immediately
+    setStudents(prev => prev.map(s => s.id === studentId ? {
+      ...s,
+      lbVisibility: {
+        ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+        [field]: newValue,
+      },
+    } : s));
+    try {
+      const res = await fetch("/api/admin/students", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: studentId, [field]: newValue }),
+      });
+      if (!res.ok) {
+        // Revert on failure
+        setStudents(prev => prev.map(s => s.id === studentId ? {
+          ...s,
+          lbVisibility: {
+            ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+            [field]: currentValue,
+          },
+        } : s));
+        toast.error("Failed to update visibility");
+      } else {
+        toast.success(newValue ? "Student hidden from leaderboard" : "Student visible on leaderboard");
+      }
+    } catch (e) {
+      // Revert on network error
+      setStudents(prev => prev.map(s => s.id === studentId ? {
+        ...s,
+        lbVisibility: {
+          ...(s.lbVisibility || { hideFromDeptLeaderboard: false, hideFromCollegeLeaderboard: false }),
+          [field]: currentValue,
+        },
+      } : s));
+      toast.error("Network error");
+    }
+  }
+
   // Filter mentors by selected department (mentors API only filters by collegeId)
   const filteredMentors = selectedDepartment
     ? mentors.filter(m => m.departmentId === selectedDepartment.id)
@@ -2174,6 +2218,9 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
               <RefreshCw className="w-3.5 h-3.5" /> Refresh
             </button>
           </div>
+          <div className="text-xs text-slate-400 mb-2 p-2 rounded-lg bg-amber-50 border border-amber-100">
+            💡 Each student has two leaderboard privacy toggles (Dept LB / College LB). When ON (amber), the student is hidden from that leaderboard for other students. You always see everyone.
+          </div>
           {students.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
               <Users className="w-10 h-10 mx-auto mb-2 opacity-50" />
@@ -2209,6 +2256,34 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                     <button onClick={() => toggleActive(s)} title="Toggle active" className="p-1.5 rounded hover:bg-amber-50 text-amber-500"><UserCog className="w-4 h-4" /></button>
                     <button onClick={() => del(s.id)} title="Delete" className="p-1.5 rounded hover:bg-red-50 text-red-500"><Trash2 className="w-4 h-4" /></button>
                   </div>
+                </div>
+                {/* Leaderboard visibility toggles */}
+                <div className="flex items-center gap-3 mt-2 pt-2 border-t border-slate-100 flex-wrap">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Leaderboard Privacy:</span>
+                  <button
+                    onClick={() => toggleLbVisibility(s.id, "hideFromDeptLeaderboard", s.lbVisibility?.hideFromDeptLeaderboard || false)}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold transition ${
+                      s.lbVisibility?.hideFromDeptLeaderboard
+                        ? "bg-amber-100 text-amber-700 border border-amber-300"
+                        : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    }`}
+                    title={s.lbVisibility?.hideFromDeptLeaderboard ? "Click to show on dept leaderboard" : "Click to hide from dept leaderboard"}
+                  >
+                    <EyeOff className="w-3 h-3" />
+                    {s.lbVisibility?.hideFromDeptLeaderboard ? "Dept LB: Hidden" : "Dept LB: Visible"}
+                  </button>
+                  <button
+                    onClick={() => toggleLbVisibility(s.id, "hideFromCollegeLeaderboard", s.lbVisibility?.hideFromCollegeLeaderboard || false)}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold transition ${
+                      s.lbVisibility?.hideFromCollegeLeaderboard
+                        ? "bg-amber-100 text-amber-700 border border-amber-300"
+                        : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    }`}
+                    title={s.lbVisibility?.hideFromCollegeLeaderboard ? "Click to show on college leaderboard" : "Click to hide from college leaderboard"}
+                  >
+                    <EyeOff className="w-3 h-3" />
+                    {s.lbVisibility?.hideFromCollegeLeaderboard ? "College LB: Hidden" : "College LB: Visible"}
+                  </button>
                 </div>
               </div>
             ))

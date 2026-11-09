@@ -1498,8 +1498,139 @@ function ProfileView({ user, onUpdated }: { user: any; onUpdated: () => void }) 
         </div>
       </div>
 
+      {/* Leaderboard Visibility — students can hide themselves from
+          the department and/or college leaderboard. This is a shared
+          toggle — mentors and admins can also change it for this student. */}
+      {profile.role === "STUDENT" && <LeaderboardVisibilitySection userId={user.id} />}
+
       {/* Delete Account */}
       <DeleteAccountSection user={user} onLogout={onUpdated} />
+    </div>
+  );
+}
+
+// Leaderboard visibility section — two toggles for the student to control
+// whether their name appears on the department and college leaderboards.
+function LeaderboardVisibilitySection({ userId }: { userId: string }) {
+  const [visibility, setVisibility] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/student/leaderboard-visibility");
+      if (res.ok) {
+        const data = await res.json();
+        setVisibility(data);
+      }
+    } catch (e) {
+      console.error("Failed to load leaderboard visibility:", e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function toggle(field: "hideFromDeptLeaderboard" | "hideFromCollegeLeaderboard") {
+    if (!visibility || saving) return;
+    const newValue = !visibility[field];
+    setSaving(true);
+    // Optimistic update
+    setVisibility((v: any) => ({ ...v, [field]: newValue }));
+    try {
+      const res = await fetch("/api/student/leaderboard-visibility", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: newValue }),
+      });
+      if (!res.ok) {
+        // Revert on failure
+        setVisibility((v: any) => ({ ...v, [field]: !newValue }));
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || "Failed to update");
+      } else {
+        const data = await res.json();
+        setVisibility(data);
+        toast.success(newValue ? "You're now hidden from that leaderboard" : "You're now visible on that leaderboard");
+      }
+    } catch (e) {
+      setVisibility((v: any) => ({ ...v, [field]: !newValue }));
+      toast.error("Network error");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+        <div className="flex items-center gap-2 text-sm text-white/50">
+          <Loader2 className="w-4 h-4 animate-spin" /> Loading leaderboard settings...
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+      <h4 className="text-sm font-bold mb-1 flex items-center gap-1.5">
+        <EyeOff className="w-4 h-4 text-amber-300" /> Leaderboard Privacy
+      </h4>
+      <p className="text-[11px] text-white/50 mb-3 leading-relaxed">
+        Control whether your name appears on the leaderboards. Your mentor and admin can also change these for you. You&apos;ll always see your own rank — this only hides you from other students.
+      </p>
+      <div className="space-y-3">
+        {/* Department leaderboard toggle */}
+        <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+          <div className="min-w-0">
+            <div className="text-sm font-bold text-white/90">Department Leaderboard</div>
+            <div className="text-[11px] text-white/50">
+              {visibility?.hideFromDeptLeaderboard
+                ? "🚫 You're hidden from your department's leaderboard"
+                : "✅ Your name shows on your department's leaderboard"}
+            </div>
+          </div>
+          <button
+            onClick={() => toggle("hideFromDeptLeaderboard")}
+            disabled={saving}
+            className={`relative w-12 h-6 rounded-full transition shrink-0 ${
+              visibility?.hideFromDeptLeaderboard ? "bg-amber-500" : "bg-emerald-500"
+            } disabled:opacity-50`}
+          >
+            <span
+              className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition ${
+                visibility?.hideFromDeptLeaderboard ? "left-0.5" : "left-6"
+              }`}
+            />
+          </button>
+        </div>
+        {/* College leaderboard toggle */}
+        <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+          <div className="min-w-0">
+            <div className="text-sm font-bold text-white/90">College Leaderboard</div>
+            <div className="text-[11px] text-white/50">
+              {visibility?.hideFromCollegeLeaderboard
+                ? "🚫 You're hidden from your college's leaderboard"
+                : "✅ Your name shows on your college's leaderboard"}
+            </div>
+          </div>
+          <button
+            onClick={() => toggle("hideFromCollegeLeaderboard")}
+            disabled={saving}
+            className={`relative w-12 h-6 rounded-full transition shrink-0 ${
+              visibility?.hideFromCollegeLeaderboard ? "bg-amber-500" : "bg-emerald-500"
+            } disabled:opacity-50`}
+          >
+            <span
+              className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition ${
+                visibility?.hideFromCollegeLeaderboard ? "left-0.5" : "left-6"
+              }`}
+            />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
