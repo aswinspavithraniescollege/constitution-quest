@@ -9,7 +9,7 @@ import {
   Crown, Zap, Target, Brain, ChevronDown, ChevronLeft, ChevronRight,
   Filter, RefreshCw, UserCog, KeyRound,
   UserCheck, AlertCircle, Pencil, X, Folder, FolderOpen, Flame,
-  Globe, MessageCircle
+  Globe, MessageCircle, EyeOff
 } from "lucide-react";
 import { RealtimeActivityFeed } from "@/components/realtime/realtime-activity-feed";
 import { AnnouncementsManager } from "@/components/realtime/announcements";
@@ -2293,7 +2293,11 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 
       {/* LEVEL 4/5: Student detail results */}
       {!loading && level === "detail" && studentDetail && (
-        <StudentDetailResults studentDetail={studentDetail} />
+        <StudentDetailResults
+          studentDetail={studentDetail}
+          student={selectedStudent}
+          onToggleLbVisibility={toggleLbVisibility}
+        />
       )}
 
       {/* ADD STUDENT MODAL — only accessible from student list level inside a mentor folder */}
@@ -2362,7 +2366,11 @@ function StudentsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
 }
 
 // ============== STUDENT DETAIL RESULTS (deepest drill-down level) ==============
-function StudentDetailResults({ studentDetail }: { studentDetail: any }) {
+function StudentDetailResults({ studentDetail, student, onToggleLbVisibility }: any) {
+  // student = the selected student object from the list (has lbVisibility)
+  // onToggleLbVisibility = function to toggle hide/show
+  const lbVis = student?.lbVisibility;
+  const studentId = student?.id || studentDetail?.student?.id;
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
       {/* Student header */}
@@ -2386,6 +2394,42 @@ function StudentDetailResults({ studentDetail }: { studentDetail: any }) {
           <div className="text-center p-2 rounded-lg bg-white/60"><Flame className="w-4 h-4 mx-auto text-orange-500 mb-1" /><div className="font-black">{studentDetail.student.streak}</div><div className="text-[10px] text-slate-500">Streak</div></div>
           <div className="text-center p-2 rounded-lg bg-white/60"><Target className="w-4 h-4 mx-auto text-cyan-500 mb-1" /><div className="font-black">{studentDetail.accuracy}%</div><div className="text-[10px] text-slate-500">Accuracy</div></div>
         </div>
+      </div>
+
+      {/* Leaderboard Privacy toggles — admin can hide/show this student */}
+      <div className="rounded-2xl bg-white border border-amber-200 p-4 mb-4">
+        <div className="flex items-center gap-2 mb-2">
+          <EyeOff className="w-4 h-4 text-amber-500" />
+          <h4 className="font-bold text-sm">Leaderboard Privacy</h4>
+          <span className="text-[10px] text-slate-400">(shared with student &amp; mentor)</span>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => onToggleLbVisibility?.(studentId, "hideFromDeptLeaderboard", lbVis?.hideFromDeptLeaderboard || false)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition ${
+              lbVis?.hideFromDeptLeaderboard
+                ? "bg-amber-100 text-amber-700 border border-amber-300"
+                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+            }`}
+          >
+            <EyeOff className="w-3 h-3" />
+            {lbVis?.hideFromDeptLeaderboard ? "Dept LB: Hidden" : "Dept LB: Visible"}
+          </button>
+          <button
+            onClick={() => onToggleLbVisibility?.(studentId, "hideFromCollegeLeaderboard", lbVis?.hideFromCollegeLeaderboard || false)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition ${
+              lbVis?.hideFromCollegeLeaderboard
+                ? "bg-amber-100 text-amber-700 border border-amber-300"
+                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+            }`}
+          >
+            <EyeOff className="w-3 h-3" />
+            {lbVis?.hideFromCollegeLeaderboard ? "College LB: Hidden" : "College LB: Visible"}
+          </button>
+        </div>
+        <p className="text-[10px] text-slate-400 mt-2">
+          When hidden, this student is filtered from that leaderboard for other students. You always see everyone.
+        </p>
       </div>
 
       {/* Week-wise practice results */}
