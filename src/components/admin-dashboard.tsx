@@ -355,6 +355,16 @@ function OverviewTab({ isMainAdmin, user }: { isMainAdmin: boolean; user: any })
         </div>
       </div>
 
+      {/* Global Leaderboard — all colleges (main admin only) */}
+      {isMainAdmin && (
+        <AdminLeaderboardTable
+          scope="global"
+          title="🌍 Global Leaderboard — All Colleges (Top 20)"
+          limit={20}
+          showCollegeColumn={true}
+        />
+      )}
+
       {/* Recent activity */}
       <div className="rounded-2xl bg-white border border-slate-200 p-5">
         <h3 className="font-bold mb-3 flex items-center gap-2"><Activity className="w-4 h-4 text-cyan-500" /> Recent Activity (Last 50)</h3>
@@ -624,6 +634,9 @@ function LeaderboardTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* DUMMY STUDENT PREVIEW — visual mockup of what students see */}
       <DummyStudentPreview type="leaderboard" previewKey={previewKey} />
+
+      {/* LIVE LEADERBOARD VIEWER — admin can view any scope */}
+      <LeaderboardViewer isMainAdmin={isMainAdmin} colleges={scopedColleges} />
 
       {/* Header + warning if Setting table missing */}
       <div>
@@ -1195,6 +1208,29 @@ function CollegesTab({ colleges, onRefresh }: any) {
           </div>
         </EditModal>
       )}
+
+      {/* College Leaderboards — one per college */}
+      <div className="lg:col-span-3 space-y-4">
+        <h3 className="font-bold text-lg flex items-center gap-2">
+          <Crown className="w-5 h-5 text-amber-500" /> College Leaderboards
+        </h3>
+        {colleges.length === 0 ? (
+          <div className="text-center py-8 text-slate-400 text-sm">No colleges yet.</div>
+        ) : (
+          <div className="space-y-4">
+            {colleges.map(c => (
+              <AdminLeaderboardTable
+                key={c.id}
+                scope="college"
+                collegeId={c.id}
+                title={`🏫 ${c.name} (${c.code}) — College Leaderboard`}
+                limit={20}
+                showCollegeColumn={false}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -1401,6 +1437,31 @@ function DepartmentsTab({ collegeId, colleges, isSubAdmin }: any) {
           </div>
         </EditModal>
       )}
+
+      {/* Department Leaderboards — one per department */}
+      <div className="lg:col-span-3 space-y-4">
+        <h3 className="font-bold text-lg flex items-center gap-2">
+          <Crown className="w-5 h-5 text-amber-500" /> Department Leaderboards
+        </h3>
+        {loading ? (
+          <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-amber-500" /></div>
+        ) : departments.length === 0 ? (
+          <div className="text-center py-8 text-slate-400 text-sm">No departments yet.</div>
+        ) : (
+          <div className="space-y-4">
+            {departments.map(d => (
+              <AdminLeaderboardTable
+                key={d.id}
+                scope="department"
+                departmentId={d.id}
+                title={`🎓 ${d.name} (${d.code}) — ${d.college?.name || ""} — Department Leaderboard`}
+                limit={20}
+                showCollegeColumn={false}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -2947,6 +3008,239 @@ function GuestsTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ============== LEADERBOARD VIEWER (scope picker) ==============
+// Used in the Leaderboard tab — lets admin pick Global / College / Department
+// scope and view the live leaderboard for that scope.
+function LeaderboardViewer({ isMainAdmin, colleges }: any) {
+  const [scope, setScope] = useState<"global" | "college" | "department">(isMainAdmin ? "global" : "college");
+  const [selectedCollege, setSelectedCollege] = useState(colleges[0]?.id || "");
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [selectedDept, setSelectedDept] = useState("");
+
+  // Load departments when college changes
+  useEffect(() => {
+    if (!selectedCollege) {
+      setDepartments([]);
+      setSelectedDept("");
+      return;
+    }
+    (async () => {
+      try {
+        const res = await fetch(`/api/admin/departments?collegeId=${selectedCollege}`);
+        const data = await res.json();
+        setDepartments(data.departments || []);
+        setSelectedDept(data.departments?.[0]?.id || "");
+      } catch {
+        setDepartments([]);
+        setSelectedDept("");
+      }
+    })();
+  }, [selectedCollege]);
+
+  return (
+    <div className="rounded-2xl bg-white border-2 border-amber-300 p-4">
+      <div className="flex items-center gap-2 mb-3">
+        <Crown className="w-5 h-5 text-amber-500" />
+        <h3 className="font-bold text-base">Live Leaderboard Viewer</h3>
+      </div>
+      <p className="text-xs text-slate-500 mb-3">
+        View the live leaderboard by scope. Global = all colleges; College = one college; Department = one department.
+      </p>
+
+      {/* Scope picker */}
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        {isMainAdmin && (
+          <button
+            onClick={() => setScope("global")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+              scope === "global" ? "bg-purple-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            🌍 Global (All Colleges)
+          </button>
+        )}
+        <button
+          onClick={() => setScope("college")}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            scope === "college" ? "bg-purple-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+          }`}
+        >
+          🏫 College
+        </button>
+        <button
+          onClick={() => setScope("department")}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            scope === "department" ? "bg-purple-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+          }`}
+        >
+          🎓 Department
+        </button>
+      </div>
+
+      {/* College/Department selectors */}
+      {(scope === "college" || scope === "department") && (
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <select
+            value={selectedCollege}
+            onChange={e => setSelectedCollege(e.target.value)}
+            className="px-3 py-1.5 rounded-lg border border-slate-200 text-sm"
+          >
+            {colleges.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          {scope === "department" && (
+            <select
+              value={selectedDept}
+              onChange={e => setSelectedDept(e.target.value)}
+              className="px-3 py-1.5 rounded-lg border border-slate-200 text-sm"
+            >
+              <option value="">— Select department —</option>
+              {departments.map(d => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
+            </select>
+          )}
+        </div>
+      )}
+
+      {/* Leaderboard table */}
+      {scope === "global" && isMainAdmin && (
+        <AdminLeaderboardTable scope="global" limit={50} showCollegeColumn={true} />
+      )}
+      {scope === "college" && selectedCollege && (
+        <AdminLeaderboardTable scope="college" collegeId={selectedCollege} limit={50} showCollegeColumn={false} />
+      )}
+      {scope === "department" && selectedDept && (
+        <AdminLeaderboardTable scope="department" departmentId={selectedDept} limit={50} showCollegeColumn={false} />
+      )}
+      {scope === "department" && !selectedDept && (
+        <div className="text-center py-8 text-slate-400 text-sm">Please select a department above.</div>
+      )}
+    </div>
+  );
+}
+
+// ============== REUSABLE LEADERBOARD TABLE (for admin tabs) ==============
+// A standalone leaderboard table that fetches from /api/student/leaderboard
+// with a given scope. Used in:
+//   - Overview tab (scope=global — all colleges)
+//   - Colleges tab (scope=college — one college)
+//   - Departments tab (scope=department — one department)
+//   - Leaderboard tab (scope picker — global/college/department)
+//
+// Props:
+//   scope: "global" | "college" | "department"
+//   collegeId?: string (required for scope=college)
+//   departmentId?: string (required for scope=department)
+//   title?: string (custom heading)
+//   limit?: number (max rows, default 50)
+//   showCollegeColumn?: boolean (show the College column — default true for global)
+function AdminLeaderboardTable({ scope, collegeId, departmentId, title, limit = 50, showCollegeColumn }: any) {
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params = new URLSearchParams({ scope });
+      if (collegeId) params.set("collegeId", collegeId);
+      if (departmentId) params.set("departmentId", departmentId);
+      const res = await fetch(`/api/student/leaderboard?${params.toString()}`);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Failed to load leaderboard");
+        return;
+      }
+      const data = await res.json();
+      setEntries((data.leaderboard || []).slice(0, limit));
+    } catch (e) {
+      setError("Network error");
+    } finally {
+      setLoading(false);
+    }
+  }, [scope, collegeId, departmentId, limit]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const shouldShowCollege = showCollegeColumn !== undefined ? showCollegeColumn : scope === "global";
+
+  if (loading) {
+    return <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-amber-500" /></div>;
+  }
+  if (error) {
+    return (
+      <div className="text-center py-6">
+        <p className="text-sm text-red-500 mb-2">{error}</p>
+        <button onClick={load} className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold">Retry</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden">
+      {title && (
+        <div className="px-4 py-3 border-b border-slate-200 bg-gradient-to-r from-amber-50 to-orange-50">
+          <h3 className="font-bold text-sm flex items-center gap-2">
+            <Crown className="w-4 h-4 text-amber-500" /> {title}
+          </h3>
+        </div>
+      )}
+      {entries.length === 0 ? (
+        <div className="text-center py-8 text-slate-400 text-sm">No students in this scope yet.</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="px-3 py-2 text-left text-xs font-bold text-slate-500 uppercase">Rank</th>
+                <th className="px-3 py-2 text-left text-xs font-bold text-slate-500 uppercase">Student</th>
+                {shouldShowCollege && <th className="px-3 py-2 text-left text-xs font-bold text-slate-500 uppercase">College</th>}
+                <th className="px-3 py-2 text-left text-xs font-bold text-slate-500 uppercase">Dept</th>
+                <th className="px-3 py-2 text-right text-xs font-bold text-slate-500 uppercase">XP</th>
+                <th className="px-3 py-2 text-right text-xs font-bold text-slate-500 uppercase">Level</th>
+                <th className="px-3 py-2 text-right text-xs font-bold text-slate-500 uppercase">Streak</th>
+                <th className="px-3 py-2 text-right text-xs font-bold text-slate-500 uppercase">Practice</th>
+                <th className="px-3 py-2 text-right text-xs font-bold text-slate-500 uppercase">Mocks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((s, i) => (
+                <tr key={s.id} className={`border-b border-slate-100 last:border-0 ${i < 3 ? "bg-amber-50/40" : ""}`}>
+                  <td className="px-3 py-2">
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs ${
+                      i === 0 ? "bg-amber-400 text-white" : i === 1 ? "bg-slate-300 text-slate-700" : i === 2 ? "bg-orange-300 text-white" : "bg-slate-100 text-slate-500"
+                    }`}>
+                      {i + 1}
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="font-bold text-slate-800">{s.name}</div>
+                    <div className="text-[10px] text-slate-400">{s.username || s.email}</div>
+                  </td>
+                  {shouldShowCollege && (
+                    <td className="px-3 py-2 text-xs text-slate-600">{s.college?.code || "—"}</td>
+                  )}
+                  <td className="px-3 py-2 text-xs text-slate-600">{s.department?.code || "—"}</td>
+                  <td className="px-3 py-2 text-right font-bold text-amber-600">{s.xp}</td>
+                  <td className="px-3 py-2 text-right font-bold text-purple-600">{s.level}</td>
+                  <td className="px-3 py-2 text-right text-orange-600">🔥{s.streak}</td>
+                  <td className="px-3 py-2 text-right text-cyan-600">{s._count?.practiceAttempts || 0}</td>
+                  <td className="px-3 py-2 text-right text-emerald-600">{s._count?.mockAttempts || 0}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <div className="px-4 py-2 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+        <span className="text-[10px] text-slate-400">Showing top {entries.length} student{entries.length !== 1 ? "s" : ""}</span>
+        <button onClick={load} className="text-[10px] text-slate-500 hover:text-slate-700 flex items-center gap-1">
+          <RefreshCw className="w-3 h-3" /> Refresh
+        </button>
       </div>
     </div>
   );
