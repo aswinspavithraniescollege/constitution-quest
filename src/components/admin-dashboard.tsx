@@ -846,6 +846,8 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
   const collegeMap = settings.college || {};
   const deptMap = settings.dept || {};
   const mentorMap = settings.mentor || {};
+  const deptCollegeMap = settings.deptCollege || {};
+  const deptGlobalMap = settings.deptGlobal || {};
 
   return (
     <div className="max-w-5xl mx-auto space-y-6" style={{ backgroundColor: "#0f172a", backgroundImage: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)", padding: "1.5rem", borderRadius: "1rem", minHeight: "80vh" }}>
@@ -901,20 +903,35 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
         </div>
       </div>
 
-      {/* Department chat toggles — 3 per department: dept, dept-students, dm */}
+      {/* Department chat toggles — 5 per department: dept, dept-students, dm, dept-college, dept-global */}
       <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
         <h3 className="font-bold mb-1 flex items-center gap-2 text-white"><Layers className="w-4 h-4 text-blue-400" /> Department Chats</h3>
         <p className="text-xs text-white/50 mb-4">
-          Each department has 3 chat toggles:
+          Each department has 5 chat toggles:
           <span className="font-bold text-blue-400"> Dept</span> (students + mentor),
           <span className="font-bold text-cyan-400"> Students-Only</span> (no mentor),
-          <span className="font-bold text-purple-400"> DM</span> (private 1:1).
+          <span className="font-bold text-purple-400"> DM</span> (private 1:1),
+          <span className="font-bold text-fuchsia-400"> College</span> (per-dept override for college chat),
+          <span className="font-bold text-sky-400"> Global</span> (per-dept override for global chat).
+          <br />
+          <span className="text-white/40">The College &amp; Global toggles here only hide the chat for that department — they can&apos;t turn it on if the college-wide / global toggle above is OFF.</span>
         </p>
         <div className="space-y-2">
           {departments.map((d: any) => {
             const deptOn = deptMap[d.id] !== false;
             const studentsOn = (settings.deptStudents || {})[d.id] !== false;
             const dmOn = (settings.dm || {})[d.id] !== false;
+            // Per-dept overrides for College & Global chat. Default true.
+            // These are NARROWING — they can only hide, never widen.
+            // Effective visibility = college-wide AND dept-override (see /api/chat/config).
+            const collegeForDeptOn = deptCollegeMap[d.id] !== false;
+            const globalForDeptOn = deptGlobalMap[d.id] !== false;
+            // If the parent toggle is OFF, the per-dept toggle is effectively OFF
+            // too — we show a muted state to make this clear to the admin.
+            const collegeWideOn = d.collegeId ? collegeMap[d.collegeId] !== false : true;
+            const globalWideOn = globalOn;
+            const collegeEffective = collegeForDeptOn && collegeWideOn;
+            const globalEffective = globalForDeptOn && globalWideOn;
             return (
               <div key={d.id} className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
                 <div className="text-sm">
@@ -951,6 +968,48 @@ function ChatTab({ user, colleges, isMainAdmin, isSubAdmin }: any) {
                   >
                     {togglingKey === `dm-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserCheck className="w-3 h-3" />}
                     DM {dmOn ? "ON" : "OFF"}
+                  </button>
+                  {/* College chat (per-dept override) */}
+                  <button
+                    onClick={() => toggle("dept-college", d.id, collegeForDeptOn)}
+                    disabled={togglingKey === `dept-college-${d.id}`}
+                    title={
+                      collegeWideOn
+                        ? "Per-department override for College chat. Hides College chat for THIS department only (does not affect other departments)."
+                        : "College chat is OFF college-wide (see College Chats section above). Turning this ON here has no effect until the college-wide toggle is ON."
+                    }
+                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${
+                      collegeEffective
+                        ? "bg-fuchsia-500/20 border-fuchsia-400/30 text-fuchsia-300"
+                        : collegeForDeptOn && !collegeWideOn
+                          ? "bg-white/5 border-white/10 text-white/40" // override is ON but parent is OFF — show muted
+                          : "bg-white/5 border-white/10 text-white/50"
+                    } disabled:opacity-50`}
+                  >
+                    {togglingKey === `dept-college-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Building2 className="w-3 h-3" />}
+                    College {collegeForDeptOn ? "ON" : "OFF"}
+                    {!collegeWideOn && <span className="ml-1 text-[9px] text-amber-300/80">(parent OFF)</span>}
+                  </button>
+                  {/* Global chat (per-dept override) */}
+                  <button
+                    onClick={() => toggle("dept-global", d.id, globalForDeptOn)}
+                    disabled={togglingKey === `dept-global-${d.id}`}
+                    title={
+                      globalWideOn
+                        ? "Per-department override for Global chat. Hides Global chat for THIS department only (does not affect anyone else)."
+                        : "Global chat is OFF globally (see Global Chat section above). Turning this ON here has no effect until the global toggle is ON."
+                    }
+                    className={`px-2.5 py-2 rounded-lg text-[11px] font-bold flex items-center gap-1 border-2 ${
+                      globalEffective
+                        ? "bg-sky-500/20 border-sky-400/30 text-sky-300"
+                        : globalForDeptOn && !globalWideOn
+                          ? "bg-white/5 border-white/10 text-white/40" // override is ON but parent is OFF — show muted
+                          : "bg-white/5 border-white/10 text-white/50"
+                    } disabled:opacity-50`}
+                  >
+                    {togglingKey === `dept-global-${d.id}` ? <Loader2 className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
+                    Global {globalForDeptOn ? "ON" : "OFF"}
+                    {!globalWideOn && <span className="ml-1 text-[9px] text-amber-300/80">(parent OFF)</span>}
                   </button>
                 </div>
               </div>

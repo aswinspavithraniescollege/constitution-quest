@@ -23,12 +23,18 @@ export const dynamic = 'force-dynamic';
 //                     (controlled by admin + mentor)
 //
 // Visibility settings (Setting table):
-//   chatvis:global                          — global chat on/off
-//   chatvis:college:{collegeId}             — college chat on/off
+//   chatvis:global                          — global chat on/off (everyone)
+//   chatvis:college:{collegeId}             — college chat on/off (college-wide)
 //   chatvis:dept:{departmentId}             — department chat on/off
 //   chatvis:dept-students:{departmentId}    — students-only dept chat on/off
 //   chatvis:mentor:{collegeId}              — mentor chat on/off
 //   chatvis:dm:{departmentId}               — DM chat on/off (per department)
+//   chatvis:dept-college:{departmentId}     — per-dept override: hide College
+//                                              chat for this dept (narrowing;
+//                                              effective = college-wide AND this)
+//   chatvis:dept-global:{departmentId}      — per-dept override: hide Global
+//                                              chat for this dept (narrowing;
+//                                              effective = global AND this)
 export async function GET(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
@@ -69,6 +75,10 @@ export async function GET(req: NextRequest) {
   const isSubAdmin = !previewMode && user.role === "SUB_ADMIN";
 
   // Read all relevant visibility settings.
+  // Per-dept overrides (chatvis:dept-college / chatvis:dept-global) act as a
+  // NARROWING filter on top of the college-wide / global flags — a department
+  // can be hidden from College or Global chat even when those chats are ON
+  // college/globally. Default is true (visible) when the override is absent.
   const keys = [
     "chatvis:global",
     ...(user.collegeId ? [
@@ -79,6 +89,8 @@ export async function GET(req: NextRequest) {
       `chatvis:dept:${user.departmentId}`,
       `chatvis:dept-students:${user.departmentId}`,
       `chatvis:dm:${user.departmentId}`,
+      `chatvis:dept-college:${user.departmentId}`,
+      `chatvis:dept-global:${user.departmentId}`,
     ] : []),
   ];
   const map = await getSettings(keys);
@@ -108,23 +120,37 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // College chat — everyone in the college.
+  // College chat — everyone in the college. Subject to per-dept override
+  // (chatvis:dept-college:{deptId}) which can hide college chat for one
+  // specific department without affecting the rest of the college.
   if (user.collegeId) {
+    const collegeWide = chatvis(`chatvis:college:${user.collegeId}`);
+    const deptOverride = user.departmentId
+      ? chatvis(`chatvis:dept-college:${user.departmentId}`)
+      : true;
     chats.push({
       type: "college",
       chatId: `college:${user.collegeId}`,
       label: "My College",
-      visible: chatvis(`chatvis:college:${user.collegeId}`),
+      visible: collegeWide && deptOverride,
     });
   }
 
-  // Global chat — everyone.
-  chats.push({
-    type: "global",
-    chatId: "global",
-    label: "Global",
-    visible: chatvis("chatvis:global"),
-  });
+  // Global chat — everyone. Subject to per-dept override
+  // (chatvis:dept-global:{deptId}) which can hide global chat for one
+  // specific department without affecting everyone else.
+  {
+    const globalWide = chatvis("chatvis:global");
+    const deptOverride = user.departmentId
+      ? chatvis(`chatvis:dept-global:${user.departmentId}`)
+      : true;
+    chats.push({
+      type: "global",
+      chatId: "global",
+      label: "Global",
+      visible: globalWide && deptOverride,
+    });
+  }
 
   // Mentor chat — mentors only (within their college).
   if (isMentor && user.collegeId) {

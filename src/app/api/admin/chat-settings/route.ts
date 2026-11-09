@@ -5,7 +5,16 @@ import { getSettingsByPrefix, setSetting, resetSettingsTableCache } from "@/lib/
 
 // GET /api/admin/chat-settings
 // Returns all chat visibility settings as maps:
-//   { global: bool, college: {collegeId: bool}, dept: {deptId: bool}, mentor: {collegeId: bool} }
+//   {
+//     global: { global: bool },
+//     college: { collegeId: bool },                  // college-wide chat on/off
+//     dept: { deptId: bool },                        // dept chat (students+mentor)
+//     deptStudents: { deptId: bool },                // students-only dept chat
+//     dm: { deptId: bool },                          // private 1:1 DMs within dept
+//     mentor: { collegeId: bool },                   // mentors-only chat
+//     deptCollege: { deptId: bool },                 // per-dept override for College chat visibility
+//     deptGlobal: { deptId: bool },                  // per-dept override for Global chat visibility
+//   }
 export async function GET() {
   const user = await getCurrentUser();
   if (!user || (user.role !== "ADMIN" && user.role !== "SUB_ADMIN")) {
@@ -19,6 +28,8 @@ export async function GET() {
     const deptStudents: Record<string, boolean> = {};
     const dm: Record<string, boolean> = {};
     const mentor: Record<string, boolean> = {};
+    const deptCollege: Record<string, boolean> = {};
+    const deptGlobal: Record<string, boolean> = {};
     for (const [key, value] of map.entries()) {
       if (key === "chatvis:global") {
         global["global"] = value === "true";
@@ -26,6 +37,10 @@ export async function GET() {
         college[key.slice("chatvis:college:".length)] = value === "true";
       } else if (key.startsWith("chatvis:dept-students:")) {
         deptStudents[key.slice("chatvis:dept-students:".length)] = value === "true";
+      } else if (key.startsWith("chatvis:dept-college:")) {
+        deptCollege[key.slice("chatvis:dept-college:".length)] = value === "true";
+      } else if (key.startsWith("chatvis:dept-global:")) {
+        deptGlobal[key.slice("chatvis:dept-global:".length)] = value === "true";
       } else if (key.startsWith("chatvis:dm:")) {
         dm[key.slice("chatvis:dm:".length)] = value === "true";
       } else if (key.startsWith("chatvis:dept:")) {
@@ -34,19 +49,23 @@ export async function GET() {
         mentor[key.slice("chatvis:mentor:".length)] = value === "true";
       }
     }
-    return NextResponse.json({ global, college, dept, deptStudents, dm, mentor });
+    return NextResponse.json({ global, college, dept, deptStudents, dm, mentor, deptCollege, deptGlobal });
   } catch (e) {
     console.warn("chat-settings: could not read settings:", e);
-    return NextResponse.json({ global: {}, college: {}, dept: {}, deptStudents: {}, dm: {}, mentor: {} });
+    return NextResponse.json({ global: {}, college: {}, dept: {}, deptStudents: {}, dm: {}, mentor: {}, deptCollege: {}, deptGlobal: {} });
   }
 }
 
 // PATCH /api/admin/chat-settings
-// Body: { scope: "global"|"college"|"dept"|"mentor", id?: string, visible: bool }
-//   - global: id not required
-//   - college: id = collegeId
-//   - dept: id = departmentId
-//   - mentor: id = collegeId
+// Body: { scope: "global"|"college"|"dept"|"dept-students"|"dept-college"|"dept-global"|"dm"|"mentor", id?: string, visible: bool }
+//   - global:        id not required (controls chatvis:global)
+//   - college:       id = collegeId (controls chatvis:college:{id})
+//   - dept:          id = departmentId (controls chatvis:dept:{id})
+//   - dept-students: id = departmentId (controls chatvis:dept-students:{id})
+//   - dept-college:  id = departmentId (per-dept override for College chat)
+//   - dept-global:   id = departmentId (per-dept override for Global chat)
+//   - dm:            id = departmentId (controls chatvis:dm:{id})
+//   - mentor:        id = collegeId (controls chatvis:mentor:{id})
 export async function PATCH(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user || (user.role !== "ADMIN" && user.role !== "SUB_ADMIN")) {
@@ -73,6 +92,8 @@ export async function PATCH(req: NextRequest) {
         break;
       case "dept":
       case "dept-students":
+      case "dept-college":
+      case "dept-global":
       case "dm":
         if (!id) return NextResponse.json({ error: `id (departmentId) required for ${scope} scope` }, { status: 400 });
         // Sub-admins: dept must be in their college.
@@ -92,7 +113,7 @@ export async function PATCH(req: NextRequest) {
         key = `chatvis:mentor:${id}`;
         break;
       default:
-        return NextResponse.json({ error: "Invalid scope. Use global/college/dept/dept-students/dm/mentor." }, { status: 400 });
+        return NextResponse.json({ error: "Invalid scope. Use global/college/dept/dept-students/dept-college/dept-global/dm/mentor." }, { status: 400 });
     }
 
     try {
