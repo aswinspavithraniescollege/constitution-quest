@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import {
   Loader2, LogOut, Building2, Users, GraduationCap, Layers, Download,
   TrendingUp, Activity, Award, BarChart3, Plus, Trash2, Shield, Eye,
-  Crown, Zap, Target, Brain, ChevronDown, ChevronLeft, ChevronRight,
+  Crown, Zap, Target, Brain, ChevronDown, ChevronUp, ChevronLeft, ChevronRight,
   Filter, RefreshCw, UserCog, KeyRound,
   UserCheck, AlertCircle, Pencil, X, Folder, FolderOpen, Flame,
   Globe, MessageCircle, EyeOff
